@@ -1,0 +1,9 @@
+{
+    "commandDescription": "Creates a new custom metadata type in the current project",
+    "nameFlagDescription": "DeveloperName for the type",
+    "labelFlagDescription": "MasterLabel for the type",
+    "plurallabelFlagDescription": "Plural label for the type. If blank, uses label",
+    "visibilityFlagDescription": "Visibility for the type. Valid values are 'Public' and 'Protected'. If blank, uses 'Public'",
+    "errorNoOrgResults": "No results found for the organization '%s'."
+  }
+  
