@@ -1,0 +1,6 @@
+{
+    "commandDescription": "Converts a custom object and all its records to an equivalent custom metadata type",
+    "objnameFlagDescription": "DeveloperName of the object to create a type for",
+    "visibilityFlagDescription": "Visibility for the type. Valid values are 'Public' and 'Protected'. If blank, uses 'Public'",
+    "errorNoRecResults": "No results found for the organization '%s'."
+}

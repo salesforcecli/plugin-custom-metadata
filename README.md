@@ -30,9 +30,38 @@ USAGE
 ```
 <!-- usagestop -->
 <!-- commands -->
+* [`custommetadata custommetadata:convert [FILE]`](#custommetadata-custommetadataconvert-file)
 * [`custommetadata custommetadata:record:create`](#custommetadata-custommetadatarecordcreate)
 * [`custommetadata custommetadata:type:create [FILE]`](#custommetadata-custommetadatatypecreate-file)
 * [`custommetadata hello:org [FILE]`](#custommetadata-helloorg-file)
+
+## `custommetadata custommetadata:convert [FILE]`
+
+Converts a custom object and all its records to an equivalent custom metadata type
+
+```
+USAGE
+  $ custommetadata custommetadata:convert [FILE]
+
+OPTIONS
+  -n, --objname=objname                           DeveloperName of the object to create a type for
+  -u, --targetusername=targetusername             username or alias for the target org; overrides default target org
+
+  -v, --visibility=visibility                     Visibility for the type. Valid values are 'Public' and 'Protected'. If
+                                                  blank, uses 'Public'
+
+  --apiversion=apiversion                         override the api version used for api requests made by this command
+
+  --json                                          format output as json
+
+  --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
+
+EXAMPLE
+  $ sfdx custommetadata:convert --objname ConfigObject__c --visibility Public -u myOrg@org.com
+     Congrats! Created a ConfigObject__mdt type with 32 records!
+```
+
+_See code: [src/commands/custommetadata/convert.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src/commands/custommetadata/convert.ts)_
 
 ## `custommetadata custommetadata:record:create`
 
@@ -84,12 +113,12 @@ OPTIONS
 
 EXAMPLES
   $ sfdx custommetadata:type:create --devname MyCMT 
-     Created custom metadata type with developer name "MyCMT", label "MyCMT", plural label "MyCMT", and visibility 
+       Created custom metadata type with developer name "MyCMT", label "MyCMT", plural label "MyCMT", and visibility 
   "Public".
-  
+    
   $ sfdx custommetadata:type:create --devname MyCMT --label "Custom Type" --plurallabel "Custom Types" --visibility 
   Protected
-     Created custom metadata type with developer name "MyCMT", label "Custom Type", plural label "My Custom Metadata 
+       Created custom metadata type with developer name "MyCMT", label "Custom Type", plural label "My Custom Metadata 
   Type", and visibility "Protected".
 ```
 
@@ -104,8 +133,6 @@ USAGE
   $ custommetadata hello:org [FILE]
 
 OPTIONS
-  -f, --force                                      example boolean flag
-  -n, --name=name                                  name to print
   -u, --targetusername=targetusername              username or alias for the target org; overrides default target org
   -v, --targetdevhubusername=targetdevhubusername  username or alias for the dev hub org; overrides default dev hub org
   --apiversion=apiversion                          override the api version used for api requests made by this command

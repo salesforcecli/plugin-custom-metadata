@@ -23,11 +23,11 @@ export default class Org extends SfdxCommand {
 
   public static args = [{name: 'file'}];
 
-  protected static flagsConfig = {
-    // flag with a value (-n, --name=VALUE)
-    name: flags.string({char: 'n', description: messages.getMessage('nameFlagDescription')}),
-    force: flags.boolean({char: 'f', description: messages.getMessage('forceFlagDescription')})
-  };
+  // protected static flagsConfig2 = {
+  //   // flag with a value (-n, --name=VALUE)
+  //   name: flags.string({char: 'n', description: messages.getMessage('nameFlagDescription')}),
+  //   force: flags.boolean({char: 'f', description: messages.getMessage('forceFlagDescription')})
+  // };
 
   // Comment this out if your command does not require an org username
   protected static requiresUsername = true;

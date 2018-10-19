@@ -2,6 +2,7 @@ import {core, flags, SfdxCommand} from '@salesforce/command';
 import * as memFs from 'mem-fs';
 import * as editor from 'mem-fs-editor';
 import { JsonMap } from '@salesforce/core';
+import { createRecord } from '../../../lib/helper';
 
 
 // Initialize Messages with the current plugin directory
@@ -61,32 +62,10 @@ export default class Create extends SfdxCommand {
             typename = typename.substring(0, typename.indexOf('__mdt'));
         }
 
-        let newRecordContent = 
-`<?xml version="1.0" encoding="UTF-8"?>
-<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <label>${label}</label>
-    <protected>${protection}</protected>
-`;
-        
-        if (Object.keys(this.varargs).length > 0) {
-            newRecordContent += Create.buildCustomFieldXml(this.varargs);
-        }
-        //TODO values
-        // <values>
-        //     <field>MyCustomField__c</field>
-        //     <value xsi:type="xsd:string">A value in a custom field</value>
-        // </values>
-
-        newRecordContent += 
-`</CustomMetadata>
-`;
-
         var store = memFs.create();
         var fs = editor.create(store);
 
-        const outputFilePath = `force-app/main/default/customMetadata/${typename}.${recname}.md-meta.xml`;
-
-        fs.write(outputFilePath, newRecordContent);
+        createRecord(fs, typename, recname, label, protection, this.varargs);
         fs.commit(() => {}); //pass in an empty callback or else it freaks out
 
         let outputString = `Created custom metadata record of the type "${typename}" with record developer name "${recname}", label "${label}", and protected "${protection}".`;
@@ -94,25 +73,12 @@ export default class Create extends SfdxCommand {
 
         // Return an object to be displayed with --json
         return {
-        typename: typename,
-        recname: recname,
-        label: label,
-        visibility: protection
+            typename: typename,
+            recname: recname,
+            label: label,
+            visibility: protection
         };
 
-    }
-
-    static buildCustomFieldXml(map: Object) {
-        let ret = '';
-        for (var key in map) {
-        ret += 
-`<values>
-    <field>${key}</field>
-    <value xsi:type="xsd:string">${map[key]}</value>
-</values>
-`;
-        }
-        return ret;
     }
 
 }
