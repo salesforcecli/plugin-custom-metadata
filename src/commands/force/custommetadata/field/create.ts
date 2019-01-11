@@ -2,7 +2,7 @@ import {core, flags, SfdxCommand} from '@salesforce/command';
 import * as memFs from 'mem-fs';
 import * as editor from 'mem-fs-editor';
 import { JsonMap } from '@salesforce/core';
-import { createRecord } from '../../../lib/helper';
+import { createField } from '../../../lib/helpers/helper';
 
 
 // Initialize Messages with the current plugin directory
@@ -10,7 +10,7 @@ core.Messages.importMessagesDirectory(__dirname);
 
 // Load the specific messages for this file. Messages from @salesforce/command, @salesforce/core,
 // or any library that is using the messages framework can also be loaded this way.
-const messages = core.Messages.loadMessages('custommetadata', 'createRecord');
+const messages = core.Messages.loadMessages('custommetadata', 'createField');
 
 export default class Create extends SfdxCommand {
 
@@ -32,7 +32,8 @@ export default class Create extends SfdxCommand {
         typename: flags.string({char: 't', description: messages.getMessage('typenameFlagDescription')}),
         recname: flags.string({char: 'd', description: messages.getMessage('recordNameFlagDescription')}),
         label: flags.string({char: 'l', description: messages.getMessage('labelFlagDescription')}),
-        protection: flags.string({char: 'p', description: messages.getMessage('protectedFlagDescription')})
+        protection: flags.string({char: 'p', description: messages.getMessage('protectedFlagDescription')}),
+        sample: flags.string({ char: 'q',description: 'Sample'})
     };
 
     static varargs = {
@@ -62,15 +63,7 @@ export default class Create extends SfdxCommand {
             typename = typename.substring(0, typename.indexOf('__mdt'));
         }
 
-        var store = memFs.create();
-        var fs = editor.create(store);
-
-        createRecord(fs, typename, recname, label, protection, this.varargs);
-        fs.commit(() => {}); //pass in an empty callback or else it freaks out
-
-        let outputString = `Created custom metadata record of the type "${typename}" with record developer name "${recname}", label "${label}", and protected "${protection}".`;
-        this.ux.log(outputString);
-
+        
         // Return an object to be displayed with --json
         return {
             typename: typename,

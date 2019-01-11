@@ -13,10 +13,25 @@ Tools for working with custom metadata types and their records.
 [![License](https://img.shields.io/npm/l/custommetadata.svg)](https://github.com/carolyng/custommetadata/blob/master/package.json)
 
 <!-- toc -->
+* [Debugging your plugin
+](#debugging-your-plugin)
+<!-- tocstop -->
 * [Debugging your plugin](#debugging-your-plugin)
 <!-- tocstop -->
 <!-- install -->
 <!-- usage -->
+```sh-session
+$ npm install -g custommetadata
+$ custommetadata COMMAND
+running command...
+$ custommetadata (-v|--version|version)
+custommetadata/0.0.0 win32-x64 node-v10.14.2
+$ custommetadata --help [COMMAND]
+USAGE
+  $ custommetadata COMMAND
+...
+```
+<!-- usagestop -->
 ```sh-session
 $ npm install -g custommetadata
 $ custommetadata COMMAND
@@ -30,6 +45,127 @@ USAGE
 ```
 <!-- usagestop -->
 <!-- commands -->
+* [`custommetadata force:custommetadata:convert [FILE]`](#custommetadata-custommetadataconvert-file)
+* [`custommetadata force:custommetadata:record:create`](#custommetadata-custommetadatarecordcreate)
+* [`custommetadata force:custommetadata:type:create [FILE]`](#custommetadata-custommetadatatypecreate-file)
+* [`custommetadata force:custommetadata:field:create [FILE]`](#custommetadata-custommetadatafieldcreate-file)
+* [`custommetadata hello:org [FILE]`](#custommetadata-helloorg-file)
+
+## `custommetadata custommetadata:convert [FILE]`
+
+Converts a custom object and all its records to an equivalent custom metadata type
+
+```
+USAGE
+  $ custommetadata custommetadata:convert [FILE]
+
+OPTIONS
+  -n, --objname=objname                           DeveloperName of the object to create a type for
+  -u, --targetusername=targetusername             username or alias for the target org; overrides default target org
+
+  -v, --visibility=visibility                     Visibility for the type. Valid values are 'Public' and 'Protected'. If
+                                                  blank, uses 'Public'
+
+  --apiversion=apiversion                         override the api version used for api requests made by this command
+
+  --json                                          format output as json
+
+  --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
+
+EXAMPLE
+  $ sfdx custommetadata:convert --objname ConfigObject__c --visibility Public -u myOrg@org.com
+     Congrats! Created a ConfigObject__mdt type with 32 records!
+```
+
+_See code: [src\commands\custommetadata\convert.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src\commands\custommetadata\convert.ts)_
+
+## `custommetadata custommetadata:record:create`
+
+Creates a new record for a given custom metadata type in the current project
+
+```
+USAGE
+  $ custommetadata custommetadata:record:create
+
+OPTIONS
+  -d, --recname=recname                           DeveloperName of the new record
+  -l, --label=label                               Label of the new record
+  -p, --protection=protection                     Visibility for the record. If blank, uses false
+  -t, --typename=typename                         DeveloperName of the type to create a record for
+  --json                                          format output as json
+  --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
+
+EXAMPLES
+  $ sfdx custommetadata:record:create --typename MyCMT --recname MyRecord 
+       Created custom metadata record of the type "MyCMT" with record developer name "MyRecord", label "MyRecord", and 
+  visibility "Public".
+    
+  $ sfdx custommetadata:record:create --typename MyCMT --recname MyRecord --label "My Record" --protected true
+       Created custom metadata record of the type "MyCMT" with record developer name "MyRecord", label "MyRecord", and 
+  visibility "Protected".
+```
+
+_See code: [src\commands\custommetadata\record\create.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src\commands\custommetadata\record\create.ts)_
+
+## `custommetadata custommetadata:type:create [FILE]`
+
+Creates a new custom metadata type in the current project
+
+```
+USAGE
+  $ custommetadata custommetadata:type:create [FILE]
+
+OPTIONS
+  -d, --devname=devname                           DeveloperName for the type
+  -l, --label=label                               MasterLabel for the type
+  -s, --plurallabel=plurallabel                   Plural label for the type. If blank, uses label
+
+  -v, --visibility=visibility                     Visibility for the type. Valid values are 'Public' and 'Protected'. If
+                                                  blank, uses 'Public'
+
+  --json                                          format output as json
+
+  --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
+
+EXAMPLES
+  $ sfdx custommetadata:type:create --devname MyCMT 
+       Created custom metadata type with developer name "MyCMT", label "MyCMT", plural label "MyCMT", and visibility 
+  "Public".
+    
+  $ sfdx custommetadata:type:create --devname MyCMT --label "Custom Type" --plurallabel "Custom Types" --visibility 
+  Protected
+       Created custom metadata type with developer name "MyCMT", label "Custom Type", plural label "My Custom Metadata 
+  Type", and visibility "Protected".
+```
+
+_See code: [src\commands\custommetadata\type\create.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src\commands\custommetadata\type\create.ts)_
+
+## `custommetadata hello:org [FILE]`
+
+Prints a greeting and your org id(s)!
+
+```
+USAGE
+  $ custommetadata hello:org [FILE]
+
+OPTIONS
+  -u, --targetusername=targetusername              username or alias for the target org; overrides default target org
+  -v, --targetdevhubusername=targetdevhubusername  username or alias for the dev hub org; overrides default dev hub org
+  --apiversion=apiversion                          override the api version used for api requests made by this command
+  --json                                           format output as json
+  --loglevel=(trace|debug|info|warn|error|fatal)   logging level for this command invocation
+
+EXAMPLES
+  $ sfdx hello:org --targetusername myOrg@example.com --targetdevhubusername devhub@org.com
+     Hello world! This is org: MyOrg and I will be around until Tue Mar 20 2018!
+     My hub org id is: 00Dxx000000001234
+  
+  $ sfdx hello:org --name myname --targetusername myOrg@example.com
+     Hello myname! This is org: MyOrg and I will be around until Tue Mar 20 2018!
+```
+
+_See code: [src\commands\hello\org.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src\commands\hello\org.ts)_
+<!-- commandsstop -->
 * [`custommetadata custommetadata:convert [FILE]`](#custommetadata-custommetadataconvert-file)
 * [`custommetadata custommetadata:record:create`](#custommetadata-custommetadatarecordcreate)
 * [`custommetadata custommetadata:type:create [FILE]`](#custommetadata-custommetadatatypecreate-file)
@@ -150,6 +286,53 @@ EXAMPLES
 
 _See code: [src/commands/hello/org.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src/commands/hello/org.ts)_
 <!-- commandsstop -->
+
+# File structure
+```
+    ├───src
+    │   │   index.ts
+    │   │
+    │   ├───commands
+    │   │   ├───force
+    │   │   │   └───custommetadata
+    │   │   │       │   convert.ts
+    │   │   │       │
+    │   │   │       ├───field
+    │   │   │       │       create.ts
+    │   │   │       │
+    │   │   │       ├───record
+    │   │   │       │       create.ts
+    │   │   │       │
+    │   │   │       └───type
+    │   │   │               create.ts
+    │   │   │
+    │   │   └───hello
+    │   │           org.ts
+    │   │
+    │   └───lib
+    │       ├───core
+    │       ├───helpers
+    │       │       helper.ts
+    │       │
+    │       └───templates
+    └───test
+        │   mocha.opts
+        │   tsconfig.json
+        │
+        ├───commands
+        │   └───hello
+        │           org.test.ts
+        │
+        └───helpers
+                init.js
+```
+
+# Running tests
+```
+Navigate to cmtPlugin/force
+$npm test
+```
+
 <!-- debugging-your-plugin -->
 # Debugging your plugin
 We recommend using the Visual Studio Code (VS Code) IDE for your plugin development. Included in the `.vscode` directory of this plugin is a `launch.json` config file, which allows you to attach a debugger to the node process when running your commands.

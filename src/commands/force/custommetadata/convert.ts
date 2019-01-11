@@ -1,5 +1,5 @@
 import {core, flags, SfdxCommand} from '@salesforce/command';
-import { createTypeFile, createRecord } from '../../lib/helper';
+import { createTypeFile, createRecord } from '../../lib/helpers/helper';
 import * as memFs from 'mem-fs';
 import * as editor from 'mem-fs-editor';
 

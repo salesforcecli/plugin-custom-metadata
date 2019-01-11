@@ -1,7 +1,7 @@
 import {core, flags, SfdxCommand} from '@salesforce/command';
 import * as memFs from 'mem-fs';
 import * as editor from 'mem-fs-editor';
-import { createTypeFile } from '../../../lib/helper';
+import { createTypeFile } from '../../../lib/helpers/helper';
 
 // Initialize Messages with the current plugin directory
 core.Messages.importMessagesDirectory(__dirname);

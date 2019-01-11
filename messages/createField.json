@@ -1,0 +1,8 @@
+{
+    "commandDescription": "Creates a new record for a given custom metadata type in the current project",
+    "typenameFlagDescription": "DeveloperName of the type to create a record for",
+    "recordNameFlagDescription": "DeveloperName of the new record",
+    "labelFlagDescription": "Label of the new record",
+    "protectedFlagDescription": "Visibility for the record. If blank, uses false",
+    "errorInvalidCustomField": "Custom fields must end in __c."
+}
