@@ -16,7 +16,7 @@ Tools for working with custom metadata types and their records.
 * [Debugging your plugin
 ](#debugging-your-plugin)
 <!-- tocstop -->
-* [Debugging your plugin](#debugging-your-plugin)
+
 <!-- tocstop -->
 <!-- install -->
 <!-- usage -->
@@ -44,6 +44,60 @@ USAGE
 ...
 ```
 <!-- usagestop -->
+
+# File structure
+```
+    ├───src
+    │   │   index.ts
+    │   │
+    │   ├───commands
+    │   │   ├───force
+    │   │   │   └───custommetadata
+    │   │   │       │   convert.ts
+    │   │   │       │
+    │   │   │       ├───field
+    │   │   │       │       create.ts
+    │   │   │       │
+    │   │   │       ├───record
+    │   │   │       │       create.ts
+    │   │   │       │
+    │   │   │       └───type
+    │   │   │               create.ts
+    │   │   │
+    │   │   └───hello
+    │   │           org.ts
+    │   │
+    │   └───lib
+    │       ├───core
+    │       ├───helpers
+    │       │       helper.ts
+    │       │
+    │       └───templates
+    └───test
+        │   mocha.opts
+        │   tsconfig.json
+        │
+        ├───commands
+        │   └───hello
+        │           org.test.ts
+        │
+        └───helpers
+                init.js
+```
+
+# Running tests
+
+## Testing framework
+
+The Mocha framework is used to create unit tests for cli commands. Each module should be thoroughly tested.
+
+_documentation: [Mocha](https://mochajs.org/#getting-started)_
+
+
+```
+Navigate to cmtPlugin/force
+$npm test
+```
 <!-- commands -->
 * [`custommetadata force:custommetadata:convert [FILE]`](#custommetadata-custommetadataconvert-file)
 * [`custommetadata force:custommetadata:record:create`](#custommetadata-custommetadatarecordcreate)
@@ -286,60 +340,6 @@ EXAMPLES
 
 _See code: [src/commands/hello/org.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src/commands/hello/org.ts)_
 <!-- commandsstop -->
-
-# File structure
-```
-    ├───src
-    │   │   index.ts
-    │   │
-    │   ├───commands
-    │   │   ├───force
-    │   │   │   └───custommetadata
-    │   │   │       │   convert.ts
-    │   │   │       │
-    │   │   │       ├───field
-    │   │   │       │       create.ts
-    │   │   │       │
-    │   │   │       ├───record
-    │   │   │       │       create.ts
-    │   │   │       │
-    │   │   │       └───type
-    │   │   │               create.ts
-    │   │   │
-    │   │   └───hello
-    │   │           org.ts
-    │   │
-    │   └───lib
-    │       ├───core
-    │       ├───helpers
-    │       │       helper.ts
-    │       │
-    │       └───templates
-    └───test
-        │   mocha.opts
-        │   tsconfig.json
-        │
-        ├───commands
-        │   └───hello
-        │           org.test.ts
-        │
-        └───helpers
-                init.js
-```
-
-# Running tests
-
-## Testing framework
-
-The Mocha framework is used to create unit tests for cli commands. Each module should be thoroughly tested.
-
-_documentation: [Mocha](https://mochajs.org/#getting-started)_
-
-
-```
-Navigate to cmtPlugin/force
-$npm test
-```
 
 <!-- debugging-your-plugin -->
 # Debugging your plugin
