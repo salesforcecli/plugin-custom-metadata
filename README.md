@@ -332,6 +332,7 @@ _See code: [src/commands/hello/org.ts](https://github.com/cgrabill/sfdx-customme
 ## Testing framework
 
 The Mocha framework is used to create unit tests for cli commands. Each module should be thoroughly tested.
+
 _documentation: [Mocha](https://mochajs.org/#getting-started)_
 
 
