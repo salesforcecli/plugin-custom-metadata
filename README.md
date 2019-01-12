@@ -22,7 +22,7 @@ $ npm install -g custommetadata
 $ custommetadata COMMAND
 running command...
 $ custommetadata (-v|--version|version)
-custommetadata/0.0.0 darwin-x64 node-v8.9.4
+custommetadata/0.0.0 darwin-x64 node-v9.5.0
 $ custommetadata --help [COMMAND]
 USAGE
   $ custommetadata COMMAND
@@ -80,7 +80,7 @@ OPTIONS
   --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
 
 EXAMPLES
-  $ sfdx custommetadata:record:create --typename MyCMT --recname MyRecord 
+  $ sfdx custommetadata:record:create --typename MyCMT --recname MyRecord
        Created custom metadata record of the type "MyCMT" with record developer name "MyRecord", label "MyRecord", and 
   visibility "Public".
     
@@ -112,7 +112,7 @@ OPTIONS
   --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
 
 EXAMPLES
-  $ sfdx custommetadata:type:create --devname MyCMT 
+  $ sfdx custommetadata:type:create --devname MyCMT
        Created custom metadata type with developer name "MyCMT", label "MyCMT", plural label "MyCMT", and visibility 
   "Public".
     

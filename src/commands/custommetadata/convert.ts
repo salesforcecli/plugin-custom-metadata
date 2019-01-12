@@ -1,7 +1,5 @@
 import {core, flags, SfdxCommand} from '@salesforce/command';
-import { createTypeFile, createRecord } from '../../lib/helper';
-import * as memFs from 'mem-fs';
-import * as editor from 'mem-fs-editor';
+import { createRecord, createTypeFile } from '../../lib/helper';
 
 // Initialize Messages with the current plugin directory
 core.Messages.importMessagesDirectory(__dirname);
@@ -54,10 +52,6 @@ export default class Convert extends SfdxCommand {
       throw new core.SfdxError(messages.getMessage('errorNoRecResults', [objname]));
     }
 
-    //create a type for this obj!
-    var store = memFs.create();
-    var fs = editor.create(store);
-
     let devName;
     if (objname.endsWith('__c')) {
         devName = objname.substring(0, objname.indexOf('__c')) + 'Type';
@@ -66,44 +60,40 @@ export default class Convert extends SfdxCommand {
     }
     const label = devName;
     const plurallabel = devName;
-    
-    createTypeFile(fs, devName, label, plurallabel, visibility);
 
-    //now let's create the records!
-    for (var rec of result.records) {
-        let recName = this.getCleanRecName(rec.Name);
+    createTypeFile(core.fs, devName, label, plurallabel, visibility);
+
+    // now let's create the records!
+    for (const rec of result.records) {
+        const recName = this.getCleanRecName(rec.Name);
         let recLabel = rec.Name;
         if (recLabel.length > 40) {
             recLabel = recLabel.substring(0,40);
         }
-        createRecord(fs, devName, recName, recLabel, false, {});
+        createRecord(core.fs, devName, recName, recLabel, false, {});
     }
-
-    fs.commit(() => {}); //pass in an empty callback or else it freaks out
-    
     this.ux.log(`Congrats! Created a ${devName}__mdt type with ${result.records.length} records!`);
-    
     return {  };
   }
 
-  getCleanRecName(recName:String) {
-    let charArr = recName.split('');
-    //replace special characters
+  private getCleanRecName(recName: string) {
+    const charArr = recName.split('');
+    // replace special characters
     let cleanName = '';
-    for (var letter of charArr) {
+    for (let letter of charArr) {
         if (!(letter >= 'a' && letter <= 'z') && !(letter >= 'A' && letter <= 'Z')) {
             letter = '_';
         }
-        //now only tack that letter on the end if it won't create consecutive underscores
-        if (letter != '_' || !cleanName.endsWith('_')) {
+        // now only tack that letter on the end if it won't create consecutive underscores
+        if (letter !== '_' || !cleanName.endsWith('_')) {
             cleanName += letter;
         }
     }
-    //if the last letter is an underscore, rip that sucker clean off
+    // if the last letter is an underscore, rip that sucker clean off
     if (cleanName.endsWith('_')) {
         cleanName = cleanName.substring(0, cleanName.length - 1);
     }
-    //if the name is too long, just truncate it
+    // if the name is too long, just truncate it
     if (cleanName.length > 40) {
         cleanName = cleanName.substring(0, 40);
     }
