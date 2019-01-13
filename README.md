@@ -22,7 +22,7 @@ $ npm install -g custommetadata
 $ custommetadata COMMAND
 running command...
 $ custommetadata (-v|--version|version)
-custommetadata/0.0.0 darwin-x64 node-v9.5.0
+custommetadata/0.0.0 darwin-x64 node-v8.9.4
 $ custommetadata --help [COMMAND]
 USAGE
   $ custommetadata COMMAND

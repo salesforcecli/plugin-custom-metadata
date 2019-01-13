@@ -121,7 +121,7 @@
     debug "^4.1.0"
     tslib "^1.9.3"
 
-"@oclif/dev-cli@1":
+"@oclif/dev-cli@^1":
   version "1.21.0"
   resolved "https://registry.yarnpkg.com/@oclif/dev-cli/-/dev-cli-1.21.0.tgz#679fbf42b44129036a26b6b88ee867a6aaee5d87"
   integrity sha512-Hgxzcn0bCFvY1y8CDy5ic0/5iEPZJwe4/xDNZ5/+qJiNQ7ShW0tsStzOjfgufGe7jwAPZQenejOgx1EPr4bV1w==
@@ -189,7 +189,7 @@
   dependencies:
     fancy-test "^1.4.1"
 
-"@salesforce/command@1.2.0":
+"@salesforce/command@^1.1.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@salesforce/command/-/command-1.2.0.tgz#1bfe9b35095a86861aa240d55a9bf712b810ac90"
   integrity sha512-OVJTLTB1J2DU7BJP8A76fmAvEWl8tKQna5kkEGInIMwXc1vqUCDemxUYTDgircRBulst4Coc/BOvSw7kFXeuaw==
@@ -248,7 +248,7 @@
     sinon "5.0.7"
     tslib "^1.9.3"
 
-"@salesforce/ts-types@^1.0.0", "@salesforce/ts-types@^1.1.0":
+"@salesforce/ts-types@^1.0.0", "@salesforce/ts-types@^1.0.1", "@salesforce/ts-types@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@salesforce/ts-types/-/ts-types-1.1.0.tgz#54a7c6e43b9ce14340cdf39a96bd76db7e1ca665"
   integrity sha512-V0fCnQCo1Y8XxxeABGYGpJfAQWwdd0zvHz1KFQsd5W7VZN2ip1GwjbilgwDfp2vxkfRrGiwMOgV35GHabMaBwA==
@@ -335,9 +335,9 @@
   integrity sha512-cjmJQLx2B5Hp9SzO7rdSivipo3kBqRqeYkTW17nLST1tn5YLWBjTdnzdmeTJXA1+KrrBLsEuvKQ0fUPGrfazQg==
 
 ajv@^6.5.5:
-  version "6.6.2"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.6.2.tgz#caceccf474bf3fc3ce3b147443711a24063cc30d"
-  integrity sha512-FBHEW6Jf5TB9MGBgUUA9XHkTbjXYfAUjY43ACMfmdMRHniyoMHjHjzD50OK8LGDWQwp4rWEsIq5kEqq7rvIM1g==
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.7.0.tgz#e3ce7bb372d6577bb1839f1dfdfcbf5ad2948d96"
+  integrity sha512-RZXPviBTtfmtka9n9sy1N5M5b82CbxWIR6HIis4s3WQTXDJamc/0gpCWNGz6EWdWp4DOfjzJfhz/AS9zVPjjWg==
   dependencies:
     fast-deep-equal "^2.0.1"
     fast-json-stable-stringify "^2.0.0"
@@ -3304,10 +3304,15 @@ type-detect@4.0.8, type-detect@^4.0.0, type-detect@^4.0.5, type-detect@^4.0.8:
   resolved "https://registry.yarnpkg.com/type-detect/-/type-detect-4.0.8.tgz#7646fb5f18871cfbb7749e69bd39a6388eb7450c"
   integrity sha512-0fr/mIH1dlO+x7TlcMy+bIDqKPsw/70tVyeHW787goQjhmqaZe10uwLujubK9q9Lg6Fiho1KUKDYz0Z7k7g5/g==
 
-typescript@3.1, typescript@3.1.6:
+typescript@3.1.6:
   version "3.1.6"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.1.6.tgz#b6543a83cfc8c2befb3f4c8fba6896f5b0c9be68"
   integrity sha512-tDMYfVtvpb96msS1lDX9MEdHrW4yOuZ4Kdc4Him9oU796XldPYF/t2+uKoX0BBa0hXXwDlqYQbXY5Rzjzc5hBA==
+
+typescript@^3.0:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.2.2.tgz#fe8101c46aa123f8353523ebdcf5730c2ae493e5"
+  integrity sha512-VCj5UiSyHBjwfYacmDuc/NOk4QQixbE+Wn7MFJuS0nRuPQbof132Pw4u53dm264O8LPc2MVsc7RJNml5szurkg==
 
 uglify-js@^3.1.4:
   version "3.4.9"

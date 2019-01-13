@@ -304,6 +304,53 @@
         "tslint": "^5",
         "tslint-microsoft-contrib": "^5",
         "typescript": "3.1.6"
+      },
+      "dependencies": {
+        "tslint": {
+          "version": "5.12.1",
+          "dev": true,
+          "requires": {
+            "babel-code-frame": "^6.22.0",
+            "builtin-modules": "^1.1.1",
+            "chalk": "^2.3.0",
+            "commander": "^2.12.1",
+            "diff": "^3.2.0",
+            "glob": "^7.1.1",
+            "js-yaml": "^3.7.0",
+            "minimatch": "^3.0.4",
+            "resolve": "^1.3.2",
+            "semver": "^5.3.0",
+            "tslib": "^1.8.0",
+            "tsutils": "^2.27.2"
+          }
+        },
+        "tslint-microsoft-contrib": {
+          "version": "5.2.1",
+          "dev": true,
+          "requires": {
+            "tsutils": "^2.27.2 <2.29.0"
+          },
+          "dependencies": {
+            "tsutils": {
+              "version": "2.28.0",
+              "dev": true,
+              "requires": {
+                "tslib": "^1.8.1"
+              }
+            }
+          }
+        },
+        "tsutils": {
+          "version": "2.29.0",
+          "dev": true,
+          "requires": {
+            "tslib": "^1.8.1"
+          }
+        },
+        "typescript": {
+          "version": "3.1.6",
+          "dev": true
+        }
       }
     },
     "@salesforce/kit": {
@@ -394,7 +441,7 @@
       "version": "7.0.3"
     },
     "ajv": {
-      "version": "6.6.2",
+      "version": "6.7.0",
       "requires": {
         "fast-deep-equal": "^2.0.1",
         "fast-json-stable-stringify": "^2.0.0",
@@ -4280,47 +4327,6 @@
     "tslib": {
       "version": "1.9.3"
     },
-    "tslint": {
-      "version": "5.12.1",
-      "dev": true,
-      "requires": {
-        "babel-code-frame": "^6.22.0",
-        "builtin-modules": "^1.1.1",
-        "chalk": "^2.3.0",
-        "commander": "^2.12.1",
-        "diff": "^3.2.0",
-        "glob": "^7.1.1",
-        "js-yaml": "^3.7.0",
-        "minimatch": "^3.0.4",
-        "resolve": "^1.3.2",
-        "semver": "^5.3.0",
-        "tslib": "^1.8.0",
-        "tsutils": "^2.27.2"
-      }
-    },
-    "tslint-microsoft-contrib": {
-      "version": "5.2.1",
-      "dev": true,
-      "requires": {
-        "tsutils": "^2.27.2 <2.29.0"
-      },
-      "dependencies": {
-        "tsutils": {
-          "version": "2.28.0",
-          "dev": true,
-          "requires": {
-            "tslib": "^1.8.1"
-          }
-        }
-      }
-    },
-    "tsutils": {
-      "version": "2.29.0",
-      "dev": true,
-      "requires": {
-        "tslib": "^1.8.1"
-      }
-    },
     "tunnel-agent": {
       "version": "0.6.0",
       "requires": {
@@ -4334,7 +4340,7 @@
       "version": "4.0.8"
     },
     "typescript": {
-      "version": "3.1.6",
+      "version": "3.2.2",
       "dev": true
     },
     "uglify-js": {
