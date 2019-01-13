@@ -1,4 +1,5 @@
 import {core, flags, SfdxCommand} from '@salesforce/command';
+import {AnyJson} from '@salesforce/ts-types';
 import { createTypeFile } from '../../../lib/helper';
 
 // Initialize Messages with the current plugin directory
@@ -33,7 +34,7 @@ export default class Create extends SfdxCommand {
     // Set this to true if your command requires a project workspace; 'requiresProject' is false by default
     protected static requiresProject = true;
 
-    public async run(): Promise<core.AnyJson> {
+    public async run(): Promise<AnyJson> {
         const devname = this.flags.devname; // this should become the new file name
         const label = this.flags.label || this.flags.devname;
         const plurallabel = this.flags.plurallabel || label;

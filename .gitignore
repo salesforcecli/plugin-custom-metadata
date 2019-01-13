@@ -6,3 +6,8 @@
 /package-lock.json
 /tmp
 node_modules
+.DS_Store
+.sfdx
+.project
+.salesforce
+.settings

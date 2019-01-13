@@ -1,4 +1,5 @@
 import {core, flags, SfdxCommand} from '@salesforce/command';
+import {AnyJson} from '@salesforce/ts-types';
 import { createRecord } from '../../../lib/helper';
 
 // Initialize Messages with the current plugin directory
@@ -47,7 +48,7 @@ export default class Create extends SfdxCommand {
     // Set this to true if your command requires a project workspace; 'requiresProject' is false by default
     protected static requiresProject = true;
 
-    public async run(): Promise<core.AnyJson> {
+    public async run(): Promise<AnyJson> {
         let typename = this.flags.typename;
         const recname = this.flags.recname;
         const label = this.flags.label || this.flags.recname;
