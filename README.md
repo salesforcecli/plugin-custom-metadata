@@ -116,7 +116,7 @@ USAGE
   $ custommetadata force:cmdt:create [FILE]
 
 OPTIONS
-  -d, --devname=devname                           DeveloperName for the type
+  -d, --devname=devname                           (required) DeveloperName for the type
   -l, --label=label                               MasterLabel for the type
   -s, --plurallabel=plurallabel                   Plural label for the type. If blank, uses label
 
