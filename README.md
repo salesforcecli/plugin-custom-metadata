@@ -76,6 +76,7 @@ USAGE
 <!-- commands -->
 * [`custommetadata force:cmdt:convert [FILE]`](#custommetadata-forcecmdtconvert-file)
 * [`custommetadata force:cmdt:create [FILE]`](#custommetadata-forcecmdtcreate-file)
+* [`custommetadata force:cmdt:field:create [FILE]`](#custommetadata-forcecmdtfieldcreate-file)
 * [`custommetadata force:cmdt:record:create`](#custommetadata-forcecmdtrecordcreate)
 * [`custommetadata hello:org [FILE]`](#custommetadata-helloorg-file)
 
@@ -139,6 +140,35 @@ EXAMPLES
 ```
 
 _See code: [src\commands\force\cmdt\create.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src\commands\force\cmdt\create.ts)_
+
+## `custommetadata force:cmdt:field:create [FILE]`
+
+Creates a new custom metadata type in the current project
+
+```
+USAGE
+  $ custommetadata force:cmdt:field:create [FILE]
+
+OPTIONS
+  -f, --fieldtype=fieldtype                       (required) MasterLabel for the type
+  -l, --label=label                               Plural label for the type. If blank, uses label
+  -n, --fieldname=fieldname                       (required) DeveloperName for the type
+  -p, --picklistvalues=picklistvalues             Plural label for the type. If blank, uses label
+  --json                                          format output as json
+  --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
+
+EXAMPLES
+  $ sfdx force:cmdt:type:create --devname MyCMT
+       Created custom metadata type with developer name "MyCMT", label "MyCMT", plural label "MyCMT", and visibility 
+  "Public".
+    
+  $ sfdx force:cmdt:type:create --devname MyCMT --label "Custom Type" --plurallabel "Custom Types" --visibility 
+  Protected
+       Created custom metadata type with developer name "MyCMT", label "Custom Type", plural label "My Custom Metadata 
+  Type", and visibility "Protected".
+```
+
+_See code: [src\commands\force\cmdt\field\create.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src\commands\force\cmdt\field\create.ts)_
 
 ## `custommetadata force:cmdt:record:create`
 

@@ -8,6 +8,7 @@
  */
 export async function createTypeFile(fs, devname, label, plurallabel, visibility) {
 
+
     const newTypeContent =
       `<?xml version="1.0" encoding="UTF-8"?>
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
@@ -44,6 +45,11 @@ export function createRecord(fs, typename, recname, label, protection, varargs) 
     const outputFilePath = 'force-app/main/default/customMetadata/${typename}.${recname}.md-meta.xml';
     fs.writeFile(outputFilePath, newRecordContent);
 
+}
+// /fields/{fieldAPI}.field-meta.xml
+export function createField(fs,fieldname, fieldXML){
+    fs.mkdirp('fields');
+    fs.writeFile(`fields/${fieldname}.field-meta.xml`,fieldXML);
 }
 
 function buildCustomFieldXml(map: object) {
