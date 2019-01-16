@@ -41,7 +41,6 @@ export default class Convert extends SfdxCommand {
     // this.org is guaranteed because requiresUsername=true, as opposed to supportsUsername
     const conn = this.org.getConnection();
     const query = `Select Name from ${objname}`;
-
     const metadatautil = new MetdataUtil();
 
     let describeObj = await metadatautil.describe(objname, conn);
