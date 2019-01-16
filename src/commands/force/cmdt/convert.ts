@@ -42,16 +42,13 @@ export default class Convert extends SfdxCommand {
     const conn = this.org.getConnection();
     const query = `Select Name from ${objname}`;
 
-    let metadatautil = new MetdataUtil();
-    metadatautil.describe(objname,conn)
-    .then(res => {
-        console.log(res);
-    });
+    const metadatautil = new MetdataUtil();
 
-    metadatautil.query(objname,conn)
-    .then(res => {
-        console.log(res);
-    });
+    let describeObj = await metadatautil.describe(objname, conn);
+    let fieldObj = await metadatautil.query(objname, conn);
+
+    console.log(describeObj);
+    console.log(fieldObj);
 
     // The type we are querying for
     interface Record {
