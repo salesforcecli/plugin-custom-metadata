@@ -45,8 +45,8 @@ export default class Convert extends SfdxCommand {
     const query = `Select Name from ${objname}`;
     const metadatautil = new MetdataUtil();
 
-    let describeObj = await metadatautil.describe(objname, conn);
-    let fieldObj = await metadatautil.query(objname, conn);
+    let describeObj = await metadatautil.describeObj(objname, conn);
+    let fieldObj = await metadatautil.queryRecords(objname, conn);
 
     console.log(describeObj);
     console.log(fieldObj);
