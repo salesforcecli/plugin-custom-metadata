@@ -1,9 +1,10 @@
 import {core, flags, SfdxCommand} from '@salesforce/command';
 import {AnyJson} from '@salesforce/ts-types';
 import { createRecord } from '../../../lib/helpers/helper';
-
+import { MetdataUtil  } from '../../../lib/helpers/metadatautil';
 import { Templates } from '../../../lib/templates/templates';
 import {  FileWriter } from '../../../lib/helpers/fileWriter';
+
 // Initialize Messages with the current plugin directory
 core.Messages.importMessagesDirectory(__dirname);
 
@@ -42,6 +43,13 @@ export default class Convert extends SfdxCommand {
     // this.org is guaranteed because requiresUsername=true, as opposed to supportsUsername
     const conn = this.org.getConnection();
     const query = `Select Name from ${objname}`;
+    const metadatautil = new MetdataUtil();
+
+    let describeObj = await metadatautil.describe(objname, conn);
+    let fieldObj = await metadatautil.query(objname, conn);
+
+    console.log(describeObj);
+    console.log(fieldObj);
 
     // The type we are querying for
     interface Record {
