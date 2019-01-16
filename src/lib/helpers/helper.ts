@@ -6,19 +6,14 @@
  * @param plurallabel
  * @param visibility
  */
-export async function createTypeFile(fs, devname, label, plurallabel, visibility) {
-
-
-    const newTypeContent =
-      `<?xml version="1.0" encoding="UTF-8"?>
-<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
-    <label>${label}</label>
-    <pluralLabel>${plurallabel}</pluralLabel>
-    <visibility>${visibility}</visibility>
-</CustomObject>`;
-    const outputFilePath = `force-app/main/default/objects/${devname}__mdt/${devname}__mdt.object-meta.xml`;
-    await fs.mkdirp(`force-app/main/default/objects/${devname}__mdt`);
-    await fs.writeFile(outputFilePath, newTypeContent);
+export async function writeTypeFile(fs, devName, objectXML) {
+    // appending __mdt if they did not pass it in. 
+    if ( devName.endsWith('__mdt') === false ) {
+        devName += '__mdt';
+    }
+    const outputFilePath = `${devName}/${devName}.object-meta.xml`;
+    await fs.mkdirp(`${devName}`);
+    await fs.writeFile(outputFilePath, objectXML);
 }
 
 /**
@@ -46,10 +41,22 @@ export function createRecord(fs, typename, recname, label, protection, varargs) 
     fs.writeFile(outputFilePath, newRecordContent);
 
 }
+
+/**
+ * Using the given file system, creates a file representing a new field for the given custom metadata type
+ * @param fs
+ * @param fieldname
+ * @param fieldXML
+ */
 // /fields/{fieldAPI}.field-meta.xml
-export function createField(fs,fieldname, fieldXML){
+export function writeFieldFile(fs,fieldName, fieldXML){
+    // appending __c if its not already there
+    if ( fieldName.endsWith('__c') === false ) {
+        fieldName += '__c';
+    }
+    const outputFilePath =`fields/${fieldName}.field-meta.xml`;
     fs.mkdirp('fields');
-    fs.writeFile(`fields/${fieldname}.field-meta.xml`,fieldXML);
+    fs.writeFile(outputFilePath,fieldXML);
 }
 
 function buildCustomFieldXml(map: object) {

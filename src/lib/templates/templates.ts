@@ -10,7 +10,7 @@ export function createObjectXML( data, visibility ){
 export function createFieldXML( data ) {
     var returnValue = `<?xml version="1.0" encoding="UTF-8"?>
     <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-        <fullName>${data.name}</fullName>
+        <fullName>${data.name.endsWith('__c' ? data.name: data.name + '__c')}</fullName>
         <description>${data.description || ''}</description>
         <externalId>${data.externalId || 'false' }</externalId>
         <fieldManageability>${data.fieldManageability || 'DeveloperControlled'}</fieldManageability>
@@ -23,7 +23,6 @@ export function createFieldXML( data ) {
         returnValue += getScaleTag(data);
         returnValue += getLengthTag(data);
         returnValue += getVisibleLines(data);
-        // <type>${data}</type> TODO: logic to convert all of this. boolean = Checkbox, double = Number, string = Text
     returnValue += '</CustomField>';
     return returnValue;
 }
@@ -82,7 +81,7 @@ function getType( data ){
 
 function getRequiredTag( data ){
     if ( data.type.toLowerCase() === 'email' || data.type.toLowerCase() === 'text'){
-        return `<unique>${data.unique}</unique>
+        return `<unique>${data.unique || false}</unique>
         `;
     }else {
         return '';
@@ -91,7 +90,7 @@ function getRequiredTag( data ){
 
 function getPercisionTag( data ){
     if ( data.type.toLowerCase() === 'percent' || data.type.toLowerCase() === 'number'){
-        return `<precision>${data.precision}</precision>
+        return `<precision>${data.precision || 0}</precision>
         `;
     }else {
         return '';
@@ -100,7 +99,7 @@ function getPercisionTag( data ){
 
 function getScaleTag( data ){
     if ( data.type.toLowerCase() === 'percent' || data.type.toLowerCase() === 'number'){
-        return `<scale>${data.precision}</scale>
+        return `<scale>${data.scale || 0}</scale>
         `;
     }else {
         return '';

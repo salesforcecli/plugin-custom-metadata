@@ -1,6 +1,8 @@
 import {core, flags, SfdxCommand} from '@salesforce/command';
 import {AnyJson} from '@salesforce/ts-types';
-import { createRecord, createTypeFile } from '../../../lib/helpers/helper';
+import { createRecord, writeTypeFile } from '../../../lib/helpers/helper';
+
+import { createObjectXML } from '../../../lib/templates/templates';
 
 // Initialize Messages with the current plugin directory
 core.Messages.importMessagesDirectory(__dirname);
@@ -61,8 +63,8 @@ export default class Convert extends SfdxCommand {
     }
     const label = devName;
     const plurallabel = devName;
-
-    createTypeFile(core.fs, devName, label, plurallabel, visibility);
+    const objectXML = createObjectXML({ label: label, labelPlural: plurallabel}, visibility);
+    writeTypeFile(core.fs, devName, objectXML);
 
     // now let's create the records!
     for (const rec of result.records) {
