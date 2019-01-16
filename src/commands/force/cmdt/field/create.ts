@@ -1,7 +1,7 @@
 import {core, flags, SfdxCommand} from '@salesforce/command';
 import {AnyJson} from '@salesforce/ts-types';
-import { writeFieldFile } from '../../../../lib/helpers/helper';
-import { createFieldXML } from '../../../../lib/templates/templates';
+import { FileWriter } from '../../../../lib/helpers/fileWriter';
+import { Templates } from '../../../../lib/templates/templates';
 // Initialize Messages with the current plugin directory
 core.Messages.importMessagesDirectory(__dirname);
 
@@ -51,9 +51,11 @@ export default class Create extends SfdxCommand {
         const fieldtype = this.flags.fieldtype;
         //const picklistvalues = this.flags.picklistvalues;
         const visibility = this.flags.visibility || 'Public';
-        let fieldXML = createFieldXML({ name: fieldName, type: fieldtype, label: fieldLabel});
+        const templates = new Templates();
+        let fieldXML = templates.createFieldXML({ name: fieldName, type: fieldtype, label: fieldLabel});
         try {
-          await writeFieldFile(core.fs,fieldName, fieldXML);
+            const writer = new FileWriter();
+            await writer.writeFieldFile(core.fs,fieldName, fieldXML);
         } catch (err) {
           this.ux.log(err);
         }

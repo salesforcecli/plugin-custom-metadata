@@ -1,7 +1,7 @@
 import {core, flags, SfdxCommand} from '@salesforce/command';
 import {AnyJson} from '@salesforce/ts-types';
-import {  writeTypeFile } from '../../../lib/helpers/helper';
-import { createObjectXML } from '../../../lib/templates/templates';
+import {  FileWriter } from '../../../lib/helpers/fileWriter';
+import { Templates } from '../../../lib/templates/templates';
 
 // Initialize Messages with the current plugin directory
 core.Messages.importMessagesDirectory(__dirname);
@@ -42,8 +42,10 @@ export default class Create extends SfdxCommand {
         const visibility = this.flags.visibility || 'Public';
         
         try {
-            const objectXML = createObjectXML({ label: label, labelPlural: plurallabel}, visibility);
-            await writeTypeFile(core.fs, devname, objectXML);
+            const templates = new Templates();
+            const objectXML = templates.createObjectXML({ label: label, labelPlural: plurallabel}, visibility);
+            const fileWriter = new FileWriter();
+            await fileWriter.writeTypeFile(core.fs, devname, objectXML);
         } catch (err) {
           this.ux.log(err);
         }
