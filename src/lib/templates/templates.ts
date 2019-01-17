@@ -10,7 +10,8 @@ export class Templates {
         </CustomObject>`;
     }
 
-    public createFieldXML( data ) {
+
+    public createFieldXML( data , defaultToString ) {
         var returnValue = `<?xml version="1.0" encoding="UTF-8"?>
         <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
             <fullName>${data.name.endsWith('__c' ? data.name: data.name + '__c')}</fullName>
@@ -20,7 +21,7 @@ export class Templates {
             <inlineHelpText>${data.inlineHelpText || ''}</inlineHelpText>
             <label>${data.label}</label>
             `;
-            returnValue += this.getType(data);
+            returnValue += this.getType(data, defaultToString);
             returnValue += this.getRequiredTag(data);
             returnValue += this.getPercisionTag(data);
             returnValue += this.getScaleTag(data);
@@ -29,10 +30,11 @@ export class Templates {
         returnValue += '</CustomField>';
         return returnValue;
     }
+    // Note: GEO Location decimal is stored as a and double has a compoundFieldName: 'Decimal_GEo__c',
+    // Other geo location is stored as location
     
-    private getType( data ){
+    private getType( data, defaultToString ){
         let fieldTag = '<type>';
-        data.type
         switch (data.type.toLowerCase()){
             case 'boolean':
                 fieldTag += 'Checkbox';
@@ -42,6 +44,41 @@ export class Templates {
                 break;
             case 'string':
                 fieldTag += 'Text';
+                break;
+            case 'reference':
+                if ( defaultToString ){
+                    fieldTag += 'Text';
+                } else {
+                    throw `Type not found: ${data.type}`; // TODO: update error to tell them that it is not supported and to override
+                }
+                break;
+            case 'currency':
+                if ( defaultToString ){
+                    fieldTag += 'Text';
+                } else {
+                    throw `Type not found: ${data.type}`;
+                }
+                break;
+            case 'encryptedstring':
+                if ( defaultToString ){
+                    fieldTag += 'Text';
+                } else {
+                    throw `Type not found: ${data.type}`;
+                }
+                break;
+            case 'multipicklist':
+                if ( defaultToString ){
+                    fieldTag += 'Text';
+                } else {
+                    throw `Type not found: ${data.type}`;
+                }
+                break;
+            case 'location':
+                if ( defaultToString ){
+                    fieldTag += 'Text';
+                } else {
+                    throw `Type not found: ${data.type}`;
+                }
                 break;
             case 'date':
                 fieldTag += 'Date';
@@ -62,7 +99,15 @@ export class Templates {
                 fieldTag += 'Picklist';
                 break;
             case 'textarea':
-            // NOTE: text area and text area long both come back as textarea
+            // NOTE: text area, rich text area, and text area long both come back as textarea
+                if ( data.htmlFormatted ){ // TODO: do we want this as a text area instead of a string
+                    if ( defaultToString ){
+                        fieldTag += 'Text';
+                    } else {
+                        throw `Type not found: ${data.type}`;
+                    }
+                    break;
+                }
                 if(data.length > 255){
                     fieldTag += 'LongTextArea';
                 } else {
@@ -81,6 +126,25 @@ export class Templates {
         return fieldTag;
     
     }
+
+    public convertInputToFieldType ( input ){
+        let fieldType = input;
+        switch (input.toLowerCase()){
+            case 'checkbox':
+                fieldType = 'boolean';
+                break;
+            case 'number':
+                fieldType = 'double';
+                break;
+            case 'text':
+                fieldType = 'string';
+                break;
+            case 'textarealong':
+                fieldType = 'textArea';
+                break;
+        }
+        return fieldType;
+    }
     
     private getRequiredTag( data ){
         if ( data.type.toLowerCase() === 'email' || data.type.toLowerCase() === 'text'){
@@ -93,7 +157,7 @@ export class Templates {
     
     private getPercisionTag( data ){
         if ( data.type.toLowerCase() === 'percent' || data.type.toLowerCase() === 'number'){
-            return `<precision>${data.precision || 0}</precision>
+            return `<precision>${data.precision || 18}</precision>
             `;
         }else {
             return '';
@@ -113,7 +177,7 @@ export class Templates {
         if ( data.type.toLowerCase() === 'string'){
             return `<length>${data.length || 100}</length>
             `
-        } else if( data.type.toLowerCase() === 'textArea' && data.length > 255){
+        } else if( data.type.toLowerCase() === 'textarea' && data.length > 255){
             return `<length>${data.length || 32768}</length>
             `;
         }else {

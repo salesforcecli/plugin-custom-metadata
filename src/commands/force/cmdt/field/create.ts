@@ -2,6 +2,7 @@ import {core, flags, SfdxCommand} from '@salesforce/command';
 import {AnyJson} from '@salesforce/ts-types';
 import { FileWriter } from '../../../../lib/helpers/fileWriter';
 import { Templates } from '../../../../lib/templates/templates';
+import{ ValidationUtil} from '../../../../lib/helpers/validationUtil';
 // Initialize Messages with the current plugin directory
 core.Messages.importMessagesDirectory(__dirname);
 
@@ -51,16 +52,27 @@ export default class Create extends SfdxCommand {
         const fieldtype = this.flags.fieldtype;
         //const picklistvalues = this.flags.picklistvalues;
         const visibility = this.flags.visibility || 'Public';
-        const templates = new Templates();
-        let fieldXML = templates.createFieldXML({ name: fieldName, type: fieldtype, label: fieldLabel});
+
         try {
+            const validator = new ValidationUtil();
+            if ( !validator.validateAPIName(fieldName) ){
+                throw 'Not a valid field';
+            }
+            const templates = new Templates();   
+            const type = templates.convertInputToFieldType(fieldtype); 
+            let data = { name: fieldName, type: type, label: fieldLabel, length: null};
+            if ( fieldtype.toLowerCase() === 'textarealong' ){
+                data.length = 32768;
+            }
+            let fieldXML = templates.createFieldXML(data, false);
             const writer = new FileWriter();
             await writer.writeFieldFile(core.fs,fieldName, fieldXML);
+            const outputString = `Created custom metadata field called ${fieldName}.`;
+            this.ux.log(outputString);
         } catch (err) {
           this.ux.log(err);
         }
-        const outputString = `Created custom metadata field called ${fieldName}.`;
-        this.ux.log(outputString);
+        
         // Return an object to be displayed with --json
         return {
             fieldName,
