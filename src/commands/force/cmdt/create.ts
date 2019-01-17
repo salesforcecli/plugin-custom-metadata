@@ -15,10 +15,10 @@ export default class Create extends SfdxCommand {
     public static description = messages.getMessage('commandDescription');
 
     public static examples = [
-    `$ sfdx force:cmdt:type:create --devname MyCMT
+    `$ sfdx force:cmdt:create --devname MyCMT
     Created custom metadata type with developer name "MyCMT", label "MyCMT", plural label "MyCMT", and visibility "Public".
     `,
-    `$ sfdx force:cmdt:type:create --devname MyCMT --label "Custom Type" --plurallabel "Custom Types" --visibility Protected
+    `$ sfdx force:cmdt:create --devname MyCMT --label "Custom Type" --plurallabel "Custom Types" --visibility Protected
     Created custom metadata type with developer name "MyCMT", label "Custom Type", plural label "My Custom Metadata Type", and visibility "Protected".
     `
     ];
@@ -26,7 +26,7 @@ export default class Create extends SfdxCommand {
     public static args = [{name: 'file'}];
 
     protected static flagsConfig = {
-        devname: flags.string({char: 'd', required:true, description: messages.getMessage('nameFlagDescription')}), 
+        devname: flags.string({char: 'd', required:true, description: messages.getMessage('nameFlagDescription')}),
         label: flags.string({char: 'l', description: messages.getMessage('labelFlagDescription')}),
         plurallabel: flags.string({char: 's', description: messages.getMessage('plurallabelFlagDescription')}),
         visibility: flags.string({char: 'v', description: messages.getMessage('visibilityFlagDescription')})
@@ -40,7 +40,7 @@ export default class Create extends SfdxCommand {
         const label = this.flags.label || this.flags.devname;
         const plurallabel = this.flags.plurallabel || label;
         const visibility = this.flags.visibility || 'Public';
-        
+
         try {
             const templates = new Templates();
             const objectXML = templates.createObjectXML({ label: label, labelPlural: plurallabel}, visibility);
