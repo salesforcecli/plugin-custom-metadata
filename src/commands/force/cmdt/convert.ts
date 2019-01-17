@@ -26,8 +26,15 @@ export default class Convert extends SfdxCommand {
 
   protected static flagsConfig = {
     // flag with a value (-n, --name=VALUE)
-    objname: flags.string({char: 'n', description: messages.getMessage('objnameFlagDescription')}),
-    visibility: flags.string({char: 'v', description: messages.getMessage('visibilityFlagDescription')})
+    typename: flags.string({char: 'n', description: messages.getMessage('typenameFlagDescription')}),
+    label: flags.string({char: 'l', description: messages.getMessage('labelFlagDescription')}),
+    plurallabel: flags.string({char: 'p', description: messages.getMessage('plurallabelFlagDescription')}),
+    visibility: flags.string({char: 'v', description: messages.getMessage('visibilityFlagDescription')}),
+    sobjectname: flags.string({char: 's', description: messages.getMessage('sobjectnameFlagDescription')}),
+    sourceusername: flags.string({char: 'x', description: messages.getMessage('sourceusernameFlagDescription')}),
+    deploy: flags.string({char: 'd', description: messages.getMessage('deployFlagDescription')}),
+    ignore: flags.string({char: 'i', description: messages.getMessage('ignoreFlagDescription')}),
+    loglevel: flags.string({char: 'l', description: messages.getMessage('loglevelFlagDescription')})
 };
 
   // Comment this out if your command does not require an org username
@@ -37,7 +44,7 @@ export default class Convert extends SfdxCommand {
   protected static requiresProject = true;
 
   public async run(): Promise<AnyJson> {
-    const objname = this.flags.objname;
+    const objname = this.flags.sobjectname;
     const visibility = this.flags.visibility;
 
     // this.org is guaranteed because requiresUsername=true, as opposed to supportsUsername
@@ -47,10 +54,14 @@ export default class Convert extends SfdxCommand {
 
     let describeObj = await metadatautil.describeObj(objname, conn);
     let fieldObj = await metadatautil.queryRecords(objname, conn);
-
+    let describeField = await metadatautil.describeField(objname, 'Name', conn)
+    let describeAllFields = await metadatautil.describeObjFields(objname, conn)
+    let isvalidObjectType = await metadatautil.validCustomSettingType(objname, conn)
     console.log(describeObj);
     console.log(fieldObj);
-
+    console.log(describeField)
+    console.log(describeAllFields)
+    console.log(isvalidObjectType)
     // The type we are querying for
     interface Record {
       Name: string;
