@@ -9,7 +9,7 @@
  */
 export function createRecord(fs, typename, recname, label, protection, varargs) {
     let newRecordContent =
-      `<?xml version="1.0" encoding="UTF-8"?>
+        `<?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <label>${label}</label>
     <protected>${protection}</protected>
@@ -18,19 +18,18 @@ export function createRecord(fs, typename, recname, label, protection, varargs) 
         newRecordContent += buildCustomFieldXml(this.varargs);
     }
     newRecordContent +=
-    `</CustomMetadata>
+        `</CustomMetadata>
         `;
     const outputFilePath = 'force-app/main/default/customMetadata/${typename}.${recname}.md-meta.xml';
     fs.writeFile(outputFilePath, newRecordContent);
 
 }
 
-
 function buildCustomFieldXml(map: object) {
     let ret = '';
-    for (const key in map) {
+    for (const key of Object.keys(map)) {
         ret +=
-    `<values>
+            `<values>
     <field>${key}</field>
     <value xsi:type="xsd:string">${map[key]}</value>
     </values>
