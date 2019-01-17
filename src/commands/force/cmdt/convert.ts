@@ -1,9 +1,9 @@
-import {core, flags, SfdxCommand} from '@salesforce/command';
-import {AnyJson} from '@salesforce/ts-types';
+import { core, flags, SfdxCommand } from '@salesforce/command';
+import { AnyJson } from '@salesforce/ts-types';
+import { FileWriter } from '../../../lib/helpers/fileWriter';
 import { createRecord } from '../../../lib/helpers/helper';
 import { MetdataUtil  } from '../../../lib/helpers/metadatautil';
 import { Templates } from '../../../lib/templates/templates';
-import {  FileWriter } from '../../../lib/helpers/fileWriter';
 
 // Initialize Messages with the current plugin directory
 core.Messages.importMessagesDirectory(__dirname);
@@ -52,16 +52,16 @@ export default class Convert extends SfdxCommand {
     const query = `Select Name from ${objname}`;
     const metadatautil = new MetdataUtil();
 
-    let describeObj = await metadatautil.describeObj(objname, conn);
-    let fieldObj = await metadatautil.queryRecords(objname, conn);
-    let describeField = metadatautil.describeField(describeObj, 'Name');
-    let describeAllFields = metadatautil.describeObjFields(describeObj)
-    let isvalidObjectType = metadatautil.validCustomSettingType(describeObj)
+    const describeObj = await metadatautil.describeObj(objname, conn);
+    const fieldObj = await metadatautil.queryRecords(objname, conn);
+    const describeField = metadatautil.describeField(describeObj, 'Name');
+    const describeAllFields = metadatautil.describeObjFields(describeObj);
+    const isvalidObjectType = metadatautil.validCustomSettingType(describeObj);
     console.log(describeObj);
     console.log(fieldObj);
-    console.log(describeField)
-    console.log(describeAllFields)
-    console.log(isvalidObjectType)
+    console.log(describeField);
+    console.log(describeAllFields);
+    console.log(isvalidObjectType);
     // The type we are querying for
     interface Record {
       Name: string;
@@ -82,18 +82,17 @@ export default class Convert extends SfdxCommand {
     }
     const label = devName;
     const plurallabel = devName;
-    
     const templates = new Templates();
-    const objectXML = templates.createObjectXML({ label: label, labelPlural: plurallabel}, visibility);
+    const objectXML = templates.createObjectXML({label, plurallabel}, visibility);
     const fileWriter = new FileWriter();
-    fileWriter.writeTypeFile(core.fs, devName, objectXML);
+    await fileWriter.writeTypeFile(core.fs, devName, objectXML);
 
     // now let's create the records!
     for (const rec of result.records) {
         const recName = this.getCleanRecName(rec.Name);
         let recLabel = rec.Name;
         if (recLabel.length > 40) {
-            recLabel = recLabel.substring(0,40);
+            recLabel = recLabel.substring(0, 40);
         }
         createRecord(core.fs, devName, recName, recLabel, false, {});
     }

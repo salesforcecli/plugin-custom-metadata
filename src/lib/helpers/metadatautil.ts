@@ -1,5 +1,5 @@
+import { core } from '@salesforce/command';
 import { AnyJson, toAnyJson } from '@salesforce/ts-types';
-import {core} from '@salesforce/command';
 
 export class MetdataUtil {
     /**
@@ -10,7 +10,7 @@ export class MetdataUtil {
      * @returns Promise - JSON representation of the describe object
      */
     public async describeObj(objName: string, conn: core.Connection): Promise<AnyJson> {
-      let result = await conn.describe(objName, (err, meta) => {
+      const result = await conn.describe(objName, (err, meta) => {
         if (err) {
           console.error(err);
           return err;
@@ -30,7 +30,7 @@ export class MetdataUtil {
      * @returns Promise - Array of records in JSON format
      */
     public async queryObject(soqlStr: string, conn: core.Connection): Promise<AnyJson> {
-      let result = await conn.query(soqlStr, {}, (err, meta) => {
+      const result = await conn.query(soqlStr, {}, (err, meta) => {
         if (err) {
           console.error(err);
           return err;
@@ -40,7 +40,7 @@ export class MetdataUtil {
       });
 
       return toAnyJson(result);
-    };
+    }
 
     /**
      * Returns an array of object records
@@ -50,19 +50,11 @@ export class MetdataUtil {
      * @returns Promise - Promise - Array of records in JSON format
      */
     public async queryRecords(objName: string, conn: core.Connection): Promise<AnyJson> {
-      let describeResult = await this.describeObj(objName, conn);
-      let query = await this._getSoqlQuery(describeResult['fields'], objName);
-      let queryResult = await this.queryObject(query, conn);
+      const describeResult = await this.describeObj(objName, conn);
+      const query = await this._getSoqlQuery(describeResult['fields'], objName);
+      const queryResult = await this.queryObject(query, conn);
 
       return toAnyJson(queryResult);
-    };
-
-    private _getSoqlQuery(arr, objName) {
-      let fieldNames = arr.map(field => {
-        return field.name;
-      }).join(',');
-
-      return `SELECT ${fieldNames} FROM ${objName}`;
     }
 
     /**
@@ -73,8 +65,8 @@ export class MetdataUtil {
      * @returns Promise - Promise - record in JSON format
      */
     public describeField(objDescribe: AnyJson, fieldName: string): AnyJson {
-      const fieldsDescribe  = objDescribe['fields']
-      let fieldsDescribeResult
+      const fieldsDescribe  = objDescribe['fields'];
+      let fieldsDescribeResult;
       fieldsDescribe.map(field => {
         if (field.name === fieldName) {
           fieldsDescribeResult = field;
@@ -91,7 +83,7 @@ export class MetdataUtil {
      * @returns Promise - Promise - record in JSON format
      */
     public describeObjFields(objDescribe: AnyJson): AnyJson {
-      const fieldsDescribe  = objDescribe['fields']
+      const fieldsDescribe  = objDescribe['fields'];
 
       return fieldsDescribe;
     }
@@ -104,13 +96,19 @@ export class MetdataUtil {
      * @returns boolean
      */
     public validCustomSettingType(objDescribe: AnyJson): boolean {
-      //const describeObjResult = await this.describeObj(objName, conn);
       const customSetting = objDescribe['customSetting'];
-      const nameField = this.describeField(objDescribe, 'Name')
+      const nameField = this.describeField(objDescribe, 'Name');
       if (customSetting && !nameField['nillable']) {
         return true;
       }
       return false;
     }
-}
 
+    private _getSoqlQuery(arr, objName) {
+      const fieldNames = arr.map(field => {
+        return field.name;
+      }).join(',');
+
+      return `SELECT ${fieldNames} FROM ${objName}`;
+    }
+}
