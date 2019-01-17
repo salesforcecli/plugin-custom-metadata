@@ -68,12 +68,11 @@ export class MetdataUtil {
     /**
      * Returns describe object for the field API name from the Object API name you specify
      *
-     * @param  objName API name of the object to query
+     * @param  objDescribe  describe object JSON
      * @param  fieldName API name of the field to query
-     * @param  conn Current Connection object
      * @returns Promise - Promise - record in JSON format
      */
-    public describeField(objDescribe: AnyJson, fieldName: string): Promise<AnyJson> {
+    public describeField(objDescribe: AnyJson, fieldName: string): AnyJson {
       const fieldsDescribe  = objDescribe['fields']
       let fieldsDescribeResult
       fieldsDescribe.map(field => {
@@ -88,11 +87,10 @@ export class MetdataUtil {
     /**
      * Returns describe object for all fields from the object  API name you specify
      *
-     * @param  objName API name of the object to query
-     * @param  conn Current Connection object
+     * @param  objDescribe object describe JSON
      * @returns Promise - Promise - record in JSON format
      */
-    public describeObjFields(objDescribe: AnyJson): Promise<AnyJson> {
+    public describeObjFields(objDescribe: AnyJson): AnyJson {
       const fieldsDescribe  = objDescribe['fields']
 
       return fieldsDescribe;
@@ -103,9 +101,9 @@ export class MetdataUtil {
      *
      * @param  objName API name of the object to query
      * @param  conn Current Connection object
-     * @returns Promise - Promise - record in JSON format
+     * @returns boolean
      */
-    public validCustomSettingType(objDescribe: AnyJson) {
+    public validCustomSettingType(objDescribe: AnyJson): boolean {
       //const describeObjResult = await this.describeObj(objName, conn);
       const customSetting = objDescribe['customSetting'];
       const nameField = this.describeField(objDescribe, 'Name')
