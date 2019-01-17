@@ -73,17 +73,16 @@ export class MetdataUtil {
      * @param  conn Current Connection object
      * @returns Promise - Promise - record in JSON format
      */
-    public async describeField(objName: string, fieldName: string, conn: core.Connection): Promise<AnyJson> {
-      const describeObjResult = await this.describeObj(objName, conn);
-      const fieldsDescribe  = describeObjResult['fields']
+    public describeField(objDescribe: AnyJson, fieldName: string): Promise<AnyJson> {
+      const fieldsDescribe  = objDescribe['fields']
       let fieldsDescribeResult
-      fieldsDescribe.forEach(field => {
+      fieldsDescribe.map(field => {
         if (field.name === fieldName) {
           fieldsDescribeResult = field;
         }
       });
 
-      return toAnyJson(fieldsDescribeResult);
+      return fieldsDescribeResult;
     }
 
     /**
@@ -93,15 +92,10 @@ export class MetdataUtil {
      * @param  conn Current Connection object
      * @returns Promise - Promise - record in JSON format
      */
-    public async describeObjFields(objName: string,  conn: core.Connection): Promise<AnyJson> {
-      const describeObjResult = await this.describeObj(objName, conn);
-      const fieldsDescribe  = describeObjResult['fields']
-      let fieldsDescribeResult = []
-      fieldsDescribe.forEach(field => {
-          fieldsDescribeResult.push(field);
-      });
+    public describeObjFields(objDescribe: AnyJson): Promise<AnyJson> {
+      const fieldsDescribe  = objDescribe['fields']
 
-      return toAnyJson(fieldsDescribeResult);
+      return fieldsDescribe;
     }
 
     /**
@@ -111,10 +105,10 @@ export class MetdataUtil {
      * @param  conn Current Connection object
      * @returns Promise - Promise - record in JSON format
      */
-    public async validCustomSettingType(objName: string, conn: core.Connection): Promise<boolean> {
-      const describeObjResult = await this.describeObj(objName, conn);
-      const customSetting = describeObjResult['customSetting'];
-      const nameField = await this.describeField(objName, 'Name', conn)
+    public validCustomSettingType(objDescribe: AnyJson) {
+      //const describeObjResult = await this.describeObj(objName, conn);
+      const customSetting = objDescribe['customSetting'];
+      const nameField = this.describeField(objDescribe, 'Name')
       if (customSetting && !nameField['nillable']) {
         return true;
       }

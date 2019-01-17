@@ -54,9 +54,9 @@ export default class Convert extends SfdxCommand {
 
     let describeObj = await metadatautil.describeObj(objname, conn);
     let fieldObj = await metadatautil.queryRecords(objname, conn);
-    let describeField = await metadatautil.describeField(objname, 'Name', conn)
-    let describeAllFields = await metadatautil.describeObjFields(objname, conn)
-    let isvalidObjectType = await metadatautil.validCustomSettingType(objname, conn)
+    let describeField = metadatautil.describeField(describeObj, 'Name');
+    let describeAllFields = metadatautil.describeObjFields(describeObj)
+    let isvalidObjectType = metadatautil.validCustomSettingType(describeObj)
     console.log(describeObj);
     console.log(fieldObj);
     console.log(describeField)
