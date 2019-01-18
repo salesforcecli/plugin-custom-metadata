@@ -11,7 +11,7 @@ export class FileWriter {
 
         // replace __c with __mdt
         if (apiName.endsWith('__c')) {
-            apiName.replace('__c', '__mdt');
+            apiName = apiName.replace('__c', '__mdt');
         }
         // appending __mdt if they did not pass it in.
         if (!apiName.endsWith('__mdt')) {

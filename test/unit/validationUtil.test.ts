@@ -4,6 +4,7 @@ import { ValidationUtil } from '../../src/lib/helpers/validationUtil';
 
 describe( 'validationUtil', () => {
     describe( 'validateAPIName', () => {
+        
         it('should be a valid salesforce api name', () => {
             const validationUtil = new ValidationUtil();
             expect(validationUtil.validateAPIName('Candle')).to.be.true;

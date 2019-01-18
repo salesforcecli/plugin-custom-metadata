@@ -5,30 +5,31 @@ import * as fs from 'fs';
 
 describe('FileWriter', () => {
     describe('writeTypeFile', () => {
-        it('should create a directory and a file for custom metadata type', () => {
+        it('should create a directory and a file for custom metadata type',async () => {
             const fileWriter = new FileWriter();
             const fileName = 'Candle';
             const fileContent = 'Wick';
-            fileWriter.writeTypeFile(core.fs, fileName, fileContent);
+            await fileWriter.writeTypeFile(core.fs, fileName, fileContent);
             expect(fs.existsSync( `${fileName}__mdt`)).to.be.true;
             expect(fs.existsSync( `${fileName}__mdt/${fileName}__mdt.object-meta.xml`)).to.be.true;
             fs.readFile(`${fileName}__mdt/${fileName}__mdt.object-meta.xml`, { encoding: 'utf-8' }, function (err, data) {
                 expect(data === fileContent).to.be.true;
             });
         });
-        it('should create a directory and a file for custom metadata that is passed in with __mdt', () => {
+        it('should create a directory and a file for custom metadata that is passed in with __mdt',async () => {
             const fileWriter = new FileWriter();
             const fileName = 'Torch__mdt';
             const fileContent = 'rag';
-            fileWriter.writeTypeFile(core.fs, fileName, fileContent);
+            await fileWriter.writeTypeFile(core.fs, fileName, fileContent);
             expect(fs.existsSync(`${fileName}`)).to.be.true;
             expect(fs.existsSync(`${fileName}/${fileName}.object-meta.xml`)).to.be.true;
         });
-        it('should convert an object name to a custom metadata name, i.e. name__c to name__mdt', () => {
+        it('should convert an object name to a custom metadata name, i.e. name__c to name__mdt', async () => {
             const fileWriter = new FileWriter();
             const fileName = 'Lantern';
+            const apiName = `${fileName}__c`;
             const fileContent = 'oil';
-            fileWriter.writeTypeFile(core.fs, fileName + '__c', fileContent);
+            await fileWriter.writeTypeFile(core.fs, apiName, fileContent);
             expect(fs.existsSync(`${fileName}__mdt`)).to.be.true;
             expect(fs.existsSync(`${fileName}__mdt/${fileName}__mdt.object-meta.xml`)).to.be.true;
         });
