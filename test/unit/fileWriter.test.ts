@@ -2,8 +2,18 @@ import { expect } from '@salesforce/command/lib/test';
 import { FileWriter } from '../../src/lib/helpers/fileWriter';
 import { core } from '@salesforce/command';
 import * as fs from 'fs';
+import { promisify } from 'util';
+const child_process = require('child_process');
+
+const exec = promisify(child_process.exec);
+const testProjectName = 'testProject';
 
 describe('FileWriter', () => {
+    before(async () => {
+        await core.fs.mkdirp(`${testProjectName}`);
+        await exec(`cd ${testProjectName}`);
+      });
+
     describe('writeTypeFile', () => {
         it('should create a directory and a file for custom metadata type',async () => {
             const fileWriter = new FileWriter();
@@ -36,18 +46,18 @@ describe('FileWriter', () => {
 
     });
     describe('writeFieldFile', () => {
-        it('should create a directory and a file for custom metadata field', () => {
+        it('should create a directory and a file for custom metadata field', async () => {
             const fileWriter = new FileWriter();
             const fileName = 'Candle';
             const fileContent = 'Wick';
             fileWriter.writeFieldFile(core.fs, fileName, fileContent);
             expect(fs.existsSync('fields')).to.be.true;
             expect(fs.existsSync(`fields/${fileName}__c.field-meta.xml`)).to.be.true;
-            fs.readFile(`${fileName}__mdt/${fileName}__mdt.object-meta.xml`, { encoding: 'utf-8' }, function (err, data) {
+            fs.readFile(`fields/${fileName}__c.field-meta.xml`, { encoding: 'utf-8' }, function (err, data) {
                 expect(data === fileContent).to.be.true;
             });
         });
-        it('should create a directory and a file for custom metadata field that is passed in with __c', () => {
+        it('should create a directory and a file for custom metadata field that is passed in with __c', async () => {
             const fileWriter = new FileWriter();
             const fileName = 'Lantern__c';
             const fileContent = 'Oil';
@@ -57,5 +67,10 @@ describe('FileWriter', () => {
         });
 
     });
+
+    after( async () => {
+        await exec(`cd ..`);
+        await exec(`rm -rf ${testProjectName}`);
+      });
 
 });
