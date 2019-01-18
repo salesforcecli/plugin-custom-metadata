@@ -1,4 +1,4 @@
-import { expect} from '@salesforce/command/lib/test';
+import { expect } from '@salesforce/command/lib/test';
 import * as fs from 'fs';
 import { promisify } from 'util';
 const child_process = require('child_process');
