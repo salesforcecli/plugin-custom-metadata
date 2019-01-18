@@ -26,11 +26,11 @@ export default class Convert extends SfdxCommand {
 
   protected static flagsConfig = {
     // flag with a value (-n, --name=VALUE)
-    typename: flags.string({char: 'n', description: messages.getMessage('typenameFlagDescription')}),
+    typename: flags.string({char: 'n', required: true, description: messages.getMessage('typenameFlagDescription')}),
     label: flags.string({char: 'l', description: messages.getMessage('labelFlagDescription')}),
     plurallabel: flags.string({char: 'p', description: messages.getMessage('plurallabelFlagDescription')}),
     visibility: flags.string({char: 'v', description: messages.getMessage('visibilityFlagDescription')}),
-    sobjectname: flags.string({char: 's', description: messages.getMessage('sobjectnameFlagDescription')}),
+    sobjectname: flags.string({char: 's', required: true, description: messages.getMessage('sobjectnameFlagDescription')}),
     sourceusername: flags.string({char: 'x', description: messages.getMessage('sourceusernameFlagDescription')}),
     deploy: flags.string({char: 'd', description: messages.getMessage('deployFlagDescription')}),
     ignore: flags.string({char: 'i', description: messages.getMessage('ignoreFlagDescription')}),
