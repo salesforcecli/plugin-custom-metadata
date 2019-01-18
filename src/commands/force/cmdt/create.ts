@@ -26,10 +26,11 @@ export default class Create extends SfdxCommand {
     public static args = [{name: 'file'}];
 
     protected static flagsConfig = {
-        devname: flags.string({char: 'd', required:true, description: messages.getMessage('nameFlagDescription')}),
+        devname: flags.string({char: 'd', required: true, description: messages.getMessage('nameFlagDescription')}),
         label: flags.string({char: 'l', description: messages.getMessage('labelFlagDescription')}),
         plurallabel: flags.string({char: 's', description: messages.getMessage('plurallabelFlagDescription')}),
-        visibility: flags.string({char: 'v', description: messages.getMessage('visibilityFlagDescription')})
+        visibility: flags.string({char: 'v', description: messages.getMessage('visibilityFlagDescription')}),
+        outputdir : flags.string({char: 'd', description: messages.getMessage('visibilityFlagDescription')})
     };
 
     // Set this to true if your command requires a project workspace; 'requiresProject' is false by default
@@ -43,7 +44,7 @@ export default class Create extends SfdxCommand {
 
         try {
             const templates = new Templates();
-            const objectXML = templates.createObjectXML({ label: label, labelPlural: plurallabel}, visibility);
+            const objectXML = templates.createObjectXML({label, labelPlural: plurallabel}, visibility);
             const fileWriter = new FileWriter();
             await fileWriter.writeTypeFile(core.fs, devname, objectXML);
         } catch (err) {
