@@ -11,5 +11,11 @@
     "targetusernameFlagDescription": "username or alias for the target org; overrides default target org",
     "deployFlagDescription": "Runs the force:source:push command after Source XML is created",
     "ignoreFlagDescription": "ignore field type converstion issues, default is to create text fields and convert source to text",
-    "loglevelFlagDescription": "logging level for this command invocation"
+    "loglevelFlagDescription": "logging level for this command invocation",
+    "typenameFlagError": "not a valid custom metadatatype name",
+    "sobjectnameFlagError": "not a valid custom metadatatype name",
+    "sourceusernameError": "no user with found with the provided username or alias",
+    "sourceuserAuthenticationError": "Issue with authenticating to source org with sourceusername provide: %s MoreInfo: %s.",
+    "generateError": "Fialed to generate custom metadata. reason: %s.",
+    "customSettingTypeError": "Cannot convert custom settings %s of Hierarchical type."
 }
