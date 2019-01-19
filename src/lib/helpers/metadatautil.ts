@@ -10,7 +10,7 @@ export class MetdataUtil {
      * @returns Promise - JSON representation of the describe object
      */
     public async describeObj(objName: string, conn: core.Connection): Promise<AnyJson> {
-      const result = await conn.describe(objName, (err, meta) => {
+      const result = await conn.metadata.read('CustomObject', objName, (err, meta) => {
         if (err) {
           console.error(err);
           return err;
@@ -96,9 +96,7 @@ export class MetdataUtil {
      * @returns boolean
      */
     public validCustomSettingType(objDescribe: AnyJson): boolean {
-      const customSetting = objDescribe['customSetting'];
-      const nameField = this.describeField(objDescribe, 'Name');
-      if (customSetting && !nameField['nillable']) {
+      if (objDescribe['customSettingsType'] === 'List') {
         return true;
       }
       return false;
