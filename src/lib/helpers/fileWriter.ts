@@ -4,17 +4,21 @@ export class FileWriter {
      * Using the given file system, creates a file representing a new custom metadata type.
      * @param fs
      * @param devname
-     * @param label
-     * @param plurallabel
-     * @param visibility
+     * @param objectXML
      */
     public async writeTypeFile(fs, devName, objectXML) {
-        // appending __mdt if they did not pass it in.
-        if (devName.endsWith('__mdt') === false) {
-            devName += '__mdt';
+        let apiName = devName;
+
+        // replace __c with __mdt
+        if (apiName.endsWith('__c')) {
+            apiName = apiName.replace('__c', '__mdt');
         }
-        const outputFilePath = `${devName}/${devName}.object-meta.xml`;
-        await fs.mkdirp(`${devName}`);
+        // appending __mdt if they did not pass it in.
+        if (!apiName.endsWith('__mdt')) {
+            apiName += '__mdt';
+        }
+        const outputFilePath = `${apiName}/${apiName}.object-meta.xml`;
+        await fs.mkdirp(`${apiName}`);
         await fs.writeFile(outputFilePath, objectXML);
     }
 
@@ -31,7 +35,7 @@ export class FileWriter {
             fieldName += '__c';
         }
         const outputFilePath = `fields/${fieldName}.field-meta.xml`;
-        fs.mkdirp('fields');
-        fs.writeFile(outputFilePath, fieldXML);
+        await fs.mkdirp('fields');
+        await fs.writeFile(outputFilePath, fieldXML);
     }
 }

@@ -1,6 +1,12 @@
+import { SfdxError } from '@salesforce/core';
 
 export class Templates {
 
+    /**
+     * Using the given data and visibility, creates the body of a type metadata file
+     * @param data
+     * @param visibility
+     */
     public createObjectXML(data, visibility) {
         return `<?xml version="1.0" encoding="UTF-8"?>
         <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
@@ -10,6 +16,11 @@ export class Templates {
         </CustomObject>`;
     }
 
+    /**
+     * Using the given data and defaultToString, creates the body for a field file
+     * @param data
+     * @param visibility
+     */
     public createFieldXML(data, defaultToString) {
         let returnValue = `<?xml version="1.0" encoding="UTF-8"?>
         <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
@@ -65,35 +76,35 @@ export class Templates {
                 if (defaultToString) {
                     fieldTag += 'Text';
                 } else {
-                    throw new Error(`Type not found: ${data.type}`); // TODO: update error to tell them that it is not supported and to override
+                    throw SfdxError.create('custommetadata', 'template', 'errorNotAValidaType', [data.type]);
                 }
                 break;
             case 'currency':
                 if (defaultToString) {
                     fieldTag += 'Text';
                 } else {
-                    throw new Error(`Type not found: ${data.type}`);
+                    throw SfdxError.create('custommetadata', 'template', 'errorNotAValidaType', [data.type]);
                 }
                 break;
             case 'encryptedstring':
                 if (defaultToString) {
                     fieldTag += 'Text';
                 } else {
-                    throw new Error(`Type not found: ${data.type}`);
+                    throw SfdxError.create('custommetadata', 'template', 'errorNotAValidaType', [data.type]);
                 }
                 break;
             case 'multipicklist':
                 if (defaultToString) {
                     fieldTag += 'Text';
                 } else {
-                    throw new Error(`Type not found: ${data.type}`);
+                    throw SfdxError.create('custommetadata', 'template', 'errorNotAValidaType', [data.type]);
                 }
                 break;
             case 'location':
                 if (defaultToString) {
                     fieldTag += 'Text';
                 } else {
-                    throw new Error(`Type not found: ${data.type}`);
+                    throw SfdxError.create('custommetadata', 'template', 'errorNotAValidaType', [data.type]);
                 }
                 break;
             case 'date':
@@ -120,7 +131,7 @@ export class Templates {
                     if (defaultToString) {
                         fieldTag += 'Text';
                     } else {
-                        throw new Error(`Type not found: ${data.type}`);
+                        throw SfdxError.create('custommetadata', 'template', 'errorNotAValidaType', [data.type]);
                     }
                     break;
                 }
@@ -134,7 +145,7 @@ export class Templates {
                 fieldTag += 'Url';
                 break;
             default:
-                throw new Error(`Type not found: ${data.type}`);
+                throw SfdxError.create('custommetadata', 'template', 'errorNotAValidaType', [data.type]);
                 break;
         }
 

@@ -60,7 +60,7 @@ export default class Create extends SfdxCommand {
             const outputString = `Created custom metadata field called ${fieldName}.`;
             this.ux.log(outputString);
         } catch (err) {
-            this.ux.log(err);
+            this.ux.log(err.message);
         }
 
         // Return an object to be displayed with --json
