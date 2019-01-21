@@ -96,7 +96,7 @@ export class MetdataUtil {
      * @returns boolean
      */
     public validCustomSettingType(objDescribe: AnyJson): boolean {
-      if (objDescribe['customSettingsType'] === 'List') {
+      if (objDescribe['customSettingsType'] === 'List' && objDescribe['visibility'] === 'Public') {
         return true;
       }
       return false;
