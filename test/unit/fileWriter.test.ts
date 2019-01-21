@@ -9,10 +9,6 @@ const exec = promisify(child_process.exec);
 const testProjectName = 'testProject';
 
 describe('FileWriter', () => {
-    before(async () => {
-        await core.fs.mkdirp(`${testProjectName}`);
-        await exec(`cd ${testProjectName}`);
-      });
 
     describe('writeTypeFile', () => {
         it('should create a directory and a file for custom metadata type',async () => {
@@ -25,6 +21,7 @@ describe('FileWriter', () => {
             fs.readFile(`${fileName}__mdt/${fileName}__mdt.object-meta.xml`, { encoding: 'utf-8' }, function (err, data) {
                 expect(data === fileContent).to.be.true;
             });
+            await exec(`rm -rf ${fileName}__mdt`);
         });
         it('should create a directory and a file for custom metadata that is passed in with __mdt',async () => {
             const fileWriter = new FileWriter();
@@ -33,6 +30,7 @@ describe('FileWriter', () => {
             await fileWriter.writeTypeFile(core.fs, fileName, fileContent);
             expect(fs.existsSync(`${fileName}`)).to.be.true;
             expect(fs.existsSync(`${fileName}/${fileName}.object-meta.xml`)).to.be.true;
+            await exec(`rm -rf ${fileName}__mdt`);
         });
         it('should convert an object name to a custom metadata name, i.e. name__c to name__mdt', async () => {
             const fileWriter = new FileWriter();
@@ -42,6 +40,7 @@ describe('FileWriter', () => {
             await fileWriter.writeTypeFile(core.fs, apiName, fileContent);
             expect(fs.existsSync(`${fileName}__mdt`)).to.be.true;
             expect(fs.existsSync(`${fileName}__mdt/${fileName}__mdt.object-meta.xml`)).to.be.true;
+            await exec(`rm -rf ${fileName}__mdt`);
         });
 
     });
@@ -56,6 +55,7 @@ describe('FileWriter', () => {
             fs.readFile(`fields/${fileName}__c.field-meta.xml`, { encoding: 'utf-8' }, function (err, data) {
                 expect(data === fileContent).to.be.true;
             });
+            await exec(`rm -rf fields`);
         });
         it('should create a directory and a file for custom metadata field that is passed in with __c', async () => {
             const fileWriter = new FileWriter();
@@ -64,13 +64,9 @@ describe('FileWriter', () => {
             fileWriter.writeFieldFile(core.fs, fileName, fileContent);
             expect(fs.existsSync('fields')).to.be.true;
             expect(fs.existsSync(`fields/${fileName}.field-meta.xml`)).to.be.true;
+            await exec(`rm -rf fields`);
         });
 
     });
-
-    after( async () => {
-        await exec(`cd ..`);
-        await exec(`rm -rf ${testProjectName}`);
-      });
 
 });
