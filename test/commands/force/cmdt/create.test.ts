@@ -15,7 +15,7 @@ describe('sfdx force:cmdt:create' , () => {
   .stdout()
   .withProject()
   .command(['force:cmdt:create', '--devname', 'MyCMDT','--outputdir','sample'])
-  .it('runs force:cmdt:create --devname MyCMDT --outputdir test', ctx => {
+  .it('runs force:cmdt:create --devname MyCMDT --outputdir sample', ctx => {
     const cmdtName = 'MyCMDT';
     expect(fs.existsSync(`sample/${cmdtName}__mdt`)).to.be.true;
     expect(fs.existsSync(`sample/${cmdtName}__mdt/${cmdtName}__mdt.object-meta.xml`)).to.be.true;
