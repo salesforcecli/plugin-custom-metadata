@@ -1,28 +1,31 @@
-import { expect } from '@salesforce/command/lib/test';
+import { expect,test } from '@salesforce/command/lib/test';
 import * as fs from 'fs';
-import { promisify } from 'util';
-const child_process = require('child_process');
 
-const exec = promisify(child_process.exec);
-const testProjectName = 'testProject';
+
+
 
 describe('sfdx force:cmdt:create' , () => {
 
-  before(async () => {
-    await exec(`rm -rf ${testProjectName}`);
-    await exec(`sfdx force:project:create -n ${testProjectName}`);
-  });
 
-  it('create custom metadata file', async () => {
-    const cmdtName = 'MyCMDT'
-    await exec(`sfdx force:cmdt:create --devname ${cmdtName}`, { cwd: testProjectName});
-    // Asserts commented until dev team fixes
-    expect(fs.existsSync(`${testProjectName}/${cmdtName}__mdt`)).to.be.true;
-    expect(fs.existsSync(`${testProjectName}/${cmdtName}__mdt/${cmdtName}__mdt.object-meta.xml`)).to.be.true;
-  }).timeout(50000);
+  test
+  .withOrg({ username: 'test@org.com' }, true)
+  .stdout()
+  .withProject()
+  .command(['force:cmdt:create', '--devname', 'MyCMDT'])
+  .it('runs force:cmdt:create --devname MyCMDT', ctx => {
+    const cmdtName = 'MyCMDT';
+    expect(fs.existsSync(`${cmdtName}__mdt`)).to.be.true;
+    expect(fs.existsSync(`${cmdtName}__mdt/${cmdtName}__mdt.object-meta.xml`)).to.be.true;
+  })
 
-  after( async () => {
-    await exec(`rm -rf ${testProjectName}`);
-  });
+
+  test
+  .withOrg({ username: 'test@org.com' }, true)
+  .stdout()
+  .withProject()
+  .command(['force:cmdt:create', '--devname', 'MyC__MDT'])
+  .it('runs hello:org --targetusername test@org.com', ctx => {
+    expect(ctx.stdout).to.contain("'MyC__MDT' is not a valid api name for a custom metadata object." );
+  })
 
 })
