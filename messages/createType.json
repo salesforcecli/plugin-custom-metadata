@@ -4,9 +4,11 @@
     "labelFlagDescription": "MasterLabel for the type",
     "plurallabelFlagDescription": "Plural label for the type. If blank, uses label",
     "visibilityFlagDescription": "Visibility for the type. Valid values are 'Public' and 'Protected'. If blank, uses 'Public'",
-    "outputDirectoryFlagDescription":"Output directory for metadata type and metadata type folder",
-    "successfullyCreated" : "Created custom metadata type with developer name '%s', label '%s', plural label '%s', and visibility '%s'.",
+    "outputDirectoryFlagDescription":"The directory to store the newly created files. The location can be an absolute path or relative to the current working directory. The default is the current directory.",
+    "successResponse" : "Created custom metadata type with developer name '%s', label '%s', plural label '%s', and visibility '%s' at '%s'.",
     "errorNoOrgResults": "No results found for the organization '%s'.",
-    "errorNotValidAPIName" :"'%s' is not a valid api name for a custom metadata object."
+    "errorNotValidAPIName" :"'%s' is not a valid api name for a custom metadata object.",
+    "errorNotValidLabelName" : "'%s' is not a valid label for a custom metadata object.",
+    "errorNotValidPluralLabelName" : "'%s' is not a valid plural label for a custom metadata object."
   }
   

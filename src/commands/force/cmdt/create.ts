@@ -31,7 +31,7 @@ export default class Create extends SfdxCommand {
         label: flags.string({ char: 'l', description: messages.getMessage('labelFlagDescription') }),
         plurallabel: flags.string({ char: 's', description: messages.getMessage('plurallabelFlagDescription') }),
         visibility: flags.string({ char: 'v', description: messages.getMessage('visibilityFlagDescription') }),
-        outputdir: flags.string({ char: 'd', description: messages.getMessage('outputDirectoryFlagDescription') })
+        outputdir: flags.string({ char: 'o', description: messages.getMessage('outputDirectoryFlagDescription') })
     };
 
     // Set this to true if your command requires a project workspace; 'requiresProject' is false by default
@@ -39,20 +39,27 @@ export default class Create extends SfdxCommand {
 
     public async run(): Promise<AnyJson> {
         const devname = this.flags.devname; // this should become the new file name
-        const label = this.flags.label || this.flags.devname;
+        const label = this.flags.label || this.flags.devname.replace( '__mdt', ''); // If a label is not provided default using the dev name. trim __mdt out
         const plurallabel = this.flags.plurallabel || label;
         const visibility = this.flags.visibility || 'Public';
-
+        const dir = this.flags.outputdir || '';
         try {
             const validator = new ValidationUtil();
             if (!validator.validateMetadataTypeName(devname)) {
                 throw new core.SfdxError(messages.getMessage('errorNotValidAPIName', [devname]));
             }
+            if (!validator.validateLessThanForty(label)) {
+                throw new core.SfdxError(messages.getMessage('errorNotValidLabelName', [label]));
+            }
+
+            if (!validator.validateLessThanForty(plurallabel)) {
+                throw new core.SfdxError(messages.getMessage('errorNotValidPluralLabelName', [plurallabel]));
+            }
             const templates = new Templates();
             const objectXML = templates.createObjectXML({ label, labelPlural: plurallabel }, visibility);
             const fileWriter = new FileWriter();
-            await fileWriter.writeTypeFile(core.fs, devname, objectXML);
-            const outputString = messages.getMessage('successfullyCreated', [devname, label, plurallabel, visibility]);
+            const outputFilePath = await fileWriter.writeTypeFile(core.fs, dir, devname, objectXML);
+            const outputString = messages.getMessage('successResponse', [devname, label, plurallabel, visibility, outputFilePath]);
             this.ux.log(outputString);
         } catch (err) {
             this.ux.log(err.message);
