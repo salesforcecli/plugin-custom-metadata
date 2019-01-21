@@ -29,7 +29,7 @@ describe('FileWriter', () => {
             await fileWriter.writeTypeFile(core.fs, fileName, fileContent);
             expect(fs.existsSync(`${fileName}`)).to.be.true;
             expect(fs.existsSync(`${fileName}/${fileName}.object-meta.xml`)).to.be.true;
-            await exec(`rm -rf ${fileName}__mdt`);
+            await exec(`rm -rf ${fileName}`);
         });
         it('should convert an object name to a custom metadata name, i.e. name__c to name__mdt', async () => {
             const fileWriter = new FileWriter();
@@ -44,11 +44,11 @@ describe('FileWriter', () => {
 
     });
     describe('writeFieldFile', () => {
-        it('should create a directory and a file for custom metadata field', () => {
+        it('should create a directory and a file for custom metadata field', async () => {
             const fileWriter = new FileWriter();
             const fileName = 'Candle';
             const fileContent = 'Wick';
-            fileWriter.writeFieldFile(core.fs, fileName, fileContent);
+            await fileWriter.writeFieldFile(core.fs, fileName, fileContent);
             expect(fs.existsSync('fields')).to.be.true;
             expect(fs.existsSync(`fields/${fileName}__c.field-meta.xml`)).to.be.true;
             fs.readFile(`fields/${fileName}__c.field-meta.xml`, { encoding: 'utf-8' }, function (err, data) {
@@ -56,11 +56,11 @@ describe('FileWriter', () => {
             });
             exec(`rm -rf fields`);
         });
-        it('should create a directory and a file for custom metadata field that is passed in with __c', () => {
+        it('should create a directory and a file for custom metadata field that is passed in with __c', async () => {
             const fileWriter = new FileWriter();
             const fileName = 'Lantern__c';
             const fileContent = 'Oil';
-            fileWriter.writeFieldFile(core.fs, fileName, fileContent);
+            await fileWriter.writeFieldFile(core.fs, fileName, fileContent);
             expect(fs.existsSync('fields')).to.be.true;
             expect(fs.existsSync(`fields/${fileName}.field-meta.xml`)).to.be.true;
             exec(`rm -rf fields`);

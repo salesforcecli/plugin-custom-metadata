@@ -1,7 +1,10 @@
 import { expect,test } from '@salesforce/command/lib/test';
 import * as fs from 'fs';
 
+import { promisify } from 'util';
+const child_process = require('child_process');
 
+const exec = promisify(child_process.exec);
 
 
 describe('sfdx force:cmdt:create' , () => {
@@ -16,6 +19,7 @@ describe('sfdx force:cmdt:create' , () => {
     const cmdtName = 'MyCMDT';
     expect(fs.existsSync(`${cmdtName}__mdt`)).to.be.true;
     expect(fs.existsSync(`${cmdtName}__mdt/${cmdtName}__mdt.object-meta.xml`)).to.be.true;
+    exec(`rm -rf ${cmdtName}__mdt`);
   })
 
 

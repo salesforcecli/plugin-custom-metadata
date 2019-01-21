@@ -35,7 +35,7 @@ export class FileWriter {
             fieldName += '__c';
         }
         const outputFilePath = `fields/${fieldName}.field-meta.xml`;
-        fs.mkdirp('fields');
-        fs.writeFile(outputFilePath, fieldXML);
+        await fs.mkdirp('fields');
+        await fs.writeFile(outputFilePath, fieldXML);
     }
 }
