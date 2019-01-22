@@ -85,7 +85,7 @@ export default class Convert extends SfdxCommand {
     const templates = new Templates();
     const objectXML = templates.createObjectXML({label, plurallabel}, visibility);
     const fileWriter = new FileWriter();
-    await fileWriter.writeTypeFile(core.fs, devName, objectXML);
+    await fileWriter.writeTypeFile(core.fs, '', devName, objectXML);
 
     // now let's create the records!
     for (const rec of result.records) {
