@@ -1,6 +1,7 @@
-import {core, flags, SfdxCommand} from '@salesforce/command';
-import {AnyJson} from '@salesforce/ts-types';
-import { createRecord } from '../../../../lib/helpers/helper';
+import { core, flags, SfdxCommand } from '@salesforce/command';
+import { AnyJson } from '@salesforce/ts-types';
+import { Helper } from '../../../../lib/helpers/helper';
+import { parseString } from 'xml2js';
 
 // Initialize Messages with the current plugin directory
 core.Messages.importMessagesDirectory(__dirname);
@@ -49,29 +50,55 @@ export default class Create extends SfdxCommand {
     protected static requiresProject = true;
 
     public async run(): Promise<AnyJson> {
-        let typename = this.flags.typename;
-        const recname = this.flags.recname;
-        const label = this.flags.label || this.flags.recname;
-        const protection = this.flags.protection || 'false';
+      const helper = new Helper();
+      let typename = this.flags.typename;
+      const recname = this.flags.recname;
+      const label = this.flags.label || this.flags.recname;
+      const protection = this.flags.protection || 'false';
 
-        // forgive them if they passed in type__mdt, and cut off the __mdt
-        if (typename.endsWith('__mdt')) {
-            typename = typename.substring(0, typename.indexOf('__mdt'));
-        }
+      // forgive them if they passed in type__mdt, and cut off the __mdt
+      if (typename.endsWith('__mdt')) {
+          typename = typename.substring(0, typename.indexOf('__mdt'));
+      }
 
-        createRecord(core.fs, typename, recname, label, protection, this.varargs);
+      let fieldDirPath = `force-app/main/default/objects/${typename}__mdt/fields`;
+      let fileNames = await core.fs.readdir(fieldDirPath);
+      let fileData = await this.getData(fieldDirPath, fileNames);
 
-        const outputString = `Created custom metadata record of the type "${typename}" with record developer name "${recname}", label "${label}", and protected "${protection}".`;
-        this.ux.log(outputString);
+      console.log(fileData);
 
-        // Return an object to be displayed with --json
-        return {
-            typename,
-            recname,
-            label,
-            visibility: protection
-        };
+      helper.createRecord(core.fs, typename, recname, label, protection, this.varargs, fileData);
 
+      const outputString = `Created custom metadata record of the type "${typename}" with record developer name "${recname}", label "${label}", and protected "${protection}".`;
+      this.ux.log(outputString);
+
+      // Return an object to be displayed with --json
+      return {
+          typename,
+          recname,
+          label,
+          visibility: protection
+      };
     }
 
+    private async getData(fieldDirPath, fileNames) {
+      let filePath = '';
+      let fileData;
+      let str = '';
+      let ret = [];
+
+      for (let file of fileNames) {
+        filePath = `${fieldDirPath}/${file}`;
+        fileData = await core.fs.readFile(filePath);
+        str = fileData.toString('utf8');
+
+        parseString(str, (err, res) => {
+          if (!err) {
+            ret.push(res);
+          }
+        });
+      }
+
+      return ret;
+    }
 }

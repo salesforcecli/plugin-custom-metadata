@@ -1,7 +1,7 @@
 import { core, flags, SfdxCommand } from '@salesforce/command';
 import { AnyJson } from '@salesforce/ts-types';
 import { FileWriter } from '../../../lib/helpers/fileWriter';
-import { createRecord } from '../../../lib/helpers/helper';
+import { Helper } from '../../../lib/helpers/helper';
 import { MetdataUtil  } from '../../../lib/helpers/metadatautil';
 import { Templates } from '../../../lib/templates/templates';
 
@@ -51,6 +51,7 @@ export default class Convert extends SfdxCommand {
     const conn = this.org.getConnection();
     const query = `Select Name from ${objname}`;
     const metadatautil = new MetdataUtil();
+    const helper = new Helper();
 
     const describeObj = await metadatautil.describeObj(objname, conn);
     const fieldObj = await metadatautil.queryRecords(objname, conn);
@@ -94,7 +95,7 @@ export default class Convert extends SfdxCommand {
         if (recLabel.length > 40) {
             recLabel = recLabel.substring(0, 40);
         }
-        createRecord(core.fs, devName, recName, recLabel, false, {});
+        helper.createRecord(core.fs, devName, recName, recLabel, false, {}, []);
     }
     this.ux.log(`Congrats! Created a ${devName}__mdt type with ${result.records.length} records!`);
     return {  };
