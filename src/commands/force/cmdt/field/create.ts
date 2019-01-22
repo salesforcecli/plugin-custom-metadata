@@ -30,7 +30,8 @@ export default class Create extends SfdxCommand {
         fieldname: flags.string({ char: 'n', required: true, description: messages.getMessage('nameFlagDescription') }),
         fieldtype: flags.string({ char: 'f', required: true, description: messages.getMessage('labelFlagDescription') }),
         picklistvalues: flags.string({ char: 'p', description: messages.getMessage('plurallabelFlagDescription') }),
-        label: flags.string({ char: 'l', description: messages.getMessage('plurallabelFlagDescription') })
+        label: flags.string({ char: 'l', description: messages.getMessage('plurallabelFlagDescription') }),
+        outputdir: flags.directory({ char: 'o', description: messages.getMessage('outputDirectoryFlagDescription') })
     };
 
     // Set this to true if your command requires a project workspace; 'requiresProject' is false by default
@@ -42,6 +43,7 @@ export default class Create extends SfdxCommand {
         const fieldtype = this.flags.fieldtype;
         // const picklistvalues = this.flags.picklistvalues;
         const visibility = this.flags.visibility || 'Public';
+        const dir = this.flags.outputdir || '';
 
         try {
             const validator = new ValidationUtil();
@@ -56,11 +58,11 @@ export default class Create extends SfdxCommand {
             }
             const fieldXML = templates.createFieldXML(data, false);
             const writer = new FileWriter();
-            await writer.writeFieldFile(core.fs, fieldName, fieldXML);
+            await writer.writeFieldFile(core.fs, dir, fieldName, fieldXML);
             const outputString = `Created custom metadata field called ${fieldName}.`;
             this.ux.log(outputString);
         } catch (err) {
-            this.ux.log(err);
+            this.ux.log(err.message);
         }
 
         // Return an object to be displayed with --json

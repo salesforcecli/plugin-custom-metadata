@@ -1,6 +1,7 @@
-import {core, flags, SfdxCommand} from '@salesforce/command';
-import {AnyJson} from '@salesforce/ts-types';
-import {  FileWriter } from '../../../lib/helpers/fileWriter';
+import { core, flags, SfdxCommand } from '@salesforce/command';
+import { AnyJson } from '@salesforce/ts-types';
+import { FileWriter } from '../../../lib/helpers/fileWriter';
+import { ValidationUtil } from '../../../lib/helpers/validationUtil';
 import { Templates } from '../../../lib/templates/templates';
 
 // Initialize Messages with the current plugin directory
@@ -15,22 +16,22 @@ export default class Create extends SfdxCommand {
     public static description = messages.getMessage('commandDescription');
 
     public static examples = [
-    `$ sfdx force:cmdt:create --devname MyCMT
+        `$ sfdx force:cmdt:create --devname MyCMT
     Created custom metadata type with developer name "MyCMT", label "MyCMT", plural label "MyCMT", and visibility "Public".
     `,
-    `$ sfdx force:cmdt:create --devname MyCMT --label "Custom Type" --plurallabel "Custom Types" --visibility Protected
+        `$ sfdx force:cmdt:create --devname MyCMT --label "Custom Type" --plurallabel "Custom Types" --visibility Protected
     Created custom metadata type with developer name "MyCMT", label "Custom Type", plural label "My Custom Metadata Type", and visibility "Protected".
     `
     ];
 
-    public static args = [{name: 'file'}];
+    public static args = [{ name: 'file' }];
 
     protected static flagsConfig = {
-        devname: flags.string({char: 'd', required: true, description: messages.getMessage('nameFlagDescription')}),
-        label: flags.string({char: 'l', description: messages.getMessage('labelFlagDescription')}),
-        plurallabel: flags.string({char: 's', description: messages.getMessage('plurallabelFlagDescription')}),
-        visibility: flags.string({char: 'v', description: messages.getMessage('visibilityFlagDescription')}),
-        outputdir : flags.string({char: 'd', description: messages.getMessage('visibilityFlagDescription')})
+        devname: flags.string({ char: 'd', required: true, description: messages.getMessage('nameFlagDescription') }),
+        label: flags.string({ char: 'l', description: messages.getMessage('labelFlagDescription') }),
+        plurallabel: flags.string({ char: 's', description: messages.getMessage('plurallabelFlagDescription') }),
+        visibility: flags.string({ char: 'v', description: messages.getMessage('visibilityFlagDescription') }),
+        outputdir: flags.directory({ char: 'o', description: messages.getMessage('outputDirectoryFlagDescription') })
     };
 
     // Set this to true if your command requires a project workspace; 'requiresProject' is false by default
@@ -38,20 +39,32 @@ export default class Create extends SfdxCommand {
 
     public async run(): Promise<AnyJson> {
         const devname = this.flags.devname; // this should become the new file name
-        const label = this.flags.label || this.flags.devname;
+        const label = this.flags.label || this.flags.devname.replace( '__mdt', ''); // If a label is not provided default using the dev name. trim __mdt out
         const plurallabel = this.flags.plurallabel || label;
         const visibility = this.flags.visibility || 'Public';
-
+        const dir = this.flags.outputdir || '';
         try {
+            const validator = new ValidationUtil();
+            if (!validator.validateMetadataTypeName(devname)) {
+                throw new core.SfdxError(messages.getMessage('errorNotValidAPIName', [devname]));
+            }
+            if (!validator.validateLessThanForty(label)) {
+                throw new core.SfdxError(messages.getMessage('errorNotValidLabelName', [label]));
+            }
+
+            if (!validator.validateLessThanForty(plurallabel)) {
+                throw new core.SfdxError(messages.getMessage('errorNotValidPluralLabelName', [plurallabel]));
+            }
             const templates = new Templates();
-            const objectXML = templates.createObjectXML({label, labelPlural: plurallabel}, visibility);
+            const objectXML = templates.createObjectXML({ label, labelPlural: plurallabel }, visibility);
             const fileWriter = new FileWriter();
-            await fileWriter.writeTypeFile(core.fs, devname, objectXML);
+            const outputFilePath = await fileWriter.writeTypeFile(core.fs, dir, devname, objectXML);
+            const outputString = messages.getMessage('successResponse', [devname, label, plurallabel, visibility, outputFilePath]);
+            this.ux.log(outputString);
         } catch (err) {
-          this.ux.log(err);
+            this.ux.log(err.message);
         }
-        const outputString = `Created custom metadata type with developer name "${devname}", label "${label}", plural label "${plurallabel}", and visibility "${visibility}".`;
-        this.ux.log(outputString);
+
         // Return an object to be displayed with --json
         return {
             devname,

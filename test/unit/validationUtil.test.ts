@@ -1,48 +1,57 @@
+import { expect } from '@salesforce/command/lib/test';
 import { ValidationUtil } from '../../src/lib/helpers/validationUtil';
 
-import { expect } from '@salesforce/command/lib/test';
 
-const validator = new ValidationUtil();
-const properName = 'thisIsExactly40CharactersInLengthxxxxxxx';
-const longName = 'thisIsExactly41CharactersInLengthxxxxxxx1';
-const specialCharName = '%^&*Name';
-const underscoreName = '__Name';
+describe( 'validationUtil', () => {
+    describe( 'validateAPIName', () => {
+        
+        it('should be a valid salesforce api name', () => {
+            const validationUtil = new ValidationUtil();
+            expect(validationUtil.validateAPIName('Candle')).to.be.true;
+        });
+        it('should not have a number as the starting character', () => {
+            const validationUtil = new ValidationUtil();
+            expect(validationUtil.validateAPIName('1World')).to.be.false;
+        });
+        it('should be fine if it has __c at the end', () => {
+            const validationUtil = new ValidationUtil();
+            expect(validationUtil.validateAPIName('Torch__c')).to.be.true;
+        });
+        it('should be fine if it has __C at the end', () => {
+            const validationUtil = new ValidationUtil();
+            expect(validationUtil.validateAPIName('Torch__C')).to.be.true;
+        });
+        it('should be fine if it has an underscore in it', () => {
+            const validationUtil = new ValidationUtil();
+            expect(validationUtil.validateAPIName('Torch_Wood')).to.be.true;
+        });
+        it('should not be more than 40 characters', () => {
+            const validationUtil = new ValidationUtil();
+            expect(validationUtil.validateAPIName('I_Have_More_Than_The_fourty_Characters_Allowed')).to.be.false;
+        });
+    });
 
-describe('validationUtil', () => {
-    describe('validateAPIName', () => {
-        it('validates APIName is created when 40 characters', async () => {
-            let result = validator.validateAPIName(properName);
-            expect(result).to.be.true;
+    describe( 'validateMetadataTypeName', () => {
+        it('should be a valid salesforce metadata api name', () => {
+            const validationUtil = new ValidationUtil();
+            expect(validationUtil.validateMetadataTypeName('Candle')).to.be.true;
         });
-        it('validates APIName is not created when 41 characters', async () => {
-            let result = validator.validateAPIName(longName);
-            expect(result).to.be.false;
+        it('should not have a number as the starting character', () => {
+            const validationUtil = new ValidationUtil();
+            expect(validationUtil.validateMetadataTypeName('1World')).to.be.false;
         });
-        it('validates APIName is not created when has special characters', async () => {
-            let result = validator.validateAPIName(specialCharName);
-            expect(result).to.be.false;
+        it('should be fine if it has __mdt at the end', () => {
+            const validationUtil = new ValidationUtil();
+            expect(validationUtil.validateMetadataTypeName('Torch__mdt')).to.be.true;
         });
-        it('validates APIName is not created when starts with underscore', async () => {
-            let result = validator.validateAPIName(underscoreName);
-            expect(result).to.be.false;
+        it('should be fine if it has an underscore in it', () => {
+            const validationUtil = new ValidationUtil();
+            expect(validationUtil.validateMetadataTypeName('Torch_Wood')).to.be.true;
         });
-    })
-    describe('validateMetadataTypeName', () => {
-        it('validates APIName is created when 40 characters', async () => {
-            let result = validator.validateAPIName(properName);
-            expect(result).to.be.true;
+        it('should not be more than 40 characters', () => {
+            const validationUtil = new ValidationUtil();
+            expect(validationUtil.validateMetadataTypeName('I_Have_More_Than_The_fourty_Characters_Allowed')).to.be.false;
         });
-        it('validates APIName is not created when 41 characters', async () => {
-            let result = validator.validateAPIName(longName);
-            expect(result).to.be.false;
-        });
-        it('validates APIName is not created when has special characters', async () => {
-            let result = validator.validateAPIName(specialCharName);
-            expect(result).to.be.false;
-        });
-        it('validates APIName is not created when starts with underscore', async () => {
-            let result = validator.validateAPIName(underscoreName);
-            expect(result).to.be.false;
-        });
-    })
+    });
+
 });
