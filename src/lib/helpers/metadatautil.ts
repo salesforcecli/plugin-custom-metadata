@@ -104,7 +104,7 @@ export class MetdataUtil {
 
     private _getSoqlQuery(arr, objName) {
       const fieldNames = arr.map(field => {
-        return field.name;
+        return field.fullName;
       }).join(',');
 
       return `SELECT ${fieldNames} FROM ${objName}`;
