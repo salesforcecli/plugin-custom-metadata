@@ -28,10 +28,13 @@ export default class Create extends SfdxCommand {
 
     protected static flagsConfig = {
         fieldname: flags.string({ char: 'n', required: true, description: messages.getMessage('nameFlagDescription') }),
-        fieldtype: flags.string({ char: 'f', required: true, description: messages.getMessage('labelFlagDescription') }),
+        fieldtype: flags.enum({
+            char: 'f', required: true, description: messages.getMessage('labelFlagDescription'),
+            options: ['Checkbox', 'Date', 'DateTime', 'Email', 'Number', 'Percent', 'Phone', 'Picklist', 'Text', 'TextArea', 'LongTextArea', 'Url']
+        }),
         picklistvalues: flags.string({ char: 'p', description: messages.getMessage('plurallabelFlagDescription') }),
         label: flags.string({ char: 'l', description: messages.getMessage('plurallabelFlagDescription') }),
-        outputdir: flags.directory({ char: 'o', description: messages.getMessage('outputDirectoryFlagDescription') })
+        outputdir: flags.directory({ char: 'd', description: messages.getMessage('outputDirectoryFlagDescription') })
     };
 
     // Set this to true if your command requires a project workspace; 'requiresProject' is false by default
