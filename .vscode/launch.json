@@ -28,6 +28,22 @@
                 "test/**/*.test.ts"
             ],
             "cwd": "${workspaceRoot}"
-        }
+        },
+        {
+          "type": "node",
+          "request": "launch",
+          "name": "Mocha Current File",
+          "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+          "args": [
+              "--opts",
+              "${workspaceFolder}/test/mocha.opts",
+              "--timeout",
+              "999999",
+              "--colors",
+              "${file}"
+          ],
+          "console": "integratedTerminal",
+          "internalConsoleOptions": "neverOpen"
+      }
     ]
 }
