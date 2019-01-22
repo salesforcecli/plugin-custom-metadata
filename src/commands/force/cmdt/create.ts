@@ -31,7 +31,7 @@ export default class Create extends SfdxCommand {
         label: flags.string({ char: 'l', description: messages.getMessage('labelFlagDescription') }),
         plurallabel: flags.string({ char: 's', description: messages.getMessage('plurallabelFlagDescription') }),
         visibility: flags.string({ char: 'v', description: messages.getMessage('visibilityFlagDescription') }),
-        outputdir: flags.string({ char: 'o', description: messages.getMessage('outputDirectoryFlagDescription') })
+        outputdir: flags.directory({ char: 'o', description: messages.getMessage('outputDirectoryFlagDescription') })
     };
 
     // Set this to true if your command requires a project workspace; 'requiresProject' is false by default
