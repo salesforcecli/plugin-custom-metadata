@@ -1,21 +1,21 @@
 {
-    "commandDescription": "Converts a custom object and all its records to an equivalent custom metadata type",
+    "commandDescription": "generates a custom metadata type and all its records for the provided sobject",
     "objnameFlagDescription": "DeveloperName of the object to create a type for",
     "visibilityFlagDescription": "Visibility for the type. Valid values are 'Public' and 'Protected'. If blank, uses 'Public'",
     "errorNoRecResults": "No results found for the organization '%s'.",
     "typenameFlagDescription": "The name of the new Custommetadata Type. The name can be up to 40 characters and must start with a letter.",
     "labelFlagDescription": "The label of the new Custommetadata Type.",
     "plurallabelFlagDescription": "The plural label of the new Custommetadata Type. If blank, uses label",
-    "sobjectnameFlagDescription": "The sObject name you are converting to Custommetadata",
-    "sourceusernameFlagDescription": "username or alias for the source org that contains the Custom Setting or SObject and data to be converted",
+    "sobjectnameFlagDescription": "The sObject name you are generating to Custommetadata",
+    "sourceusernameFlagDescription": "username or alias for the source org that contains the Custom Setting or SObject and data to be generateed",
     "targetusernameFlagDescription": "username or alias for the target org; overrides default target org",
     "deployFlagDescription": "Runs the force:source:push command after Source XML is created",
-    "ignoreFlagDescription": "ignore field type converstion issues, default is to create text fields and convert source to text",
+    "ignoreFlagDescription": "ignore field type converstion issues, default is to create text fields and generate source to text",
     "loglevelFlagDescription": "logging level for this command invocation",
     "typenameFlagError": "not a valid custom metadatatype name",
     "sobjectnameFlagError": "not a valid custom metadatatype name",
-    "sourceusernameError": "no user with found with the provided username or alias",
+    "sourceusernameError": "no user found with the provided username or alias",
     "sourceuserAuthenticationError": "Issue with authenticating to source org with sourceusername provide: %s MoreInfo: %s.",
     "generateError": "Fialed to generate custom metadata. reason: %s.",
-    "customSettingTypeError": "Cannot convert custom settings %s of Hierarchical type."
+    "customSettingTypeError": "Cannot generate custom metadata for the custom settings %s of Hierarchical type."
 }
