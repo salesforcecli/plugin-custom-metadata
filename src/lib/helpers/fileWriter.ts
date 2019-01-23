@@ -6,7 +6,7 @@ export class FileWriter {
      * @param devname
      * @param objectXML
      */
-    public async writeTypeFile(fs, dir, devName, objectXML) {
+    public async writeTypeFile(fs , dir: string, devName: string, objectXML: string) {
         let apiName = devName;
         const dirName = this.createDir(dir);
 
@@ -19,6 +19,7 @@ export class FileWriter {
             apiName += '__mdt';
         }
         const outputFilePath = `${dirName}${apiName}/${apiName}.object-meta.xml`;
+
         await fs.mkdirp(`${dirName}${apiName}`);
         await fs.writeFile(outputFilePath, objectXML);
         return outputFilePath;
