@@ -4,7 +4,7 @@ import { isEmpty } from '@salesforce/kit';
 import { AnyJson, ensureJsonArray } from '@salesforce/ts-types';
 import { isNullOrUndefined } from 'util';
 import { FileWriter } from '../../../lib/helpers/fileWriter';
-import { MetdataUtil } from '../../../lib/helpers/metadataUtil';
+// import { MetdataUtil } from '../../../lib/helpers/metadataUtil';
 import { ValidationUtil } from '../../../lib/helpers/validationUtil';
 import { Templates } from '../../../lib/templates/templates';
 
