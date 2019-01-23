@@ -11,5 +11,8 @@
     "targetusernameFlagDescription": "username or alias for the target org; overrides default target org",
     "deployFlagDescription": "Runs the force:source:push command after Source XML is created",
     "ignoreFlagDescription": "ignore field type converstion issues, default is to create text fields and convert source to text",
-    "loglevelFlagDescription": "logging level for this command invocation"
+    "loglevelFlagDescription": "logging level for this command invocation",
+    "inputDirectoryFlagDescription": "Specify the directory where the custom metadata type definition will be pulled from (default is 'force-app/main/default/objects')",
+    "outputDirectoryFlagDescription": "Specify the directory where the file will be created (default is 'force-app/main/default/customMetadata')",
+    "successResponse": "Congrats! Created a '%s'__mdt type with '%s' records!"
 }

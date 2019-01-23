@@ -45,7 +45,7 @@ export class FileWriter {
         return outputFilePath;
     }
 
-    private createDir(dir) {
+    public createDir(dir) {
         if (dir) {
             if (dir.endsWith('/')) {
                 return dir;

@@ -1,8 +1,9 @@
 import { core, flags, SfdxCommand } from '@salesforce/command';
 import { AnyJson } from '@salesforce/ts-types';
+import { CreateUtil } from '../../../lib/helpers/createUtil';
 import { FileWriter } from '../../../lib/helpers/fileWriter';
-import { createRecord } from '../../../lib/helpers/helper';
 import { MetdataUtil  } from '../../../lib/helpers/metadatautil';
+import { Record } from '../../../lib/interfaces/record';
 import { Templates } from '../../../lib/templates/templates';
 
 // Initialize Messages with the current plugin directory
@@ -34,7 +35,9 @@ export default class Convert extends SfdxCommand {
     sourceusername: flags.string({char: 'x', description: messages.getMessage('sourceusernameFlagDescription')}),
     deploy: flags.string({char: 'd', description: messages.getMessage('deployFlagDescription')}),
     ignore: flags.string({char: 'i', description: messages.getMessage('ignoreFlagDescription')}),
-    loglevel: flags.string({char: 'l', description: messages.getMessage('loglevelFlagDescription')})
+    loglevel: flags.string({char: 'l', description: messages.getMessage('loglevelFlagDescription')}),
+    inputdir: flags.directory({char: 'n', description: messages.getMessage('inputDirectoryFlagDescription')}),
+    outputdir: flags.directory({char: 'o', description: messages.getMessage('outputDirectoryFlagDescription')})
 };
 
   // Comment this out if your command does not require an org username
@@ -46,11 +49,14 @@ export default class Convert extends SfdxCommand {
   public async run(): Promise<AnyJson> {
     const objname = this.flags.sobjectname;
     const visibility = this.flags.visibility;
+    const inputdir = this.flags.inputdir || 'force-app/main/default/objects';
+    const outputdir = this.flags.outputdir || 'force-app/main/default/customMetadata';
 
     // this.org is guaranteed because requiresUsername=true, as opposed to supportsUsername
     const conn = this.org.getConnection();
     const query = `Select Name from ${objname}`;
     const metadatautil = new MetdataUtil();
+    const createUtil = new CreateUtil();
 
     const describeObj = await metadatautil.describeObj(objname, conn);
     const fieldObj = await metadatautil.queryRecords(objname, conn);
@@ -62,10 +68,6 @@ export default class Convert extends SfdxCommand {
     console.log(describeField);
     console.log(describeAllFields);
     console.log(isvalidObjectType);
-    // The type we are querying for
-    interface Record {
-      Name: string;
-    }
 
     // Query the org
     const result = await conn.query<Record>(query);
@@ -91,13 +93,26 @@ export default class Convert extends SfdxCommand {
     for (const rec of result.records) {
         const recName = this.getCleanRecName(rec.Name);
         let recLabel = rec.Name;
+
         if (recLabel.length > 40) {
             recLabel = recLabel.substring(0, 40);
         }
-        createRecord(core.fs, devName, recName, recLabel, false, {});
+
+        await createUtil.createRecord({
+          typename: devName,
+          recname: recName,
+          label: recLabel,
+          inputdir,
+          outputdir,
+          protection: false,
+          varargs: {},
+          fileData: []
+        });
     }
-    this.ux.log(`Congrats! Created a ${devName}__mdt type with ${result.records.length} records!`);
-    return {  };
+
+    this.ux.log(messages.getMessage('successResponse', [devName, result.records.length]));
+
+    return {};
   }
 
   private getCleanRecName(recName: string) {
