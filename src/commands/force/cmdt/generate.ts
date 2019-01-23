@@ -20,7 +20,7 @@ export default class Generate extends SfdxCommand {
   public static description = messages.getMessage('commandDescription');
 
   public static examples = [
-  `"$ sfdx cmdt:generate ---typename ConfigObjectmeta --label Config Object meta --plurallabel Config Object meta --sobjectname ConfigObject__c   --sourceusername SourceOrg
+  `"$ sfdx cmdt:generate ---devName ConfigObjectmeta --label Config Object meta --plurallabel Config Object meta --sobjectname ConfigObject__c   --sourceusername SourceOrg
   Congrats! Created a ConfigObjectmeta__mdt type with 32 records!"
   `
   ];
@@ -29,14 +29,14 @@ export default class Generate extends SfdxCommand {
 
   protected static flagsConfig = {
     // flag with a value (-n, --name=VALUE)
-    typename: flags.string({char: 'n', required: true, description: messages.getMessage('typenameFlagDescription')}),
+    devname: flags.string({char: 'n', required: true, description: messages.getMessage('devnameFlagDescription')}),
     label: flags.string({char: 'l', description: messages.getMessage('labelFlagDescription')}),
     plurallabel: flags.string({char: 'p', description: messages.getMessage('plurallabelFlagDescription')}),
     visibility: flags.string({char: 'v', description: messages.getMessage('visibilityFlagDescription')}),
     sobjectname: flags.string({char: 's', required: true, description: messages.getMessage('sobjectnameFlagDescription')}),
     sourceusername: flags.string({char: 'x', description: messages.getMessage('sourceusernameFlagDescription')}),
     deploy: flags.string({char: 'd', description: messages.getMessage('deployFlagDescription')}),
-    ignore: flags.string({char: 'i', description: messages.getMessage('ignoreFlagDescription')}),
+    ignoreunsupported: flags.string({char: 'i', description: messages.getMessage('ignoreUnsupportedFlagDescription')}),
     loglevel: flags.string({char: 'l', description: messages.getMessage('loglevelFlagDescription')})
 };
 
@@ -54,7 +54,7 @@ export default class Generate extends SfdxCommand {
     const validator = new ValidationUtil();
 
     const objname = this.flags.sobjectname;
-    const cmdttype = this.flags.typename;
+    const cmdttype = this.flags.devname;
     const sourceuser = this.flags.sourceusername;
 
     let username: string;
@@ -83,14 +83,14 @@ export default class Generate extends SfdxCommand {
             throw new SfdxError(errMsg, 'sourceuserAuthenticationError');
         }
     }
-    let typeName;
+    let devName;
     if (!isNullOrUndefined(objname)) {
         if (!validator.validateAPIName(objname)) {
             throw SfdxError.create('custommetadata', 'generate', 'sobjectnameFlagError', [objname]);
         } else if (objname.indexOf('__c')) {
-            typeName = objname.substring(0, objname.indexOf('__c')) + 'Type';
+            devName = objname.substring(0, objname.indexOf('__c')) + 'Type';
         } else {
-            typeName = objname + 'Type';
+            devName = objname + 'Type';
         }
     } else {
         throw SfdxError.create('custommetadata', 'generate', 'sobjectnameFlagError', [objname]);
@@ -124,15 +124,15 @@ export default class Generate extends SfdxCommand {
     }
 
     const visibility = this.flags.visibility || 'Public';
-    const label = this.flags.label || typeName;
-    const plurallabel = this.flags.plurallabel || typeName;
+    const label = this.flags.label || devName;
+    const plurallabel = this.flags.plurallabel || devName;
 
     try {
         // create custom metadata type
         const templates = new Templates();
         const objectXML = templates.createObjectXML({label, labelPlural: plurallabel}, visibility);
         const fileWriter = new FileWriter();
-        await fileWriter.writeTypeFile(core.fs, '', typeName, objectXML);
+        await fileWriter.writeTypeFile(core.fs, '', devName, objectXML);
 
         // get all the field details before creating feild metadata
         const describeAllFields = metadataUtil.describeObjFields(describeObj);
