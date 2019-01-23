@@ -20,8 +20,8 @@ export default class Generate extends SfdxCommand {
   public static description = messages.getMessage('commandDescription');
 
   public static examples = [
-  `$ sfdx custommetadata:generate --objname ConfigObject__c --visibility Public -u myOrg@org.com
-  Congrats! Created a ConfigObject__mdt type with 32 records!
+  `"$ sfdx cmdt:generate ---typename ConfigObjectmeta --label Config Object meta --plurallabel Config Object meta --sobjectname ConfigObject__c   --sourceusername SourceOrg
+  Congrats! Created a ConfigObjectmeta__mdt type with 32 records!"
   `
   ];
 
@@ -171,40 +171,7 @@ export default class Generate extends SfdxCommand {
         const errMsg = messages.getMessage('generateError', [e.message]);
         throw new SfdxError(errMsg, 'generateError');
     }
-    /* previous code
-    // The type we are querying for
-    interface Record {
-      Name: string;
-    }
 
-    const query = `Select Name from ${objname}`;
-
-    // Query the org
-    const result = await conn.query<Record>(query);
-
-    if (isEmpty(sObjectRecords)) {
-      throw SfdxError.create('custommetadata', 'generate', 'errorNoRecResults', [objname]);
-    }
-
-    // now let's create the records!
-    sObjectRecords['records'].map( record => {
-        const recName = this.getCleanRecName(record.Name);
-        let recLabel = record.Name;
-        if (recLabel.length > 40) {
-            recLabel = recLabel.substring(0, 40);
-        }
-        createRecord(core.fs, devName, recName, recLabel, false, {});
-    });
-
-    for (const rec of result.records) {
-        const recName = this.getCleanRecName(rec.Name);
-        let recLabel = rec.Name;
-        if (recLabel.length > 40) {
-            recLabel = recLabel.substring(0, 40);
-        }
-        createRecord(core.fs, devName, recName, recLabel, false, {});
-    }
-    this.ux.log(`Congrats! Created a ${devName}__mdt type with ${result.records.length} records!`); */
     return {  };
 
   }
