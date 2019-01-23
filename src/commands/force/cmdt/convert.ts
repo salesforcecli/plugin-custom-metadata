@@ -1,10 +1,10 @@
 import { core, flags, SfdxCommand } from '@salesforce/command';
 import { AnyJson } from '@salesforce/ts-types';
-import { FileWriter } from '../../../lib/helpers/fileWriter';
 import { CreateUtil } from '../../../lib/helpers/createUtil';
+import { FileWriter } from '../../../lib/helpers/fileWriter';
 import { MetdataUtil  } from '../../../lib/helpers/metadatautil';
-import { Templates } from '../../../lib/templates/templates';
 import { Record } from '../../../lib/interfaces/record';
+import { Templates } from '../../../lib/templates/templates';
 
 // Initialize Messages with the current plugin directory
 core.Messages.importMessagesDirectory(__dirname);
@@ -35,7 +35,9 @@ export default class Convert extends SfdxCommand {
     sourceusername: flags.string({char: 'x', description: messages.getMessage('sourceusernameFlagDescription')}),
     deploy: flags.string({char: 'd', description: messages.getMessage('deployFlagDescription')}),
     ignore: flags.string({char: 'i', description: messages.getMessage('ignoreFlagDescription')}),
-    loglevel: flags.string({char: 'l', description: messages.getMessage('loglevelFlagDescription')})
+    loglevel: flags.string({char: 'l', description: messages.getMessage('loglevelFlagDescription')}),
+    inputdir: flags.directory({char: 'n', description: messages.getMessage('inputDirectoryFlagDescription')}),
+    outputdir: flags.directory({char: 'o', description: messages.getMessage('outputDirectoryFlagDescription')})
 };
 
   // Comment this out if your command does not require an org username
@@ -47,6 +49,8 @@ export default class Convert extends SfdxCommand {
   public async run(): Promise<AnyJson> {
     const objname = this.flags.sobjectname;
     const visibility = this.flags.visibility;
+    const inputdir = this.flags.inputdir || 'force-app/main/default/objects';
+    const outputdir = this.flags.outputdir || 'force-app/main/default/customMetadata';
 
     // this.org is guaranteed because requiresUsername=true, as opposed to supportsUsername
     const conn = this.org.getConnection();
@@ -72,39 +76,41 @@ export default class Convert extends SfdxCommand {
       throw new core.SfdxError(messages.getMessage('errorNoRecResults', [objname]));
     }
 
-    let devName;
+    let typename;
     if (objname.endsWith('__c')) {
-        devName = objname.substring(0, objname.indexOf('__c')) + 'Type';
+        typename = objname.substring(0, objname.indexOf('__c')) + 'Type';
     } else {
-        devName = objname + 'Type';
+        typename = objname + 'Type';
     }
-    const label = devName;
-    const plurallabel = devName;
+    const label = typename;
+    const plurallabel = typename;
     const templates = new Templates();
     const objectXML = templates.createObjectXML({label, plurallabel}, visibility);
     const fileWriter = new FileWriter();
-    await fileWriter.writeTypeFile(core.fs, '', devName, objectXML);
+    await fileWriter.writeTypeFile(core.fs, '', typename, objectXML);
 
     // now let's create the records!
     for (const rec of result.records) {
-        const recName = this.getCleanRecName(rec.Name);
-        let recLabel = rec.Name;
+        const recname = this.getCleanRecName(rec.Name);
+        let label = rec.Name;
 
-        if (recLabel.length > 40) {
-            recLabel = recLabel.substring(0, 40);
+        if (label.length > 40) {
+            label = label.substring(0, 40);
         }
 
-        createUtil.createRecord({
-          typename: devName,
-          recname: recName,
-          label: recLabel,
-          protection: false,
-          varargs: {},
-          fileData: []
+        await createUtil.createRecord({
+          typename,
+          recname,
+          label,
+          inputdir,
+          outputdir,
+          protection: false
         });
     }
-    this.ux.log(`Congrats! Created a ${devName}__mdt type with ${result.records.length} records!`);
-    return {  };
+
+    this.ux.log(messages.getMessage('successResponse', [typename, result.records.length]));
+
+    return {};
   }
 
   private getCleanRecName(recName: string) {

@@ -1,14 +1,17 @@
 import { core } from '@salesforce/command';
 import { CreateConfig } from '../interfaces/createConfig';
+import { CustomField } from '../interfaces/customField';
 
 // NOTE: the template string indentation is important to output well-formatted XML. Altering that whitespace will change the whitespace of the output.
 export class CreateUtil {
 
-  fieldTypeMap: object;
+  private fieldTypeMap: object;
 
+  /**
+   * Number and Percent types will be int or double depending on their respective scale values.
+   * If the scale === 0, it is an int, otherwise it is a double
+   */
   constructor() {
-    // Number and Percent types will be int or double depending on their respective scale values.
-    // If the scale === 0, it is an int, otherwise it is a double
     this.fieldTypeMap = {
       Checkbox: 'boolean',
       Date: 'date',
@@ -24,6 +27,23 @@ export class CreateUtil {
   }
 
   /**
+   * Creates the Custom Metadata Record
+   *
+   * @param  createConfig Properties include typename, recname, label, protection, varargs, and fileData
+   * @return void
+   */
+  public async createRecord(createConfig: CreateConfig) {
+    const outputFilePath = `${createConfig.outputdir}/${createConfig.typename}.${createConfig.recname}.md-meta.xml`;
+    const newRecordContent = this.getRecordTemplate(
+      createConfig.label,
+      createConfig.protection,
+      this.buildCustomFieldXml(createConfig.varargs, createConfig.fileData)
+    );
+
+    return core.fs.writeFile(outputFilePath, newRecordContent);
+  }
+
+  /**
    * Takes JSON representation of CLI varargs and converts them to xml with help
    * from helper.getFieldTemplate
    *
@@ -31,11 +51,11 @@ export class CreateUtil {
    * @param  fileData Array of objects that contain field data
    * @return {string} String representation of XML
    */
-  private buildCustomFieldXml(cliParams: object, fileData: any) {
+  private buildCustomFieldXml(cliParams: object, fileData: CustomField[]) {
     let ret = '';
     let type = '';
 
-    for (let fieldName of Object.keys(cliParams)) {
+    for (const fieldName of Object.keys(cliParams)) {
       type = this.getFieldType(fileData, fieldName);
       ret += this.getFieldTemplate(fieldName, cliParams[fieldName], type);
     }
@@ -50,12 +70,12 @@ export class CreateUtil {
    * @param  fieldName Name of the field
    * @return {string} Type used by a custom metadata record
    */
-  private getFieldType(fileData: any = [], fieldName: string) {
+  private getFieldType(fileData: CustomField[] = [], fieldName: string) {
     let thisFieldName = '';
     let type = '';
     let ret = 'string';
 
-    for (let file of fileData) {
+    for (const file of fileData) {
       thisFieldName = file.CustomField.fullName[0];
       type = file.CustomField.type[0];
 
@@ -120,22 +140,5 @@ export class CreateUtil {
     <label>${label}</label>
     <protected>${protection}</protected>${values}
 </CustomMetadata>`.trim();
-  }
-
-  /**
-   * Creates the Custom Metadata Record
-   *
-   * @param  createConfig Properties include typename, recname, label, protection, varargs, and fileData
-   * @return void
-   */
-  public createRecord(createConfig: CreateConfig) {
-    const outputFilePath = `force-app/main/default/customMetadata/${createConfig.typename}.${createConfig.recname}.md-meta.xml`;
-    const newRecordContent = this.getRecordTemplate(
-      createConfig.label,
-      createConfig.protection,
-      this.buildCustomFieldXml(createConfig.varargs, createConfig.fileData)
-    );
-
-    core.fs.writeFile(outputFilePath, newRecordContent);
   }
 }
