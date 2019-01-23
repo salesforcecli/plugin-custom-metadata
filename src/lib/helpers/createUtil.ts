@@ -2,7 +2,7 @@ import { core } from '@salesforce/command';
 import { CreateConfig } from '../interfaces/createConfig';
 
 // NOTE: the template string indentation is important to output well-formatted XML. Altering that whitespace will change the whitespace of the output.
-export class Helper {
+export class CreateUtil {
 
   fieldTypeMap: object;
 

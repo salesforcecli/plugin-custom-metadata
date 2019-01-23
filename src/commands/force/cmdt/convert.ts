@@ -1,7 +1,7 @@
 import { core, flags, SfdxCommand } from '@salesforce/command';
 import { AnyJson } from '@salesforce/ts-types';
 import { FileWriter } from '../../../lib/helpers/fileWriter';
-import { Helper } from '../../../lib/helpers/helper';
+import { CreateUtil } from '../../../lib/helpers/createUtil';
 import { MetdataUtil  } from '../../../lib/helpers/metadatautil';
 import { Templates } from '../../../lib/templates/templates';
 import { Record } from '../../../lib/interfaces/record';
@@ -52,7 +52,7 @@ export default class Convert extends SfdxCommand {
     const conn = this.org.getConnection();
     const query = `Select Name from ${objname}`;
     const metadatautil = new MetdataUtil();
-    const helper = new Helper();
+    const createUtil = new CreateUtil();
 
     const describeObj = await metadatautil.describeObj(objname, conn);
     const fieldObj = await metadatautil.queryRecords(objname, conn);
@@ -94,7 +94,7 @@ export default class Convert extends SfdxCommand {
             recLabel = recLabel.substring(0, 40);
         }
 
-        helper.createRecord({
+        createUtil.createRecord({
           typename: devName,
           recname: recName,
           label: recLabel,

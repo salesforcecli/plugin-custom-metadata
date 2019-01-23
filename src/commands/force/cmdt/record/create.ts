@@ -1,6 +1,6 @@
 import { core, flags, SfdxCommand } from '@salesforce/command';
 import { AnyJson } from '@salesforce/ts-types';
-import { Helper } from '../../../../lib/helpers/helper';
+import { CreateUtil } from '../../../../lib/helpers/createUtil';
 import { parseString } from 'xml2js';
 
 // Initialize Messages with the current plugin directory
@@ -50,7 +50,7 @@ export default class Create extends SfdxCommand {
     protected static requiresProject = true;
 
     public async run(): Promise<AnyJson> {
-      const helper = new Helper();
+      const createUtil = new CreateUtil();
       let typename = this.flags.typename;
       const recname = this.flags.recname;
       const label = this.flags.label || this.flags.recname;
@@ -69,7 +69,7 @@ export default class Create extends SfdxCommand {
 
       let fileData = await this.getData(fieldDirPath, fileNames);
 
-      helper.createRecord({
+      createUtil.createRecord({
         typename: typename,
         recname: recname,
         label: label,
