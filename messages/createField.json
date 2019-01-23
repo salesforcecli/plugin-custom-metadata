@@ -3,6 +3,7 @@
     "typenameFlagDescription": "DeveloperName of the type to create a record for",
     "recordNameFlagDescription": "DeveloperName of the new record",
     "labelFlagDescription": "Label of the new record",
+    "outputDirectoryFlagDescription":"The directory to store the newly created files. The location can be an absolute path or relative to the current working directory. The default is the current directory.",
     "protectedFlagDescription": "Visibility for the record. If blank, uses false",
     "errorInvalidCustomField": "Custom fields must end in __c."
 }
