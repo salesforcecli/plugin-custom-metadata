@@ -4,7 +4,7 @@ import { isEmpty } from '@salesforce/kit';
 import { AnyJson, ensureJsonArray } from '@salesforce/ts-types';
 import { isNullOrUndefined } from 'util';
 import { FileWriter } from '../../../lib/helpers/fileWriter';
-// import { MetdataUtil } from '../../../lib/helpers/metadataUtil';
+import { MetadataUtil } from '../../../lib/helpers/metadataUtil';
 import { ValidationUtil } from '../../../lib/helpers/validationUtil';
 import { Templates } from '../../../lib/templates/templates';
 
@@ -99,9 +99,9 @@ export default class Generate extends SfdxCommand {
     if (!validator.validateMetadataTypeName(cmdttype)) {
         throw  SfdxError.create('custommetadata', 'generate', 'typenameFlagError', [cmdttype]);
     }
-    const metadataUtil = new MetdataUtil(conn);
+    const metadataUtil = new MetadataUtil(conn);
     // get defined only if there is source username provided
-    const srcMetadataUtil = new MetdataUtil(sourceOrgConn);
+    const srcMetadataUtil = new MetadataUtil(sourceOrgConn);
     if (!sourceOrgConn) {
         // use default target org connection to get object describe if no source is provided.
         describeObj = await metadataUtil.describeObj(objname);

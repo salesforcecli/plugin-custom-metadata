@@ -1,7 +1,7 @@
 import { core } from '@salesforce/command';
 import { AnyJson, toAnyJson } from '@salesforce/ts-types';
 
-export class MetdataUtil {
+export class MetadataUtil {
 
   private conn: core.Connection;
   constructor(connection: core.Connection) {

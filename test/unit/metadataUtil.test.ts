@@ -3,7 +3,7 @@ import { testSetup } from '@salesforce/core/lib/testSetup';
 import { fromStub, stubInterface } from '@salesforce/ts-sinon';
 import { deepStrictEqual } from 'assert';
 import { Metadata } from 'jsforce';
-import { MetdataUtil } from '../../src/lib/helpers/metadataUtil';
+import { MetadataUtil } from '../../src/lib/helpers/metadataUtil';
 
 const $$ = testSetup();
 
@@ -40,7 +40,7 @@ describe('metadataUtil', () => {
             const conn = fromStub(stubInterface<core.Connection>($$.SANDBOX, { metadata }));
 
             // Pass in the mock connection
-            const metadataUtil = new MetdataUtil(conn);
+            const metadataUtil = new MetadataUtil(conn);
 
             const objDescribe = await metadataUtil.describeObj('TriggerSettings__c');
             deepStrictEqual(objDescribe, readResponse);
@@ -100,7 +100,7 @@ describe('metadataUtil', () => {
             const conn = fromStub(stubInterface<core.Connection>($$.SANDBOX, { metadata, query: async () => (queryResponse) }));
 
             // Pass in the mock connection
-            const metadataUtil = new MetdataUtil(conn);
+            const metadataUtil = new MetadataUtil(conn);
 
             const objDescribe = await metadataUtil.describeObj('TriggerSettings__c');
             const queryRes = await metadataUtil.queryRecords(objDescribe);
@@ -142,7 +142,7 @@ describe('metadataUtil', () => {
             const conn = fromStub(stubInterface<core.Connection>($$.SANDBOX, { metadata }));
 
             // Pass in the mock connection
-            const metadataUtil = new MetdataUtil(conn);
+            const metadataUtil = new MetadataUtil(conn);
 
             const objDescribe = await metadataUtil.describeObj('TriggerSettings__c');
             const fieldsDescribe = await metadataUtil.describeObjFields(objDescribe);
@@ -184,7 +184,7 @@ describe('metadataUtil', () => {
             const conn = fromStub(stubInterface<core.Connection>($$.SANDBOX, { metadata }));
 
             // Pass in the mock connection
-            const metadataUtil = new MetdataUtil(conn);
+            const metadataUtil = new MetadataUtil(conn);
 
             const objDescribe = await metadataUtil.describeObj('TriggerSettings__c');
             const fieldDescribe = await metadataUtil.describeField(objDescribe, 'IsDisabled__c');
@@ -225,7 +225,7 @@ describe('metadataUtil', () => {
             const conn = fromStub(stubInterface<core.Connection>($$.SANDBOX, { metadata }));
 
             // Pass in the mock connection
-            const metadataUtil = new MetdataUtil(conn);
+            const metadataUtil = new MetadataUtil(conn);
 
             const objDescribe = await metadataUtil.describeObj('TriggerSettings__c');
             const isvalidCustomSetting = await metadataUtil.validCustomSettingType(objDescribe);
