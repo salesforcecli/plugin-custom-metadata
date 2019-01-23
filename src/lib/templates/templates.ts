@@ -22,16 +22,17 @@ export class Templates {
      * @param visibility
      */
     public createFieldXML(data, defaultToString) {
-        let returnValue = `<?xml version="1.0" encoding="UTF-8"?>
-        <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-            <fullName>${data.name.endsWith('__c' ? data.name : data.name + '__c')}</fullName>
-            <description>${data.description || ''}</description>
-            <externalId>${data.externalId || 'false'}</externalId>
-            <fieldManageability>${data.fieldManageability || 'DeveloperControlled'}</fieldManageability>
-            <inlineHelpText>${data.inlineHelpText || ''}</inlineHelpText>
-            <label>${data.label}</label>`;
-
+        let returnValue = '<?xml version="1.0" encoding="UTF-8"?>\n';
+        returnValue += '<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">\n';
+        returnValue += this.getFullName(data);
+        returnValue += this.getDescription(data);
+        returnValue += this.getExternalId(data);
+        returnValue += this.getFieldManageability(data);
+        returnValue += this.getInlineHelpText(data);
+        returnValue += this.getLabel(data);
         returnValue += this.getType(data, defaultToString);
+        returnValue += this.getValueSet(data);
+        returnValue += this.getDefaultValue(data);
         returnValue += this.getRequiredTag(data);
         returnValue += this.getPercisionTag(data);
         returnValue += this.getScaleTag(data);
@@ -41,166 +42,154 @@ export class Templates {
         return returnValue;
     }
 
-    public convertInputToFieldType(input) {
-        let fieldType = input;
-        switch (input.toLowerCase()) {
-            case 'checkbox':
-                fieldType = 'boolean';
+    public createDefaultTypeStructure(fullName: string, type: string, label: string, picklistValues: []) {
+
+        switch (type) {
+            case 'Checkbox':
+                return { fullName, defaultValue: 'false', type, label };
                 break;
-            case 'number':
-                fieldType = 'double';
+            case 'Date':
+                return { fullName, type, label };
                 break;
-            case 'text':
-                fieldType = 'string';
+            case 'DateTime':
+                return { fullName, type, label };
                 break;
-            case 'textarealong':
-                fieldType = 'textArea';
+            case 'Email':
+                return { fullName, type, label, unique: 'false' };
+                break;
+            case 'Number':
+                return { fullName, type, label, precision: '18', scale: '0', unique: 'false' };
+                break;
+            case 'Percent':
+                return { fullName, type, label, precision: '18', scale: '0' };
+                break;
+            case 'Phone':
+                return { fullName, type, label };
+                break;
+            case 'Picklist':
+                return {
+                    fullName, type, label, valueSet: {
+                        restricted: 'true',
+                        valueSetDefinition: {
+                            sorted: 'false',
+                            value: this.createPicklistValues(picklistValues)
+                        }
+                    }
+                };
+                break;
+            case 'Text':
+                return { fullName, type, label, unique: 'false', length: '100' };
+                break;
+            case 'TextArea':
+                return { fullName, type, label };
+                break;
+            case 'LongTextArea':
+                return { fullName, type, label, length: '32768', visibleLines: 3 };
+                break;
+            case 'Url':
+                return { fullName, type, label };
                 break;
         }
-        return fieldType;
     }
 
-    private getType(data, defaultToString) {
-        let fieldTag = '<type>';
-        switch (data.type.toLowerCase()) {
-            case 'boolean':
-                fieldTag += 'Checkbox';
-                break;
-            case 'double':
-                fieldTag += 'Number';
-                break;
-            case 'string':
-                fieldTag += 'Text';
-                break;
-            case 'reference':
-                if (defaultToString) {
-                    fieldTag += 'Text';
-                } else {
-                    throw SfdxError.create('custommetadata', 'template', 'errorNotAValidaType', [data.type]);
-                }
-                break;
-            case 'currency':
-                if (defaultToString) {
-                    fieldTag += 'Text';
-                } else {
-                    throw SfdxError.create('custommetadata', 'template', 'errorNotAValidaType', [data.type]);
-                }
-                break;
-            case 'encryptedstring':
-                if (defaultToString) {
-                    fieldTag += 'Text';
-                } else {
-                    throw SfdxError.create('custommetadata', 'template', 'errorNotAValidaType', [data.type]);
-                }
-                break;
-            case 'multipicklist':
-                if (defaultToString) {
-                    fieldTag += 'Text';
-                } else {
-                    throw SfdxError.create('custommetadata', 'template', 'errorNotAValidaType', [data.type]);
-                }
-                break;
-            case 'location':
-                if (defaultToString) {
-                    fieldTag += 'Text';
-                } else {
-                    throw SfdxError.create('custommetadata', 'template', 'errorNotAValidaType', [data.type]);
-                }
-                break;
-            case 'date':
-                fieldTag += 'Date';
-                break;
-            case 'datetime':
-                fieldTag += 'DateTime';
-                break;
-            case 'email':
-                fieldTag += 'Email';
-                break;
-            case 'percent':
-                fieldTag += 'Percent';
-                break;
-            case 'phone':
-                fieldTag += 'Phone';
-                break;
-            case 'picklist':
-                fieldTag += 'Picklist';
-                break;
-            case 'textarea':
-                // NOTE: text area, rich text area, and text area long both come back as textarea
-                if (data.htmlFormatted) { // TODO: do we want this as a text area instead of a string
-                    if (defaultToString) {
-                        fieldTag += 'Text';
-                    } else {
-                        throw SfdxError.create('custommetadata', 'template', 'errorNotAValidaType', [data.type]);
-                    }
-                    break;
-                }
-                if (data.length > 255) {
-                    fieldTag += 'LongTextArea';
-                } else {
-                    fieldTag += 'TextArea';
-                }
-                break;
-            case 'url':
-                fieldTag += 'Url';
-                break;
-            default:
-                throw SfdxError.create('custommetadata', 'template', 'errorNotAValidaType', [data.type]);
-                break;
+    public canConvert(type) {
+        const metadataFieldTypes = ['Checkbox', 'Date', 'DateTime', 'Email', 'Number', 'Percent', 'Phone', 'Picklist', 'Text', 'TextArea', 'LongTextArea', 'Url'];
+        return metadataFieldTypes.includes(type);
+    }
+
+    private getType(data, defaultToMetadataType) {
+        if (this.canConvert(data.type)) {
+            return `\t<type>${data.type}</type>\n`;
+        } else if (defaultToMetadataType) {
+            return `\t<type>${this.getConvertType(data.type)}</type>\n`;
+        } else {
+            throw SfdxError.create('custommetadata', 'template', 'errorNotAValidaType', [data.type]);
         }
 
-        fieldTag += '</type> \n';
-        return fieldTag;
+    }
 
+    private getConvertType(type) {
+        if (type === 'Html') {
+            return 'LongTextArea';
+        } else {
+            return 'Text';
+        }
+    }
+
+    private getFullName(data) {
+        const name = data.fullName.endsWith('__c') ? data.fullName : data.fullName + '__c';
+        return `\t<fullName>${name}</fullName>\n`;
+    }
+
+    private getDescription(data) {
+        return data.description ? `\t<description>${data.description}</description>\n` : '';
+    }
+
+    private getExternalId(data) {
+        return data.externalId ? `\t<externalId>${data.externalId || 'false'}</externalId>\n` : '';
+    }
+
+    private getFieldManageability(data) {
+        return `\t<fieldManageability>${data.fieldManageability || 'DeveloperControlled'}</fieldManageability>\n`;
+    }
+
+    private getInlineHelpText(data) {
+        return data.inlineHelpText ? `\t<inlineHelpText>${data.inlineHelpText || 'false'}</inlineHelpText>\n` : '';
+    }
+    private getLabel(data) {
+        return `\t<label>${data.label}</label>\n`;
     }
 
     private getRequiredTag(data) {
-        if (data.type.toLowerCase() === 'email' || data.type.toLowerCase() === 'text') {
-            return `<unique>${data.unique || false}</unique>
-            `;
-        } else {
-            return '';
-        }
+        return data.unique ? `\t<unique>${data.unique || false}</unique>\n` : '';
     }
 
     private getPercisionTag(data) {
-        if (data.type.toLowerCase() === 'percent' || data.type.toLowerCase() === 'number') {
-            return `<precision>${data.precision || 18}</precision>
-            `;
-        } else {
-            return '';
-        }
+        return data.precision ? `\t<precision>${data.precision || 18}</precision>\n` : '';
     }
 
     private getScaleTag(data) {
-        if (data.type.toLowerCase() === 'percent' || data.type.toLowerCase() === 'number') {
-            return `<scale>${data.scale || 0}</scale>
-            `;
-        } else {
-            return '';
-        }
+        return data.scale ? `\t<scale>${data.scale || false}</scale>\n` : '';
     }
 
     private getLengthTag(data) {
-        if (data.type.toLowerCase() === 'string') {
-            return `<length>${data.length || 100}</length>
-            `;
-        } else if (data.type.toLowerCase() === 'textarea' && data.length > 255) {
-            return `<length>${data.length || 32768}</length>
-            `;
-        } else {
-            return '';
-        }
+        return data.length ? `\t<length>${data.length || 100}</length>\n` : '';
     }
 
-    // Text area describe does not have information about how many lines are visible
-    // This value is required and we are going to default it to 3
     private getVisibleLines(data) {
-        if (data.type === 'textarea' && data.length > 255) {
-            return '<visibleLines>3</visibleLines> \n';
-        } else {
-            return '';
+        return data.visibleLines ? `\t<visibleLines>${data.visibleLines || 3}</visibleLines>\n` : '';
+    }
+
+    private getDefaultValue(data) {
+        return data.defaultValue ? `\t<defaultValue>${data.defaultValue}</defaultValue>\n` : '';
+    }
+
+    private getValueSet(data) {
+        let fieldValue: string = '';
+        if (data.valueSet) {
+            fieldValue += '\t<valueSet>\n';
+            fieldValue += `\t\t<restricted>${data.valueSet.restricted || false}</restricted>\n`;
+            fieldValue += '\t\t<valueSetDefinition>\n';
+            fieldValue += `\t\t\t<sorted>${data.valueSet.valueSetDefinition.sorted || false}</sorted>\n`;
+            data.valueSet.valueSetDefinition.value.forEach(value => {
+                fieldValue += '\t\t\t<value>\n';
+                fieldValue += `\t\t\t\t<fullName>${value.fullName}</fullName>\n`;
+                fieldValue += `\t\t\t\t<default>${value.default || false}</default>\n`;
+                fieldValue += `\t\t\t\t<label>${value.label}</label>\n`;
+                fieldValue += '\t\t\t</value>\n';
+            });
+            fieldValue += '\t\t</valueSetDefinition>\n';
+            fieldValue += '\t</valueSet>\n';
         }
+        return fieldValue;
+    }
+
+    private createPicklistValues(values: []) {
+        const picklistValues = [];
+        values.forEach(value => {
+            picklistValues.push({ fullName: value, label: value });
+        });
+        return picklistValues;
     }
 
 }
