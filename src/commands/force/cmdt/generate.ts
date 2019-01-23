@@ -4,8 +4,8 @@ import { isEmpty } from '@salesforce/kit';
 import { AnyJson, ensureJsonArray } from '@salesforce/ts-types';
 import { isNullOrUndefined } from 'util';
 import { FileWriter } from '../../../lib/helpers/fileWriter';
-import { createRecord } from '../../../lib/helpers/helper';
-import { MetdataUtil  } from '../../../lib/helpers/metadataUtil';
+// import { createRecord } from '../../../lib/helpers/helper';
+import { MetdataUtil } from '../../../lib/helpers/metadataUtil';
 import { ValidationUtil } from '../../../lib/helpers/validationUtil';
 import { Templates } from '../../../lib/templates/templates';
 
@@ -16,7 +16,7 @@ core.Messages.importMessagesDirectory(__dirname);
 // or any library that is using the messages framework can also be loaded this way.
 const messages = core.Messages.loadMessages('custommetadata', 'generate');
 
-export default class generate extends SfdxCommand {
+export default class Generate extends SfdxCommand {
 
   public static description = messages.getMessage('commandDescription');
 
@@ -54,8 +54,6 @@ export default class generate extends SfdxCommand {
     // to validate different flags provided by the user
     const validator = new ValidationUtil();
 
-    // utility to make different calls to org like describe, query etc.,
-    const metadatautil = new MetdataUtil();
     const objname = this.flags.sobjectname;
     const cmdttype = this.flags.typename;
     const sourceuser = this.flags.sourceusername;
@@ -63,7 +61,6 @@ export default class generate extends SfdxCommand {
     let username: string;
     let sourceOrgConn: core.Connection;
     let describeObj;
-    let sObjectRecords;
     // check whether username or alias is provided as sourceusername
     if (!isNullOrUndefined(sourceuser)) {
         if (sourceuser.substr(sourceuser.length - 4) !== '.com') {
@@ -82,35 +79,19 @@ export default class generate extends SfdxCommand {
             sourceOrgConn = await core.Connection.create({
                 authInfo: await core.AuthInfo.create({ username })
             });
-            describeObj = await metadatautil.describeObj(objname, sourceOrgConn);
-            sObjectRecords = await metadatautil.queryRecords(objname, sourceOrgConn);
         } catch (err) {
             const errMsg = messages.getMessage('sourceuserAuthenticationError', [sourceuser, err.message]);
             throw new SfdxError(errMsg, 'sourceuserAuthenticationError');
         }
-    } else {
-        // use default target org connection to get object describe if no source is provided.
-        if (isNullOrUndefined(describeObj)) {
-            describeObj = await metadatautil.describeObj(objname, conn);
-            sObjectRecords = await metadatautil.queryRecords(objname, conn);
-        }
     }
-    const customSettingType = describeObj['customSettingsType'];
-    if (customSettingType !== undefined && customSettingType === 'Hierarchy') {
-        const errMsg = messages.getMessage('customSettingTypeError', [objname]);
-        throw new SfdxError(errMsg, 'customSettingTypeError');
-    }
-    if (!metadatautil.validCustomSettingType(describeObj)) {
-        const errMsg = messages.getMessage('customSettingTypeError', [objname]);
-        throw new SfdxError(errMsg, 'customSettingTypeError');
-    }
-    const visibility = this.flags.visibility || 'Public';
-    let devName;
+    let typeName;
     if (!isNullOrUndefined(objname)) {
         if (!validator.validateAPIName(objname)) {
             throw SfdxError.create('custommetadata', 'generate', 'sobjectnameFlagError', [objname]);
+        } else if (objname.indexOf('__c')) {
+            typeName = objname.substring(0, objname.indexOf('__c')) + 'Type';
         } else {
-            devName = objname.substring(0, objname.indexOf('__c')) + 'Type';
+            typeName = objname + 'Type';
         }
     } else {
         throw SfdxError.create('custommetadata', 'generate', 'sobjectnameFlagError', [objname]);
@@ -119,44 +100,79 @@ export default class generate extends SfdxCommand {
     if (!validator.validateMetadataTypeName(cmdttype)) {
         throw  SfdxError.create('custommetadata', 'generate', 'typenameFlagError', [cmdttype]);
     }
-    const label = this.flags.label || devName;
-    const plurallabel = this.flags.plurallabel || devName;
+    const metadataUtil = new MetdataUtil(conn);
+    // get defined only if there is source username provided
+    const srcMetadataUtil = new MetdataUtil(sourceOrgConn);
+    if (!sourceOrgConn) {
+        // use default target org connection to get object describe if no source is provided.
+        describeObj = await metadataUtil.describeObj(objname);
+    } else {
+        // use default target org connection to get object describe if no source is provided.
+        describeObj = await srcMetadataUtil.describeObj(objname);
+    }
+    // throw error if the object doesnot exist(empty json as response from the describe call.)
+    if (isEmpty(describeObj)) {
+        const errMsg = messages.getMessage('sobjectnameNoResultError', [objname]);
+        throw new SfdxError(errMsg, 'sobjectnameNoResultError');
+    }
+    // check for custom setting
+    if (describeObj['customSettingsType'] !== undefined) {
+        // if custom setting check for type and visbility
+        if (!metadataUtil.validCustomSettingType(describeObj)) {
+            const errMsg = messages.getMessage('customSettingTypeError', [objname]);
+            throw new SfdxError(errMsg, 'customSettingTypeError');
+        }
+    }
+
+    const visibility = this.flags.visibility || 'Public';
+    const label = this.flags.label || typeName;
+    const plurallabel = this.flags.plurallabel || typeName;
 
     try {
-        const describeField = metadatautil.describeField(describeObj, 'Name');
-        const describeAllFields = metadatautil.describeObjFields(describeObj);
-        const isvalidObjectType = metadatautil.validCustomSettingType(describeObj);
-        console.log(describeObj);
-        console.log(sObjectRecords);
-        console.log(describeField);
-        console.log(describeAllFields);
-        console.log(isvalidObjectType);
-        console.log(cmdttype);
-
         // create custom metadata type
         const templates = new Templates();
-        const objectXML = templates.createObjectXML({label, labelPlural:plurallabel}, visibility);
+        const objectXML = templates.createObjectXML({label, labelPlural: plurallabel}, visibility);
         const fileWriter = new FileWriter();
-        await fileWriter.writeTypeFile(core.fs, '', devName, objectXML);
+        await fileWriter.writeTypeFile(core.fs, '', typeName, objectXML);
+
+        // get all the field details before creating feild metadata
+        const describeAllFields = metadataUtil.describeObjFields(describeObj);
 
         // create custom metdata fields
         const allFields = ensureJsonArray(describeAllFields);
-        await allFields.map(field => {
+        await allFields.map(async field => {
             const recName = this.getCleanRecName(field['fullName']);
             const fieldXML = templates.createFieldXML(field, recName);
-            fileWriter.writeFieldFile(core.fs, '', recName, fieldXML);
+            // need to figure out how to get the directory of the custom metdata created above
+            await fileWriter.writeFieldFile(core.fs, '', recName, fieldXML);
             console.log(recName);
             let recLabel = recName;
             if (recLabel.length > 40) {
                 recLabel = recLabel.substring(0, 40);
             }
         });
+        let sObjectRecords;
+        // query records from source
+        if (!isEmpty(describeObj)) {
+            if (!sourceOrgConn) {
+            sObjectRecords = await metadataUtil.queryRecords(describeObj);
+            console.log(sObjectRecords);
+            } else {
+                sObjectRecords = await srcMetadataUtil.queryRecords(describeObj);
+                console.log(sObjectRecords);
+            }
+        } else {
+            const errMsg = messages.getMessage('sobjectnameNoResultError', [objname]);
+            throw new SfdxError(errMsg, 'sobjectnameNoResultError');
+        }
 
         // create custom metadata records
+        // TO DO
     } catch (e) {
         const errMsg = messages.getMessage('generateError', [e.message]);
         throw new SfdxError(errMsg, 'generateError');
     }
+    /* previous code
     // The type we are querying for
     interface Record {
       Name: string;
@@ -180,7 +196,7 @@ export default class generate extends SfdxCommand {
         }
         createRecord(core.fs, devName, recName, recLabel, false, {});
     });
-    /*
+
     for (const rec of result.records) {
         const recName = this.getCleanRecName(rec.Name);
         let recLabel = rec.Name;
@@ -188,9 +204,10 @@ export default class generate extends SfdxCommand {
             recLabel = recLabel.substring(0, 40);
         }
         createRecord(core.fs, devName, recName, recLabel, false, {});
-    }*/
-    this.ux.log(`Congrats! Created a ${devName}__mdt type with ${result.records.length} records!`);
+    }
+    this.ux.log(`Congrats! Created a ${devName}__mdt type with ${result.records.length} records!`); */
     return {  };
+
   }
 
   private getCleanRecName(recName: string) {
