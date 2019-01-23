@@ -14,8 +14,9 @@
     "loglevelFlagDescription": "logging level for this command invocation",
     "typenameFlagError": "not a valid custom metadatatype name",
     "sobjectnameFlagError": "not a valid custom metadatatype name",
+    "sobjectnameNoResultError": "No sobject with name %s found in the org.",
     "sourceusernameError": "no user found with the provided username or alias",
     "sourceuserAuthenticationError": "Issue with authenticating to source org with sourceusername provide: %s MoreInfo: %s.",
     "generateError": "Fialed to generate custom metadata. reason: %s.",
-    "customSettingTypeError": "Cannot generate custom metadata for the custom settings %s of Hierarchical type."
+    "customSettingTypeError": "Cannot generate custom metadata for the custom settings %s please check type & visibility."
 }
