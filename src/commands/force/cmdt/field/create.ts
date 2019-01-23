@@ -28,10 +28,13 @@ export default class Create extends SfdxCommand {
 
     protected static flagsConfig = {
         fieldname: flags.string({ char: 'n', required: true, description: messages.getMessage('nameFlagDescription') }),
-        fieldtype: flags.string({ char: 'f', required: true, description: messages.getMessage('labelFlagDescription') }),
-        picklistvalues: flags.string({ char: 'p', description: messages.getMessage('plurallabelFlagDescription') }),
+        fieldtype: flags.enum({
+            char: 'f', required: true, description: messages.getMessage('labelFlagDescription'),
+            options: ['Checkbox', 'Date', 'DateTime', 'Email', 'Number', 'Percent', 'Phone', 'Picklist', 'Text', 'TextArea', 'LongTextArea', 'Url']
+        }),
+        picklistvalues: flags.array({ char: 'p', description: messages.getMessage('plurallabelFlagDescription') }),
         label: flags.string({ char: 'l', description: messages.getMessage('plurallabelFlagDescription') }),
-        outputdir: flags.directory({ char: 'o', description: messages.getMessage('outputDirectoryFlagDescription') })
+        outputdir: flags.directory({ char: 'd', description: messages.getMessage('outputDirectoryFlagDescription') })
     };
 
     // Set this to true if your command requires a project workspace; 'requiresProject' is false by default
@@ -39,9 +42,9 @@ export default class Create extends SfdxCommand {
 
     public async run(): Promise<AnyJson> {
         const fieldName = this.flags.fieldname; // this should become the new file name
-        const fieldLabel = this.flags.label || this.flags.fieldName;
+        const label = this.flags.label || this.flags.fieldName;
         const fieldtype = this.flags.fieldtype;
-        // const picklistvalues = this.flags.picklistvalues;
+        const picklistvalues = this.flags.picklistvalues || [];
         const visibility = this.flags.visibility || 'Public';
         const dir = this.flags.outputdir || '';
 
@@ -50,12 +53,11 @@ export default class Create extends SfdxCommand {
             if (!validator.validateAPIName(fieldName)) {
                 throw new Error('Not a valid field');
             }
-            const templates = new Templates();
-            const type = templates.convertInputToFieldType(fieldtype);
-            const data = { name: fieldName, type, label: fieldLabel, length: null };
-            if (fieldtype.toLowerCase() === 'textarealong') {
-                data.length = 32768;
+            if (fieldtype === 'Picklist' && picklistvalues.length === 0) {
+                throw new Error('Picklist values are required when type is Picklist');
             }
+            const templates = new Templates();
+            const data = templates.createDefaultTypeStructure(fieldName, fieldtype, label, picklistvalues);
             const fieldXML = templates.createFieldXML(data, false);
             const writer = new FileWriter();
             await writer.writeFieldFile(core.fs, dir, fieldName, fieldXML);
@@ -68,7 +70,7 @@ export default class Create extends SfdxCommand {
         // Return an object to be displayed with --json
         return {
             fieldName,
-            fieldLabel,
+            label,
             fieldtype,
             visibility
         };
