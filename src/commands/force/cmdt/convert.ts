@@ -76,39 +76,41 @@ export default class Convert extends SfdxCommand {
       throw new core.SfdxError(messages.getMessage('errorNoRecResults', [objname]));
     }
 
-    let typename;
+    let devName;
     if (objname.endsWith('__c')) {
-        typename = objname.substring(0, objname.indexOf('__c')) + 'Type';
+        devName = objname.substring(0, objname.indexOf('__c')) + 'Type';
     } else {
-        typename = objname + 'Type';
+        devName = objname + 'Type';
     }
-    const label = typename;
-    const plurallabel = typename;
+    const label = devName;
+    const plurallabel = devName;
     const templates = new Templates();
     const objectXML = templates.createObjectXML({label, plurallabel}, visibility);
     const fileWriter = new FileWriter();
-    await fileWriter.writeTypeFile(core.fs, '', typename, objectXML);
+    await fileWriter.writeTypeFile(core.fs, '', devName, objectXML);
 
     // now let's create the records!
     for (const rec of result.records) {
-        const recname = this.getCleanRecName(rec.Name);
-        let label = rec.Name;
+        const recName = this.getCleanRecName(rec.Name);
+        let recLabel = rec.Name;
 
-        if (label.length > 40) {
-            label = label.substring(0, 40);
+        if (recLabel.length > 40) {
+            recLabel = recLabel.substring(0, 40);
         }
 
         await createUtil.createRecord({
-          typename,
-          recname,
-          label,
+          typename: devName,
+          recname: recName,
+          label: recLabel,
           inputdir,
           outputdir,
-          protection: false
+          protection: false,
+          varargs: {},
+          fileData: []
         });
     }
 
-    this.ux.log(messages.getMessage('successResponse', [typename, result.records.length]));
+    this.ux.log(messages.getMessage('successResponse', [devName, result.records.length]));
 
     return {};
   }
