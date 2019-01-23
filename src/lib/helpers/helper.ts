@@ -1,4 +1,5 @@
 import { core } from '@salesforce/command';
+import { CreateConfig } from '../interfaces/createConfig';
 
 // NOTE: the template string indentation is important to output well-formatted XML. Altering that whitespace will change the whitespace of the output.
 export class Helper {
@@ -14,7 +15,7 @@ export class Helper {
       DateTime: 'dateTime',
       Email: 'string',
       Phone: 'string',
-      Picklist: 'picklist',
+      Picklist: 'string',
       Text: 'string',
       TextArea: 'string',
       LongTextArea: 'string',
@@ -30,13 +31,12 @@ export class Helper {
    * @param  fileData Array of objects that contain field data
    * @return {string} String representation of XML
    */
-  buildCustomFieldXml(cliParams: object, fileData) {
+  private buildCustomFieldXml(cliParams: object, fileData: any) {
     let ret = '';
     let type = '';
 
     for (let fieldName of Object.keys(cliParams)) {
       type = this.getFieldType(fileData, fieldName);
-      console.log(type);
       ret += this.getFieldTemplate(fieldName, cliParams[fieldName], type);
     }
 
@@ -97,7 +97,7 @@ export class Helper {
    * @param  type Field type (i.e. boolean, dateTime, date, string, double)
    * @return {string} String representation of XML
    */
-  getFieldTemplate(fieldName: string, val: string, type: string) {
+  private getFieldTemplate(fieldName: string, val: string, type: string) {
     return `
     <values>
         <field>${fieldName}</field>
@@ -113,18 +113,28 @@ export class Helper {
    * @param  values Template string representation of values
    * @return {string} String representation of XML
    */
-  getRecordTemplate(label: string, protection: string, values: string) {
+  private getRecordTemplate(label: string, protection: boolean, values: string) {
     return `
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <label>${label}</label>
     <protected>${protection}</protected>${values}
-</CustomMetadata>`;
+</CustomMetadata>`.trim();
   }
 
-  createRecord(fs, typename, recname, label, protection, varargs, fileData) {
-    const outputFilePath = `force-app/main/default/customMetadata/${typename}.${recname}.md-meta.xml`;
-    let newRecordContent = this.getRecordTemplate(label, protection, this.buildCustomFieldXml(varargs, fileData));
+  /**
+   * Creates the Custom Metadata Record
+   *
+   * @param  createConfig Properties include typename, recname, label, protection, varargs, and fileData
+   * @return void
+   */
+  public createRecord(createConfig: CreateConfig) {
+    const outputFilePath = `force-app/main/default/customMetadata/${createConfig.typename}.${createConfig.recname}.md-meta.xml`;
+    const newRecordContent = this.getRecordTemplate(
+      createConfig.label,
+      createConfig.protection,
+      this.buildCustomFieldXml(createConfig.varargs, createConfig.fileData)
+    );
 
     core.fs.writeFile(outputFilePath, newRecordContent);
   }

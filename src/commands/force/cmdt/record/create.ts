@@ -63,11 +63,20 @@ export default class Create extends SfdxCommand {
 
       let fieldDirPath = `force-app/main/default/objects/${typename}__mdt/fields`;
       let fileNames = await core.fs.readdir(fieldDirPath);
+
+      // if customeMetadata folder does not exist, create it
+      await core.fs.mkdirp('force-app/main/default/customMetadata');
+
       let fileData = await this.getData(fieldDirPath, fileNames);
 
-      console.log(fileData);
-
-      helper.createRecord(core.fs, typename, recname, label, protection, this.varargs, fileData);
+      helper.createRecord({
+        typename: typename,
+        recname: recname,
+        label: label,
+        protection: protection,
+        varargs: this.varargs,
+        fileData: fileData
+      });
 
       const outputString = `Created custom metadata record of the type "${typename}" with record developer name "${recname}", label "${label}", and protected "${protection}".`;
       this.ux.log(outputString);

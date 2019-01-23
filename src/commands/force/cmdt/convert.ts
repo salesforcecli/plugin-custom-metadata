@@ -4,6 +4,7 @@ import { FileWriter } from '../../../lib/helpers/fileWriter';
 import { Helper } from '../../../lib/helpers/helper';
 import { MetdataUtil  } from '../../../lib/helpers/metadatautil';
 import { Templates } from '../../../lib/templates/templates';
+import { Record } from '../../../lib/interfaces/record';
 
 // Initialize Messages with the current plugin directory
 core.Messages.importMessagesDirectory(__dirname);
@@ -63,10 +64,6 @@ export default class Convert extends SfdxCommand {
     console.log(describeField);
     console.log(describeAllFields);
     console.log(isvalidObjectType);
-    // The type we are querying for
-    interface Record {
-      Name: string;
-    }
 
     // Query the org
     const result = await conn.query<Record>(query);
@@ -92,10 +89,19 @@ export default class Convert extends SfdxCommand {
     for (const rec of result.records) {
         const recName = this.getCleanRecName(rec.Name);
         let recLabel = rec.Name;
+
         if (recLabel.length > 40) {
             recLabel = recLabel.substring(0, 40);
         }
-        helper.createRecord(core.fs, devName, recName, recLabel, false, {}, []);
+
+        helper.createRecord({
+          typename: devName,
+          recname: recName,
+          label: recLabel,
+          protection: false,
+          varargs: {},
+          fileData: []
+        });
     }
     this.ux.log(`Congrats! Created a ${devName}__mdt type with ${result.records.length} records!`);
     return {  };
