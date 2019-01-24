@@ -39,7 +39,7 @@ export default class Create extends SfdxCommand {
 
     public async run(): Promise<AnyJson> {
         const devname = this.flags.devname; // this should become the new file name
-        const label = this.flags.label || this.flags.devname.replace( '__mdt', ''); // If a label is not provided default using the dev name. trim __mdt out
+        const label = this.flags.label || this.flags.devname.replace('__mdt', ''); // If a label is not provided default using the dev name. trim __mdt out
         const pluralLabel = this.flags.plurallabel || label;
         const visibility = this.flags.visibility || 'Public';
         const dir = this.flags.outputdir || '';
@@ -56,7 +56,7 @@ export default class Create extends SfdxCommand {
                 throw new core.SfdxError(messages.getMessage('errorNotValidPluralLabelName', [pluralLabel]));
             }
             const templates = new Templates();
-            const objectXML = templates.createObjectXML({ label, pluralLabel: pluralLabel }, visibility);
+            const objectXML = templates.createObjectXML({ label, pluralLabel }, visibility);
             const fileWriter = new FileWriter();
             const outputFilePath = await fileWriter.writeTypeFile(core.fs, dir, devname, objectXML);
             const outputString = messages.getMessage('successResponse', [devname, label, pluralLabel, visibility, outputFilePath]);
