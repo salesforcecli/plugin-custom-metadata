@@ -1,7 +1,7 @@
 export class ValidationUtil {
 
     /**
-     * Returns a describe object from the API name you specify
+     * Returns a boolean if the fieldname is a valid api name
      *
      * @param  fieldName API name of the object
      */
@@ -13,7 +13,7 @@ export class ValidationUtil {
     }
 
     /**
-     * Returns a describe object from the API name you specify
+     * Returns a boolean if the fieldname is a valid metadata object name
      *
      * @param  fieldName API name of the field
      */
@@ -25,14 +25,12 @@ export class ValidationUtil {
     }
 
     /**
-     * Returns a describe object from the API name you specify
+     * Returns a boolean if the fieldname is a valid metadata record name
      *
-     * @param  fieldName API name of the field
+     * @param  fieldName record name of a metadata record
      */
     public validateMetadataRecordName(typeName) {
-        // trimming the __mdt from the field during character count since it does not count towards the limit
         // Regex makes sure that the field name is alpha numeric, doesn't end in an underscore
-        // and optionally if it ends in __mdt
         return typeName.length <= 40 && /^[a-zA-Z][a-zA-Z0-9]*(_[a-zA-Z0-9]+)*$/.test(typeName);
     }
 
