@@ -11,7 +11,7 @@ export class Templates {
         return `<?xml version="1.0" encoding="UTF-8"?>
         <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
             <label>${data.label}</label>
-            <pluralLabel>${data.labelPlural}</pluralLabel>
+            <pluralLabel>${data.pluralLabel}</pluralLabel>
             <visibility>${visibility}</visibility>
         </CustomObject>`;
     }
@@ -21,7 +21,7 @@ export class Templates {
      * @param data
      * @param visibility
      */
-    public createFieldXML(data, defaultToString) {
+    public createFieldXML(data, defaultToString: boolean) {
         let returnValue = '<?xml version="1.0" encoding="UTF-8"?>\n';
         returnValue += '<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">\n';
         returnValue += this.getFullName(data);
@@ -42,7 +42,7 @@ export class Templates {
         return returnValue;
     }
 
-    public createDefaultTypeStructure(fullName: string, type: string, label: string, picklistValues: []) {
+    public createDefaultTypeStructure(fullName: string, type: string, label: string, picklistValues: string[]) {
 
         switch (type) {
             case 'Checkbox':
@@ -97,7 +97,7 @@ export class Templates {
         return metadataFieldTypes.includes(type);
     }
 
-    private getType(data, defaultToMetadataType) {
+    private getType(data, defaultToMetadataType: boolean) {
         if (this.canConvert(data.type)) {
             return `\t<type>${data.type}</type>\n`;
         } else if (defaultToMetadataType) {
@@ -184,7 +184,7 @@ export class Templates {
         return fieldValue;
     }
 
-    private createPicklistValues(values: []) {
+    private createPicklistValues(values: string[]) {
         const picklistValues = [];
         values.forEach(value => {
             picklistValues.push({ fullName: value, label: value });
