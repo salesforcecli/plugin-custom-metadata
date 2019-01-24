@@ -37,6 +37,8 @@ export default class Generate extends SfdxCommand {
     sourceusername: flags.string({char: 'x', description: messages.getMessage('sourceusernameFlagDescription')}),
     deploy: flags.string({char: 'd', description: messages.getMessage('deployFlagDescription')}),
     ignoreunsupported: flags.string({char: 'i', description: messages.getMessage('ignoreUnsupportedFlagDescription')}),
+    outputdir: flags.directory({char: 'o', description: messages.getMessage('outputDirectoryFlagDescription')}),
+    recordsoutputdir: flags.directory({char: 'r', description: messages.getMessage('recordsoutputDirectoryFlagDescription')}),
     loglevel: flags.string({char: 'l', description: messages.getMessage('loglevelFlagDescription')})
 };
 
@@ -126,13 +128,15 @@ export default class Generate extends SfdxCommand {
     const visibility = this.flags.visibility || 'Public';
     const label = this.flags.label || devName;
     const labelPlural = this.flags.plurallabel || devName;
+    const outputDir = this.flags.outputdir || 'force-app/main/default/objects/';
+    const recordsOutputDir = this.flags.recordsoutputdir || 'force-app/main/default/customMetadata';
 
     try {
         // create custom metadata type
         const templates = new Templates();
         const objectXML = templates.createObjectXML({label, labelPlural}, visibility);
         const fileWriter = new FileWriter();
-        await fileWriter.writeTypeFile(core.fs, '', devName, objectXML);
+        await fileWriter.writeTypeFile(core.fs, outputDir, devName, objectXML);
 
         // get all the field details before creating feild metadata
         const describeAllFields = metadataUtil.describeObjFields(describeObj);
@@ -140,10 +144,10 @@ export default class Generate extends SfdxCommand {
         // create custom metdata fields
         const allFields = ensureJsonArray(describeAllFields);
         await allFields.map(async field => {
-            const recName = this.getCleanRecName(field['fullName']);
-            const fieldXML = templates.createFieldXML(field, true);
-            // need to figure out how to get the directory of the custom metdata created above
-            await fileWriter.writeFieldFile(core.fs, '', recName, fieldXML);
+            const recName = field['fullName'];
+            const fieldXML = templates.createFieldXML(field, recName);
+            const targetDir = `${outputDir}${devName}__mdt`;
+            await fileWriter.writeFieldFile(core.fs, targetDir, recName, fieldXML);
             console.log(recName);
             let recLabel = recName;
             if (recLabel.length > 40) {
@@ -166,6 +170,7 @@ export default class Generate extends SfdxCommand {
         }
 
         // create custom metadata records
+        console.log(recordsOutputDir);
         // TO DO
     } catch (e) {
         const errMsg = messages.getMessage('generateError', [e.message]);
@@ -174,29 +179,5 @@ export default class Generate extends SfdxCommand {
 
     return {  };
 
-  }
-
-  private getCleanRecName(recName: string) {
-    const charArr = recName.split('');
-    // replace special characters
-    let cleanName = '';
-    for (let letter of charArr) {
-        if (!(letter >= 'a' && letter <= 'z') && !(letter >= 'A' && letter <= 'Z')) {
-            letter = '_';
-        }
-        // now only tack that letter on the end if it won't create consecutive underscores
-        if (letter !== '_' || !cleanName.endsWith('_')) {
-            cleanName += letter;
-        }
-    }
-    // if the last letter is an underscore, rip that sucker clean off
-    if (cleanName.endsWith('_')) {
-        cleanName = cleanName.substring(0, cleanName.length - 1);
-    }
-    // if the name is too long, just truncate it
-    if (cleanName.length > 40) {
-        cleanName = cleanName.substring(0, 40);
-    }
-    return cleanName;
   }
 }
