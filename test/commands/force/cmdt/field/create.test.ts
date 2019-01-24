@@ -28,7 +28,7 @@ describe('sfdx force:cmdt:field:create' , () => {
   .withProject()
   .command(['force:cmdt:field:create', '--fieldname', 'myFi__eld','--fieldtype','Text'])
   .it('fails running force:cmdt:field:create --fieldname myFi__eld --fieldtype Text', ctx => {
-    expect(ctx.stdout).to.contain('Not a valid field' );
+    expect(ctx.stdout).to.contain('myFi__eld is not a valid field' );
   })
 
   test
