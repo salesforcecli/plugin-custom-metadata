@@ -32,7 +32,7 @@ export default class Generate extends SfdxCommand {
     devname: flags.string({char: 'n', required: true, description: messages.getMessage('devnameFlagDescription')}),
     label: flags.string({char: 'l', description: messages.getMessage('labelFlagDescription')}),
     plurallabel: flags.string({char: 'p', description: messages.getMessage('plurallabelFlagDescription')}),
-    visibility: flags.string({char: 'v', description: messages.getMessage('visibilityFlagDescription')}),
+    visibility: flags.enum({char: 'v', description: messages.getMessage('visibilityFlagDescription'),  options: ['Protected', 'Public']}),
     sobjectname: flags.string({char: 's', required: true, description: messages.getMessage('sobjectnameFlagDescription')}),
     sourceusername: flags.string({char: 'x', description: messages.getMessage('sourceusernameFlagDescription')}),
     deploy: flags.string({char: 'd', description: messages.getMessage('deployFlagDescription')}),
@@ -125,12 +125,12 @@ export default class Generate extends SfdxCommand {
 
     const visibility = this.flags.visibility || 'Public';
     const label = this.flags.label || devName;
-    const plurallabel = this.flags.plurallabel || devName;
+    const labelPlural = this.flags.plurallabel || devName;
 
     try {
         // create custom metadata type
         const templates = new Templates();
-        const objectXML = templates.createObjectXML({label, labelPlural: plurallabel}, visibility);
+        const objectXML = templates.createObjectXML({label, labelPlural}, visibility);
         const fileWriter = new FileWriter();
         await fileWriter.writeTypeFile(core.fs, '', devName, objectXML);
 
@@ -141,7 +141,7 @@ export default class Generate extends SfdxCommand {
         const allFields = ensureJsonArray(describeAllFields);
         await allFields.map(async field => {
             const recName = this.getCleanRecName(field['fullName']);
-            const fieldXML = templates.createFieldXML(field, recName);
+            const fieldXML = templates.createFieldXML(field, true);
             // need to figure out how to get the directory of the custom metdata created above
             await fileWriter.writeFieldFile(core.fs, '', recName, fieldXML);
             console.log(recName);
