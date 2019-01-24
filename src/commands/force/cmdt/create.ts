@@ -65,7 +65,7 @@ export default class Create extends SfdxCommand {
             const outputString = messages.getMessage('successResponse', [devname, label, pluralLabel, visibility, outputFilePath]);
             this.ux.log(outputString);
         } catch (err) {
-            this.ux.error(err.message);
+            this.ux.log(err.message);
         }
 
         // Return an object to be displayed with --json
