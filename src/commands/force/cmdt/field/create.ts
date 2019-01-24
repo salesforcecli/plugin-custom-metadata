@@ -51,7 +51,7 @@ export default class Create extends SfdxCommand {
         try {
             const validator = new ValidationUtil();
             if (!validator.validateAPIName(fieldName)) {
-                throw new Error(messages.getMessage('invalidCustomFieldError',[fieldName]));
+                throw new Error(messages.getMessage('invalidCustomFieldError', [fieldName]));
             }
             if (fieldtype === 'Picklist' && picklistvalues.length === 0) {
                 throw new Error(messages.getMessage('picklistValuesNotSuppliedError'));
