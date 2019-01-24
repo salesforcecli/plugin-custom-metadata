@@ -48,25 +48,18 @@ export class Templates {
         switch (type) {
             case 'Checkbox':
                 return { fullName, defaultValue: 'false', type, label };
-                break;
             case 'Date':
                 return { fullName, type, label };
-                break;
             case 'DateTime':
                 return { fullName, type, label };
-                break;
             case 'Email':
                 return { fullName, type, label, unique: 'false' };
-                break;
             case 'Number':
                 return { fullName, type, label, precision: '18', scale: '0', unique: 'false' };
-                break;
             case 'Percent':
                 return { fullName, type, label, precision: '18', scale: '0' };
-                break;
             case 'Phone':
                 return { fullName, type, label };
-                break;
             case 'Picklist':
                 return {
                     fullName, type, label, valueSet: {
@@ -77,19 +70,14 @@ export class Templates {
                         }
                     }
                 };
-                break;
             case 'Text':
                 return { fullName, type, label, unique: 'false', length: '100' };
-                break;
             case 'TextArea':
                 return { fullName, type, label };
-                break;
             case 'LongTextArea':
                 return { fullName, type, label, length: '32768', visibleLines: 3 };
-                break;
             case 'Url':
                 return { fullName, type, label };
-                break;
         }
     }
 
