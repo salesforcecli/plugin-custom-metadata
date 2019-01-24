@@ -42,7 +42,7 @@ export default class Create extends SfdxCommand {
 
     public async run(): Promise<AnyJson> {
         const fieldName = this.flags.fieldname; // this should become the new file name
-        const label = this.flags.label || this.flags.fieldName;
+        const label = this.flags.label || this.flags.fieldname;
         const fieldtype = this.flags.fieldtype;
         const picklistvalues = this.flags.picklistvalues || [];
         const visibility = this.flags.visibility || 'Public';
