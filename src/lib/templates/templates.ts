@@ -9,7 +9,7 @@ export class Templates {
      */
     public createObjectXML(data, visibility) {
         let returnValue = '<?xml version="1.0" encoding="UTF-8"?>\n';
-        returnValue += '<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">\n';
+        returnValue += '<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">\n';
         returnValue += `\t<label>${data.label}</label>\n`;
         returnValue += `\t<pluralLabel>${data.pluralLabel}</pluralLabel>\n`;
         returnValue += `\t<visibility>${visibility}</visibility>\n`;
