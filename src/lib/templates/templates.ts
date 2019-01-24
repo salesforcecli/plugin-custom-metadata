@@ -115,7 +115,7 @@ export class Templates {
     }
 
     private getExternalId(data) {
-        return data.externalId ? `\t<externalId>${data.externalId || 'false'}</externalId>\n` : '';
+        return data.externalId ? `\t<externalId>${data.externalId}</externalId>\n` : '';
     }
 
     private getFieldManageability(data) {
@@ -123,30 +123,30 @@ export class Templates {
     }
 
     private getInlineHelpText(data) {
-        return data.inlineHelpText ? `\t<inlineHelpText>${data.inlineHelpText || 'false'}</inlineHelpText>\n` : '';
+        return data.inlineHelpText ? `\t<inlineHelpText>${data.inlineHelpText}</inlineHelpText>\n` : '';
     }
     private getLabel(data) {
         return `\t<label>${data.label}</label>\n`;
     }
 
     private getRequiredTag(data) {
-        return data.unique ? `\t<unique>${data.unique || false}</unique>\n` : '';
+        return data.unique ? `\t<unique>${data.unique}</unique>\n` : '';
     }
 
     private getPercisionTag(data) {
-        return data.precision ? `\t<precision>${data.precision || 18}</precision>\n` : '';
+        return data.precision ? `\t<precision>${data.precision}</precision>\n` : '';
     }
 
     private getScaleTag(data) {
-        return data.scale ? `\t<scale>${data.scale || false}</scale>\n` : '';
+        return data.scale ? `\t<scale>${data.scale}</scale>\n` : '';
     }
 
     private getLengthTag(data) {
-        return data.length ? `\t<length>${data.length || 100}</length>\n` : '';
+        return data.length ? `\t<length>${data.length}</length>\n` : '';
     }
 
     private getVisibleLines(data) {
-        return data.visibleLines ? `\t<visibleLines>${data.visibleLines || 3}</visibleLines>\n` : '';
+        return data.visibleLines ? `\t<visibleLines>${data.visibleLines}</visibleLines>\n` : '';
     }
 
     private getDefaultValue(data) {
