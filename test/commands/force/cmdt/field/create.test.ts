@@ -44,12 +44,12 @@ describe('sfdx force:cmdt:field:create' , () => {
   .withOrg({ username: 'test@org.com' }, true)
   .stdout()
   .withProject()
-  .command(['force:cmdt:field:create', '--fieldname', 'myField','--fieldtype','Picklist','--picklistvalues','a,b,c'])
+  .command(['force:cmdt:field:create', '--fieldname', 'myField','--fieldtype','Picklist','--picklistvalues','a,b,c','-d','picklistField'])
   .it('runs force:cmdt:field:create --fieldname myField --fieldtype Picklist --picklistvalues a,b,c', ctx => {
     const cmdtName = 'myField';
-    expect(fs.existsSync(`fields`)).to.be.true;
-    expect(fs.existsSync(`fields/${cmdtName}__c.field-meta.xml`)).to.be.true;
-    exec(`rm -rf fields`);
+    expect(fs.existsSync(`picklistField/fields`)).to.be.true;
+    expect(fs.existsSync(`picklistField/fields/${cmdtName}__c.field-meta.xml`)).to.be.true;
+    exec(`rm -rf picklistField`);
   })
 
 })

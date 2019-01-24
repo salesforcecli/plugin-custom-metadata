@@ -54,4 +54,27 @@ describe( 'validationUtil', () => {
         });
     });
 
+    describe( 'validateMetadataRecordName', () => {
+        it('should be a valid salesforce metadata record name', () => {
+            const validationUtil = new ValidationUtil();
+            expect(validationUtil.validateMetadataRecordName('Candle')).to.be.true;
+        });
+        it('should not have a number as the starting character', () => {
+            const validationUtil = new ValidationUtil();
+            expect(validationUtil.validateMetadataRecordName('1World')).to.be.false;
+        });
+        it('should be fine if it has an underscore in it', () => {
+            const validationUtil = new ValidationUtil();
+            expect(validationUtil.validateMetadataRecordName('Torch_Wood')).to.be.true;
+        });
+        it('should not be fine if it has __mdt at the end', () => {
+            const validationUtil = new ValidationUtil();
+            expect(validationUtil.validateMetadataRecordName('Torch__mdt')).to.be.false;
+        });
+        it('should not be more than 40 characters', () => {
+            const validationUtil = new ValidationUtil();
+            expect(validationUtil.validateMetadataRecordName('I_Have_More_Than_The_fourty_Characters_Allowed')).to.be.false;
+        });
+    });
+
 });
