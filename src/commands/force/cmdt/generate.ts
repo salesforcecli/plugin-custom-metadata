@@ -132,7 +132,9 @@ export default class Generate extends SfdxCommand {
         const templates = new Templates();
         const objectXML = templates.createObjectXML({label, labelPlural}, visibility);
         const fileWriter = new FileWriter();
-        await fileWriter.writeTypeFile(core.fs, '', devName, objectXML);
+        await fileWriter.writeTypeFile(core.fs, 'force-app/main/default/objects/', devName, objectXML);
+        // const path = const cmdtDir = path.split('/', 5)[4];
+
 
         // get all the field details before creating feild metadata
         const describeAllFields = metadataUtil.describeObjFields(describeObj);
@@ -140,10 +142,11 @@ export default class Generate extends SfdxCommand {
         // create custom metdata fields
         const allFields = ensureJsonArray(describeAllFields);
         await allFields.map(async field => {
-            const recName = this.getCleanRecName(field['fullName']);
-            const fieldXML = templates.createFieldXML(field, true);
+            const recName = field['fullName'];
+            const fieldXML = templates.createFieldXML(field, recName);
+            const targetDir = `force-app/main/default/objects/${devName}__mdt`
             // need to figure out how to get the directory of the custom metdata created above
-            await fileWriter.writeFieldFile(core.fs, '', recName, fieldXML);
+            await fileWriter.writeFieldFile(core.fs, targetDir, recName, fieldXML);
             console.log(recName);
             let recLabel = recName;
             if (recLabel.length > 40) {
@@ -175,7 +178,7 @@ export default class Generate extends SfdxCommand {
     return {  };
 
   }
-
+/*
   private getCleanRecName(recName: string) {
     const charArr = recName.split('');
     // replace special characters
@@ -198,5 +201,5 @@ export default class Generate extends SfdxCommand {
         cleanName = cleanName.substring(0, 40);
     }
     return cleanName;
-  }
+  }*/
 }
