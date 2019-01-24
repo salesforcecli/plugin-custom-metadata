@@ -8,12 +8,13 @@ export class Templates {
      * @param visibility
      */
     public createObjectXML(data, visibility) {
-        return `<?xml version="1.0" encoding="UTF-8"?>
-        <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
-            <label>${data.label}</label>
-            <pluralLabel>${data.pluralLabel}</pluralLabel>
-            <visibility>${visibility}</visibility>
-        </CustomObject>`;
+        let returnValue = '<?xml version="1.0" encoding="UTF-8"?>\n';
+        returnValue += '<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">\n';
+        returnValue += `\t<label>${data.label}</label>\n`;
+        returnValue += `\t<pluralLabel>${data.pluralLabel}</pluralLabel>\n`;
+        returnValue += `\t<visibility>${visibility}</visibility>\n`;
+        returnValue += '</CustomObject>\n';
+        return returnValue;
     }
 
     /**
@@ -38,7 +39,7 @@ export class Templates {
         returnValue += this.getScaleTag(data);
         returnValue += this.getLengthTag(data);
         returnValue += this.getVisibleLines(data);
-        returnValue += '</CustomField>';
+        returnValue += '</CustomField>\n';
         return returnValue;
     }
 
