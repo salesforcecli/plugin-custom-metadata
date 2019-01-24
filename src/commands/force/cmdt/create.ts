@@ -59,7 +59,7 @@ export default class Create extends SfdxCommand {
             if (!validator.validateLessThanForty(pluralLabel)) {
                 throw new core.SfdxError(messages.getMessage('errorNotValidPluralLabelName', [pluralLabel]));
             }
-            
+
             const objectXML = templates.createObjectXML({ label, pluralLabel }, visibility);
             outputFilePath = await fileWriter.writeTypeFile(core.fs, dir, devname, objectXML);
             const outputString = messages.getMessage('successResponse', [devname, label, pluralLabel, visibility, outputFilePath]);
