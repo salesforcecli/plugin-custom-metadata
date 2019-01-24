@@ -29,7 +29,7 @@ export default class Create extends SfdxCommand {
     protected static flagsConfig = {
         devname: flags.string({ char: 'n', required: true, description: messages.getMessage('nameFlagDescription') }),
         label: flags.string({ char: 'l', description: messages.getMessage('labelFlagDescription') }),
-        plurallabel: flags.string({ char: 's', description: messages.getMessage('plurallabelFlagDescription') }),
+        plurallabel: flags.string({ char: 'p', description: messages.getMessage('plurallabelFlagDescription') }),
         visibility: flags.string({ char: 'v', description: messages.getMessage('visibilityFlagDescription') }),
         outputdir: flags.directory({ char: 'd', description: messages.getMessage('outputDirectoryFlagDescription') })
     };
