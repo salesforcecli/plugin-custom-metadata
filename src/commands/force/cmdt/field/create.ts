@@ -16,10 +16,10 @@ export default class Create extends SfdxCommand {
     public static description = messages.getMessage('commandDescription');
 
     public static examples = [
-        `$ sfdx force:cmdt:field:create --fieldname MyCMT
+        `$ sfdx force:cmdt:field:create --fieldname MyCMT --fieldtype Checkbox
     Created custom metadata field called MyCMT.
     `,
-        `$ sfdx force:cmdt:field:create --fieldname MyCMT --label "Custom Type"
+        `$ sfdx force:cmdt:field:create --fieldname MyCMT --fieldtype Picklist --picklistvalues A,B,C
     Created custom metadata field called MyCMT.
     `
     ];
@@ -64,7 +64,7 @@ export default class Create extends SfdxCommand {
             const outputString = `Created custom metadata field called ${fieldName}.`;
             this.ux.log(outputString);
         } catch (err) {
-            this.ux.log(err.message);
+            this.ux.error(err.message);
         }
 
         // Return an object to be displayed with --json

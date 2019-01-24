@@ -43,6 +43,10 @@ export default class Create extends SfdxCommand {
         const pluralLabel = this.flags.plurallabel || label;
         const visibility = this.flags.visibility || 'Public';
         const dir = this.flags.outputdir || '';
+        const templates = new Templates();
+        const fileWriter = new FileWriter();
+        let outputFilePath = '';
+
         try {
             const validator = new ValidationUtil();
             if (!validator.validateMetadataTypeName(devname)) {
@@ -55,14 +59,13 @@ export default class Create extends SfdxCommand {
             if (!validator.validateLessThanForty(pluralLabel)) {
                 throw new core.SfdxError(messages.getMessage('errorNotValidPluralLabelName', [pluralLabel]));
             }
-            const templates = new Templates();
+            
             const objectXML = templates.createObjectXML({ label, pluralLabel }, visibility);
-            const fileWriter = new FileWriter();
-            const outputFilePath = await fileWriter.writeTypeFile(core.fs, dir, devname, objectXML);
+            outputFilePath = await fileWriter.writeTypeFile(core.fs, dir, devname, objectXML);
             const outputString = messages.getMessage('successResponse', [devname, label, pluralLabel, visibility, outputFilePath]);
             this.ux.log(outputString);
         } catch (err) {
-            this.ux.log(err.message);
+            this.ux.error(err.message);
         }
 
         // Return an object to be displayed with --json
@@ -70,7 +73,8 @@ export default class Create extends SfdxCommand {
             devname,
             label,
             pluralLabel,
-            visibility
+            visibility,
+            outputFilePath
         };
 
     }
