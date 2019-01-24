@@ -1,21 +1,25 @@
 import { core } from '@salesforce/command';
 import { AnyJson, toAnyJson } from '@salesforce/ts-types';
 
-export class MetdataUtil {
+export class MetadataUtil {
+
+  private conn: core.Connection;
+  constructor(connection: core.Connection) {
+    this.conn = connection;
+  }
     /**
      * Returns a describe object from the API name you specify
      *
      * @param  objName API name of the object
-     * @param  conn Current Connection object
      * @returns Promise - JSON representation of the describe object
      */
-    public async describeObj(objName: string, conn: core.Connection): Promise<AnyJson> {
-      const result = await conn.describe(objName, (err, meta) => {
+    public async describeObj(objName: string): Promise<AnyJson> {
+      const result = await this.conn.metadata.read('CustomObject', objName, (err, meta) => {
         if (err) {
           console.error(err);
           return err;
         }
-
+        console.log(meta);
         return meta;
       });
 
@@ -26,11 +30,10 @@ export class MetdataUtil {
      * Returns an array of object records from a SOQL query
      *
      * @param  soqlStr String representation of the SOQL query
-     * @param  conn Current Connection object
      * @returns Promise - Array of records in JSON format
      */
-    public async queryObject(soqlStr: string, conn: core.Connection): Promise<AnyJson> {
-      const result = await conn.query(soqlStr, {}, (err, meta) => {
+    public async queryObject(soqlStr: string): Promise<AnyJson> {
+      const result = await this.conn.query(soqlStr, {}, (err, meta) => {
         if (err) {
           console.error(err);
           return err;
@@ -45,14 +48,12 @@ export class MetdataUtil {
     /**
      * Returns an array of object records
      *
-     * @param  objName API name of the object to query
-     * @param  conn Current Connection object
+     * @param  describeResult object describe result
      * @returns Promise - Promise - Array of records in JSON format
      */
-    public async queryRecords(objName: string, conn: core.Connection): Promise<AnyJson> {
-      const describeResult = await this.describeObj(objName, conn);
-      const query = await this._getSoqlQuery(describeResult['fields'], objName);
-      const queryResult = await this.queryObject(query, conn);
+    public async queryRecords(describeResult: AnyJson): Promise<AnyJson> {
+      const query = await this._getSoqlQuery(describeResult['fields'], describeResult['fullName']);
+      const queryResult = await this.queryObject(query);
 
       return toAnyJson(queryResult);
     }
@@ -68,7 +69,7 @@ export class MetdataUtil {
       const fieldsDescribe  = objDescribe['fields'];
       let fieldsDescribeResult;
       fieldsDescribe.map(field => {
-        if (field.name === fieldName) {
+        if (field.fullName === fieldName) {
           fieldsDescribeResult = field;
         }
       });
@@ -92,13 +93,10 @@ export class MetdataUtil {
      * Returns true if the object name you specify is a list type custom setting
      *
      * @param  objName API name of the object to query
-     * @param  conn Current Connection object
      * @returns boolean
      */
     public validCustomSettingType(objDescribe: AnyJson): boolean {
-      const customSetting = objDescribe['customSetting'];
-      const nameField = this.describeField(objDescribe, 'Name');
-      if (customSetting && !nameField['nillable']) {
+      if (objDescribe['customSettingsType'] === 'List' && objDescribe['visibility'] === 'Public') {
         return true;
       }
       return false;
@@ -106,7 +104,7 @@ export class MetdataUtil {
 
     private _getSoqlQuery(arr, objName) {
       const fieldNames = arr.map(field => {
-        return field.name;
+        return field.fullName;
       }).join(',');
 
       return `SELECT ${fieldNames} FROM ${objName}`;

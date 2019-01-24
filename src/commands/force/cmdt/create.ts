@@ -29,8 +29,8 @@ export default class Create extends SfdxCommand {
     protected static flagsConfig = {
         devname: flags.string({ char: 'n', required: true, description: messages.getMessage('nameFlagDescription') }),
         label: flags.string({ char: 'l', description: messages.getMessage('labelFlagDescription') }),
-        plurallabel: flags.string({ char: 's', description: messages.getMessage('plurallabelFlagDescription') }),
-        visibility: flags.string({ char: 'v', description: messages.getMessage('visibilityFlagDescription') }),
+        plurallabel: flags.string({ char: 'p', description: messages.getMessage('plurallabelFlagDescription') }),
+        visibility: flags.enum({ char: 'v', description: messages.getMessage('visibilityFlagDescription'), options: ['Protected', 'Public'] }),
         outputdir: flags.directory({ char: 'd', description: messages.getMessage('outputDirectoryFlagDescription') })
     };
 
@@ -39,8 +39,8 @@ export default class Create extends SfdxCommand {
 
     public async run(): Promise<AnyJson> {
         const devname = this.flags.devname; // this should become the new file name
-        const label = this.flags.label || this.flags.devname.replace( '__mdt', ''); // If a label is not provided default using the dev name. trim __mdt out
-        const plurallabel = this.flags.plurallabel || label;
+        const label = this.flags.label || this.flags.devname.replace('__mdt', ''); // If a label is not provided default using the dev name. trim __mdt out
+        const pluralLabel = this.flags.plurallabel || label;
         const visibility = this.flags.visibility || 'Public';
         const dir = this.flags.outputdir || '';
         try {
@@ -52,14 +52,14 @@ export default class Create extends SfdxCommand {
                 throw new core.SfdxError(messages.getMessage('errorNotValidLabelName', [label]));
             }
 
-            if (!validator.validateLessThanForty(plurallabel)) {
-                throw new core.SfdxError(messages.getMessage('errorNotValidPluralLabelName', [plurallabel]));
+            if (!validator.validateLessThanForty(pluralLabel)) {
+                throw new core.SfdxError(messages.getMessage('errorNotValidPluralLabelName', [pluralLabel]));
             }
             const templates = new Templates();
-            const objectXML = templates.createObjectXML({ label, labelPlural: plurallabel }, visibility);
+            const objectXML = templates.createObjectXML({ label, pluralLabel }, visibility);
             const fileWriter = new FileWriter();
             const outputFilePath = await fileWriter.writeTypeFile(core.fs, dir, devname, objectXML);
-            const outputString = messages.getMessage('successResponse', [devname, label, plurallabel, visibility, outputFilePath]);
+            const outputString = messages.getMessage('successResponse', [devname, label, pluralLabel, visibility, outputFilePath]);
             this.ux.log(outputString);
         } catch (err) {
             this.ux.log(err.message);
@@ -69,7 +69,7 @@ export default class Create extends SfdxCommand {
         return {
             devname,
             label,
-            plurallabel,
+            pluralLabel,
             visibility
         };
 
