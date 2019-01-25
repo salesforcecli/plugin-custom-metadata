@@ -44,7 +44,8 @@ export class Templates {
     }
 
     public createDefaultTypeStructure(fullName: string, type: string, label: string, picklistValues: string[], decimalplaces: number = 0) {
-        let precision = 18 - decimalplaces;
+        const precision = 18 - decimalplaces;
+        const scale = decimalplaces;
 
         switch (type) {
             case 'Checkbox':
@@ -56,9 +57,9 @@ export class Templates {
             case 'Email':
                 return { fullName, type, label, unique: 'false' };
             case 'Number':
-                return { fullName, type, label, precision: precision, scale: decimalplaces, unique: 'false' };
+                return { fullName, type, label, precision, scale, unique: 'false' };
             case 'Percent':
-                return { fullName, type, label, precision: precision, scale: decimalplaces };
+                return { fullName, type, label, precision, scale };
             case 'Phone':
                 return { fullName, type, label };
             case 'Picklist':
