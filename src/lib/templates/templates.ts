@@ -35,7 +35,7 @@ export class Templates {
         returnValue += this.getValueSet(data);
         returnValue += this.getDefaultValue(data);
         returnValue += this.getRequiredTag(data);
-        returnValue += this.getPercisionTag(data);
+        returnValue += this.getPrecisionTag(data);
         returnValue += this.getScaleTag(data);
         returnValue += this.getLengthTag(data);
         returnValue += this.getVisibleLines(data);
@@ -43,30 +43,24 @@ export class Templates {
         return returnValue;
     }
 
-    public createDefaultTypeStructure(fullName: string, type: string, label: string, picklistValues: string[]) {
+    public createDefaultTypeStructure(fullName: string, type: string, label: string, picklistValues: string[], decimalplaces: number = 0) {
+        let precision = 18 - decimalplaces;
 
         switch (type) {
             case 'Checkbox':
                 return { fullName, defaultValue: 'false', type, label };
-                break;
             case 'Date':
                 return { fullName, type, label };
-                break;
             case 'DateTime':
                 return { fullName, type, label };
-                break;
             case 'Email':
                 return { fullName, type, label, unique: 'false' };
-                break;
             case 'Number':
-                return { fullName, type, label, precision: '18', scale: '0', unique: 'false' };
-                break;
+                return { fullName, type, label, precision: precision, scale: decimalplaces, unique: 'false' };
             case 'Percent':
-                return { fullName, type, label, precision: '18', scale: '0' };
-                break;
+                return { fullName, type, label, precision: precision, scale: decimalplaces };
             case 'Phone':
                 return { fullName, type, label };
-                break;
             case 'Picklist':
                 return {
                     fullName, type, label, valueSet: {
@@ -77,19 +71,16 @@ export class Templates {
                         }
                     }
                 };
-                break;
             case 'Text':
                 return { fullName, type, label, unique: 'false', length: '100' };
-                break;
             case 'TextArea':
                 return { fullName, type, label };
-                break;
             case 'LongTextArea':
                 return { fullName, type, label, length: '32768', visibleLines: 3 };
-                break;
             case 'Url':
                 return { fullName, type, label };
-                break;
+            default:
+                return { fullName, type, label };
         }
     }
 
@@ -145,12 +136,12 @@ export class Templates {
         return data.unique ? `\t<unique>${data.unique || false}</unique>\n` : '';
     }
 
-    private getPercisionTag(data) {
+    private getPrecisionTag(data) {
         return data.precision ? `\t<precision>${data.precision || 18}</precision>\n` : '';
     }
 
     private getScaleTag(data) {
-        return data.scale ? `\t<scale>${data.scale || false}</scale>\n` : '';
+        return typeof data.scale !== 'undefined' ? `\t<scale>${data.scale || 0}</scale>\n` : '';
     }
 
     private getLengthTag(data) {
