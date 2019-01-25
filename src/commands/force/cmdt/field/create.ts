@@ -9,18 +9,18 @@ core.Messages.importMessagesDirectory(__dirname);
 
 // Load the specific messages for this file. Messages from @salesforce/command, @salesforce/core,
 // or any library that is using the messages framework can also be loaded this way.
-const messages = core.Messages.loadMessages('custommetadata', 'createType');
+const messages = core.Messages.loadMessages('custommetadata', 'createField');
 
 export default class Create extends SfdxCommand {
 
     public static description = messages.getMessage('commandDescription');
 
     public static examples = [
-        `$ sfdx force:cmdt:type:create --devname MyCMT
-    Created custom metadata type with developer name "MyCMT", label "MyCMT", plural label "MyCMT", and visibility "Public".
+        `$ sfdx force:cmdt:field:create --fieldname MyCheckbox --fieldtype Checkbox
+    Created custom metadata field called MyCheckbox.
     `,
-        `$ sfdx force:cmdt:type:create --devname MyCMT --label "Custom Type" --plurallabel "Custom Types" --visibility Protected
-    Created custom metadata type with developer name "MyCMT", label "Custom Type", plural label "My Custom Metadata Type", and visibility "Protected".
+        `$ sfdx force:cmdt:field:create --fieldname Picklist --fieldtype Picklist --picklistvalues A,B,C --outputdir force-app/main/default/objects/CustomMetadate__mdt
+    Created custom metadata field called Picklist.
     `
     ];
 
@@ -29,12 +29,12 @@ export default class Create extends SfdxCommand {
     protected static flagsConfig = {
         fieldname: flags.string({ char: 'n', required: true, description: messages.getMessage('nameFlagDescription') }),
         fieldtype: flags.enum({
-            char: 'f', required: true, description: messages.getMessage('labelFlagDescription'),
+            char: 'f', required: true, description: messages.getMessage('fieldTypeDescription'),
             options: ['Checkbox', 'Date', 'DateTime', 'Email', 'Number', 'Percent', 'Phone', 'Picklist', 'Text', 'TextArea', 'LongTextArea', 'Url']
         }),
-        picklistvalues: flags.array({ char: 'p', description: messages.getMessage('plurallabelFlagDescription') }),
+        picklistvalues: flags.array({ char: 'p', description: messages.getMessage('picklistValuesDescription') }),
         decimalplaces: flags.array({ char: 's', description: messages.getMessage('decimalplacesDescription') }),
-        label: flags.string({ char: 'l', description: messages.getMessage('plurallabelFlagDescription') }),
+        label: flags.string({ char: 'l', description: messages.getMessage('labelFlagDescription') }),
         outputdir: flags.directory({ char: 'd', description: messages.getMessage('outputDirectoryFlagDescription') })
     };
 
@@ -53,10 +53,10 @@ export default class Create extends SfdxCommand {
         try {
             const validator = new ValidationUtil();
             if (!validator.validateAPIName(fieldName)) {
-                throw new Error('Not a valid field');
+                throw new Error(messages.getMessage('invalidCustomFieldError', [fieldName]));
             }
             if (fieldtype === 'Picklist' && picklistvalues.length === 0) {
-                throw new Error('Picklist values are required when type is Picklist');
+                throw new Error(messages.getMessage('picklistValuesNotSuppliedError'));
             }
             const templates = new Templates();
             const data = templates.createDefaultTypeStructure(fieldName, fieldtype, label, picklistvalues, decimalplaces);

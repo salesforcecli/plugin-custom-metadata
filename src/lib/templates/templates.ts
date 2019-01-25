@@ -9,7 +9,7 @@ export class Templates {
      */
     public createObjectXML(data, visibility) {
         let returnValue = '<?xml version="1.0" encoding="UTF-8"?>\n';
-        returnValue += '<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">\n';
+        returnValue += '<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">\n';
         returnValue += `\t<label>${data.label}</label>\n`;
         returnValue += `\t<pluralLabel>${data.pluralLabel}</pluralLabel>\n`;
         returnValue += `\t<visibility>${visibility}</visibility>\n`;
@@ -119,7 +119,7 @@ export class Templates {
     }
 
     private getExternalId(data) {
-        return data.externalId ? `\t<externalId>${data.externalId || 'false'}</externalId>\n` : '';
+        return data.externalId ? `\t<externalId>${data.externalId}</externalId>\n` : '';
     }
 
     private getFieldManageability(data) {
@@ -127,30 +127,30 @@ export class Templates {
     }
 
     private getInlineHelpText(data) {
-        return data.inlineHelpText ? `\t<inlineHelpText>${data.inlineHelpText || 'false'}</inlineHelpText>\n` : '';
+        return data.inlineHelpText ? `\t<inlineHelpText>${data.inlineHelpText}</inlineHelpText>\n` : '';
     }
     private getLabel(data) {
         return `\t<label>${data.label}</label>\n`;
     }
 
     private getRequiredTag(data) {
-        return data.unique ? `\t<unique>${data.unique || false}</unique>\n` : '';
+        return data.unique ? `\t<unique>${data.unique}</unique>\n` : '';
     }
 
     private getPrecisionTag(data) {
-        return data.precision ? `\t<precision>${data.precision || 18}</precision>\n` : '';
+        return data.precision ? `\t<precision>${data.precision}</precision>\n` : '';
     }
 
     private getScaleTag(data) {
-        return typeof data.scale !== 'undefined' ? `\t<scale>${data.scale || 0}</scale>\n` : '';
+        return typeof data.scale !== 'undefined' ? `\t<scale>${data.scale}</scale>\n` : '';
     }
 
     private getLengthTag(data) {
-        return data.length ? `\t<length>${data.length || 100}</length>\n` : '';
+        return data.length ? `\t<length>${data.length}</length>\n` : '';
     }
 
     private getVisibleLines(data) {
-        return data.visibleLines ? `\t<visibleLines>${data.visibleLines || 3}</visibleLines>\n` : '';
+        return data.visibleLines ? `\t<visibleLines>${data.visibleLines}</visibleLines>\n` : '';
     }
 
     private getDefaultValue(data) {

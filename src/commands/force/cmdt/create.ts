@@ -16,11 +16,11 @@ export default class Create extends SfdxCommand {
     public static description = messages.getMessage('commandDescription');
 
     public static examples = [
-        `$ sfdx force:cmdt:create --devname MyCMT
-    Created custom metadata type with developer name "MyCMT", label "MyCMT", plural label "MyCMT", and visibility "Public".
+        `$ sfdx force:cmdt:create --devname Country
+    Created custom metadata type with developer name "Country", label "Country", plural label "Country", and visibility "Public".
     `,
-        `$ sfdx force:cmdt:create --devname MyCMT --label "Custom Type" --plurallabel "Custom Types" --visibility Protected
-    Created custom metadata type with developer name "MyCMT", label "Custom Type", plural label "My Custom Metadata Type", and visibility "Protected".
+        `$ sfdx force:cmdt:create --devname CustomType --label "Custom Type" --plurallabel "Custom Types" --visibility Protected --outputdir force-app/main/default/object
+    Created custom metadata type with developer name "CustomType", label "Custom Type", plural label "My Custom Metadata Type", and visibility "Protected".
     `
     ];
 
@@ -43,6 +43,10 @@ export default class Create extends SfdxCommand {
         const pluralLabel = this.flags.plurallabel || label;
         const visibility = this.flags.visibility || 'Public';
         const dir = this.flags.outputdir || '';
+        const templates = new Templates();
+        const fileWriter = new FileWriter();
+        let outputFilePath = '';
+
         try {
             const validator = new ValidationUtil();
             if (!validator.validateMetadataTypeName(devname)) {
@@ -55,10 +59,9 @@ export default class Create extends SfdxCommand {
             if (!validator.validateLessThanForty(pluralLabel)) {
                 throw new core.SfdxError(messages.getMessage('errorNotValidPluralLabelName', [pluralLabel]));
             }
-            const templates = new Templates();
+
             const objectXML = templates.createObjectXML({ label, pluralLabel }, visibility);
-            const fileWriter = new FileWriter();
-            const outputFilePath = await fileWriter.writeTypeFile(core.fs, dir, devname, objectXML);
+            outputFilePath = await fileWriter.writeTypeFile(core.fs, dir, devname, objectXML);
             const outputString = messages.getMessage('successResponse', [devname, label, pluralLabel, visibility, outputFilePath]);
             this.ux.log(outputString);
         } catch (err) {
@@ -70,7 +73,8 @@ export default class Create extends SfdxCommand {
             devname,
             label,
             pluralLabel,
-            visibility
+            visibility,
+            outputFilePath
         };
 
     }

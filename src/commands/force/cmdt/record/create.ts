@@ -2,6 +2,7 @@ import { core, flags, SfdxCommand } from '@salesforce/command';
 import { AnyJson } from '@salesforce/ts-types';
 import { CreateUtil } from '../../../../lib/helpers/createUtil';
 import { FileWriter } from '../../../../lib/helpers/fileWriter';
+import { ValidationUtil } from '../../../../lib/helpers/validationUtil';
 
 // Initialize Messages with the current plugin directory
 core.Messages.importMessagesDirectory(__dirname);
@@ -68,6 +69,24 @@ export default class Create extends SfdxCommand {
 
     // if customMetadata folder does not exist, create it
     await core.fs.mkdirp(outputdir);
+
+    const validator = new ValidationUtil();
+    if (!validator.validateMetadataTypeName(typename)) {
+      throw new core.SfdxError(messages.getMessage('notValidAPINameError', [typename]));
+    }
+
+    if (!validator.validateMetadataRecordName(recname)) {
+      throw new core.SfdxError(messages.getMessage('notAValidRecordNameError', [recname]));
+    }
+
+    if (!validator.validateLessThanForty(label)) {
+      throw new core.SfdxError(messages.getMessage('notAValidLabelNameError', [label]));
+    }
+
+    // forgive them if they passed in type__mdt, and cut off the __mdt
+    if (typename.endsWith('__mdt')) {
+      typename = typename.substring(0, typename.indexOf('__mdt'));
+    }
 
     const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
 
