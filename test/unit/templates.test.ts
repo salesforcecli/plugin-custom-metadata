@@ -185,8 +185,8 @@ describe('Templates', () => {
             expect(struct.fullName === 'Number').to.be.true;
             expect(struct.type === 'Number').to.be.true;
             expect(struct.label === 'test').to.be.true;
-            expect(struct.precision === '18').to.be.true;
-            expect(struct.scale === '0').to.be.true;
+            expect(struct.precision === 18).to.be.true;
+            expect(struct.scale === 0).to.be.true;
             expect(struct.unique === 'false').to.be.true;
         });
         it('should return Percent structure', () => {
@@ -194,8 +194,8 @@ describe('Templates', () => {
             expect(struct.fullName === 'Percent').to.be.true;
             expect(struct.type === 'Percent').to.be.true;
             expect(struct.label === 'test').to.be.true;
-            expect(struct.precision === '18').to.be.true;
-            expect(struct.scale === '0').to.be.true;
+            expect(struct.precision === 18).to.be.true;
+            expect(struct.scale === 0).to.be.true;
         });
         it('should return Phone structure', () => {
             struct = templates.createDefaultTypeStructure('Phone', 'Phone', 'test', null);

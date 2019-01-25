@@ -16,11 +16,11 @@ export default class Create extends SfdxCommand {
     public static description = messages.getMessage('commandDescription');
 
     public static examples = [
-        `$ sfdx force:cmdt:field:create --fieldname MyCMT --fieldtype Checkbox
-    Created custom metadata field called MyCMT.
+        `$ sfdx force:cmdt:field:create --fieldname MyCheckbox --fieldtype Checkbox
+    Created custom metadata field called MyCheckbox.
     `,
-        `$ sfdx force:cmdt:field:create --fieldname MyCMT --fieldtype Picklist --picklistvalues A,B,C
-    Created custom metadata field called MyCMT.
+        `$ sfdx force:cmdt:field:create --fieldname Picklist --fieldtype Picklist --picklistvalues A,B,C --outputdir force-app/main/default/objects/CustomMetadate__mdt
+    Created custom metadata field called Picklist.
     `
     ];
 
@@ -33,6 +33,7 @@ export default class Create extends SfdxCommand {
             options: ['Checkbox', 'Date', 'DateTime', 'Email', 'Number', 'Percent', 'Phone', 'Picklist', 'Text', 'TextArea', 'LongTextArea', 'Url']
         }),
         picklistvalues: flags.array({ char: 'p', description: messages.getMessage('picklistValuesDescription') }),
+        decimalplaces: flags.array({ char: 's', description: messages.getMessage('decimalplacesDescription') }),
         label: flags.string({ char: 'l', description: messages.getMessage('labelFlagDescription') }),
         outputdir: flags.directory({ char: 'd', description: messages.getMessage('outputDirectoryFlagDescription') })
     };
@@ -45,6 +46,7 @@ export default class Create extends SfdxCommand {
         const label = this.flags.label || this.flags.fieldname;
         const fieldtype = this.flags.fieldtype;
         const picklistvalues = this.flags.picklistvalues || [];
+        const decimalplaces = this.flags.decimalplaces || 0;
         const visibility = this.flags.visibility || 'Public';
         const dir = this.flags.outputdir || '';
 
@@ -57,7 +59,7 @@ export default class Create extends SfdxCommand {
                 throw new Error(messages.getMessage('picklistValuesNotSuppliedError'));
             }
             const templates = new Templates();
-            const data = templates.createDefaultTypeStructure(fieldName, fieldtype, label, picklistvalues);
+            const data = templates.createDefaultTypeStructure(fieldName, fieldtype, label, picklistvalues, decimalplaces);
             const fieldXML = templates.createFieldXML(data, false);
             const writer = new FileWriter();
             await writer.writeFieldFile(core.fs, dir, fieldName, fieldXML);

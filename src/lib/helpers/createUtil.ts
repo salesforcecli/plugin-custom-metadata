@@ -1,4 +1,5 @@
 import { core } from '@salesforce/command';
+import { parseString } from 'xml2js';
 import { CreateConfig } from '../interfaces/createConfig';
 import { CustomField } from '../interfaces/customField';
 
@@ -43,24 +44,38 @@ export class CreateUtil {
     return core.fs.writeFile(outputFilePath, newRecordContent);
   }
 
-  /**
-   * Takes JSON representation of CLI varargs and converts them to xml with help
-   * from helper.getFieldTemplate
-   *
-   * @param  cliParams Object that holds key:value pairs from CLI input
-   * @param  fileData Array of objects that contain field data
-   * @return {string} String representation of XML
-   */
-  private buildCustomFieldXml(cliParams: object, fileData: CustomField[]) {
-    let ret = '';
-    let type = '';
+  public async getFileData(fieldDirPath, fileNames) {
+    const ret = [];
+    let filePath = '';
+    let fileData;
+    let str = '';
 
-    for (const fieldName of Object.keys(cliParams)) {
-      type = this.getFieldType(fileData, fieldName);
-      ret += this.getFieldTemplate(fieldName, cliParams[fieldName], type);
+    for (const file of fileNames) {
+      filePath = `${fieldDirPath}/${file}`;
+      fileData = await core.fs.readFile(filePath);
+      str = fileData.toString('utf8');
+
+      parseString(str, (err, res) => {
+        if (!err) {
+          ret.push(res);
+        }
+      });
     }
 
     return ret;
+  }
+
+  /**
+   * Filenames should have the suffix of '__mdt'. This will append that suffix if it does not exist.
+   *
+   * @param  typename Name of file
+   */
+  public appendDirectorySuffix(typename: string) {
+    if (typename.endsWith('__mdt')) {
+      return typename;
+    } else {
+      return typename + '__mdt';
+    }
   }
 
   /**
@@ -70,7 +85,7 @@ export class CreateUtil {
    * @param  fieldName Name of the field
    * @return {string} Type used by a custom metadata record
    */
-  private getFieldType(fileData: CustomField[] = [], fieldName: string) {
+  public getFieldType(fileData: CustomField[] = [], fieldName: string) {
     let thisFieldName = '';
     let type = '';
     let ret = 'string';
@@ -88,6 +103,26 @@ export class CreateUtil {
       if (thisFieldName === fieldName) {
         return ret;
       }
+    }
+
+    return ret;
+  }
+
+  /**
+   * Takes JSON representation of CLI varargs and converts them to xml with help
+   * from helper.getFieldTemplate
+   *
+   * @param  cliParams Object that holds key:value pairs from CLI input
+   * @param  fileData Array of objects that contain field data
+   * @return {string} String representation of XML
+   */
+  private buildCustomFieldXml(cliParams: object, fileData: CustomField[]) {
+    let ret = '';
+    let type = '';
+
+    for (const fieldName of Object.keys(cliParams)) {
+      type = this.getFieldType(fileData, fieldName);
+      ret += this.getFieldTemplate(fieldName, cliParams[fieldName], type);
     }
 
     return ret;

@@ -16,11 +16,11 @@ export default class Create extends SfdxCommand {
     public static description = messages.getMessage('commandDescription');
 
     public static examples = [
-        `$ sfdx force:cmdt:create --devname MyCMT
-    Created custom metadata type with developer name "MyCMT", label "MyCMT", plural label "MyCMT", and visibility "Public".
+        `$ sfdx force:cmdt:create --devname Country
+    Created custom metadata type with developer name "Country", label "Country", plural label "Country", and visibility "Public".
     `,
-        `$ sfdx force:cmdt:create --devname MyCMT --label "Custom Type" --plurallabel "Custom Types" --visibility Protected
-    Created custom metadata type with developer name "MyCMT", label "Custom Type", plural label "My Custom Metadata Type", and visibility "Protected".
+        `$ sfdx force:cmdt:create --devname CustomType --label "Custom Type" --plurallabel "Custom Types" --visibility Protected --outputdir force-app/main/default/object
+    Created custom metadata type with developer name "CustomType", label "Custom Type", plural label "My Custom Metadata Type", and visibility "Protected".
     `
     ];
 
