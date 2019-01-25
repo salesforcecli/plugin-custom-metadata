@@ -70,10 +70,10 @@ describe('FileWriter', () => {
             const fileWriter = new FileWriter();
             const fileName = 'Lantern__c';
             const fileContent = 'Oil';
-            await fileWriter.writeFieldFile(core.fs, '', fileName, fileContent);
-            expect(fs.existsSync('fields')).to.be.true;
-            expect(fs.existsSync(`fields/${fileName}.field-meta.xml`)).to.be.true;
-            exec(`rm -rf fields`);
+            await fileWriter.writeFieldFile(core.fs, 'fieldFolder', fileName, fileContent);
+            expect(fs.existsSync('fieldFolder/fields')).to.be.true;
+            expect(fs.existsSync(`fieldFolder/fields/${fileName}.field-meta.xml`)).to.be.true;
+            exec(`rm -rf fieldFolder`);
 
         });
 

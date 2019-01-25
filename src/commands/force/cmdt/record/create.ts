@@ -3,6 +3,7 @@ import { AnyJson } from '@salesforce/ts-types';
 import { parseString } from 'xml2js';
 import { CreateUtil } from '../../../../lib/helpers/createUtil';
 import { FileWriter } from '../../../../lib/helpers/fileWriter';
+import { ValidationUtil } from '../../../../lib/helpers/validationUtil';
 
 // Initialize Messages with the current plugin directory
 core.Messages.importMessagesDirectory(__dirname);
@@ -61,6 +62,19 @@ export default class Create extends SfdxCommand {
       const protection = this.flags.protection || 'false';
       const inputdir = this.flags.inputdir || 'force-app/main/default/objects';
       const outputdir = this.flags.outputdir || 'force-app/main/default/customMetadata';
+
+      const validator = new ValidationUtil();
+      if (!validator.validateMetadataTypeName(typename)) {
+          throw new core.SfdxError(messages.getMessage('notValidAPINameError', [typename]));
+      }
+
+      if (!validator.validateMetadataRecordName(recname)) {
+          throw new core.SfdxError(messages.getMessage('notAValidRecordNameError', [recname]));
+      }
+
+      if (!validator.validateLessThanForty(label)) {
+          throw new core.SfdxError(messages.getMessage('notAValidLabelNameError', [label]));
+      }
 
       // forgive them if they passed in type__mdt, and cut off the __mdt
       if (typename.endsWith('__mdt')) {
