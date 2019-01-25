@@ -1,6 +1,5 @@
 {
     "commandDescription": "Creates a new custom metadata type in the current project",
-    "decimalplacesDescription": "Number of decimal places",
     "nameFlagDescription": "DeveloperName for the type",
     "labelFlagDescription": "MasterLabel for the type",
     "plurallabelFlagDescription": "Plural label for the type. If blank, uses label",

@@ -6,5 +6,6 @@
     "labelFlagDescription": "Label of the new record",
     "outputDirectoryFlagDescription":"The directory to store the newly created files. The location can be an absolute path or relative to the current working directory. The default is the current directory.",
     "invalidCustomFieldError": "%s is not a valid field",
-    "picklistValuesNotSuppliedError":"Picklist values are required when type is Picklist"
+    "picklistValuesNotSuppliedError":"Picklist values are required when type is Picklist",
+    "decimalplacesDescription": "Number of decimal places"
 }
