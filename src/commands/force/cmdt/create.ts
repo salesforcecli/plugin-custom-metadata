@@ -47,26 +47,22 @@ export default class Create extends SfdxCommand {
         const fileWriter = new FileWriter();
         let outputFilePath = '';
 
-        try {
-            const validator = new ValidationUtil();
-            if (!validator.validateMetadataTypeName(devname)) {
-                throw new core.SfdxError(messages.getMessage('errorNotValidAPIName', [devname]));
-            }
-            if (!validator.validateLessThanForty(label)) {
-                throw new core.SfdxError(messages.getMessage('errorNotValidLabelName', [label]));
-            }
-
-            if (!validator.validateLessThanForty(pluralLabel)) {
-                throw new core.SfdxError(messages.getMessage('errorNotValidPluralLabelName', [pluralLabel]));
-            }
-
-            const objectXML = templates.createObjectXML({ label, pluralLabel }, visibility);
-            outputFilePath = await fileWriter.writeTypeFile(core.fs, dir, devname, objectXML);
-            const outputString = messages.getMessage('successResponse', [devname, label, pluralLabel, visibility, outputFilePath]);
-            this.ux.log(outputString);
-        } catch (err) {
-            this.ux.log(err.message);
+        const validator = new ValidationUtil();
+        if (!validator.validateMetadataTypeName(devname)) {
+            throw new core.SfdxError(messages.getMessage('errorNotValidAPIName', [devname]));
         }
+        if (!validator.validateLessThanForty(label)) {
+            throw new core.SfdxError(messages.getMessage('errorNotValidLabelName', [label]));
+        }
+
+        if (!validator.validateLessThanForty(pluralLabel)) {
+            throw new core.SfdxError(messages.getMessage('errorNotValidPluralLabelName', [pluralLabel]));
+        }
+
+        const objectXML = templates.createObjectXML({ label, pluralLabel }, visibility);
+        outputFilePath = await fileWriter.writeTypeFile(core.fs, dir, devname, objectXML);
+        const outputString = messages.getMessage('successResponse', [devname, label, pluralLabel, visibility, outputFilePath]);
+        this.ux.log(outputString);
 
         // Return an object to be displayed with --json
         return {
