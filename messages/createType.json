@@ -11,4 +11,3 @@
     "errorNotValidLabelName" : "'%s' is not a valid label for a custom metadata object.",
     "errorNotValidPluralLabelName" : "'%s' is not a valid plural label for a custom metadata object."
   }
-  
