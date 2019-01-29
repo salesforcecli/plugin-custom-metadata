@@ -3,6 +3,7 @@ import { AnyJson } from '@salesforce/ts-types';
 import { FileWriter } from '../../../../lib/helpers/fileWriter';
 import { ValidationUtil } from '../../../../lib/helpers/validationUtil';
 import { Templates } from '../../../../lib/templates/templates';
+import { SaveResults } from '../../../../lib/interfaces/saveResults';
 
 // Initialize Messages with the current plugin directory
 core.Messages.importMessagesDirectory(__dirname);
@@ -49,6 +50,7 @@ export default class Create extends SfdxCommand {
         const decimalplaces = this.flags.decimalplaces || 0;
         const visibility = this.flags.visibility || 'Public';
         const dir = this.flags.outputdir || '';
+        let saveResults : SaveResults;
 
         const validator = new ValidationUtil();
         if (!validator.validateAPIName(fieldName)) {
@@ -61,9 +63,10 @@ export default class Create extends SfdxCommand {
         const data = templates.createDefaultTypeStructure(fieldName, fieldtype, label, picklistvalues, decimalplaces);
         const fieldXML = templates.createFieldXML(data, false);
         const writer = new FileWriter();
-        await writer.writeFieldFile(core.fs, dir, fieldName, fieldXML);
-        const outputString = `Created custom metadata field called ${fieldName}.`;
-        this.ux.log(outputString);
+        saveResults = await writer.writeFieldFile(core.fs, dir, fieldName, fieldXML);
+        
+        this.ux.log(messages.getMessage('targetDirectory', [saveResults.dir]));
+        this.ux.log(messages.getMessage(saveResults.updated ? 'fileUpdate' : 'fileCreated', [saveResults.fileName]));
 
         // Return an object to be displayed with --json
         return {

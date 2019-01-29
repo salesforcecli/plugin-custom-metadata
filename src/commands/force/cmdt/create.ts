@@ -3,6 +3,7 @@ import { AnyJson } from '@salesforce/ts-types';
 import { FileWriter } from '../../../lib/helpers/fileWriter';
 import { ValidationUtil } from '../../../lib/helpers/validationUtil';
 import { Templates } from '../../../lib/templates/templates';
+import { SaveResults } from '../../../lib/interfaces/saveResults';
 
 // Initialize Messages with the current plugin directory
 core.Messages.importMessagesDirectory(__dirname);
@@ -45,7 +46,7 @@ export default class Create extends SfdxCommand {
         const dir = this.flags.outputdir || '';
         const templates = new Templates();
         const fileWriter = new FileWriter();
-        let outputFilePath = '';
+        let saveResults : SaveResults;
 
         const validator = new ValidationUtil();
         if (!validator.validateMetadataTypeName(devname)) {
@@ -60,17 +61,16 @@ export default class Create extends SfdxCommand {
         }
 
         const objectXML = templates.createObjectXML({ label, pluralLabel }, visibility);
-        outputFilePath = await fileWriter.writeTypeFile(core.fs, dir, devname, objectXML);
-        const outputString = messages.getMessage('successResponse', [devname, label, pluralLabel, visibility, outputFilePath]);
-        this.ux.log(outputString);
+        saveResults = await fileWriter.writeTypeFile(core.fs, dir, devname, objectXML);
 
-        // Return an object to be displayed with --json
+        this.ux.log(messages.getMessage('targetDirectory', [saveResults.dir]));
+        this.ux.log(messages.getMessage(saveResults.updated ? 'fileUpdate' : 'fileCreated', [saveResults.fileName]));
+        
         return {
             devname,
             label,
             pluralLabel,
-            visibility,
-            outputFilePath
+            visibility
         };
 
     }

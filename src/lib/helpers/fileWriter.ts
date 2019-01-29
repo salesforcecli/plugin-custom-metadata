@@ -1,3 +1,6 @@
+
+import * as fs from 'fs';
+
 export class FileWriter {
 
     /**
@@ -6,7 +9,7 @@ export class FileWriter {
      * @param devname
      * @param objectXML
      */
-    public async writeTypeFile(fs , dir: string, devName: string, objectXML: string) {
+    public async writeTypeFile(corefs , dir: string, devName: string, objectXML: string) {
         let apiName = devName;
         const dirName = this.createDir(dir);
 
@@ -14,15 +17,20 @@ export class FileWriter {
         if (apiName.endsWith('__c')) {
             apiName = apiName.replace('__c', '__mdt');
         }
+
         // appending __mdt if they did not pass it in.
         if (!apiName.endsWith('__mdt')) {
             apiName += '__mdt';
         }
-        const outputFilePath = `${dirName}${apiName}/${apiName}.object-meta.xml`;
 
-        await fs.mkdirp(`${dirName}${apiName}`);
-        await fs.writeFile(outputFilePath, objectXML);
-        return outputFilePath;
+        const outputFilePath = `${dirName}${apiName}/`;
+        const fileName = `${apiName}.object-meta.xml`;
+        const updated = fs.existsSync(outputFilePath + fileName);
+
+        await corefs.mkdirp(`${dirName}${apiName}`);
+        await corefs.writeFile(outputFilePath + fileName, objectXML);
+
+        return { dir : outputFilePath, fileName, updated};
     }
 
     /**
@@ -32,17 +40,20 @@ export class FileWriter {
      * @param fieldXML
      */
     // /fields/{fieldAPI}.field-meta.xml
-    public async writeFieldFile(fs, dir, fieldName, fieldXML) {
+    public async writeFieldFile(corefs, dir, fieldName, fieldXML) {
         const dirName = this.createDir(dir);
 
         // appending __c if its not already there
         if (fieldName.endsWith('__c') === false) {
             fieldName += '__c';
         }
-        const outputFilePath = `${dirName}fields/${fieldName}.field-meta.xml`;
-        await fs.mkdirp(`${dirName}fields`);
-        await fs.writeFile(outputFilePath, fieldXML);
-        return outputFilePath;
+        const outputFilePath = `${dirName}fields/`;
+        const fileName = `${fieldName}.field-meta.xml`;
+        const updated = fs.existsSync(outputFilePath + fileName);
+        await corefs.mkdirp(`${dirName}fields`);
+        await corefs.writeFile(outputFilePath + fileName, fieldXML);
+
+        return { dir : outputFilePath, fileName, updated};
     }
 
     public createDir(dir) {

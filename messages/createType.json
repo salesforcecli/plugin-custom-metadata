@@ -9,5 +9,8 @@
     "errorNoOrgResults": "No results found for the organization '%s'.",
     "errorNotValidAPIName" :"'%s' is not a valid api name for a custom metadata object.",
     "errorNotValidLabelName" : "'%s' is not a valid label for a custom metadata object.",
-    "errorNotValidPluralLabelName" : "'%s' is not a valid plural label for a custom metadata object."
+    "errorNotValidPluralLabelName" : "'%s' is not a valid plural label for a custom metadata object.",
+    "targetDirectory" : "target dir = %s",
+    "fileCreated": "   create %s",
+    "fileUpdate":"   update %s"
   }
