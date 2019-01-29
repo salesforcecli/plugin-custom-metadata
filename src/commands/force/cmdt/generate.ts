@@ -3,6 +3,7 @@ import { Aliases, SfdxError } from '@salesforce/core';
 import { isEmpty } from '@salesforce/kit';
 import { AnyJson, ensureJsonArray } from '@salesforce/ts-types';
 import { isNullOrUndefined } from 'util';
+import { CreateUtil } from '../../../lib/helpers/createUtil';
 import { FileWriter } from '../../../lib/helpers/fileWriter';
 import { MetadataUtil } from '../../../lib/helpers/metadataUtil';
 import { ValidationUtil } from '../../../lib/helpers/validationUtil';
@@ -35,9 +36,8 @@ export default class Generate extends SfdxCommand {
     visibility: flags.enum({char: 'v', description: messages.getMessage('visibilityFlagDescription'),  options: ['Protected', 'Public']}),
     sobjectname: flags.string({char: 's', required: true, description: messages.getMessage('sobjectnameFlagDescription')}),
     sourceusername: flags.string({char: 'x', description: messages.getMessage('sourceusernameFlagDescription')}),
-    deploy: flags.string({char: 'd', description: messages.getMessage('deployFlagDescription')}),
     ignoreunsupported: flags.string({char: 'i', description: messages.getMessage('ignoreUnsupportedFlagDescription')}),
-    outputdir: flags.directory({char: 'o', description: messages.getMessage('outputDirectoryFlagDescription')}),
+    typeoutputdir: flags.directory({char: 'd', description: messages.getMessage('outputDirectoryFlagDescription')}),
     recordsoutputdir: flags.directory({char: 'r', description: messages.getMessage('recordsoutputDirectoryFlagDescription')}),
     loglevel: flags.string({char: 'l', description: messages.getMessage('loglevelFlagDescription')})
 };
@@ -85,14 +85,20 @@ export default class Generate extends SfdxCommand {
             throw new SfdxError(errMsg, 'sourceuserAuthenticationError');
         }
     }
+    let typeName: string = '';
+    if (!isNullOrUndefined(cmdttype)) {
+        typeName = cmdttype;
+    } else {
+        typeName = objname;
+    }
     let devName;
-    if (!isNullOrUndefined(objname)) {
-        if (!validator.validateAPIName(objname)) {
-            throw SfdxError.create('custommetadata', 'generate', 'sobjectnameFlagError', [objname]);
-        } else if (objname.indexOf('__c')) {
-            devName = objname.substring(0, objname.indexOf('__c')) + 'Type';
+    if (!isNullOrUndefined(typeName) ) {
+        if (!validator.validateAPIName(typeName)) {
+            throw SfdxError.create('custommetadata', 'generate', 'sobjectnameFlagError', [typeName]);
+        } else if (typeName.endsWith('__c') || typeName.endsWith('__C')) {
+            devName = typeName.substring(0, typeName.indexOf('__c')) + 'Type';
         } else {
-            devName = objname + 'Type';
+            devName = typeName + 'Type';
         }
     } else {
         throw SfdxError.create('custommetadata', 'generate', 'sobjectnameFlagError', [objname]);
@@ -127,14 +133,15 @@ export default class Generate extends SfdxCommand {
 
     const visibility = this.flags.visibility || 'Public';
     const label = this.flags.label || devName;
-    const labelPlural = this.flags.plurallabel || devName;
-    const outputDir = this.flags.outputdir || 'force-app/main/default/objects/';
+    const pluralLabel = this.flags.plurallabel || devName;
+    const outputDir = this.flags.typeoutputdir || 'force-app/main/default/objects/';
     const recordsOutputDir = this.flags.recordsoutputdir || 'force-app/main/default/customMetadata';
 
     try {
+        // this.ux.startSpinner('processing.....');
         // create custom metadata type
         const templates = new Templates();
-        const objectXML = templates.createObjectXML({label, labelPlural}, visibility);
+        const objectXML = templates.createObjectXML({label, pluralLabel}, visibility);
         const fileWriter = new FileWriter();
         await fileWriter.writeTypeFile(core.fs, outputDir, devName, objectXML);
 
@@ -171,13 +178,56 @@ export default class Generate extends SfdxCommand {
 
         // create custom metadata records
         console.log(recordsOutputDir);
-        // TO DO
+        if (!sObjectRecords.records || sObjectRecords.records.length <= 0) {
+            throw new core.SfdxError(messages.getMessage('noRecordsFoundError', [objname]));
+        }
+
+        const createUtil = new CreateUtil();
+        // if customMetadata folder does not exist, create it
+        await core.fs.mkdirp(recordsOutputDir);
+        let security: boolean;
+        if (visibility === 'Protected') {
+            security = true;
+        } else {
+            security = false;
+        }
+        for (const rec of sObjectRecords.records) {
+            let typename = devName;
+            if (typename.endsWith('__mdt')) {
+                typename = typename.substring(0, typename.indexOf('__mdt'));
+            }
+
+            const fieldDirPath = `${fileWriter.createDir(outputDir)}${typename}__mdt/fields`;
+            const fileNames = await core.fs.readdir(fieldDirPath);
+
+            const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
+            console.log(rec);
+            const record = metadataUtil.getCleanQueryResponse(rec);
+            const lblName = rec['Name'];
+            let recordName = rec['Name'];
+            if (!validator.validateMetadataRecordName(rec['Name'])) {
+                recordName = recordName.replace(/ +/g, '_');
+            }
+            console.log(record);
+            await createUtil.createRecord({
+                typename,
+                recname: recordName,
+                label: lblName,
+                inputdir: outputDir,
+                outputdir: recordsOutputDir,
+                protection: security,
+                varargs: record,
+                fileData
+            });
+            this.ux.log(`Congrats! Created a ${devName} custom metadata type with ${sObjectRecords.records.length} records!`);
+        }
     } catch (e) {
+        this.ux.stopSpinner('generation failed....');
         const errMsg = messages.getMessage('generateError', [e.message]);
         throw new SfdxError(errMsg, 'generateError');
     }
 
-    return {  };
+    return { outputDir, recordsOutputDir };
 
   }
 }

@@ -102,11 +102,23 @@ export class MetadataUtil {
       return false;
     }
 
+    public getCleanQueryResponse(sObjecRecord: AnyJson): any {
+      const record: any = {};
+      console.log(sObjecRecord);
+      Object.keys(sObjecRecord).forEach(fieldName => {
+          if (fieldName !== 'attributes' && fieldName !== 'Name') {
+            record[fieldName] = sObjecRecord[fieldName];
+          }
+        }
+          );
+      return record;
+    }
+
     private _getSoqlQuery(arr, objName) {
       const fieldNames = arr.map(field => {
         return field.fullName;
       }).join(',');
-
-      return `SELECT ${fieldNames} FROM ${objName}`;
+      // Added Name hardcoded as Name field is not retreived as part of object describe.
+      return `SELECT Name, ${fieldNames} FROM ${objName}`;
     }
 }
