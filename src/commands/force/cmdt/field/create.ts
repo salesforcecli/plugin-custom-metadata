@@ -2,8 +2,8 @@ import { core, flags, SfdxCommand } from '@salesforce/command';
 import { AnyJson } from '@salesforce/ts-types';
 import { FileWriter } from '../../../../lib/helpers/fileWriter';
 import { ValidationUtil } from '../../../../lib/helpers/validationUtil';
-import { Templates } from '../../../../lib/templates/templates';
 import { SaveResults } from '../../../../lib/interfaces/saveResults';
+import { Templates } from '../../../../lib/templates/templates';
 
 // Initialize Messages with the current plugin directory
 core.Messages.importMessagesDirectory(__dirname);
@@ -50,7 +50,7 @@ export default class Create extends SfdxCommand {
         const decimalplaces = this.flags.decimalplaces || 0;
         const visibility = this.flags.visibility || 'Public';
         const dir = this.flags.outputdir || '';
-        let saveResults : SaveResults;
+        let saveResults: SaveResults;
 
         const validator = new ValidationUtil();
         if (!validator.validateAPIName(fieldName)) {
@@ -64,7 +64,7 @@ export default class Create extends SfdxCommand {
         const fieldXML = templates.createFieldXML(data, false);
         const writer = new FileWriter();
         saveResults = await writer.writeFieldFile(core.fs, dir, fieldName, fieldXML);
-        
+
         this.ux.log(messages.getMessage('targetDirectory', [saveResults.dir]));
         this.ux.log(messages.getMessage(saveResults.updated ? 'fileUpdate' : 'fileCreated', [saveResults.fileName]));
 
