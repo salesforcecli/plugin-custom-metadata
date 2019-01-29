@@ -10,6 +10,5 @@
     "successResponse": "Created custom metadata record of the type '%s' with record developer name '%s', label '%s', and protected '%s' at '%s'.",
     "notValidAPINameError" :"'%s' is not a valid api name for a custom metadata object.",
     "notAValidRecordNameError" : "%s is not a valid record name for a custom metadata record.",
-    "notAValidLabelNameError":"%s is to long to be a label name.",
-
+    "notAValidLabelNameError":"%s is to long to be a label name."
 }
