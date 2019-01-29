@@ -8,7 +8,7 @@
     "inputDirectoryFlagDescription": "Specify the directory where the custom metadata type definition will be pulled from (default is 'force-app/main/default/objects')",
     "outputDirectoryFlagDescription": "Specify the directory where the file will be created (default is 'force-app/main/default/customMetadata')",
     "successResponse": "Created custom metadata record of the type '%s' with record developer name '%s', label '%s', and protected '%s' at '%s'.",
-    "notValidAPINameError" :"'%s' is not a valid api name for a custom metadata object.",
-    "notAValidRecordNameError" : "%s is not a valid record name for a custom metadata record.",
-    "notAValidLabelNameError":"%s is to long to be a label name."
+    "notValidAPINameError": "'%s' is not a valid api name for a custom metadata object.",
+    "notAValidRecordNameError": "%s is not a valid record name for a custom metadata record.",
+    "notAValidLabelNameError": "%s is too long to be a label name."
 }
