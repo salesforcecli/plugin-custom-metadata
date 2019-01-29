@@ -2,6 +2,7 @@ import { core, flags, SfdxCommand } from '@salesforce/command';
 import { AnyJson } from '@salesforce/ts-types';
 import { FileWriter } from '../../../../lib/helpers/fileWriter';
 import { ValidationUtil } from '../../../../lib/helpers/validationUtil';
+import { SaveResults } from '../../../../lib/interfaces/saveResults';
 import { Templates } from '../../../../lib/templates/templates';
 
 // Initialize Messages with the current plugin directory
@@ -49,25 +50,23 @@ export default class Create extends SfdxCommand {
         const decimalplaces = this.flags.decimalplaces || 0;
         const visibility = this.flags.visibility || 'Public';
         const dir = this.flags.outputdir || '';
+        let saveResults: SaveResults;
 
-        try {
-            const validator = new ValidationUtil();
-            if (!validator.validateAPIName(fieldName)) {
-                throw new Error(messages.getMessage('invalidCustomFieldError', [fieldName]));
-            }
-            if (fieldtype === 'Picklist' && picklistvalues.length === 0) {
-                throw new Error(messages.getMessage('picklistValuesNotSuppliedError'));
-            }
-            const templates = new Templates();
-            const data = templates.createDefaultTypeStructure(fieldName, fieldtype, label, picklistvalues, decimalplaces);
-            const fieldXML = templates.createFieldXML(data, false);
-            const writer = new FileWriter();
-            await writer.writeFieldFile(core.fs, dir, fieldName, fieldXML);
-            const outputString = `Created custom metadata field called ${fieldName}.`;
-            this.ux.log(outputString);
-        } catch (err) {
-            this.ux.log(err.message);
+        const validator = new ValidationUtil();
+        if (!validator.validateAPIName(fieldName)) {
+            throw new Error(messages.getMessage('invalidCustomFieldError', [fieldName]));
         }
+        if (fieldtype === 'Picklist' && picklistvalues.length === 0) {
+            throw new Error(messages.getMessage('picklistValuesNotSuppliedError'));
+        }
+        const templates = new Templates();
+        const data = templates.createDefaultTypeStructure(fieldName, fieldtype, label, picklistvalues, decimalplaces);
+        const fieldXML = templates.createFieldXML(data, false);
+        const writer = new FileWriter();
+        saveResults = await writer.writeFieldFile(core.fs, dir, fieldName, fieldXML);
+
+        this.ux.log(messages.getMessage('targetDirectory', [saveResults.dir]));
+        this.ux.log(messages.getMessage(saveResults.updated ? 'fileUpdate' : 'fileCreated', [saveResults.fileName]));
 
         // Return an object to be displayed with --json
         return {

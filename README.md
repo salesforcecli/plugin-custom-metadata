@@ -15,8 +15,6 @@ Tools for working with custom metadata types and their records.
 <!-- toc -->
 * [Debugging your plugin](#debugging-your-plugin)
 <!-- tocstop -->
-* [Debugging your plugin](#debugging-your-plugin)
-<!-- tocstop -->
 <!-- install -->
 <!-- usage -->
 ```sh-session
@@ -69,6 +67,504 @@ USAGE
 <!-- usagestop -->
 
 <!-- commands -->
+* [`custommetadata force:cmdt:create [FILE]`](#custommetadata-forcecmdtcreate-file)
+* [`custommetadata force:cmdt:field:create [FILE]`](#custommetadata-forcecmdtfieldcreate-file)
+* [`custommetadata force:cmdt:generate [FILE]`](#custommetadata-forcecmdtgenerate-file)
+* [`custommetadata force:cmdt:record:create`](#custommetadata-forcecmdtrecordcreate)
+
+## `custommetadata force:cmdt:create [FILE]`
+
+Creates a new custom metadata type in the current project
+
+```
+USAGE
+  $ custommetadata force:cmdt:create [FILE]
+
+OPTIONS
+  -d, --outputdir=outputdir                       The directory to store the newly created files. The location can be an
+                                                  absolute path or relative to the current working directory. The
+                                                  default is the current directory.
+
+  -l, --label=label                               MasterLabel for the type
+
+  -n, --devname=devname                           (required) DeveloperName for the type
+
+  -p, --plurallabel=plurallabel                   Plural label for the type. If blank, uses label
+
+  -v, --visibility=(Protected|Public)             Visibility for the type. Valid values are 'Public' and 'Protected'. If
+                                                  blank, uses 'Public'
+
+  --json                                          format output as json
+
+  --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
+
+EXAMPLES
+  $ sfdx force:cmdt:create --devname Country
+       Created custom metadata type with developer name "Country", label "Country", plural label "Country", and 
+  visibility "Public".
+    
+  $ sfdx force:cmdt:create --devname CustomType --label "Custom Type" --plurallabel "Custom Types" --visibility 
+  Protected --outputdir force-app/main/default/object
+       Created custom metadata type with developer name "CustomType", label "Custom Type", plural label "My Custom 
+  Metadata Type", and visibility "Protected".
+```
+
+_See code: [src\commands\force\cmdt\create.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src\commands\force\cmdt\create.ts)_
+
+## `custommetadata force:cmdt:field:create [FILE]`
+
+generates a custom metadata field based on the field type provided
+
+```
+USAGE
+  $ custommetadata force:cmdt:field:create [FILE]
+
+OPTIONS
+  -d, --outputdir=outputdir
+      The directory to store the newly created files. The location can be an absolute path or relative to the current 
+      working directory. The default is the current directory.
+
+  -f, --fieldtype=(Checkbox|Date|DateTime|Email|Number|Percent|Phone|Picklist|Text|TextArea|LongTextArea|Url)
+      (required) The type of field that you are creating
+
+  -l, --label=label
+      Label of the new record
+
+  -n, --fieldname=fieldname
+      (required) Name of the custom field
+
+  -p, --picklistvalues=picklistvalues
+      List of picklist values that are added when creating a picklist
+
+  --json
+      format output as json
+
+  --loglevel=(trace|debug|info|warn|error|fatal)
+      logging level for this command invocation
+
+EXAMPLES
+  $ sfdx force:cmdt:field:create --fieldname MyCheckbox --fieldtype Checkbox
+       Created custom metadata field called MyCheckbox.
+    
+  $ sfdx force:cmdt:field:create --fieldname Picklist --fieldtype Picklist --picklistvalues A,B,C --outputdir 
+  force-app/main/default/objects/CustomMetadate__mdt
+       Created custom metadata field called Picklist.
+```
+
+_See code: [src\commands\force\cmdt\field\create.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src\commands\force\cmdt\field\create.ts)_
+
+## `custommetadata force:cmdt:generate [FILE]`
+
+generates a custom metadata type and all its records for the provided sobject
+
+```
+USAGE
+  $ custommetadata force:cmdt:generate [FILE]
+
+OPTIONS
+  -d, --deploy=deploy                        Runs the force:source:push command after Source XML is created
+  -i, --ignoreunsupported=ignoreunsupported  Flag to ignore non-supported field types (these fields will not be created)
+  -l, --label=label                          The label of the new Custommetadata Type.
+  -l, --loglevel=loglevel                    logging level for this command invocation
+
+  -n, --devname=devname                      (required) The name of the new Custommetadata Type. The name can be up to
+                                             40 characters and must start with a letter.
+
+  -p, --plurallabel=plurallabel              The plural label of the new Custommetadata Type. If blank, uses label
+
+  -s, --sobjectname=sobjectname              (required) The sObject name you are generating to Custommetadata
+
+  -u, --targetusername=targetusername        username or alias for the target org; overrides default target org
+
+  -v, --visibility=(Protected|Public)        Visibility for the type. Valid values are 'Public' and 'Protected'. If
+                                             blank, uses 'Public'
+
+  -x, --sourceusername=sourceusername        username or alias for the source org that contains the Custom Setting or
+                                             SObject and data to be generateed
+
+  --apiversion=apiversion                    override the api version used for api requests made by this command
+
+  --json                                     format output as json
+
+EXAMPLE
+  "$ sfdx cmdt:generate ---devName ConfigObjectmeta --label Config Object meta --plurallabel Config Object meta 
+  --sobjectname ConfigObject__c   --sourceusername SourceOrg
+     Congrats! Created a ConfigObjectmeta__mdt type with 32 records!"
+```
+
+_See code: [src\commands\force\cmdt\generate.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src\commands\force\cmdt\generate.ts)_
+
+## `custommetadata force:cmdt:record:create`
+
+Creates a new record for a given custom metadata type in the current project
+
+```
+USAGE
+  $ custommetadata force:cmdt:record:create
+
+OPTIONS
+  -l, --label=label                               Label of the new record
+
+  -n, --inputdir=inputdir                         Specify the directory where the custom metadata type definition will
+                                                  be pulled from (default is 'force-app/main/default/objects')
+
+  -o, --outputdir=outputdir                       Specify the directory where the file will be created (default is
+                                                  'force-app/main/default/customMetadata')
+
+  -p, --protection=protection                     Visibility for the record. If blank, uses false
+
+  -r, --recname=recname                           DeveloperName of the new record
+
+  -t, --typename=typename                         DeveloperName of the type to create a record for
+
+  --json                                          format output as json
+
+  --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
+
+EXAMPLES
+  $ sfdx custommetadata:record:create --typename MyCMT --recname MyRecord
+       Created custom metadata record of the type "MyCMT" with record developer name "MyRecord", label "MyRecord", and 
+  visibility "Public".
+    
+  $ sfdx custommetadata:record:create --typename MyCMT --recname MyRecord --label "My Record" --protected true
+       Created custom metadata record of the type "MyCMT" with record developer name "MyRecord", label "MyRecord", and 
+  visibility "Protected".
+```
+
+_See code: [src\commands\force\cmdt\record\create.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src\commands\force\cmdt\record\create.ts)_
+<!-- commandsstop -->
+* [`custommetadata force:cmdt:create [FILE]`](#custommetadata-forcecmdtcreate-file)
+* [`custommetadata force:cmdt:field:create [FILE]`](#custommetadata-forcecmdtfieldcreate-file)
+* [`custommetadata force:cmdt:generate [FILE]`](#custommetadata-forcecmdtgenerate-file)
+* [`custommetadata force:cmdt:record:create`](#custommetadata-forcecmdtrecordcreate)
+
+## `custommetadata force:cmdt:create [FILE]`
+
+Creates a new custom metadata type in the current project
+
+```
+USAGE
+  $ custommetadata force:cmdt:create [FILE]
+
+OPTIONS
+  -d, --outputdir=outputdir                       The directory to store the newly created files. The location can be an
+                                                  absolute path or relative to the current working directory. The
+                                                  default is the current directory.
+
+  -l, --label=label                               MasterLabel for the type
+
+  -n, --devname=devname                           (required) DeveloperName for the type
+
+  -p, --plurallabel=plurallabel                   Plural label for the type. If blank, uses label
+
+  -v, --visibility=(Protected|Public)             Visibility for the type. Valid values are 'Public' and 'Protected'. If
+                                                  blank, uses 'Public'
+
+  --json                                          format output as json
+
+  --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
+
+EXAMPLES
+  $ sfdx force:cmdt:create --devname Country
+       Created custom metadata type with developer name "Country", label "Country", plural label "Country", and 
+  visibility "Public".
+    
+  $ sfdx force:cmdt:create --devname CustomType --label "Custom Type" --plurallabel "Custom Types" --visibility 
+  Protected --outputdir force-app/main/default/object
+       Created custom metadata type with developer name "CustomType", label "Custom Type", plural label "My Custom 
+  Metadata Type", and visibility "Protected".
+```
+
+_See code: [src\commands\force\cmdt\create.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src\commands\force\cmdt\create.ts)_
+
+## `custommetadata force:cmdt:field:create [FILE]`
+
+generates a custom metadata field based on the field type provided
+
+```
+USAGE
+  $ custommetadata force:cmdt:field:create [FILE]
+
+OPTIONS
+  -d, --outputdir=outputdir
+      The directory to store the newly created files. The location can be an absolute path or relative to the current 
+      working directory. The default is the current directory.
+
+  -f, --fieldtype=(Checkbox|Date|DateTime|Email|Number|Percent|Phone|Picklist|Text|TextArea|LongTextArea|Url)
+      (required) The type of field that you are creating
+
+  -l, --label=label
+      Label of the new record
+
+  -n, --fieldname=fieldname
+      (required) Name of the custom field
+
+  -p, --picklistvalues=picklistvalues
+      List of picklist values that are added when creating a picklist
+
+  --json
+      format output as json
+
+  --loglevel=(trace|debug|info|warn|error|fatal)
+      logging level for this command invocation
+
+EXAMPLES
+  $ sfdx force:cmdt:field:create --fieldname MyCheckbox --fieldtype Checkbox
+       Created custom metadata field called MyCheckbox.
+    
+  $ sfdx force:cmdt:field:create --fieldname Picklist --fieldtype Picklist --picklistvalues A,B,C --outputdir 
+  force-app/main/default/objects/CustomMetadate__mdt
+       Created custom metadata field called Picklist.
+```
+
+_See code: [src\commands\force\cmdt\field\create.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src\commands\force\cmdt\field\create.ts)_
+
+## `custommetadata force:cmdt:generate [FILE]`
+
+generates a custom metadata type and all its records for the provided sobject
+
+```
+USAGE
+  $ custommetadata force:cmdt:generate [FILE]
+
+OPTIONS
+  -d, --deploy=deploy                        Runs the force:source:push command after Source XML is created
+  -i, --ignoreunsupported=ignoreunsupported  Flag to ignore non-supported field types (these fields will not be created)
+  -l, --label=label                          The label of the new Custommetadata Type.
+  -l, --loglevel=loglevel                    logging level for this command invocation
+
+  -n, --devname=devname                      (required) The name of the new Custommetadata Type. The name can be up to
+                                             40 characters and must start with a letter.
+
+  -p, --plurallabel=plurallabel              The plural label of the new Custommetadata Type. If blank, uses label
+
+  -s, --sobjectname=sobjectname              (required) The sObject name you are generating to Custommetadata
+
+  -u, --targetusername=targetusername        username or alias for the target org; overrides default target org
+
+  -v, --visibility=(Protected|Public)        Visibility for the type. Valid values are 'Public' and 'Protected'. If
+                                             blank, uses 'Public'
+
+  -x, --sourceusername=sourceusername        username or alias for the source org that contains the Custom Setting or
+                                             SObject and data to be generateed
+
+  --apiversion=apiversion                    override the api version used for api requests made by this command
+
+  --json                                     format output as json
+
+EXAMPLE
+  "$ sfdx cmdt:generate ---devName ConfigObjectmeta --label Config Object meta --plurallabel Config Object meta 
+  --sobjectname ConfigObject__c   --sourceusername SourceOrg
+     Congrats! Created a ConfigObjectmeta__mdt type with 32 records!"
+```
+
+_See code: [src\commands\force\cmdt\generate.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src\commands\force\cmdt\generate.ts)_
+
+## `custommetadata force:cmdt:record:create`
+
+Creates a new record for a given custom metadata type in the current project
+
+```
+USAGE
+  $ custommetadata force:cmdt:record:create
+
+OPTIONS
+  -l, --label=label                               Label of the new record
+
+  -n, --inputdir=inputdir                         Specify the directory where the custom metadata type definition will
+                                                  be pulled from (default is 'force-app/main/default/objects')
+
+  -o, --outputdir=outputdir                       Specify the directory where the file will be created (default is
+                                                  'force-app/main/default/customMetadata')
+
+  -p, --protection=protection                     Visibility for the record. If blank, uses false
+
+  -r, --recname=recname                           DeveloperName of the new record
+
+  -t, --typename=typename                         DeveloperName of the type to create a record for
+
+  --json                                          format output as json
+
+  --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
+
+EXAMPLES
+  $ sfdx custommetadata:record:create --typename MyCMT --recname MyRecord
+       Created custom metadata record of the type "MyCMT" with record developer name "MyRecord", label "MyRecord", and 
+  visibility "Public".
+    
+  $ sfdx custommetadata:record:create --typename MyCMT --recname MyRecord --label "My Record" --protected true
+       Created custom metadata record of the type "MyCMT" with record developer name "MyRecord", label "MyRecord", and 
+  visibility "Protected".
+```
+
+_See code: [src\commands\force\cmdt\record\create.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src\commands\force\cmdt\record\create.ts)_
+<!-- commandsstop -->
+* [`custommetadata force:cmdt:create [FILE]`](#custommetadata-forcecmdtcreate-file)
+* [`custommetadata force:cmdt:field:create [FILE]`](#custommetadata-forcecmdtfieldcreate-file)
+* [`custommetadata force:cmdt:generate [FILE]`](#custommetadata-forcecmdtgenerate-file)
+* [`custommetadata force:cmdt:record:create`](#custommetadata-forcecmdtrecordcreate)
+
+## `custommetadata force:cmdt:create [FILE]`
+
+Creates a new custom metadata type in the current project
+
+```
+USAGE
+  $ custommetadata force:cmdt:create [FILE]
+
+OPTIONS
+  -d, --outputdir=outputdir                       The directory to store the newly created files. The location can be an
+                                                  absolute path or relative to the current working directory. The
+                                                  default is the current directory.
+
+  -l, --label=label                               MasterLabel for the type
+
+  -n, --devname=devname                           (required) DeveloperName for the type
+
+  -p, --plurallabel=plurallabel                   Plural label for the type. If blank, uses label
+
+  -v, --visibility=(Protected|Public)             Visibility for the type. Valid values are 'Public' and 'Protected'. If
+                                                  blank, uses 'Public'
+
+  --json                                          format output as json
+
+  --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
+
+EXAMPLES
+  $ sfdx force:cmdt:create --devname Country
+       Created custom metadata type with developer name "Country", label "Country", plural label "Country", and 
+  visibility "Public".
+    
+  $ sfdx force:cmdt:create --devname CustomType --label "Custom Type" --plurallabel "Custom Types" --visibility 
+  Protected --outputdir force-app/main/default/object
+       Created custom metadata type with developer name "CustomType", label "Custom Type", plural label "My Custom 
+  Metadata Type", and visibility "Protected".
+```
+
+_See code: [src\commands\force\cmdt\create.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src\commands\force\cmdt\create.ts)_
+
+## `custommetadata force:cmdt:field:create [FILE]`
+
+generates a custom metadata field based on the field type provided
+
+```
+USAGE
+  $ custommetadata force:cmdt:field:create [FILE]
+
+OPTIONS
+  -d, --outputdir=outputdir
+      The directory to store the newly created files. The location can be an absolute path or relative to the current 
+      working directory. The default is the current directory.
+
+  -f, --fieldtype=(Checkbox|Date|DateTime|Email|Number|Percent|Phone|Picklist|Text|TextArea|LongTextArea|Url)
+      (required) The type of field that you are creating
+
+  -l, --label=label
+      Label of the new record
+
+  -n, --fieldname=fieldname
+      (required) Name of the custom field
+
+  -p, --picklistvalues=picklistvalues
+      List of picklist values that are added when creating a picklist
+
+  --json
+      format output as json
+
+  --loglevel=(trace|debug|info|warn|error|fatal)
+      logging level for this command invocation
+
+EXAMPLES
+  $ sfdx force:cmdt:field:create --fieldname MyCheckbox --fieldtype Checkbox
+       Created custom metadata field called MyCheckbox.
+    
+  $ sfdx force:cmdt:field:create --fieldname Picklist --fieldtype Picklist --picklistvalues A,B,C --outputdir 
+  force-app/main/default/objects/CustomMetadate__mdt
+       Created custom metadata field called Picklist.
+```
+
+_See code: [src\commands\force\cmdt\field\create.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src\commands\force\cmdt\field\create.ts)_
+
+## `custommetadata force:cmdt:generate [FILE]`
+
+generates a custom metadata type and all its records for the provided sobject
+
+```
+USAGE
+  $ custommetadata force:cmdt:generate [FILE]
+
+OPTIONS
+  -d, --deploy=deploy                        Runs the force:source:push command after Source XML is created
+  -i, --ignoreunsupported=ignoreunsupported  Flag to ignore non-supported field types (these fields will not be created)
+  -l, --label=label                          The label of the new Custommetadata Type.
+  -l, --loglevel=loglevel                    logging level for this command invocation
+
+  -n, --devname=devname                      (required) The name of the new Custommetadata Type. The name can be up to
+                                             40 characters and must start with a letter.
+
+  -p, --plurallabel=plurallabel              The plural label of the new Custommetadata Type. If blank, uses label
+
+  -s, --sobjectname=sobjectname              (required) The sObject name you are generating to Custommetadata
+
+  -u, --targetusername=targetusername        username or alias for the target org; overrides default target org
+
+  -v, --visibility=(Protected|Public)        Visibility for the type. Valid values are 'Public' and 'Protected'. If
+                                             blank, uses 'Public'
+
+  -x, --sourceusername=sourceusername        username or alias for the source org that contains the Custom Setting or
+                                             SObject and data to be generateed
+
+  --apiversion=apiversion                    override the api version used for api requests made by this command
+
+  --json                                     format output as json
+
+EXAMPLE
+  "$ sfdx cmdt:generate ---devName ConfigObjectmeta --label Config Object meta --plurallabel Config Object meta 
+  --sobjectname ConfigObject__c   --sourceusername SourceOrg
+     Congrats! Created a ConfigObjectmeta__mdt type with 32 records!"
+```
+
+_See code: [src\commands\force\cmdt\generate.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src\commands\force\cmdt\generate.ts)_
+
+## `custommetadata force:cmdt:record:create`
+
+Creates a new record for a given custom metadata type in the current project
+
+```
+USAGE
+  $ custommetadata force:cmdt:record:create
+
+OPTIONS
+  -l, --label=label                               Label of the new record
+
+  -n, --inputdir=inputdir                         Specify the directory where the custom metadata type definition will
+                                                  be pulled from (default is 'force-app/main/default/objects')
+
+  -o, --outputdir=outputdir                       Specify the directory where the file will be created (default is
+                                                  'force-app/main/default/customMetadata')
+
+  -p, --protection=protection                     Visibility for the record. If blank, uses false
+
+  -r, --recname=recname                           DeveloperName of the new record
+
+  -t, --typename=typename                         DeveloperName of the type to create a record for
+
+  --json                                          format output as json
+
+  --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
+
+EXAMPLES
+  $ sfdx custommetadata:record:create --typename MyCMT --recname MyRecord
+       Created custom metadata record of the type "MyCMT" with record developer name "MyRecord", label "MyRecord", and 
+  visibility "Public".
+    
+  $ sfdx custommetadata:record:create --typename MyCMT --recname MyRecord --label "My Record" --protected true
+       Created custom metadata record of the type "MyCMT" with record developer name "MyRecord", label "MyRecord", and 
+  visibility "Protected".
+```
+
+_See code: [src\commands\force\cmdt\record\create.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src\commands\force\cmdt\record\create.ts)_
+<!-- commandsstop -->
 * [`custommetadata force:cmdt:create [FILE]`](#custommetadata-forcecmdtcreate-file)
 * [`custommetadata force:cmdt:field:create [FILE]`](#custommetadata-forcecmdtfieldcreate-file)
 * [`custommetadata force:cmdt:generate [FILE]`](#custommetadata-forcecmdtgenerate-file)
