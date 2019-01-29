@@ -50,24 +50,20 @@ export default class Create extends SfdxCommand {
         const visibility = this.flags.visibility || 'Public';
         const dir = this.flags.outputdir || '';
 
-        try {
-            const validator = new ValidationUtil();
-            if (!validator.validateAPIName(fieldName)) {
-                throw new Error(messages.getMessage('invalidCustomFieldError', [fieldName]));
-            }
-            if (fieldtype === 'Picklist' && picklistvalues.length === 0) {
-                throw new Error(messages.getMessage('picklistValuesNotSuppliedError'));
-            }
-            const templates = new Templates();
-            const data = templates.createDefaultTypeStructure(fieldName, fieldtype, label, picklistvalues, decimalplaces);
-            const fieldXML = templates.createFieldXML(data, false);
-            const writer = new FileWriter();
-            await writer.writeFieldFile(core.fs, dir, fieldName, fieldXML);
-            const outputString = `Created custom metadata field called ${fieldName}.`;
-            this.ux.log(outputString);
-        } catch (err) {
-            this.ux.log(err.message);
+        const validator = new ValidationUtil();
+        if (!validator.validateAPIName(fieldName)) {
+            throw new Error(messages.getMessage('invalidCustomFieldError', [fieldName]));
         }
+        if (fieldtype === 'Picklist' && picklistvalues.length === 0) {
+            throw new Error(messages.getMessage('picklistValuesNotSuppliedError'));
+        }
+        const templates = new Templates();
+        const data = templates.createDefaultTypeStructure(fieldName, fieldtype, label, picklistvalues, decimalplaces);
+        const fieldXML = templates.createFieldXML(data, false);
+        const writer = new FileWriter();
+        await writer.writeFieldFile(core.fs, dir, fieldName, fieldXML);
+        const outputString = `Created custom metadata field called ${fieldName}.`;
+        this.ux.log(outputString);
 
         // Return an object to be displayed with --json
         return {
