@@ -37,7 +37,7 @@ export class Templates {
         returnValue += this.getLengthTag(data);
         returnValue += this.getVisibleLines(data);
 
-        // preventing standard objects that have fields that are being convered from passing in data 
+        // preventing standard objects that have fields that are being convered from passing in data
         // that is no longer relevant
         // e.g. multiselectpicklist are being converted to long text area and long text area's do not support valuesets
         if (this.canConvert(data.type)) {
