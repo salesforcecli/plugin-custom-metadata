@@ -44,9 +44,9 @@ export class Templates {
             returnValue += this.getValueSet(data);
             returnValue += this.getPrecisionTag(data);
             returnValue += this.getScaleTag(data);
-            
+
         }
-        
+
         returnValue += '</CustomField>\n';
         return returnValue;
     }
