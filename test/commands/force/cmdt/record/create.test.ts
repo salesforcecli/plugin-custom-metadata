@@ -132,6 +132,14 @@ describe('sfdx force:cmdt:record:create', () => {
       expect(fs.existsSync(filePath)).to.be.true;
       expect(ctx.stdout).to.contain(uxMessage);
 
+      // fs.readFile(`createWithLongFlags/Long_Flags_Create_Test__mdt/fields/Check__c.field-meta.xml`, { encoding: 'utf-8' }, function (err, xml) {
+      //   expect(xml.includes(`<fullName>Check__c</fullName>`)).to.be.true;
+      //   expect(xml.includes(`<fieldManageability>DeveloperControlled</fieldManageability>`)).to.be.true;
+      //   expect(xml.includes(`<label>Check__c</label>`)).to.be.true;
+      //   expect(xml.includes(`<type>Checkbox</type>`)).to.be.true;
+      //   expect(xml.includes(`<defaultValue>false</defaultValue>`)).to.be.true;
+      // });
+
       exec(`rm -rf ${fieldDirPath}`);
     });
 
@@ -196,6 +204,39 @@ describe('sfdx force:cmdt:record:create', () => {
 
       expect(fs.existsSync(fieldDirPath)).to.be.true;
       expect(fs.existsSync(filePath)).to.be.true;
+
+      exec(`rm -rf ${fieldDirPath}`);
+    });
+});
+
+describe('sfdx force:cmdt:record:create test contents of record file created', () => {
+  test
+    .withOrg({ username: 'test@org.com' }, true)
+    .stdout()
+    .withProject()
+    .command(['force:cmdt:create', '--devname', 'Output_Test', '--outputdir', 'outputTestDir'])
+    .command(['force:cmdt:field:create', '--fieldname', 'Check', '--fieldtype', 'Checkbox', '--outputdir', 'outputTestDir/Output_Test__mdt'])
+    .command([
+      'force:cmdt:record:create',
+      '-t', 'Output_Test',
+      '-r', 'Output_Test_Record',
+      '-n', 'outputTestDir',
+      '-d', 'outputTestDir/customMetadata'
+    ])
+    .it('should create records without optional flags', () => {
+      const fieldDirPath = 'outputTestDir/Output_Test__mdt/fields';
+      const filePath = `${fieldDirPath}/Check__c.field-meta.xml`;
+
+      expect(fs.existsSync(fieldDirPath)).to.be.true;
+      expect(fs.existsSync(`${fieldDirPath}/Check__c.field-meta.xml`)).to.be.true;
+
+      fs.readFile(filePath, { encoding: 'utf-8' }, function (err, xml) {
+        expect(xml.includes(`<fullName>Check__c</fullName>`)).to.be.true;
+        expect(xml.includes(`<fieldManageability>DeveloperControlled</fieldManageability>`)).to.be.true;
+        expect(xml.includes(`<label>Check</label>`)).to.be.true;
+        expect(xml.includes(`<type>Checkbox</type>`)).to.be.true;
+        expect(xml.includes(`<defaultValue>false</defaultValue>`)).to.be.true;
+      });
 
       exec(`rm -rf ${fieldDirPath}`);
     });
