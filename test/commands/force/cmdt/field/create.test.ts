@@ -36,7 +36,7 @@ describe('sfdx force:cmdt:field:create' , () => {
   .withProject()
   .command(['force:cmdt:field:create', '--fieldname', 'myFi__eld','--fieldtype','Text'])
   .it('fails running force:cmdt:field:create --fieldname myFi__eld --fieldtype Text', ctx => {
-    expect(ctx.stderr).to.contain('myFi__eld is not a valid field' );
+    expect(ctx.stderr).to.contain('myFi__eld is an invalid field. Custom fields can only contain alphanumeric characters, must begin with a letter, cannot end with an underscore or contain two consecutive underscore characters.' );
   })
 
   test
