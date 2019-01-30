@@ -138,7 +138,6 @@ export default class Generate extends SfdxCommand {
     const recordsOutputDir = this.flags.recordsoutputdir || 'force-app/main/default/customMetadata';
 
     try {
-        // this.ux.startSpinner('processing.....');
         // create custom metadata type
         const templates = new Templates();
         const objectXML = templates.createObjectXML({label, pluralLabel}, visibility);
@@ -148,36 +147,64 @@ export default class Generate extends SfdxCommand {
         // get all the field details before creating feild metadata
         const describeAllFields = metadataUtil.describeObjFields(describeObj);
 
-        // create custom metdata fields
-        const allFields = ensureJsonArray(describeAllFields);
-        await allFields.map(async field => {
-            const recName = field['fullName'];
-            const fieldXML = templates.createFieldXML(field, recName);
-            const targetDir = `${outputDir}${devName}__mdt`;
-            await fileWriter.writeFieldFile(core.fs, targetDir, recName, fieldXML);
-            console.log(recName);
-            let recLabel = recName;
-            if (recLabel.length > 40) {
-                recLabel = recLabel.substring(0, 40);
-            }
-        });
         let sObjectRecords;
         // query records from source
         if (!isEmpty(describeObj)) {
             if (!sourceOrgConn) {
             sObjectRecords = await metadataUtil.queryRecords(describeObj);
-            console.log(sObjectRecords);
             } else {
                 sObjectRecords = await srcMetadataUtil.queryRecords(describeObj);
-                console.log(sObjectRecords);
             }
         } else {
             const errMsg = messages.getMessage('sobjectnameNoResultError', [objname]);
             throw new SfdxError(errMsg, 'sobjectnameNoResultError');
         }
 
+        // check for Geo Location fields before hand and create two different fields for longitude and latitude.
+        const fields = ensureJsonArray(describeAllFields);
+        fields.map(field => {
+            if (field['type'] === 'Location') {
+                const lat: AnyJson = {
+                    fullName : 'Lat_' + field['fullName'],
+                    label: 'Lat ' + field['label'],
+                    required: field['required'],
+                    trackHistory: field['trackHistory'],
+                    trackTrending: field['trackTrending'],
+                    type: 'Text',
+                    length: '40'
+                };
+                fields.push(lat);
+
+                const long: AnyJson = {
+                    fullName : 'Long_' + field['fullName'],
+                    label: 'Long_' + field['label'],
+                    required: field['required'],
+                    trackHistory: field['trackHistory'],
+                    trackTrending: field['trackTrending'],
+                    type: 'Text',
+                    length: '40'
+                };
+                fields.push(long);
+            }
+        });
+
+        // create custom metdata fields
+        // const allFields = ensureJsonArray(describeAllFields);
+        await fields.map(async field => {
+            // added type check here to skip the creation of geo location field as we are adding it as lat and long field above.
+            if (field['type'] !== 'Location') {
+                const recName = field['fullName'];
+                const fieldXML = templates.createFieldXML(field, recName);
+                const targetDir = `${outputDir}${devName}__mdt`;
+                await fileWriter.writeFieldFile(core.fs, targetDir, recName, fieldXML);
+                let recLabel = recName;
+                if (recLabel.length > 40) {
+                    recLabel = recLabel.substring(0, 40);
+                }
+            }
+        });
+
         // create custom metadata records
-        console.log(recordsOutputDir);
         if (!sObjectRecords.records || sObjectRecords.records.length <= 0) {
             throw new core.SfdxError(messages.getMessage('noRecordsFoundError', [objname]));
         }
@@ -199,16 +226,13 @@ export default class Generate extends SfdxCommand {
 
             const fieldDirPath = `${fileWriter.createDir(outputDir)}${typename}__mdt/fields`;
             const fileNames = await core.fs.readdir(fieldDirPath);
-
             const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
-            console.log(rec);
-            const record = metadataUtil.getCleanQueryResponse(rec);
+            const record = metadataUtil.cleanQueryResponse(rec);
             const lblName = rec['Name'];
             let recordName = rec['Name'];
             if (!validator.validateMetadataRecordName(rec['Name'])) {
                 recordName = recordName.replace(/ +/g, '_');
             }
-            console.log(record);
             await createUtil.createRecord({
                 typename,
                 recname: recordName,
@@ -222,7 +246,6 @@ export default class Generate extends SfdxCommand {
             this.ux.log(`Congrats! Created a ${devName} custom metadata type with ${sObjectRecords.records.length} records!`);
         }
     } catch (e) {
-        this.ux.stopSpinner('generation failed....');
         const errMsg = messages.getMessage('generateError', [e.message]);
         throw new SfdxError(errMsg, 'generateError');
     }
