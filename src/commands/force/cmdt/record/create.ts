@@ -50,67 +50,71 @@ export default class Create extends SfdxCommand {
   protected static requiresProject = true;
 
   public async run(): Promise<AnyJson> {
-    const createUtil = new CreateUtil();
-    const fileWriter = new FileWriter();
-    let typename = this.flags.typename;
-    const recname = this.flags.recname;
-    const label = this.flags.label || this.flags.recname;
-    const protection = this.flags.protection || 'false';
-    const inputdir = this.flags.inputdir || 'force-app/main/default/objects';
-    const outputdir = this.flags.outputdir || 'force-app/main/default/customMetadata';
-    const dirName = createUtil.appendDirectorySuffix(typename);
-    const fieldDirPath = `${fileWriter.createDir(inputdir)}${dirName}/fields`;
-    const fileNames = await core.fs.readdir(fieldDirPath);
+    try {
+      const validator = new ValidationUtil();
+      const createUtil = new CreateUtil();
+      const fileWriter = new FileWriter();
+      let typename = this.flags.typename;
+      const recname = this.flags.recname;
+      const label = this.flags.label || this.flags.recname;
+      const protection = this.flags.protection || 'false';
+      const inputdir = this.flags.inputdir || 'force-app/main/default/objects';
+      const outputdir = this.flags.outputdir || 'force-app/main/default/customMetadata';
+      const dirName = createUtil.appendDirectorySuffix(typename);
+      const fieldDirPath = `${fileWriter.createDir(inputdir)}${dirName}/fields`;
 
-    // forgive them if they passed in type__mdt, and cut off the __mdt
-    if (typename.endsWith('__mdt')) {
-        typename = typename.substring(0, typename.indexOf('__mdt'));
-    }
+      if (!validator.validateMetadataTypeName(typename)) {
+        throw new core.SfdxError(messages.getMessage('notValidAPINameError', [typename]));
+      }
 
-    // if customMetadata folder does not exist, create it
-    await core.fs.mkdirp(outputdir);
+      if (!validator.validateMetadataRecordName(recname)) {
+        throw new core.SfdxError(messages.getMessage('notAValidRecordNameError', [recname]));
+      }
 
-    const validator = new ValidationUtil();
-    if (!validator.validateMetadataTypeName(typename)) {
-      throw new core.SfdxError(messages.getMessage('notValidAPINameError', [typename]));
-    }
+      if (!validator.validateLessThanForty(label)) {
+        throw new core.SfdxError(messages.getMessage('notAValidLabelNameError', [label]));
+      }
 
-    if (!validator.validateMetadataRecordName(recname)) {
-      throw new core.SfdxError(messages.getMessage('notAValidRecordNameError', [recname]));
-    }
+      const fileNames = await core.fs.readdir(fieldDirPath);
 
-    if (!validator.validateLessThanForty(label)) {
-      throw new core.SfdxError(messages.getMessage('notAValidLabelNameError', [label]));
-    }
+      // forgive them if they passed in type__mdt, and cut off the __mdt
+      if (typename.endsWith('__mdt')) {
+          typename = typename.substring(0, typename.indexOf('__mdt'));
+      }
 
-    // forgive them if they passed in type__mdt, and cut off the __mdt
-    if (typename.endsWith('__mdt')) {
-      typename = typename.substring(0, typename.indexOf('__mdt'));
-    }
+      // if customMetadata folder does not exist, create it
+      await core.fs.mkdirp(outputdir);
 
-    const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
+      const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
 
-    await createUtil.createRecord({
-      typename,
-      recname,
-      label,
-      inputdir,
-      outputdir,
-      protection,
-      varargs: this.varargs,
-      fileData
-    });
-
-    this.ux.log(messages.getMessage(
-      'successResponse', [typename, recname, label, protection, outputdir]
-    ));
-
-    // Return an object to be displayed with --json
-    return {
+      await createUtil.createRecord({
         typename,
         recname,
         label,
-        visibility: protection
-    };
+        inputdir,
+        outputdir,
+        protection,
+        varargs: this.varargs,
+        fileData
+      });
+
+      this.ux.log(messages.getMessage(
+        'successResponse', [typename, recname, label, protection, outputdir]
+      ));
+
+      // Return an object to be displayed with --json
+      return {
+        typename,
+        recname,
+        label,
+        inputdir,
+        outputdir,
+        protection,
+        varargs: this.varargs,
+        fileData
+      };
+    } catch (err) {
+      this.ux.log(err.message);
+    }
   }
 }

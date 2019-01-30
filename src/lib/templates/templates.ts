@@ -32,13 +32,21 @@ export class Templates {
         returnValue += this.getInlineHelpText(data);
         returnValue += this.getLabel(data);
         returnValue += this.getType(data, defaultToString);
-        returnValue += this.getValueSet(data);
         returnValue += this.getDefaultValue(data);
         returnValue += this.getRequiredTag(data);
-        returnValue += this.getPrecisionTag(data);
-        returnValue += this.getScaleTag(data);
         returnValue += this.getLengthTag(data);
         returnValue += this.getVisibleLines(data);
+
+        // preventing standard objects that have fields that are being convered from passing in data
+        // that is no longer relevant
+        // e.g. multiselectpicklist are being converted to long text area and long text area's do not support valuesets
+        if (this.canConvert(data.type)) {
+            returnValue += this.getValueSet(data);
+            returnValue += this.getPrecisionTag(data);
+            returnValue += this.getScaleTag(data);
+
+        }
+
         returnValue += '</CustomField>\n';
         return returnValue;
     }
@@ -102,7 +110,7 @@ export class Templates {
     }
 
     private getConvertType(type) {
-        if (type === 'Html') {
+        if (type === 'Html' || type === 'MultiselectPicklist') {
             return 'LongTextArea';
         } else {
             return 'Text';
@@ -146,6 +154,9 @@ export class Templates {
     }
 
     private getLengthTag(data) {
+        if (data.type === 'MultiselectPicklist') {
+            return '\t<length>32768</length>\n';
+        }
         return data.length ? `\t<length>${data.length}</length>\n` : '';
     }
 
