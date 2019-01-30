@@ -108,7 +108,6 @@ describe('metadataUtil', () => {
             const objDescribe = await metadataUtil.describeObj('TriggerSettings__c');
             const queryRes = await metadataUtil.queryRecords(objDescribe);
             const cleanQueryResonse = metadataUtil.cleanQueryResponse(queryRes['records'][0]);
-            console.log(cleanQueryResonse);
             deepStrictEqual(cleanResponse, cleanQueryResonse);
             deepStrictEqual(objDescribe, readResponse);
             deepStrictEqual(queryRes['totalSize'], queryResponse['totalSize']);

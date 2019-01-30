@@ -138,6 +138,7 @@ export default class Generate extends SfdxCommand {
     const recordsOutputDir = this.flags.recordsoutputdir || 'force-app/main/default/customMetadata';
 
     try {
+        this.ux.startSpinner('custom metadata generation in progress');
         // create custom metadata type
         const templates = new Templates();
         const objectXML = templates.createObjectXML({label, pluralLabel}, visibility);
@@ -189,7 +190,6 @@ export default class Generate extends SfdxCommand {
         });
 
         // create custom metdata fields
-        // const allFields = ensureJsonArray(describeAllFields);
         await fields.map(async field => {
             // added type check here to skip the creation of geo location field as we are adding it as lat and long field above.
             if (field['type'] !== 'Location') {
@@ -243,9 +243,11 @@ export default class Generate extends SfdxCommand {
                 varargs: record,
                 fileData
             });
-            this.ux.log(`Congrats! Created a ${devName} custom metadata type with ${sObjectRecords.records.length} records!`);
         }
+        this.ux.stopSpinner('custom metadata type and records creation in completed');
+        this.ux.log(`Congrats! Created a ${devName} custom metadata type with ${sObjectRecords.records.length} records!`);
     } catch (e) {
+        this.ux.stopSpinner('generate command failed to run');
         const errMsg = messages.getMessage('generateError', [e.message]);
         throw new SfdxError(errMsg, 'generateError');
     }
