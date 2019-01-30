@@ -19,25 +19,33 @@ describe('sfdx force:cmdt:field:create' , () => {
     const cmdtName = 'myField';
     expect(fs.existsSync(`fields`)).to.be.true;
     expect(fs.existsSync(`fields/${cmdtName}__c.field-meta.xml`)).to.be.true;
+    fs.readFile(`fields/${cmdtName}__c.field-meta.xml`, { encoding: 'utf-8' }, function (err, xml) {
+      expect(xml.includes(`<fullName>myField__c</fullName>`)).to.be.true;
+      expect(xml.includes(`<fieldManageability>DeveloperControlled</fieldManageability>`)).to.be.true;
+      expect(xml.includes(`<label>myField</label>`)).to.be.true;
+      expect(xml.includes(`<type>Text</type>`)).to.be.true;
+      expect(xml.includes(`<unique>false</unique>`)).to.be.true;
+      expect(xml.includes(`<length>100</length>`)).to.be.true;
+    });
     exec(`rm -rf fields`);
   })
 
   test
   .withOrg({ username: 'test@org.com' }, true)
-  .stdout()
+  .stderr()
   .withProject()
   .command(['force:cmdt:field:create', '--fieldname', 'myFi__eld','--fieldtype','Text'])
   .it('fails running force:cmdt:field:create --fieldname myFi__eld --fieldtype Text', ctx => {
-    expect(ctx.stdout).to.contain('myFi__eld is not a valid field' );
+    expect(ctx.stderr).to.contain('myFi__eld is an invalid field. Custom fields can only contain alphanumeric characters, must begin with a letter, cannot end with an underscore or contain two consecutive underscore characters.' );
   })
 
   test
   .withOrg({ username: 'test@org.com' }, true)
-  .stdout()
+  .stderr()
   .withProject()
   .command(['force:cmdt:field:create', '--fieldname', 'myField','--fieldtype','Picklist'])
   .it('fails running force:cmdt:field:create --fieldname myField --fieldtype Picklist', ctx => {
-    expect(ctx.stdout).to.contain('Picklist values are required when type is Picklist' );
+    expect(ctx.stderr).to.contain('Picklist values are required when type is Picklist' );
   })
 
   test

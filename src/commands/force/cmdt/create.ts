@@ -2,6 +2,7 @@ import { core, flags, SfdxCommand } from '@salesforce/command';
 import { AnyJson } from '@salesforce/ts-types';
 import { FileWriter } from '../../../lib/helpers/fileWriter';
 import { ValidationUtil } from '../../../lib/helpers/validationUtil';
+import { SaveResults } from '../../../lib/interfaces/saveResults';
 import { Templates } from '../../../lib/templates/templates';
 
 // Initialize Messages with the current plugin directory
@@ -45,36 +46,31 @@ export default class Create extends SfdxCommand {
         const dir = this.flags.outputdir || '';
         const templates = new Templates();
         const fileWriter = new FileWriter();
-        let outputFilePath = '';
+        let saveResults: SaveResults;
 
-        try {
-            const validator = new ValidationUtil();
-            if (!validator.validateMetadataTypeName(devname)) {
-                throw new core.SfdxError(messages.getMessage('errorNotValidAPIName', [devname]));
-            }
-            if (!validator.validateLessThanForty(label)) {
-                throw new core.SfdxError(messages.getMessage('errorNotValidLabelName', [label]));
-            }
-
-            if (!validator.validateLessThanForty(pluralLabel)) {
-                throw new core.SfdxError(messages.getMessage('errorNotValidPluralLabelName', [pluralLabel]));
-            }
-
-            const objectXML = templates.createObjectXML({ label, pluralLabel }, visibility);
-            outputFilePath = await fileWriter.writeTypeFile(core.fs, dir, devname, objectXML);
-            const outputString = messages.getMessage('successResponse', [devname, label, pluralLabel, visibility, outputFilePath]);
-            this.ux.log(outputString);
-        } catch (err) {
-            this.ux.log(err.message);
+        const validator = new ValidationUtil();
+        if (!validator.validateMetadataTypeName(devname)) {
+            throw new core.SfdxError(messages.getMessage('errorNotValidAPIName', [devname]));
+        }
+        if (!validator.validateLessThanForty(label)) {
+            throw new core.SfdxError(messages.getMessage('errorNotValidLabelName', [label]));
         }
 
-        // Return an object to be displayed with --json
+        if (!validator.validateLessThanForty(pluralLabel)) {
+            throw new core.SfdxError(messages.getMessage('errorNotValidPluralLabelName', [pluralLabel]));
+        }
+
+        const objectXML = templates.createObjectXML({ label, pluralLabel }, visibility);
+        saveResults = await fileWriter.writeTypeFile(core.fs, dir, devname, objectXML);
+
+        this.ux.log(messages.getMessage('targetDirectory', [saveResults.dir]));
+        this.ux.log(messages.getMessage(saveResults.updated ? 'fileUpdate' : 'fileCreated', [saveResults.fileName]));
+
         return {
             devname,
             label,
             pluralLabel,
-            visibility,
-            outputFilePath
+            visibility
         };
 
     }

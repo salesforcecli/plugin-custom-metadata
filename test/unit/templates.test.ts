@@ -90,6 +90,25 @@ describe('Templates', () => {
             expect(xml.includes(`<label>value</label>`)).to.be.true;
             expect(xml.includes(`<label>value2</label>`)).to.be.true;
         });
+        it('should not add value sets for a MultiselectPicklist field', () => {
+            let data: any = {
+                fullName: 'Picklist', type: 'MultiselectPicklist', label: 'test', valueSet: {
+                    restricted: 'true',
+                    valueSetDefinition: {
+                        sorted: 'false',
+                        value: [{ fullName: 'value', label: 'value' }, { fullName: 'value2', label: 'value2' }]
+                    }
+                }
+            };
+            let xml: String = templates.createFieldXML(data, true);
+            expect(xml.includes(`<fullName>Picklist__c</fullName>`)).to.be.true;
+            expect(xml.includes(`<type>LongTextArea</type>`)).to.be.true;
+            expect(xml.includes(`<label>test</label>`)).to.be.true;
+            expect(xml.includes(`<fullName>value</fullName>`)).to.be.false;
+            expect(xml.includes(`<fullName>value2</fullName>`)).to.be.false;
+            expect(xml.includes(`<label>value</label>`)).to.be.false;
+            expect(xml.includes(`<label>value2</label>`)).to.be.false;
+        });
         it('Text field created', () => {
             let data: any = { fullName: 'Text', type: 'Text', label: 'test', unique: 'false', length: '100' };
             let xml: String = templates.createFieldXML(data, false);
@@ -99,7 +118,7 @@ describe('Templates', () => {
             expect(xml.includes(`<unique>false</unique>`)).to.be.true;
             expect(xml.includes(`<length>100</length>`)).to.be.true;
         });
-        it('default toText field', () => {
+        it('default to Text field', () => {
             let data: any = { fullName: 'Text', type: 'Lookup', label: 'test', unique: 'false', length: '100' };
             let xml: String = templates.createFieldXML(data, true);
             expect(xml.includes(`<fullName>Text__c</fullName>`)).to.be.true;
@@ -135,6 +154,7 @@ describe('Templates', () => {
             expect(xml.includes(`<length>32768</length>`)).to.be.true;
             expect(xml.includes(`<visibleLines>3</visibleLines>`)).to.be.true;
         });
+        
         it('Url field created', () => {
             let data: any = { fullName: 'Url', type: 'Url', label: 'test' };
             let xml: String = templates.createFieldXML(data, false);
@@ -245,6 +265,12 @@ describe('Templates', () => {
             expect(struct.fullName === 'Url').to.be.true;
             expect(struct.type === 'Url').to.be.true;
             expect(struct.label === 'test').to.be.true;
+        });
+        it('should return Default structure', () => {
+            struct = templates.createDefaultTypeStructure('DefaultA', 'DefaultB', 'DefaultC', null);
+            expect(struct.fullName === 'DefaultA').to.be.true;
+            expect(struct.type === 'DefaultB').to.be.true;
+            expect(struct.label === 'DefaultC').to.be.true;
         });
     });
     describe('canConvert', () => {
