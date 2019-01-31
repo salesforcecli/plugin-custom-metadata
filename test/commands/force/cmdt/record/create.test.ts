@@ -238,6 +238,6 @@ describe('sfdx force:cmdt:record:create test contents of record file created', (
         expect(xml.includes(`<defaultValue>false</defaultValue>`)).to.be.true;
       });
 
-      exec(`rm -rf ${fieldDirPath}`);
+      exec('rm -rf outputTestDir');
     });
 });

@@ -5,8 +5,6 @@ import { CreateUtil } from '../../../../lib/helpers/createUtil';
 import { FileWriter } from '../../../../lib/helpers/fileWriter';
 import { CreateConfig } from '../../../../lib/interfaces/createConfig';
 
-// const csv = require('csvtojson');
-
 core.Messages.importMessagesDirectory(__dirname);
 
 const messages = core.Messages.loadMessages('custommetadata', 'insertRecord');
@@ -60,10 +58,13 @@ export default class Insert extends SfdxCommand {
         const recname: string = record.Label.replace(' ', '_');
         const varargs: object = {};
 
+        // TODO: throw an error if any of the fields in the csvDataAry do not exist in the fileData
+
         // create varargs
         for (const file of fileData) {
           const fullName: string = file.CustomField.fullName[0];
 
+          // only create fields indicated from the CSV
           if (record.hasOwnProperty(fullName)) {
             varargs[fullName] = record[fullName];
           }
