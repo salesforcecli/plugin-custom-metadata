@@ -1,7 +1,7 @@
 export interface CustomField {
-    CustomField: {
-      fullName: string,
-      type: string,
-      scale: string
-    };
+  CustomField: {
+    fullName: string,
+    type: string,
+    scale: string
+  };
 }
