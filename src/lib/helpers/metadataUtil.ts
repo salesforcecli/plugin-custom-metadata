@@ -16,10 +16,8 @@ export class MetadataUtil {
     public async describeObj(objName: string): Promise<AnyJson> {
       const result = await this.conn.metadata.read('CustomObject', objName, (err, meta) => {
         if (err) {
-          console.error(err);
           return err;
         }
-        console.log(meta);
         return meta;
       });
 
@@ -35,7 +33,6 @@ export class MetadataUtil {
     public async queryObject(soqlStr: string): Promise<AnyJson> {
       const result = await this.conn.query(soqlStr, {}, (err, meta) => {
         if (err) {
-          console.error(err);
           return err;
         }
 
@@ -102,11 +99,28 @@ export class MetadataUtil {
       return false;
     }
 
+    public cleanQueryResponse(sObjecRecord: AnyJson) {
+      const record: AnyJson = {};
+      Object.keys(sObjecRecord).forEach(fieldName => {
+          if (fieldName !== 'attributes' && fieldName !== 'Name') {
+            const fieldValue = JSON.stringify(sObjecRecord[fieldName]);
+            if (fieldValue.includes('latitude') || fieldValue.includes('longitude')) {
+              record['Lat_' + fieldName] = fieldValue.slice(fieldValue.indexOf(':') + 1, fieldValue.indexOf(','));
+              record['Long_' + fieldName] = fieldValue.slice(fieldValue.lastIndexOf(':') + 1, fieldValue.indexOf('}'));
+            } else {
+              record[fieldName] = sObjecRecord[fieldName];
+            }
+          }
+        }
+          );
+      return record;
+    }
+
     private _getSoqlQuery(arr, objName) {
       const fieldNames = arr.map(field => {
         return field.fullName;
       }).join(',');
-
-      return `SELECT ${fieldNames} FROM ${objName}`;
+      // Added Name hardcoded as Name field is not retreived as part of object describe.
+      return `SELECT Name, ${fieldNames} FROM ${objName}`;
     }
 }

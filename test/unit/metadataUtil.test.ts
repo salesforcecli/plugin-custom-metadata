@@ -27,7 +27,16 @@ describe('metadataUtil', () => {
                     inlineHelpText: 'Check this to disable the trigger',
                     label: 'Disabled?',
                     trackTrending: 'false',
-                    type: 'Checkbox' } ],
+                    type: 'Checkbox' },
+                    { fullName: 'Test_Geo_location__c',
+                    displayLocationInDecimal: 'true',
+                    externalId: 'false',
+                    label: 'Test Geo location',
+                    required: 'false',
+                    scale: '10',
+                    trackHistory: 'false',
+                    trackTrending: 'false',
+                    type: 'Location' } ],
             label: 'Trigger Settings',
             visibility: 'Public' };
 
@@ -75,21 +84,15 @@ describe('metadataUtil', () => {
                 done: true,
                 records:
                     [ { IsAfterDeleteDisabled__c: true,
-                        IsAfterInsertDisabled__c: true,
-                        IsAfterUndeleteDisabled__c: false,
-                        IsAfterUpdateDisabled__c: false,
-                        IsBeforeDeleteDisabled__c: true,
-                        IsBeforeInsertDisabled__c: false,
-                        IsBeforeUpdateDisabled__c: true,
-                        IsDisabled__c: false },
+                        IsDisabled__c: false,
+                        Test_Geo_location__c: {latitude: 12.34534534, longitude: 32.34534543} },
                     { IsAfterDeleteDisabled__c: true,
-                        IsAfterInsertDisabled__c: true,
-                        IsAfterUndeleteDisabled__c: false,
-                        IsAfterUpdateDisabled__c: false,
-                        IsBeforeDeleteDisabled__c: true,
-                        IsBeforeInsertDisabled__c: false,
-                        IsBeforeUpdateDisabled__c: true,
-                        IsDisabled__c: false } ] };
+                        IsDisabled__c: false,
+                        Test_Geo_location__c: {latitude: 10.34534534, longitude: 42.34534543} } ] };
+            const cleanResponse = { IsAfterDeleteDisabled__c: true,
+                                    IsDisabled__c: false,
+                                    Lat_Test_Geo_location__c: '12.34534534',
+                                    Long_Test_Geo_location__c: '32.34534543' };
 
             // Setup your metadata mock
             const metadata = fromStub(stubInterface<Metadata>($$.SANDBOX, {
@@ -104,6 +107,8 @@ describe('metadataUtil', () => {
 
             const objDescribe = await metadataUtil.describeObj('TriggerSettings__c');
             const queryRes = await metadataUtil.queryRecords(objDescribe);
+            const cleanQueryResonse = metadataUtil.cleanQueryResponse(queryRes['records'][0]);
+            deepStrictEqual(cleanResponse, cleanQueryResonse);
             deepStrictEqual(objDescribe, readResponse);
             deepStrictEqual(queryRes['totalSize'], queryResponse['totalSize']);
         });
@@ -230,6 +235,44 @@ describe('metadataUtil', () => {
             const objDescribe = await metadataUtil.describeObj('TriggerSettings__c');
             const isvalidCustomSetting = await metadataUtil.validCustomSettingType(objDescribe);
             deepStrictEqual(isvalidCustomSetting, true);
+        });
+
+        it('should fail check for the custom setting type and visibility', async () => {
+            const readResponse = { fullName: 'TriggerSettings__c',
+            customSettingsType: 'List',
+            description: 'Used to declaratively enable/disable custom triggers.',
+            enableFeeds: 'false',
+            fields:
+                [ { fullName: 'IsAfterDeleteDisabled__c',
+                    defaultValue: 'false',
+                    externalId: 'false',
+                    label: 'After Delete Disabled?',
+                    trackTrending: 'false',
+                    type: 'Checkbox' },
+                { fullName: 'IsDisabled__c',
+                    defaultValue: 'false',
+                    externalId: 'false',
+                    inlineHelpText: 'Check this to disable the trigger',
+                    label: 'Disabled?',
+                    trackTrending: 'false',
+                    type: 'Checkbox' } ],
+            label: 'Trigger Settings',
+            visibility: 'Protected' };
+
+            // Setup your metadata mock
+            const metadata = fromStub(stubInterface<Metadata>($$.SANDBOX, {
+                read: async () => (readResponse)
+            }));
+
+            // Setup your connection mock using the mock metadata
+            const conn = fromStub(stubInterface<core.Connection>($$.SANDBOX, { metadata }));
+
+            // Pass in the mock connection
+            const metadataUtil = new MetadataUtil(conn);
+
+            const objDescribe = await metadataUtil.describeObj('TriggerSettings__c');
+            const isvalidCustomSetting = await metadataUtil.validCustomSettingType(objDescribe);
+            deepStrictEqual(isvalidCustomSetting, false);
         });
 
     });
