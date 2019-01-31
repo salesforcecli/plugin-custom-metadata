@@ -157,6 +157,12 @@ export class Templates {
         if (data.type === 'MultiselectPicklist') {
             return '\t<length>32768</length>\n';
         }
+        // For fields that are being translated from Custom objects that do not have a matching type they are 
+        // being defaulted to a Text field. They need to have a minimum length to them
+        // e.g. Field types that are getting converted: Currency, Location, MasterDetail, Lookup
+        if ( this.getConvertType(data.type) === 'Text' ) {
+            '\t<length>100</length>\n';
+        }
         return data.length ? `\t<length>${data.length}</length>\n` : '';
     }
 
