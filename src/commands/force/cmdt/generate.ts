@@ -3,6 +3,7 @@ import { Aliases, SfdxError } from '@salesforce/core';
 import { isEmpty } from '@salesforce/kit';
 import { AnyJson, ensureJsonArray } from '@salesforce/ts-types';
 import { isNullOrUndefined } from 'util';
+import { CreateUtil } from '../../../lib/helpers/createUtil';
 import { FileWriter } from '../../../lib/helpers/fileWriter';
 import { MetadataUtil } from '../../../lib/helpers/metadataUtil';
 import { ValidationUtil } from '../../../lib/helpers/validationUtil';
@@ -35,9 +36,8 @@ export default class Generate extends SfdxCommand {
     visibility: flags.enum({char: 'v', description: messages.getMessage('visibilityFlagDescription'),  options: ['Protected', 'Public']}),
     sobjectname: flags.string({char: 's', required: true, description: messages.getMessage('sobjectnameFlagDescription')}),
     sourceusername: flags.string({char: 'x', description: messages.getMessage('sourceusernameFlagDescription')}),
-    deploy: flags.string({char: 'd', description: messages.getMessage('deployFlagDescription')}),
     ignoreunsupported: flags.string({char: 'i', description: messages.getMessage('ignoreUnsupportedFlagDescription')}),
-    outputdir: flags.directory({char: 'o', description: messages.getMessage('outputDirectoryFlagDescription')}),
+    typeoutputdir: flags.directory({char: 'd', description: messages.getMessage('outputDirectoryFlagDescription')}),
     recordsoutputdir: flags.directory({char: 'r', description: messages.getMessage('recordsoutputDirectoryFlagDescription')}),
     loglevel: flags.string({char: 'l', description: messages.getMessage('loglevelFlagDescription')})
 };
@@ -85,14 +85,20 @@ export default class Generate extends SfdxCommand {
             throw new SfdxError(errMsg, 'sourceuserAuthenticationError');
         }
     }
+    let typeName: string = '';
+    if (!isNullOrUndefined(cmdttype)) {
+        typeName = cmdttype;
+    } else {
+        typeName = objname;
+    }
     let devName;
-    if (!isNullOrUndefined(objname)) {
-        if (!validator.validateAPIName(objname)) {
-            throw SfdxError.create('custommetadata', 'generate', 'sobjectnameFlagError', [objname]);
-        } else if (objname.indexOf('__c')) {
-            devName = objname.substring(0, objname.indexOf('__c')) + 'Type';
+    if (!isNullOrUndefined(typeName) ) {
+        if (!validator.validateAPIName(typeName)) {
+            throw SfdxError.create('custommetadata', 'generate', 'sobjectnameFlagError', [typeName]);
+        } else if (typeName.endsWith('__c') || typeName.endsWith('__C')) {
+            devName = typeName.substring(0, typeName.indexOf('__c')) + 'Type';
         } else {
-            devName = objname + 'Type';
+            devName = typeName + 'Type';
         }
     } else {
         throw SfdxError.create('custommetadata', 'generate', 'sobjectnameFlagError', [objname]);
@@ -127,57 +133,126 @@ export default class Generate extends SfdxCommand {
 
     const visibility = this.flags.visibility || 'Public';
     const label = this.flags.label || devName;
-    const labelPlural = this.flags.plurallabel || devName;
-    const outputDir = this.flags.outputdir || 'force-app/main/default/objects/';
+    const pluralLabel = this.flags.plurallabel || devName;
+    const outputDir = this.flags.typeoutputdir || 'force-app/main/default/objects/';
     const recordsOutputDir = this.flags.recordsoutputdir || 'force-app/main/default/customMetadata';
 
     try {
+        this.ux.startSpinner('custom metadata generation in progress');
         // create custom metadata type
         const templates = new Templates();
-        const objectXML = templates.createObjectXML({label, labelPlural}, visibility);
+        const objectXML = templates.createObjectXML({label, pluralLabel}, visibility);
         const fileWriter = new FileWriter();
         await fileWriter.writeTypeFile(core.fs, outputDir, devName, objectXML);
 
         // get all the field details before creating feild metadata
         const describeAllFields = metadataUtil.describeObjFields(describeObj);
 
-        // create custom metdata fields
-        const allFields = ensureJsonArray(describeAllFields);
-        await allFields.map(async field => {
-            const recName = field['fullName'];
-            const fieldXML = templates.createFieldXML(field, recName);
-            const targetDir = `${outputDir}${devName}__mdt`;
-            await fileWriter.writeFieldFile(core.fs, targetDir, recName, fieldXML);
-            console.log(recName);
-            let recLabel = recName;
-            if (recLabel.length > 40) {
-                recLabel = recLabel.substring(0, 40);
-            }
-        });
         let sObjectRecords;
         // query records from source
         if (!isEmpty(describeObj)) {
             if (!sourceOrgConn) {
             sObjectRecords = await metadataUtil.queryRecords(describeObj);
-            console.log(sObjectRecords);
             } else {
                 sObjectRecords = await srcMetadataUtil.queryRecords(describeObj);
-                console.log(sObjectRecords);
             }
         } else {
             const errMsg = messages.getMessage('sobjectnameNoResultError', [objname]);
             throw new SfdxError(errMsg, 'sobjectnameNoResultError');
         }
 
+        // check for Geo Location fields before hand and create two different fields for longitude and latitude.
+        const fields = ensureJsonArray(describeAllFields);
+        fields.map(field => {
+            if (field['type'] === 'Location') {
+                const lat: AnyJson = {
+                    fullName : 'Lat_' + field['fullName'],
+                    label: 'Lat ' + field['label'],
+                    required: field['required'],
+                    trackHistory: field['trackHistory'],
+                    trackTrending: field['trackTrending'],
+                    type: 'Text',
+                    length: '40'
+                };
+                fields.push(lat);
+
+                const long: AnyJson = {
+                    fullName : 'Long_' + field['fullName'],
+                    label: 'Long_' + field['label'],
+                    required: field['required'],
+                    trackHistory: field['trackHistory'],
+                    trackTrending: field['trackTrending'],
+                    type: 'Text',
+                    length: '40'
+                };
+                fields.push(long);
+            }
+        });
+
+        // create custom metdata fields
+        await fields.map(async field => {
+            // added type check here to skip the creation of geo location field as we are adding it as lat and long field above.
+            if (field['type'] !== 'Location') {
+                const recName = field['fullName'];
+                const fieldXML = templates.createFieldXML(field, recName);
+                const targetDir = `${outputDir}${devName}__mdt`;
+                await fileWriter.writeFieldFile(core.fs, targetDir, recName, fieldXML);
+                let recLabel = recName;
+                if (recLabel.length > 40) {
+                    recLabel = recLabel.substring(0, 40);
+                }
+            }
+        });
+
         // create custom metadata records
-        console.log(recordsOutputDir);
-        // TO DO
+        if (!sObjectRecords.records || sObjectRecords.records.length <= 0) {
+            throw new core.SfdxError(messages.getMessage('noRecordsFoundError', [objname]));
+        }
+
+        const createUtil = new CreateUtil();
+        // if customMetadata folder does not exist, create it
+        await core.fs.mkdirp(recordsOutputDir);
+        let security: boolean;
+        if (visibility === 'Protected') {
+            security = true;
+        } else {
+            security = false;
+        }
+        for (const rec of sObjectRecords.records) {
+            let typename = devName;
+            if (typename.endsWith('__mdt')) {
+                typename = typename.substring(0, typename.indexOf('__mdt'));
+            }
+
+            const fieldDirPath = `${fileWriter.createDir(outputDir)}${typename}__mdt/fields`;
+            const fileNames = await core.fs.readdir(fieldDirPath);
+            const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
+            const record = metadataUtil.cleanQueryResponse(rec);
+            const lblName = rec['Name'];
+            let recordName = rec['Name'];
+            if (!validator.validateMetadataRecordName(rec['Name'])) {
+                recordName = recordName.replace(/ +/g, '_');
+            }
+            await createUtil.createRecord({
+                typename,
+                recname: recordName,
+                label: lblName,
+                inputdir: outputDir,
+                outputdir: recordsOutputDir,
+                protection: security,
+                varargs: record,
+                fileData
+            });
+        }
+        this.ux.stopSpinner('custom metadata type and records creation in completed');
+        this.ux.log(`Congrats! Created a ${devName} custom metadata type with ${sObjectRecords.records.length} records!`);
     } catch (e) {
+        this.ux.stopSpinner('generate command failed to run');
         const errMsg = messages.getMessage('generateError', [e.message]);
         throw new SfdxError(errMsg, 'generateError');
     }
 
-    return {  };
+    return { outputDir, recordsOutputDir };
 
   }
 }

@@ -56,9 +56,7 @@ export class CreateUtil {
       str = fileData.toString('utf8');
 
       parseString(str, (err, res) => {
-        if (!err) {
-          ret.push(res);
-        }
+        ret.push(res);
       });
     }
 
@@ -85,7 +83,7 @@ export class CreateUtil {
    * @param  fieldName Name of the field
    * @return {string} Type used by a custom metadata record
    */
-  public getFieldType(fileData: CustomField[] = [], fieldName: string) {
+  public getFieldType(fileData: CustomField[] = [], fieldName: string = '') {
     let thisFieldName = '';
     let type = '';
     let ret = 'string';
