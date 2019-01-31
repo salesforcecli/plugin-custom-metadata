@@ -38,7 +38,7 @@ export class CreateUtil {
     const newRecordContent = this.getRecordTemplate(
       createConfig.label,
       createConfig.protection,
-      this.buildCustomFieldXml(createConfig.varargs, createConfig.fileData)
+      this.buildCustomFieldXml(createConfig.fileData, createConfig.varargs)
     );
 
     return core.fs.writeFile(outputFilePath, newRecordContent);
@@ -114,7 +114,7 @@ export class CreateUtil {
    * @param  fileData Array of objects that contain field data
    * @return {string} String representation of XML
    */
-  private buildCustomFieldXml(cliParams: object, fileData: CustomField[]) {
+  private buildCustomFieldXml(fileData: CustomField[], cliParams: object) {
     let ret = '';
     let type = '';
 
