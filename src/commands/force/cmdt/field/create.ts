@@ -48,7 +48,6 @@ export default class Create extends SfdxCommand {
         const fieldtype = this.flags.fieldtype;
         const picklistvalues = this.flags.picklistvalues || [];
         const decimalplaces = this.flags.decimalplaces || 0;
-        const visibility = this.flags.visibility || 'Public';
         const dir = this.flags.outputdir || '';
         let saveResults: SaveResults;
 
@@ -72,8 +71,7 @@ export default class Create extends SfdxCommand {
         return {
             fieldName,
             label,
-            fieldtype,
-            visibility
+            fieldtype
         };
 
     }
