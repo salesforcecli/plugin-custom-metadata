@@ -16,12 +16,8 @@ export default class Create extends SfdxCommand {
   public static description = messages.getMessage('commandDescription');
 
   public static examples = [
-    `$ sfdx force:cmdt:record:create --typename MyCMT --recname MyRecord My_Custom_Field_1=Foo My_Custom_Field_2=Bar
-    Created custom metadata record of the type "MyCMT" with record developer name "MyRecord", label "MyRecord", and visibility "Public".
-    `,
-    `$ sfdx force:cmdt:record:create --typename MyCMT --recname MyRecord --label "My Record" --protected true My_Custom_Field_1=Foo My_Custom_Field_2=Bar
-    Created custom metadata record of the type "MyCMT" with record developer name "MyRecord", label "MyRecord", and visibility "Protected".
-    `
+    `$ sfdx force:cmdt:create --typename MyCMT__mdt --recname MyRecord My_Custom_Field_1=Foo My_Custom_Field_2=Bar`,
+    `$ sfdx force:cmdt:create --typename MyCMT__mdt --recname MyRecord --label "My Record" --protected true My_Custom_Field_1=Foo My_Custom_Field_2=Bar`
   ];
 
   protected static flagsConfig = {

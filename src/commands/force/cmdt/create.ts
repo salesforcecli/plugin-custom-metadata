@@ -17,18 +17,14 @@ export default class Create extends SfdxCommand {
     public static description = messages.getMessage('commandDescription');
 
     public static examples = [
-        `$ sfdx force:cmdt:create --devname Country
-    Created custom metadata type with developer name "Country", label "Country", plural label "Country", and visibility "Public".
-    `,
-        `$ sfdx force:cmdt:create --devname CustomType --label "Custom Type" --plurallabel "Custom Types" --visibility Protected --outputdir force-app/main/default/object
-    Created custom metadata type with developer name "CustomType", label "Custom Type", plural label "My Custom Metadata Type", and visibility "Protected".
-    `
+        ` $ sfdx force:cmdt:create --typename MyCustomType`,
+        ` $ sfdx force:cmdt:create --typename MyCustomType --label "Custom Type" --plurallabel "Custom Types" --visibility Public'`
     ];
 
     public static args = [{ name: 'file' }];
 
     protected static flagsConfig = {
-        devname: flags.string({ char: 'n', required: true, description: messages.getMessage('nameFlagDescription') }),
+        typename: flags.string({ char: 'n', required: true, description: messages.getMessage('nameFlagDescription') }),
         label: flags.string({ char: 'l', description: messages.getMessage('labelFlagDescription') }),
         plurallabel: flags.string({ char: 'p', description: messages.getMessage('plurallabelFlagDescription') }),
         visibility: flags.enum({ char: 'v', description: messages.getMessage('visibilityFlagDescription'), options: ['Protected', 'Public'] }),
@@ -39,8 +35,8 @@ export default class Create extends SfdxCommand {
     protected static requiresProject = true;
 
     public async run(): Promise<AnyJson> {
-        const devname = this.flags.devname; // this should become the new file name
-        const label = this.flags.label || this.flags.devname.replace('__mdt', ''); // If a label is not provided default using the dev name. trim __mdt out
+        const typename = this.flags.typename; // this should become the new file name
+        const label = this.flags.label || this.flags.typename.replace('__mdt', ''); // If a label is not provided default using the dev name. trim __mdt out
         const pluralLabel = this.flags.plurallabel || label;
         const visibility = this.flags.visibility || 'Public';
         const dir = this.flags.outputdir || '';
@@ -49,8 +45,8 @@ export default class Create extends SfdxCommand {
         let saveResults: SaveResults;
 
         const validator = new ValidationUtil();
-        if (!validator.validateMetadataTypeName(devname)) {
-            throw new core.SfdxError(messages.getMessage('errorNotValidAPIName', [devname]));
+        if (!validator.validateMetadataTypeName(typename)) {
+            throw new core.SfdxError(messages.getMessage('errorNotValidAPIName', [typename]));
         }
         if (!validator.validateLessThanForty(label)) {
             throw new core.SfdxError(messages.getMessage('errorNotValidLabelName', [label]));
@@ -61,13 +57,13 @@ export default class Create extends SfdxCommand {
         }
 
         const objectXML = templates.createObjectXML({ label, pluralLabel }, visibility);
-        saveResults = await fileWriter.writeTypeFile(core.fs, dir, devname, objectXML);
+        saveResults = await fileWriter.writeTypeFile(core.fs, dir, typename, objectXML);
 
         this.ux.log(messages.getMessage('targetDirectory', [saveResults.dir]));
         this.ux.log(messages.getMessage(saveResults.updated ? 'fileUpdate' : 'fileCreated', [saveResults.fileName]));
 
         return {
-            devname,
+            typename,
             label,
             pluralLabel,
             visibility
