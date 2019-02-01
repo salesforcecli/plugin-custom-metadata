@@ -21,5 +21,5 @@
     "sourceusernameError": "no user found with the provided username or alias",
     "sourceuserAuthenticationError": "Issue with authenticating to source org with sourceusername provide: %s MoreInfo: %s.",
     "generateError": "Fialed to generate custom metadata. reason: %s.",
-    "customSettingTypeError": "Cannot generate custom metadata for the custom settings %s please check type & visibility."
+    "customSettingTypeError": "Cannot generate custom metadata for the custom settings %s check type & visibility."
 }

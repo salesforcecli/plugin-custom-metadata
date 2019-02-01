@@ -21,7 +21,7 @@ export default class Generate extends SfdxCommand {
   public static description = messages.getMessage('commandDescription');
 
   public static examples = [
-  `"$ sfdx cmdt:generate ---devName ConfigObjectmeta --label Config Object meta --plurallabel Config Object meta --sobjectname ConfigObject__c   --sourceusername SourceOrg
+  `"$ sfdx force:cmdt:generate --devname ConfigObjectmeta --label Config Object meta --plurallabel Config Object meta --sobjectname ConfigObject__c --sourceusername SourceOrg
   Congrats! Created a ConfigObjectmeta__mdt type with 32 records!"
   `
   ];
