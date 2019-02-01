@@ -21,8 +21,8 @@ export default class Generate extends SfdxCommand {
   public static description = messages.getMessage('commandDescription');
 
   public static examples = [
-  `"$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c `,
-  `"$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c  --ignoreunsupported true`
+  '"$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c ',
+  '"$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c  --ignoreunsupported true'
   ];
 
   public static args = [{name: 'file'}];

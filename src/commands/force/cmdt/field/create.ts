@@ -17,8 +17,8 @@ export default class Create extends SfdxCommand {
     public static description = messages.getMessage('commandDescription');
 
     public static examples = [
-        `$ sfdx force:cmdt:field:create --fieldname MyField --fieldtype Checkbox`,
-        `$ sfdx force:cmdt:field:create --fieldname MyField --fieldtype Picklist --picklistvalues "A,B,C"`
+        '$ sfdx force:cmdt:field:create --fieldname MyField --fieldtype Checkbox',
+        '$ sfdx force:cmdt:field:create --fieldname MyField --fieldtype Picklist --picklistvalues "A,B,C"'
     ];
 
     public static args = [{ name: 'file' }];

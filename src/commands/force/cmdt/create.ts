@@ -17,8 +17,8 @@ export default class Create extends SfdxCommand {
     public static description = messages.getMessage('commandDescription');
 
     public static examples = [
-        ` $ sfdx force:cmdt:create --typename MyCustomType`,
-        ` $ sfdx force:cmdt:create --typename MyCustomType --label "Custom Type" --plurallabel "Custom Types" --visibility Public'`
+        ' $ sfdx force:cmdt:create --typename MyCustomType',
+        ' $ sfdx force:cmdt:create --typename MyCustomType --label "Custom Type" --plurallabel "Custom Types" --visibility Public'
     ];
 
     public static args = [{ name: 'file' }];
