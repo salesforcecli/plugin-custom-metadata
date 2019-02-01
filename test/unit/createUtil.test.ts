@@ -28,7 +28,7 @@ describe('CreateUtil', () => {
       }, true)
       .stdout()
       .withProject()
-      .command(['force:cmdt:create', '--devname', 'Field_Type_Test', '--outputdir', 'fieldTypeTest'])
+      .command(['force:cmdt:create', '--typename', 'Field_Type_Test', '--outputdir', 'fieldTypeTest'])
       .command(['force:cmdt:field:create', '--fieldname', 'Check', '--fieldtype', 'Checkbox', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
       .command(['force:cmdt:field:create', '--fieldname', 'Date', '--fieldtype', 'Date', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
       .command(['force:cmdt:field:create', '--fieldname', 'Date_Time', '--fieldtype', 'DateTime', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
@@ -136,7 +136,7 @@ describe('CreateUtil', () => {
       }, true)
       .stdout()
       .withProject()
-      .command(['force:cmdt:create', '--devname', 'Default_Type', '--outputdir', 'defaultTypes'])
+      .command(['force:cmdt:create', '--typename', 'Default_Type', '--outputdir', 'defaultTypes'])
       .command(['force:cmdt:field:create', '--fieldname', 'Check', '--fieldtype', 'Checkbox', '--outputdir', 'defaultTypes/Default_Type__mdt'])
       .it('should handle an empty array return the field type needed to create a custom metadata type record', async () => {
         const createUtil = new CreateUtil();
@@ -154,7 +154,7 @@ describe('CreateUtil', () => {
       .withOrg({username: 'test@org.com'}, true)
       .stdout()
       .withProject()
-      .command(['force:cmdt:create', '--devname', 'Dir_File_Test', '--outputdir', 'dirFileTest'])
+      .command(['force:cmdt:create', '--typename', 'Dir_File_Test', '--outputdir', 'dirFileTest'])
       .command(['force:cmdt:field:create', '--fieldname', 'Check', '--fieldtype', 'Checkbox', '--outputdir', 'dirFileTest/Dir_File_Test__mdt'])
       .command(['force:cmdt:field:create', '--fieldname', 'Date', '--fieldtype', 'Date', '--outputdir', 'dirFileTest/Dir_File_Test__mdt'])
       .command(['force:cmdt:field:create', '--fieldname', 'Date_Time', '--fieldtype', 'DateTime', '--outputdir', 'dirFileTest/Dir_File_Test__mdt'])
