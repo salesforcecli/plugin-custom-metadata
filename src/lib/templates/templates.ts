@@ -164,7 +164,7 @@ export class Templates {
         // For fields that are being translated from Custom objects that do not have a matching type they are
         // being defaulted to a Text field. They need to have a minimum length to them
         // e.g. Field types that are getting converted: Currency, Location, MasterDetail, Lookup
-        return this.getConvertType(data.type) === 'Text' ? '\t<length>100</length>\n' : '';
+        return this.canConvert(data.type) && this.getConvertType(data.type) === 'Text' ? '\t<length>100</length>\n' : '';
 
     }
 
