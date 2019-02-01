@@ -17,12 +17,8 @@ export default class Create extends SfdxCommand {
     public static description = messages.getMessage('commandDescription');
 
     public static examples = [
-        `$ sfdx force:cmdt:field:create --fieldname MyCheckbox --fieldtype Checkbox
-    Created custom metadata field called MyCheckbox.
-    `,
-        `$ sfdx force:cmdt:field:create --fieldname Picklist --fieldtype Picklist --picklistvalues A,B,C --outputdir force-app/main/default/objects/CustomMetadate__mdt
-    Created custom metadata field called Picklist.
-    `
+        '$ sfdx force:cmdt:field:create --fieldname MyField --fieldtype Checkbox',
+        '$ sfdx force:cmdt:field:create --fieldname MyField --fieldtype Picklist --picklistvalues "A,B,C"'
     ];
 
     public static args = [{ name: 'file' }];

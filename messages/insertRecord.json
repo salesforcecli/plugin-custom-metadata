@@ -1,8 +1,8 @@
 {
-  "commandDescription": "Creates new Custom Metadata Type records from a CSV",
+  "commandDescription": "creates new custom Metadata type records from a CSV",
   "filepathFlagDescription": "Path to the CSV file",
   "inputDirectoryFlagDescription": "Specify the directory where the custom metadata type definition will be pulled from (default is 'force-app/main/default/objects')",
   "outputDirectoryFlagDescription": "Specify the directory where the file will be created (default is 'force-app/main/default/customMetadata')",
   "successResponse": "Created custom metadata type records from '%s' at '%s'.",
-  "typenameFlagDescription": "Name of the CustomMetadata Type"
+  "typenameFlagDescription": "API Name of the custom metadata type"
 }

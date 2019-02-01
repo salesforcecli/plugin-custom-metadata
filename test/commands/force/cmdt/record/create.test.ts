@@ -12,7 +12,7 @@ describe('sfdx force:cmdt:record:create error handling', () => {
     .withProject()
     .command([
       'force:cmdt:create',
-      '--devname', 'Bad_Dev_Name',
+      '--typename', 'Bad_Dev_Name',
       '--outputdir', 'badDevNameDir'])
     .command([
       'force:cmdt:record:create',
@@ -35,7 +35,7 @@ describe('sfdx force:cmdt:record:create error handling', () => {
     .withProject()
     .command([
       'force:cmdt:create',
-      '--devname', 'Bad_Record_Name_Test',
+      '--typename', 'Bad_Record_Name_Test',
       '--outputdir', 'recordNameErrorDir'
     ])
     .command([
@@ -66,7 +66,7 @@ describe('sfdx force:cmdt:record:create error handling', () => {
     .withProject()
     .command([
       'force:cmdt:create',
-      '--devname', 'Exceed_Char_Test',
+      '--typename', 'Exceed_Char_Test',
       '--outputdir', 'exceedCharDir'
     ])
     .command([
@@ -97,7 +97,7 @@ describe('sfdx force:cmdt:record:create', () => {
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
     .withProject()
-    .command(['force:cmdt:create', '--devname', 'Long_Flags_Create_Test', '--outputdir', 'createWithLongFlags'])
+    .command(['force:cmdt:create', '--typename', 'Long_Flags_Create_Test', '--outputdir', 'createWithLongFlags'])
     .command(['force:cmdt:field:create', '--fieldname', 'Check', '--fieldtype', 'Checkbox', '--outputdir', 'createWithLongFlags/Long_Flags_Create_Test__mdt'])
     .command(['force:cmdt:field:create', '--fieldname', 'Date', '--fieldtype', 'Date', '--outputdir', 'createWithLongFlags/Long_Flags_Create_Test__mdt'])
     .command(['force:cmdt:field:create', '--fieldname', 'Date_Time', '--fieldtype', 'DateTime', '--outputdir', 'createWithLongFlags/Long_Flags_Create_Test__mdt'])
@@ -126,7 +126,7 @@ describe('sfdx force:cmdt:record:create', () => {
     .it('runs force:cmdt:record:create with long flags', ctx => {
       const fieldDirPath = 'createWithLongFlags';
       const filePath = 'createWithLongFlags/customMetadata/Long_Flags_Create_Test.Long_Flags_Create_Test_Record.md-meta.xml';
-      const uxMessage = 'Created custom metadata record of the type \'Long_Flags_Create_Test\' with record developer name \'Long_Flags_Create_Test_Record\', label \'Long Flags Create Test Record Label\', and protected \'true\' at \'createWithLongFlags/customMetadata\'';
+      const uxMessage = 'Created custom metadata record of the type \'Long_Flags_Create_Test\' with record name \'Long_Flags_Create_Test_Record\', label \'Long Flags Create Test Record Label\', and protected \'true\' at \'createWithLongFlags/customMetadata\'';
 
       expect(fs.existsSync(fieldDirPath)).to.be.true;
       expect(fs.existsSync(filePath)).to.be.true;
@@ -147,7 +147,7 @@ describe('sfdx force:cmdt:record:create', () => {
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
     .withProject()
-    .command(['force:cmdt:create', '--devname', 'Short_Flag_Test', '--outputdir', 'shortFlagDir'])
+    .command(['force:cmdt:create', '--typename', 'Short_Flag_Test', '--outputdir', 'shortFlagDir'])
     .command(['force:cmdt:field:create', '--fieldname', 'Check', '--fieldtype', 'Checkbox', '--outputdir', 'shortFlagDir/Short_Flag_Test__mdt'])
     .command(['force:cmdt:field:create', '--fieldname', 'Date', '--fieldtype', 'Date', '--outputdir', 'shortFlagDir/Short_Flag_Test__mdt'])
     .command(['force:cmdt:field:create', '--fieldname', 'Date_Time', '--fieldtype', 'DateTime', '--outputdir', 'shortFlagDir/Short_Flag_Test__mdt'])
@@ -187,7 +187,7 @@ describe('sfdx force:cmdt:record:create', () => {
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
     .withProject()
-    .command(['force:cmdt:create', '--devname', 'Suffix_Test', '--outputdir', 'suffixTestDir'])
+    .command(['force:cmdt:create', '--typename', 'Suffix_Test', '--outputdir', 'suffixTestDir'])
     .command(['force:cmdt:field:create', '--fieldname', 'Check', '--fieldtype', 'Checkbox', '--outputdir', 'suffixTestDir/Suffix_Test__mdt'])
     .command([
       'force:cmdt:record:create',
@@ -214,7 +214,7 @@ describe('sfdx force:cmdt:record:create test contents of record file created', (
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
     .withProject()
-    .command(['force:cmdt:create', '--devname', 'Output_Test', '--outputdir', 'outputTestDir'])
+    .command(['force:cmdt:create', '--typename', 'Output_Test', '--outputdir', 'outputTestDir'])
     .command(['force:cmdt:field:create', '--fieldname', 'Check', '--fieldtype', 'Checkbox', '--outputdir', 'outputTestDir/Output_Test__mdt'])
     .command([
       'force:cmdt:record:create',

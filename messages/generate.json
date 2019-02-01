@@ -1,16 +1,15 @@
 {
     "commandDescription": "generates a custom metadata type and all its records for the provided sobject",
-    "objnameFlagDescription": "DeveloperName of the object to create a type for",
     "visibilityFlagDescription": "Visibility for the type. Valid values are 'Public' and 'Protected'. If blank, uses 'Public'",
     "errorNoRecResults": "No results found for the organization '%s'.",
-    "devnameFlagDescription": "The name of the new Custommetadata Type. The name can be up to 40 characters and must start with a letter.",
-    "labelFlagDescription": "The label of the new Custommetadata Type.",
-    "plurallabelFlagDescription": "The plural label of the new Custommetadata Type. If blank, uses label",
-    "sobjectnameFlagDescription": "The sObject name you are generating to Custommetadata",
+    "devnameFlagDescription": "The name of the new custom metadata type.",
+    "labelFlagDescription": "Label for the custom metadata type",
+    "plurallabelFlagDescription": "Plural label for the custom metadata type. If blank, uses label",
+    "sobjectnameFlagDescription": "The API Name of the sObject you are generating to Custommetadata",
     "sourceusernameFlagDescription": "username or alias for the source org that contains the Custom Setting or SObject and data to be generateed",
     "targetusernameFlagDescription": "username or alias for the target org; overrides default target org",
     "deployFlagDescription": "Runs the force:source:push command after Source XML is created",
-    "ignoreUnsupportedFlagDescription": "Flag to ignore non-supported field types (these fields will not be created)",
+    "ignoreUnsupportedFlagDescription": "Flag to ignore non-supported field types (these fields will not be created). Default is to create text fields and convert source to text.",
     "outputDirectoryFlagDescription": "Specify the directory where the custom metadata will be created (default is 'force-app/main/default/objects')",
     "recordsoutputDirectoryFlagDescription": "Specify the directory where the custom metadata will be created (default is 'force-app/main/default/customMetadata')",
     "loglevelFlagDescription": "logging level for this command invocation",
@@ -21,5 +20,5 @@
     "sourceusernameError": "no user found with the provided username or alias",
     "sourceuserAuthenticationError": "Issue with authenticating to source org with sourceusername provide: %s MoreInfo: %s.",
     "generateError": "Fialed to generate custom metadata. reason: %s.",
-    "customSettingTypeError": "Cannot generate custom metadata for the custom settings %s please check type & visibility."
+    "customSettingTypeError": "Cannot generate custom metadata for the custom settings %s check type & visibility."
 }

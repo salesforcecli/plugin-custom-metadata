@@ -1,9 +1,9 @@
 {
     "commandDescription": "generates a custom metadata field based on the field type provided",
-    "nameFlagDescription":"Name of the custom field",
-    "fieldTypeDescription":"The type of field that you are creating",
+    "nameFlagDescription":"Name for the field",
+    "fieldTypeDescription":"The type of field.",
     "picklistValuesDescription":"List of picklist values that are added when creating a picklist",
-    "labelFlagDescription": "Label of the new record",
+    "labelFlagDescription": "Label for the new field",
     "outputDirectoryFlagDescription":"The directory to store the newly created files. The location can be an absolute path or relative to the current working directory. The default is the current directory.",
     "invalidCustomFieldError": "%s is an invalid field. Custom fields can only contain alphanumeric characters, must begin with a letter, cannot end with an underscore or contain two consecutive underscore characters.",
     "picklistValuesNotSuppliedError":"Picklist values are required when type is Picklist",
