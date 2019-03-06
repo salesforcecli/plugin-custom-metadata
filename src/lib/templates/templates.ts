@@ -156,8 +156,6 @@ export class Templates {
     private getLengthTag(data) {
         if (data.type === 'MultiselectPicklist') {
             return '\t<length>32768</length>\n';
-        } else if(data.type === 'Currency') {
-            return '\t<length>255</length>\n';
         }
 
         if ( data.length ) {
@@ -175,6 +173,9 @@ export class Templates {
     }
 
     private getDefaultValue(data) {
+        if (data.type === 'Currency') {
+            return data.defaultValue ? `\t<defaultValue>'${data.defaultValue}'</defaultValue>\n` : ''; 
+        }
         return data.defaultValue ? `\t<defaultValue>${data.defaultValue}</defaultValue>\n` : '';
     }
 
