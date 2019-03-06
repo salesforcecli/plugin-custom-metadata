@@ -151,10 +151,24 @@ export class CreateUtil {
    * @return {string} String representation of XML
    */
   private getFieldTemplate(fieldName: string, val: string, type: string) {
+    // update to handle the null situation 
+    let value = '';
+    var map = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;'
+    };
+    let cleanValue = String(val).replace(/[&<>]/g, function(m) { return map[m]; });
+    if (val == null || val == '') 
+    {
+      value = `<value xsi:nil="true"/>`
+    } else {
+      value = `<value xsi:type="xsd:${type}">${cleanValue}</value>`
+    }
     return `
     <values>
         <field>${fieldName}</field>
-        <value xsi:type="xsd:${type}">${val}</value>
+        ${value}
     </values>`;
   }
 
