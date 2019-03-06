@@ -174,7 +174,7 @@ export class Templates {
 
     private getDefaultValue(data) {
         if (data.type === 'Currency') {
-            return data.defaultValue ? `\t<defaultValue>'${data.defaultValue}'</defaultValue>\n` : ''; 
+            return data.defaultValue ? `\t<defaultValue>'${data.defaultValue}'</defaultValue>\n` : '';
         }
         return data.defaultValue ? `\t<defaultValue>${data.defaultValue}</defaultValue>\n` : '';
     }
