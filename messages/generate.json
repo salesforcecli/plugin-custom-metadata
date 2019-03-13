@@ -14,7 +14,7 @@
     "recordsoutputDirectoryFlagDescription": "Specify the directory where the custom metadata will be created (default is 'force-app/main/default/customMetadata')",
     "loglevelFlagDescription": "logging level for this command invocation",
     "typenameFlagError": "not a valid custom metadatatype name",
-    "sobjectnameFlagError": "not a valid custom metadatatype name",
+    "sobjectnameFlagError": "not a valid custom setting/ custom object name",
     "sobjectnameNoResultError": "No sobject with name %s found in the org.",
     "noRecordsFoundError": "No records found in the source org for the %s object",
     "sourceusernameError": "no user found with the provided username or alias",
