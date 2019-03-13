@@ -2,6 +2,7 @@ import { core } from '@salesforce/command';
 import { parseString } from 'xml2js';
 import { CreateConfig } from '../interfaces/createConfig';
 import { CustomField } from '../interfaces/customField';
+import { Templates } from '../templates/templates';
 
 // NOTE: the template string indentation is important to output well-formatted XML. Altering that whitespace will change the whitespace of the output.
 export class CreateUtil {
@@ -38,7 +39,7 @@ export class CreateUtil {
     const newRecordContent = this.getRecordTemplate(
       createConfig.label,
       createConfig.protection,
-      this.buildCustomFieldXml(createConfig.fileData, createConfig.varargs)
+      this.buildCustomFieldXml(createConfig.fileData, createConfig.varargs, createConfig.ignorefields)
     );
 
     return core.fs.writeFile(outputFilePath, newRecordContent);
@@ -77,13 +78,13 @@ export class CreateUtil {
   }
 
   /**
-   * Get the field type from the custom metadata type that has a matching field name.
+   * Get the field primitive type from the custom metadata type that has a matching field name.
    *
    * @param  fileData Array of objects based on metadata type xml
    * @param  fieldName Name of the field
    * @return {string} Type used by a custom metadata record
    */
-  public getFieldType(fileData: CustomField[] = [], fieldName: string = '') {
+  public getFieldPrimitiveType(fileData: CustomField[] = [], fieldName: string = '') {
     let thisFieldName = '';
     let type = '';
     let ret = 'string';
@@ -107,6 +108,27 @@ export class CreateUtil {
   }
 
   /**
+   * Get the field type from the custom metadata type that has a matching field name.
+   *
+   * @param  fileData Array of objects based on metadata type xml
+   * @param  fieldName Name of the field
+   * @return {string} Data Type of the field.
+   */
+  public getFieldDataType(fileData: CustomField[] = [], fieldName: string = '') {
+    let thisFieldName = '';
+    let type = '';
+
+    for (const file of fileData) {
+      thisFieldName = file.CustomField.fullName[0];
+      type = file.CustomField.type[0];
+
+      if (thisFieldName === fieldName) {
+        return type;
+      }
+    }
+  }
+
+  /**
    * Takes JSON representation of CLI varargs and converts them to xml with help
    * from helper.getFieldTemplate
    *
@@ -114,13 +136,22 @@ export class CreateUtil {
    * @param  fileData Array of objects that contain field data
    * @return {string} String representation of XML
    */
-  private buildCustomFieldXml(fileData: CustomField[], cliParams: object) {
+  private buildCustomFieldXml(fileData: CustomField[], cliParams: object, ignoreFields: boolean) {
     let ret = '';
     let type = '';
-
+    let dataType = '';
+    const templates = new Templates();
     for (const fieldName of Object.keys(cliParams)) {
-      type = this.getFieldType(fileData, fieldName);
-      ret += this.getFieldTemplate(fieldName, cliParams[fieldName], type);
+      type = this.getFieldPrimitiveType(fileData, fieldName);
+      dataType = this.getFieldDataType(fileData, fieldName);
+      // Added functionality to handle the igonre fields scenario.
+      if (templates.canConvert(dataType)) {
+        ret += this.getFieldTemplate(fieldName, cliParams[fieldName], type);
+      } else {
+          if (!ignoreFields) {
+            ret += this.getFieldTemplate(fieldName, cliParams[fieldName], type);
+          }
+      }
     }
 
     return ret;

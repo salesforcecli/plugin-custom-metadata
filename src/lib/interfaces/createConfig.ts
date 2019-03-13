@@ -9,4 +9,5 @@ export interface CreateConfig {
   protection?: boolean;
   varargs?: object;
   fileData?: CustomField[];
+  ignorefields?: boolean;
 }
