@@ -22,7 +22,11 @@ export default class Generate extends SfdxCommand {
 
   public static examples = [
   '"$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c ',
-  '"$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c  --ignoreunsupported true'
+  '"$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c  --ignoreunsupported --sourceusername \'alias or the email of the source org\'',
+  '"$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomObject__c  --visibility Protected',
+  '"$ sfdx force:cmdt:generate --devname MyCMDT --label \'My CMDT\' --plurallabel \'My CMDTs\' --sobjectname SourceCustomSetting__c  --visibility Protected',
+  '"$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c  --typeoutputdir \'your desired Path for custom metadata\'',
+  '"$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c  --recordsoutputdir \'your desired Path for custom metadata Records\''
   ];
 
   public static args = [{name: 'file'}];
@@ -35,7 +39,7 @@ export default class Generate extends SfdxCommand {
     visibility: flags.enum({char: 'v', description: messages.getMessage('visibilityFlagDescription'),  options: ['Protected', 'Public']}),
     sobjectname: flags.string({char: 's', required: true, description: messages.getMessage('sobjectnameFlagDescription')}),
     sourceusername: flags.string({char: 'x', description: messages.getMessage('sourceusernameFlagDescription')}),
-    ignoreunsupported: flags.string({char: 'i', description: messages.getMessage('ignoreUnsupportedFlagDescription')}),
+    ignoreunsupported: flags.boolean({char: 'i', description: messages.getMessage('ignoreUnsupportedFlagDescription')}),
     typeoutputdir: flags.directory({char: 'd', description: messages.getMessage('outputDirectoryFlagDescription')}),
     recordsoutputdir: flags.directory({char: 'r', description: messages.getMessage('recordsoutputDirectoryFlagDescription')}),
     loglevel: flags.string({char: 'l', description: messages.getMessage('loglevelFlagDescription')})
@@ -57,6 +61,7 @@ export default class Generate extends SfdxCommand {
     const objname = this.flags.sobjectname;
     const cmdttype = this.flags.devname;
     const sourceuser = this.flags.sourceusername;
+    const ignoreFields = this.flags.ignoreunsupported;
 
     let username: string;
     let sourceOrgConn: core.Connection;
@@ -88,6 +93,9 @@ export default class Generate extends SfdxCommand {
     if (!isNullOrUndefined(cmdttype)) {
         typeName = cmdttype;
     } else {
+        if (!validator.validateAPIName(objname)) {
+            throw SfdxError.create('custommetadata', 'generate', 'sobjectnameFlagError', [objname]);
+        }
         typeName = objname;
     }
     let devName;
@@ -190,15 +198,22 @@ export default class Generate extends SfdxCommand {
 
         // create custom metdata fields
         await fields.map(async field => {
-            // added type check here to skip the creation of geo location field as we are adding it as lat and long field above.
-            if (field['type'] !== 'Location') {
-                const recName = field['fullName'];
-                const fieldXML = templates.createFieldXML(field, recName);
-                const targetDir = `${outputDir}${devName}__mdt`;
-                await fileWriter.writeFieldFile(core.fs, targetDir, recName, fieldXML);
-                let recLabel = recName;
-                if (recLabel.length > 40) {
-                    recLabel = recLabel.substring(0, 40);
+            if (templates.canConvert(field['type'])) {
+                // added type check here to skip the creation of geo location field as we are adding it as lat and long field above.
+                if (field['type'] !== 'Location') {
+                    const recName = field['fullName'];
+                    const fieldXML = templates.createFieldXML(field, recName);
+                    const targetDir = `${outputDir}${devName}__mdt`;
+                    await fileWriter.writeFieldFile(core.fs, targetDir, recName, fieldXML);
+                }
+            } else {
+                if (!ignoreFields) {
+                    if (field['type'] !== 'Location') {
+                        const recName = field['fullName'];
+                        const fieldXML = templates.createFieldXML(field, recName);
+                        const targetDir = `${outputDir}${devName}__mdt`;
+                        await fileWriter.writeFieldFile(core.fs, targetDir, recName, fieldXML);
+                    }
                 }
             }
         });
@@ -240,12 +255,24 @@ export default class Generate extends SfdxCommand {
                 outputdir: recordsOutputDir,
                 protection: security,
                 varargs: record,
-                fileData
+                fileData,
+                ignorefields: ignoreFields
             });
         }
         this.ux.stopSpinner('custom metadata type and records creation in completed');
         this.ux.log(`Congrats! Created a ${devName} custom metadata type with ${sObjectRecords.records.length} records!`);
     } catch (e) {
+        await core.fs.remove(`${outputDir}${devName}__mdt`);
+        const fileNames = await core.fs.readdir(recordsOutputDir);
+        for (const file of fileNames) {
+            if (file.startsWith(devName)) {
+               try {
+                await core.fs.unlink(`${recordsOutputDir}/${file}`);
+               } catch (e) {
+                    this.ux.log(e.message);
+               }
+            }
+        }
         this.ux.stopSpinner('generate command failed to run');
         const errMsg = messages.getMessage('generateError', [e.message]);
         throw new SfdxError(errMsg, 'generateError');
