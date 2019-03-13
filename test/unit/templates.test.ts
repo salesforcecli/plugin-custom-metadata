@@ -170,6 +170,16 @@ describe('Templates', () => {
                 expect(ex.message).to.contain('\'Html\' is not a valid field type.');
             }
         });
+        it('default to Text field for Currency field', () => {
+            let data: any = { fullName: 'Currency', type: 'Currency', label: 'test', precision: '18', scale: '0', unique: 'false', defaultValue: '1000' };
+            let xml: String = templates.createFieldXML(data, true);
+            expect(xml.includes(`<fullName>Currency__c</fullName>`)).to.be.true;
+            expect(xml.includes(`<type>Text</type>`)).to.be.true;
+            expect(xml.includes(`<label>test</label>`)).to.be.true;
+            expect(xml.includes(`<unique>false</unique>`)).to.be.true;
+            expect(xml.includes(`<length>100</length>`)).to.be.true;
+            expect(xml.includes(`<defaultValue>'1000'</defaultValue>`)).to.be.true;
+        });
 
     });
     describe('createDefaultTypeStructure', () => {
