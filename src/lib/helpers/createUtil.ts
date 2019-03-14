@@ -146,10 +146,10 @@ export class CreateUtil {
       dataType = this.getFieldDataType(fileData, fieldName);
       // Added functionality to handle the igonre fields scenario.
       if (templates.canConvert(dataType)) {
-        ret = this.getFieldTemplate(fieldName, cliParams[fieldName], type);
+        ret += this.getFieldTemplate(fieldName, cliParams[fieldName], type);
       } else {
           if (!ignoreFields) {
-            ret = this.getFieldTemplate(fieldName, cliParams[fieldName], type);
+            ret += this.getFieldTemplate(fieldName, cliParams[fieldName], type);
           }
       }
     }
