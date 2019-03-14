@@ -210,9 +210,7 @@ describe('CreateUtil', () => {
         const field11 = createUtil.getFieldDataType(fileData, 'Phone__c');
         const field12 = createUtil.getFieldDataType(fileData, 'Picklist__c');
         const field13 = createUtil.getFieldDataType(fileData, 'Text__c');
-        const field14 = createUtil.getFieldDataType(fileData, 'TextArea__c');
-        const field15 = createUtil.getFieldDataType(fileData, 'LongTextArea__c');
-        const field16 = createUtil.getFieldDataType(fileData, 'Url__c');
+        const field14 = createUtil.getFieldDataType(fileData, 'Url__c');
 
         expect(field1 === 'Checkbox').to.be.true;
         expect(field2 === 'DateTime').to.be.true;
@@ -227,11 +225,7 @@ describe('CreateUtil', () => {
         expect(field11 === 'Phone').to.be.true;
         expect(field12 === 'Picklist').to.be.true;
         expect(field13 === 'Text').to.be.true;
-        console.log(field14);
-        console.log(field15);
-        //expect(field14 === 'TextArea').to.be.true;
-        //expect(field15 === 'LongTextArea').to.be.true;
-        expect(field16 === 'Url').to.be.true;
+        expect(field14 === 'Url').to.be.true;
 
         await exec(`rm -rf ${inputdir}`);
       });
@@ -287,7 +281,6 @@ describe('CreateUtil', () => {
         const recname = 'Dir_File_Test_Record';
         const label = 'Dir File Test Record Label';
         const protection = true;
-        //const ignorefields = false;
         const inputdir = 'dirFileTest';
         const outputdir = 'dirFileTest/cmdtRecords';
         const dirName = createUtil.appendDirectorySuffix(typename);
