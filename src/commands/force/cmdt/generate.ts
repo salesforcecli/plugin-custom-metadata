@@ -103,9 +103,9 @@ export default class Generate extends SfdxCommand {
         if (!validator.validateAPIName(typeName)) {
             throw SfdxError.create('custommetadata', 'generate', 'sobjectnameFlagError', [typeName]);
         } else if (typeName.endsWith('__c') || typeName.endsWith('__C')) {
-            devName = typeName.substring(0, typeName.indexOf('__c')) + 'Type';
+            devName = typeName.substring(0, typeName.indexOf('__c'));
         } else {
-            devName = typeName + 'Type';
+            devName = typeName;
         }
     } else {
         throw SfdxError.create('custommetadata', 'generate', 'sobjectnameFlagError', [objname]);
@@ -198,23 +198,12 @@ export default class Generate extends SfdxCommand {
 
         // create custom metdata fields
         await fields.map(async field => {
-            if (templates.canConvert(field['type'])) {
-                // added type check here to skip the creation of geo location field as we are adding it as lat and long field above.
-                if (field['type'] !== 'Location') {
+            // added type check here to skip the creation of geo location field  and un supported fields as we are adding it as lat and long field above.
+            if ((templates.canConvert(field['type']) || !ignoreFields) && field['type'] !== 'Location') {
                     const recName = field['fullName'];
                     const fieldXML = templates.createFieldXML(field, recName);
                     const targetDir = `${outputDir}${devName}__mdt`;
                     await fileWriter.writeFieldFile(core.fs, targetDir, recName, fieldXML);
-                }
-            } else {
-                if (!ignoreFields) {
-                    if (field['type'] !== 'Location') {
-                        const recName = field['fullName'];
-                        const fieldXML = templates.createFieldXML(field, recName);
-                        const targetDir = `${outputDir}${devName}__mdt`;
-                        await fileWriter.writeFieldFile(core.fs, targetDir, recName, fieldXML);
-                    }
-                }
             }
         });
 
