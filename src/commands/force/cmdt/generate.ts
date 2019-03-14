@@ -267,7 +267,7 @@ export default class Generate extends SfdxCommand {
         for (const file of fileNames) {
             if (file.startsWith(devName)) {
                try {
-                await core.fs.unlink(`${recordsOutputDir}/${file}`);
+                   await core.fs.unlink(`${recordsOutputDir}/${file}`);
                } catch (e) {
                     this.ux.log(e.message);
                }
