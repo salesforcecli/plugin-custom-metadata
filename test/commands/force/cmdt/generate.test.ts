@@ -66,13 +66,10 @@ describe('sfdx force:cmdt:generate', () => {
         .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c', '-x', 'test@org.com'])
         .it('runs force:cmdt:create -n MyCMDT -s TriggerSettings__c', ctx => {
             const cmdtName = 'MyCMDT';
-            expect(fs.existsSync(`sample/${cmdtName}__mdt`)).to.be.true;
-            expect(fs.existsSync(`sample/${cmdtName}__mdt/${cmdtName}__mdt.object-meta.xml`)).to.be.true;
-            fs.readFile(`sample/${cmdtName}__mdt/${cmdtName}__mdt.object-meta.xml`, { encoding: 'utf-8' }, function (err, xml) {
-                expect(xml.includes(`<label>MyCMDT</label>`)).to.be.true;
-                expect(xml.includes(`<pluralLabel>MyCMDT</pluralLabel>`)).to.be.true;
-                expect(xml.includes(`<visibility>Public</visibility>`)).to.be.true;
-            });
-            exec(`rm -rf sample`);
-        })
+            expect(fs.existsSync(`force-app/main/default/objects/${cmdtName}__mdt`)).to.be.true;
+            expect(fs.existsSync(`force-app/main/default/objects/${cmdtName}__mdt/fields/IsAfterDeleteDisabled__c.field-meta.xml`)).to.be.true;
+            expect(fs.existsSync(`force-app/main/default/customMetadata/${cmdtName}.Record1.md-meta.xml`)).to.be.true;
+            expect(fs.existsSync(`force-app/main/default/customMetadata/${cmdtName}.Record2.md-meta.xml`)).to.be.true;
+            exec(`rm -rf force-app`);
+        });
 })
