@@ -49,10 +49,10 @@ export default class Create extends SfdxCommand {
 
         const validator = new ValidationUtil();
         if (!validator.validateAPIName(fieldName)) {
-            throw new Error(messages.getMessage('invalidCustomFieldError', [fieldName]));
+            throw new core.SfdxError(messages.getMessage('invalidCustomFieldError', [fieldName]));
         }
         if (fieldtype === 'Picklist' && picklistvalues.length === 0) {
-            throw new Error(messages.getMessage('picklistValuesNotSuppliedError'));
+            throw new core.SfdxError(messages.getMessage('picklistValuesNotSuppliedError'));
         }
         const templates = new Templates();
         const data = templates.createDefaultTypeStructure(fieldName, fieldtype, label, picklistvalues, decimalplaces);
