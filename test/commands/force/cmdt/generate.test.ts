@@ -1,10 +1,8 @@
- import { expect, test } from '@salesforce/command/lib/test';
- import * as fs from 'fs';
- import { promisify } from 'util';
+import { expect, test } from '@salesforce/command/lib/test';
+import * as fs from 'fs';
+import { promisify } from 'util';
 import { Org } from '@salesforce/core';
 import { core } from '@salesforce/command';
-// import { MetadataUtil } from '../../../../src/lib/helpers/metadataUtil';
-
 
 const child_process = require('child_process');
 
@@ -57,19 +55,35 @@ const query = function(){ return  { totalSize: 2,
 
 describe('sfdx force:cmdt:generate', () => {
 
-    test
+    describe('generate successful', () => {
+        test
         .withOrg({ username: 'test@org.com' }, true)
         .stdout()
         .withProject()
         .stub(Org.prototype, 'getConnection',function(){ return {metadata,query}})
         .stub(core.Connection,'create',function(){ return {metadata,query}})
         .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c', '-x', 'test@org.com'])
-        .it('runs force:cmdt:create -n MyCMDT -s TriggerSettings__c', ctx => {
+        .it('runs force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
             const cmdtName = 'MyCMDT';
             expect(fs.existsSync(`force-app/main/default/objects/${cmdtName}__mdt`)).to.be.true;
             expect(fs.existsSync(`force-app/main/default/objects/${cmdtName}__mdt/fields/IsAfterDeleteDisabled__c.field-meta.xml`)).to.be.true;
             expect(fs.existsSync(`force-app/main/default/customMetadata/${cmdtName}.Record1.md-meta.xml`)).to.be.true;
             expect(fs.existsSync(`force-app/main/default/customMetadata/${cmdtName}.Record2.md-meta.xml`)).to.be.true;
             exec(`rm -rf force-app`);
+            
         });
+        
+    });
+
+        test
+        .withOrg({ username: 'test@org.com' }, true)
+        .stderr()
+        .withProject()
+        .stub(Org.prototype, 'getConnection',function(){ return {metadata,query}})
+        .stub(core.Connection,'create',function(){ return {metadata,query}})
+        .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c', '-x', 'test2@org.con'])
+        .it('no user found while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
+            expect(ctx.stderr ).to.contain('no user found with the provided username or alias test2@org.con');
+        });
+
 })
