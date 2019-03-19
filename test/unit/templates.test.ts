@@ -46,7 +46,7 @@ describe('Templates', () => {
             expect(xml.includes(`<unique>false</unique>`)).to.be.true;
         });
         it('Number field created', () => {
-            let data: any = { fullName: 'Number', type: 'Number', label: 'test', precision: '18', scale: '0', unique: 'false' };
+            let data: any = { fullName: 'Number', type: 'Number', externalId: 'true', label: 'test', precision: '18', scale: '0', unique: 'false' };
             let xml: String = templates.createFieldXML(data, false);
             expect(xml.includes(`<fullName>Number__c</fullName>`)).to.be.true;
             expect(xml.includes(`<type>Number</type>`)).to.be.true;
@@ -54,6 +54,7 @@ describe('Templates', () => {
             expect(xml.includes(`<unique>false</unique>`)).to.be.true;
             expect(xml.includes(`<precision>18</precision>`)).to.be.true;
             expect(xml.includes(`<scale>0</scale>`)).to.be.true;
+            expect(xml.includes(`<externalId>true</externalId>`)).to.be.true;
         });
         it('Percent field created', () => {
             let data: any = { fullName: 'Percent', type: 'Percent', label: 'test', precision: '18', scale: '0' };
@@ -179,6 +180,23 @@ describe('Templates', () => {
             expect(xml.includes(`<unique>false</unique>`)).to.be.true;
             expect(xml.includes(`<length>100</length>`)).to.be.true;
             expect(xml.includes(`<defaultValue>'1000'</defaultValue>`)).to.be.true;
+        });
+        it('should convert Formula fields to long text area type', () => {
+            let data: any = { fullName: 'FormulaText', type: 'Text', label: 'test', externalId: 'false', unique: 'false', inlineHelpText: 'Formula text field' };
+            let xml: String = templates.createFieldXML(data, true);
+            expect(xml.includes(`<fullName>FormulaText__c</fullName>`)).to.be.true;
+            expect(xml.includes(`<type>LongTextArea</type>`)).to.be.true;
+            expect(xml.includes(`<label>test</label>`)).to.be.true;
+            expect(xml.includes(`<length>32768</length>`)).to.be.true;
+        });
+        it('Formula Checkbox field created', () => {
+            let data: any = { fullName: 'FormulaCheckbox', type: 'Checkbox', label: 'test' };
+            let xml: String = templates.createFieldXML(data, false);
+            expect(xml.includes(`<fullName>FormulaCheckbox__c</fullName>`)).to.be.true;
+            expect(xml.includes(`<type>Checkbox</type>`)).to.be.true;
+            expect(xml.includes(`<label>test</label>`)).to.be.true;
+            expect(xml.includes(`<defaultValue>false</defaultValue>`)).to.be.true;
+            expect(xml.includes(`<inlineHelpText>Formula text field</inlineHelpText>`)).to.be.false;
         });
 
     });

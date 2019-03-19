@@ -18,9 +18,9 @@ export class Templates {
     }
 
     /**
-     * Using the given data and defaultToString, creates the body for a field file
-     * @param data
-     * @param visibility
+     * Using the given data and defaultToString, creates the body for a field file.
+     * @param data Record details
+     * @param defaultToString If the defaultToString set type to Text for unsupported field types
      */
     public createFieldXML(data, defaultToString: boolean) {
         let returnValue = '<?xml version="1.0" encoding="UTF-8"?>\n';
@@ -100,17 +100,21 @@ export class Templates {
 
     private getType(data, defaultToMetadataType: boolean) {
         if (this.canConvert(data.type)) {
+            // To handle the text formula field scenario where field type will be Text with no length attribute
+            if (data.type === 'Text' && data.length === undefined) {
+                return '\t<type>LongTextArea</type>\n';
+            }
             return `\t<type>${data.type}</type>\n`;
         } else if (defaultToMetadataType) {
-            return `\t<type>${this.getConvertType(data.type)}</type>\n`;
+            return `\t<type>${this.getConvertType(data)}</type>\n`;
         } else {
             throw SfdxError.create('custommetadata', 'template', 'errorNotAValidaType', [data.type]);
         }
 
     }
 
-    private getConvertType(type) {
-        if (type === 'Html' || type === 'MultiselectPicklist') {
+    private getConvertType(data) {
+        if (data.type === 'Html' || data.type === 'MultiselectPicklist' || (data.type === 'Text' && data.length === undefined)) {
             return 'LongTextArea';
         } else {
             return 'Text';
@@ -154,7 +158,9 @@ export class Templates {
     }
 
     private getLengthTag(data) {
-        if (data.type === 'MultiselectPicklist') {
+        // If field type is multiselect or
+        // data type is text with no length attribute then it is formula field then set the length to 32768 as we are setting the type LongTextArea
+        if (data.type === 'MultiselectPicklist' || (data.type === 'Text' && data.length === undefined)) {
             return '\t<length>32768</length>\n';
         }
 
@@ -164,17 +170,22 @@ export class Templates {
         // For fields that are being translated from Custom objects that do not have a matching type they are
         // being defaulted to a Text field. They need to have a minimum length to them
         // e.g. Field types that are getting converted: Currency, Location, MasterDetail, Lookup
-        return !this.canConvert(data.type) && this.getConvertType(data.type) === 'Text' ? '\t<length>100</length>\n' : '';
+        return !this.canConvert(data.type) && this.getConvertType(data) === 'Text' ? '\t<length>100</length>\n' : '';
 
     }
 
     private getVisibleLines(data) {
+        if (data.type === 'Text' && data.length === undefined) {
+            return '\t<visibleLines>3</visibleLines>\n';
+        }
         return data.visibleLines ? `\t<visibleLines>${data.visibleLines}</visibleLines>\n` : '';
     }
 
     private getDefaultValue(data) {
         if (data.type === 'Currency') {
             return data.defaultValue ? `\t<defaultValue>'${data.defaultValue}'</defaultValue>\n` : '';
+        } else if (data.type === 'Checkbox' && data.defaultValue === undefined) {
+            return '\t<defaultValue>false</defaultValue>\n';
         }
         return data.defaultValue ? `\t<defaultValue>${data.defaultValue}</defaultValue>\n` : '';
     }
