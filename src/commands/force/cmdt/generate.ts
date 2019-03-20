@@ -114,16 +114,18 @@ export default class Generate extends SfdxCommand {
     if (!validator.validateMetadataTypeName(cmdttype)) {
         throw  SfdxError.create('custommetadata', 'generate', 'typenameFlagError', [cmdttype]);
     }
-    const metadataUtil = new MetadataUtil(conn);
+
+    let metadataUtil;
     // get defined only if there is source username provided
-    const srcMetadataUtil = new MetadataUtil(sourceOrgConn);
     if (!sourceOrgConn) {
-        // use default target org connection to get object describe if no source is provided.
-        describeObj = await metadataUtil.describeObj(objname);
+        metadataUtil = new MetadataUtil(conn);
     } else {
-        // use default target org connection to get object describe if no source is provided.
-        describeObj = await srcMetadataUtil.describeObj(objname);
+        metadataUtil = new MetadataUtil(sourceOrgConn);
     }
+
+    // use default target org connection to get object describe if no source is provided.
+    describeObj = await metadataUtil.describeObj(objname);
+
     // throw error if the object doesnot exist(empty json as response from the describe call.)
     if (isEmpty(describeObj)) {
         const errMsg = messages.getMessage('sobjectnameNoResultError', [objname]);
@@ -158,11 +160,8 @@ export default class Generate extends SfdxCommand {
         let sObjectRecords;
         // query records from source
         if (!isEmpty(describeObj)) {
-            if (!sourceOrgConn) {
             sObjectRecords = await metadataUtil.queryRecords(describeObj);
-            } else {
-                sObjectRecords = await srcMetadataUtil.queryRecords(describeObj);
-            }
+
         } else {
             const errMsg = messages.getMessage('sobjectnameNoResultError', [objname]);
             throw new SfdxError(errMsg, 'sobjectnameNoResultError');
