@@ -200,7 +200,7 @@ export default class Generate extends SfdxCommand {
             // added type check here to skip the creation of geo location field  and un supported fields as we are adding it as lat and long field above.
             if ((templates.canConvert(field['type']) || !ignoreFields) && field['type'] !== 'Location') {
                     const recName = field['fullName'];
-                    const fieldXML = templates.createFieldXML(field, recName);
+                    const fieldXML = templates.createFieldXML(field, !ignoreFields);
                     const targetDir = `${outputDir}${devName}__mdt`;
                     await fileWriter.writeFieldFile(core.fs, targetDir, recName, fieldXML);
             }
