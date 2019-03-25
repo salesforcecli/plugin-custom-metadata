@@ -190,7 +190,7 @@ export default class Generate extends SfdxCommand {
         const createUtil = new CreateUtil();
         // if customMetadata folder does not exist, create it
         await core.fs.mkdirp(recordsOutputDir);
-        const security: boolean =(visibility === 'Protected');
+        const security: boolean = (visibility === 'Protected');
 
         for (const rec of sObjectRecords.records) {
             let typename = devName;

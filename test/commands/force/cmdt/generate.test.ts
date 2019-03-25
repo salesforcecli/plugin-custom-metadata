@@ -82,14 +82,6 @@ const query = function(){
         }
 };
 
-const emptyQuery = function(){ 
-    return  { 
-        totalSize: 0,
-        done: true,
-        records:[] 
-    }
-};
-
 describe('sfdx force:cmdt:generate', () => {
 
     describe('generate successful', () => {
@@ -100,7 +92,7 @@ describe('sfdx force:cmdt:generate', () => {
         .stub(Org.prototype, 'getConnection',function(){ return {metadata,query}})
         .stub(core.Connection,'create',function(){ return {metadata,query}})
         .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c', '-x', 'test@org.com'])
-        .it('T1 runs force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
+        .it('runs force:cmdt:generate -n MyCMDT -s TriggerSettings__c -x test@org.com', ctx => {
             const cmdtName = 'MyCMDT';
             expect(fs.existsSync(`force-app/main/default/objects/${cmdtName}__mdt`)).to.be.true;
             expect(fs.existsSync(`force-app/main/default/objects/${cmdtName}__mdt/fields/IsAfterDeleteDisabled__c.field-meta.xml`)).to.be.true;
@@ -119,7 +111,7 @@ describe('sfdx force:cmdt:generate', () => {
         .stub(Org.prototype, 'getConnection',function(){ return {metadata,query}})
         .stub(core.Connection,'create',function(){ return {metadata,query}})
         .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c', '-x', 'test2@org.con'])
-        .it('T2 no user found while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
+        .it('No user found while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c -x test@org.com', ctx => {
             expect(ctx.stderr ).to.contain('no user found with the provided username or alias test2@org.con');
         });
 
@@ -130,7 +122,7 @@ describe('sfdx force:cmdt:generate', () => {
         .stub(Org.prototype, 'getConnection',function(){ return {metadata,query}})
         .stub(core.Connection,'create',function(){ return {metadata,query}})
         .command(['force:cmdt:generate', '-n', 'MyCM__DT', '-s', 'TriggerSettings__c'])
-        .it('T3 no user found while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
+        .it('Not a valid metadatatype name while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
             expect(ctx.stderr ).to.contain('not a valid custom metadatatype name MyCM__DT');
         });
 
@@ -141,7 +133,7 @@ describe('sfdx force:cmdt:generate', () => {
         .stub(Org.prototype, 'getConnection',function(){ return {metadata,query}})
         .stub(core.Connection,'create',function(){ return {metadata,query}})
         .command(['force:cmdt:generate', '-n', 'MyCMDT__mdt', '-s', 'TriggerSettings__c'])
-        .it('T4 no user found while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
+        .it('force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
             expect(ctx.stderr ).to.contain('custom metadata generation in progress... custom metadata type and records creation in completed');
         });
 
@@ -152,7 +144,7 @@ describe('sfdx force:cmdt:generate', () => {
         .stub(Org.prototype, 'getConnection',function(){ return {metadata,query}})
         .stub(core.Connection,'create',function(){ return {metadata,query}})
         .command(['force:cmdt:generate', '-n', 'MyCMDT__mdt', '-s', 'Trigger__Settings__c'])
-        .it('T4 no user found while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
+        .it('Not a valid custom set while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
             expect(ctx.stderr ).to.contain('not a valid custom setting/custom object name Trigger__Settings__c');
         });
 
@@ -162,7 +154,7 @@ describe('sfdx force:cmdt:generate', () => {
         .withProject()
         .stub(Org.prototype, 'getConnection',function(){ return {metadata: emptyMetadata,query}})
         .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c'])
-        .it('T4 no user found while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
+        .it('No sobject with name while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
             expect(ctx.stderr ).to.contain('No sobject with name TriggerSettings__c found in the org.');
         });
 
@@ -172,19 +164,8 @@ describe('sfdx force:cmdt:generate', () => {
         .withProject()
         .stub(Org.prototype, 'getConnection',function(){ return {metadata: hierarchyMetadata,query}})
         .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c'])
-        .it('T4 no user found while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
+        .it('Cannot generate custom metadata for the c while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
             expect(ctx.stderr ).to.contain('Cannot generate custom metadata for the custom settings TriggerSettings__c check type & visibility.');
-        });
-
-        test
-        .withOrg({ username: 'test@org.com' }, true)
-        .stderr()
-        .withProject()
-        .stub(Org.prototype, 'getConnection',function(){ return {metadata, query : emptyQuery}})
-        .stub(core.Connection,'create',function(){ return {metadata,query : emptyQuery}})
-        .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c'])
-        .it('T9 no user found while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
-            expect(ctx.stderr ).to.contain('No records found in the source org for the');
         });
 
 })
