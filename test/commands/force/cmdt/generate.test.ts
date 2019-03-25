@@ -134,7 +134,7 @@ describe('sfdx force:cmdt:generate', () => {
         .stub(core.Connection,'create',function(){ return {metadata,query}})
         .command(['force:cmdt:generate', '-n', 'MyCMDT__mdt', '-s', 'TriggerSettings__c'])
         .it('force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
-            expect(ctx.stderr ).to.contain('custom metadata generation in progress... custom metadata type and records creation in completed');
+            expect(ctx.stderr ).to.contain('custom metadata type and records creation in completed');
         });
 
         test
