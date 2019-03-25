@@ -89,30 +89,17 @@ export default class Generate extends SfdxCommand {
             throw new SfdxError(errMsg, 'sourceuserAuthenticationError');
         }
     }
-    let typeName: string = '';
-    if (!isNullOrUndefined(cmdttype)) {
-        typeName = cmdttype;
-    } else {
-        if (!validator.validateAPIName(objname)) {
-            throw SfdxError.create('custommetadata', 'generate', 'sobjectnameFlagError', [objname]);
-        }
-        typeName = objname;
-    }
-    let devName;
-    if (!isNullOrUndefined(typeName) ) {
-        if (!validator.validateAPIName(typeName)) {
-            throw SfdxError.create('custommetadata', 'generate', 'sobjectnameFlagError', [typeName]);
-        } else if (typeName.endsWith('__c') || typeName.endsWith('__C')) {
-            devName = typeName.substring(0, typeName.indexOf('__c'));
-        } else {
-            devName = typeName;
-        }
-    } else {
+
+    if (!validator.validateAPIName(objname)) {
         throw SfdxError.create('custommetadata', 'generate', 'sobjectnameFlagError', [objname]);
     }
 
+    let devName;
     if (!validator.validateMetadataTypeName(cmdttype)) {
         throw  SfdxError.create('custommetadata', 'generate', 'typenameFlagError', [cmdttype]);
+    }
+    if ( cmdttype.endsWith('__mdt') || cmdttype.endsWith('__MDT')) {
+        devName = cmdttype.substring(0, cmdttype.indexOf('__mdt'));
     }
 
     let metadataUtil;
@@ -159,13 +146,7 @@ export default class Generate extends SfdxCommand {
 
         let sObjectRecords;
         // query records from source
-        if (!isEmpty(describeObj)) {
-            sObjectRecords = await metadataUtil.queryRecords(describeObj);
-
-        } else {
-            const errMsg = messages.getMessage('sobjectnameNoResultError', [objname]);
-            throw new SfdxError(errMsg, 'sobjectnameNoResultError');
-        }
+        sObjectRecords = await metadataUtil.queryRecords(describeObj);
 
         // check for Geo Location fields before hand and create two different fields for longitude and latitude.
         const fields = ensureJsonArray(describeAllFields);
@@ -200,26 +181,17 @@ export default class Generate extends SfdxCommand {
             // added type check here to skip the creation of geo location field  and un supported fields as we are adding it as lat and long field above.
             if ((templates.canConvert(field['type']) || !ignoreFields) && field['type'] !== 'Location') {
                     const recName = field['fullName'];
-                    const fieldXML = templates.createFieldXML(field, !ignoreFields);
+                    const fieldXML = templates.createFieldXML(field, recName);
                     const targetDir = `${outputDir}${devName}__mdt`;
                     await fileWriter.writeFieldFile(core.fs, targetDir, recName, fieldXML);
             }
         });
 
-        // create custom metadata records
-        if (!sObjectRecords.records || sObjectRecords.records.length <= 0) {
-            throw new core.SfdxError(messages.getMessage('noRecordsFoundError', [objname]));
-        }
-
         const createUtil = new CreateUtil();
         // if customMetadata folder does not exist, create it
         await core.fs.mkdirp(recordsOutputDir);
-        let security: boolean;
-        if (visibility === 'Protected') {
-            security = true;
-        } else {
-            security = false;
-        }
+        const security: boolean =(visibility === 'Protected');
+
         for (const rec of sObjectRecords.records) {
             let typename = devName;
             if (typename.endsWith('__mdt')) {

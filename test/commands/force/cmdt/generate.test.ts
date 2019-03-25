@@ -31,6 +31,17 @@ const metadata = {
                     label: 'Disabled?',
                     trackTrending: 'false',
                     type: 'Checkbox'
+                },
+                { 
+                    fullName: 'Test_Geo_location__c',
+                    displayLocationInDecimal: 'true',
+                    externalId: 'false',
+                    label: 'Test Geo location',
+                    required: 'false',
+                    scale: '10',
+                    trackHistory: 'false',
+                    trackTrending: 'false',
+                    type: 'Location' 
                 }],
             label: 'Trigger Settings',
             visibility: 'Public'
@@ -39,7 +50,25 @@ const metadata = {
     
 };
 
-const query = function(){ return  { totalSize: 2,
+const emptyMetadata = {
+    read: function () {
+        return {};
+    }
+};
+
+const hierarchyMetadata = {
+    read: function () {
+        return {
+            fullName: 'TriggerSettings__c',
+            customSettingsType: 'Hierarchy',
+            visibility: 'Public'
+        }
+    }
+    
+};
+
+const query = function(){ 
+    return  { totalSize: 2,
     done: true,
     records:
         [ { Name: 'Record1',
@@ -49,9 +78,17 @@ const query = function(){ return  { totalSize: 2,
         { Name: 'Record2',
             IsAfterDeleteDisabled__c: true,
             IsDisabled__c: false,
-            Test_Geo_location__c: {latitude: 10.34534534, longitude: 42.34534543} } ] }
-        };
+            Test_Geo_location__c: {latitude: 10.34534534, longitude: 42.34534543} } ] 
+        }
+};
 
+const emptyQuery = function(){ 
+    return  { 
+        totalSize: 0,
+        done: true,
+        records:[] 
+    }
+};
 
 describe('sfdx force:cmdt:generate', () => {
 
@@ -63,7 +100,7 @@ describe('sfdx force:cmdt:generate', () => {
         .stub(Org.prototype, 'getConnection',function(){ return {metadata,query}})
         .stub(core.Connection,'create',function(){ return {metadata,query}})
         .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c', '-x', 'test@org.com'])
-        .it('runs force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
+        .it('T1 runs force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
             const cmdtName = 'MyCMDT';
             expect(fs.existsSync(`force-app/main/default/objects/${cmdtName}__mdt`)).to.be.true;
             expect(fs.existsSync(`force-app/main/default/objects/${cmdtName}__mdt/fields/IsAfterDeleteDisabled__c.field-meta.xml`)).to.be.true;
@@ -82,8 +119,72 @@ describe('sfdx force:cmdt:generate', () => {
         .stub(Org.prototype, 'getConnection',function(){ return {metadata,query}})
         .stub(core.Connection,'create',function(){ return {metadata,query}})
         .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c', '-x', 'test2@org.con'])
-        .it('no user found while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
+        .it('T2 no user found while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
             expect(ctx.stderr ).to.contain('no user found with the provided username or alias test2@org.con');
+        });
+
+        test
+        .withOrg({ username: 'test@org.com' }, true)
+        .stderr()
+        .withProject()
+        .stub(Org.prototype, 'getConnection',function(){ return {metadata,query}})
+        .stub(core.Connection,'create',function(){ return {metadata,query}})
+        .command(['force:cmdt:generate', '-n', 'MyCM__DT', '-s', 'TriggerSettings__c'])
+        .it('T3 no user found while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
+            expect(ctx.stderr ).to.contain('not a valid custom metadatatype name MyCM__DT');
+        });
+
+        test
+        .withOrg({ username: 'test@org.com' }, true)
+        .stderr()
+        .withProject()
+        .stub(Org.prototype, 'getConnection',function(){ return {metadata,query}})
+        .stub(core.Connection,'create',function(){ return {metadata,query}})
+        .command(['force:cmdt:generate', '-n', 'MyCMDT__mdt', '-s', 'TriggerSettings__c'])
+        .it('T4 no user found while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
+            expect(ctx.stderr ).to.contain('custom metadata generation in progress... custom metadata type and records creation in completed');
+        });
+
+        test
+        .withOrg({ username: 'test@org.com' }, true)
+        .stderr()
+        .withProject()
+        .stub(Org.prototype, 'getConnection',function(){ return {metadata,query}})
+        .stub(core.Connection,'create',function(){ return {metadata,query}})
+        .command(['force:cmdt:generate', '-n', 'MyCMDT__mdt', '-s', 'Trigger__Settings__c'])
+        .it('T4 no user found while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
+            expect(ctx.stderr ).to.contain('not a valid custom setting/custom object name Trigger__Settings__c');
+        });
+
+        test
+        .withOrg({ username: 'test@org.com' }, true)
+        .stderr()
+        .withProject()
+        .stub(Org.prototype, 'getConnection',function(){ return {metadata: emptyMetadata,query}})
+        .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c'])
+        .it('T4 no user found while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
+            expect(ctx.stderr ).to.contain('No sobject with name TriggerSettings__c found in the org.');
+        });
+
+        test
+        .withOrg({ username: 'test@org.com' }, true)
+        .stderr()
+        .withProject()
+        .stub(Org.prototype, 'getConnection',function(){ return {metadata: hierarchyMetadata,query}})
+        .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c'])
+        .it('T4 no user found while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
+            expect(ctx.stderr ).to.contain('Cannot generate custom metadata for the custom settings TriggerSettings__c check type & visibility.');
+        });
+
+        test
+        .withOrg({ username: 'test@org.com' }, true)
+        .stderr()
+        .withProject()
+        .stub(Org.prototype, 'getConnection',function(){ return {metadata, query : emptyQuery}})
+        .stub(core.Connection,'create',function(){ return {metadata,query : emptyQuery}})
+        .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c'])
+        .it('T9 no user found while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
+            expect(ctx.stderr ).to.contain('No records found in the source org for the');
         });
 
 })

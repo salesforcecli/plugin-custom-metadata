@@ -16,7 +16,6 @@
     "typenameFlagError": "not a valid custom metadatatype name",
     "sobjectnameFlagError": "not a valid custom setting/custom object name",
     "sobjectnameNoResultError": "No sobject with name %s found in the org.",
-    "noRecordsFoundError": "No records found in the source org for the %s object",
     "sourceusernameError": "no user found with the provided username or alias",
     "sourceuserAuthenticationError": "Issue with authenticating to source org with sourceusername provide: %s MoreInfo: %s.",
     "generateError": "Fialed to generate custom metadata. reason: %s.",
