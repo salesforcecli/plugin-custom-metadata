@@ -98,8 +98,11 @@ export default class Generate extends SfdxCommand {
     if (!validator.validateMetadataTypeName(cmdttype)) {
         throw  SfdxError.create('custommetadata', 'generate', 'typenameFlagError', [cmdttype]);
     }
+
     if ( cmdttype.endsWith('__mdt') || cmdttype.endsWith('__MDT')) {
         devName = cmdttype.substring(0, cmdttype.indexOf('__mdt'));
+    } else {
+        devName = cmdttype;
     }
 
     let metadataUtil;
