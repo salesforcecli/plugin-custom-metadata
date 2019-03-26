@@ -180,30 +180,30 @@ export default class Generate extends SfdxCommand {
         });
 
         // create custom metdata fields
-        await fields.map(async field => {
+        for (const field of fields) {
             // added type check here to skip the creation of geo location field  and un supported fields as we are adding it as lat and long field above.
             if ((templates.canConvert(field['type']) || !ignoreFields) && field['type'] !== 'Location') {
-                    const recName = field['fullName'];
-                    const fieldXML = templates.createFieldXML(field, !ignoreFields);
-                    const targetDir = `${outputDir}${devName}__mdt`;
-                    await fileWriter.writeFieldFile(core.fs, targetDir, recName, fieldXML);
+                const recName = field['fullName'];
+                const fieldXML = templates.createFieldXML(field, !ignoreFields);
+                const targetDir = `${outputDir}${devName}__mdt`;
+                await fileWriter.writeFieldFile(core.fs, targetDir, recName, fieldXML);
             }
-        });
+        }
 
         const createUtil = new CreateUtil();
         // if customMetadata folder does not exist, create it
         await core.fs.mkdirp(recordsOutputDir);
         const security: boolean = (visibility === 'Protected');
 
-        for (const rec of sObjectRecords.records) {
-            let typename = devName;
-            if (typename.endsWith('__mdt')) {
-                typename = typename.substring(0, typename.indexOf('__mdt'));
-            }
+        let typename = devName;
+        if (typename.endsWith('__mdt')) {
+            typename = typename.substring(0, typename.indexOf('__mdt'));
+        }
+        const fieldDirPath = `${fileWriter.createDir(outputDir)}${typename}__mdt/fields`;
+        const fileNames = await core.fs.readdir(fieldDirPath);
+        const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
 
-            const fieldDirPath = `${fileWriter.createDir(outputDir)}${typename}__mdt/fields`;
-            const fileNames = await core.fs.readdir(fieldDirPath);
-            const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
+        for (const rec of sObjectRecords.records) {
             const record = metadataUtil.cleanQueryResponse(rec);
             const lblName = rec['Name'];
             let recordName = rec['Name'];
