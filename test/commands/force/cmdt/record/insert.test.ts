@@ -30,7 +30,7 @@ describe('sfdx force:cmdt:record:insert', async () => {
     ])
     .it('runs force:cmdt:record:insert', ctx => {
       const fieldDirPath = 'csv-upload/metadata';
-      const filePath = 'metadata/Snapple.Australia.md-meta.xml';
+      const filePath = 'csv-upload/metadata/Snapple.Australia.md-meta.xml';
       const uxMessage = 'Created custom metadata type records from \'csv-upload/countries.csv\' at \'csv-upload/metadata\'.\n';
 
       expect(fs.existsSync(fieldDirPath)).to.be.true;
