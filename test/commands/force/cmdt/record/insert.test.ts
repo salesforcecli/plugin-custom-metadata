@@ -31,7 +31,7 @@ describe('sfdx force:cmdt:record:insert', async () => {
     .it('runs force:cmdt:record:insert', ctx => {
       const fieldDirPath = 'csv-upload/metadata';
       const filePath = 'metadata/Snapple.Australia.md-meta.xml';
-      const uxMessage = 'target dir = csv-upload/Snapple__mdt/\n   update Snapple__mdt.object-meta.xml\ntarget dir = csv-upload/Snapple__mdt/fields/\n   update CountryCode__c.field-meta.xml\ntarget dir = csv-upload/Snapple__mdt/fields/\n   update CountryName__c.field-meta.xml\nCreated custom metadata type records from \'csv-upload/countries.csv\' at \'csv-upload/metadata\'.\n';
+      const uxMessage = 'Created custom metadata type records from \'csv-upload/countries.csv\' at \'csv-upload/metadata\'.\n';
 
       expect(fs.existsSync(fieldDirPath)).to.be.true;
       expect(fs.existsSync(filePath)).to.be.true;
