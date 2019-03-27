@@ -127,6 +127,24 @@ export class CreateUtil {
       }
     }
   }
+  /**
+   * Goes through the file data that has been genreated and gets all of the field names and adds the
+   * name of the field that is used as the label for metadata record
+   *
+   * @param  fileData Array of objects based on metadata type xml
+   * @param  nameField name of the column that is going to be used for the name of the metadata record
+   * @return [] Array of field names
+   */
+  public getFieldNames(fileData, nameField) {
+    const metadataTypeFields = [];
+    for (const file of fileData) {
+      const fullName: string = file.CustomField.fullName[0];
+      metadataTypeFields.push(fullName);
+    }
+    metadataTypeFields.push(nameField);
+
+    return metadataTypeFields;
+  }
 
   /**
    * Takes JSON representation of CLI varargs and converts them to xml with help
@@ -148,9 +166,9 @@ export class CreateUtil {
       if (templates.canConvert(dataType)) {
         ret += this.getFieldTemplate(fieldName, cliParams[fieldName], type);
       } else {
-          if (!ignoreFields) {
-            ret += this.getFieldTemplate(fieldName, cliParams[fieldName], type);
-          }
+        if (!ignoreFields) {
+          ret += this.getFieldTemplate(fieldName, cliParams[fieldName], type);
+        }
       }
     }
 

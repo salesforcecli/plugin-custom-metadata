@@ -11,7 +11,7 @@ describe('sfdx force:cmdt:record:insert', async () => {
   if (!fs.existsSync(fileDir)) {
   fs.mkdirSync(fileDir);
   }
-  await fs.writeFile('csv-upload/countries.csv','Label,CountryCode__c,CountryName__c\nAustralia,AU,Australia\n',null,function(){});
+  await fs.writeFile('csv-upload/countries.csv','Name,CountryCode__c,CountryName__c\nAustralia,AU,Australia\n',null,function(){});
 
   test
     .withOrg({ username: 'test@org.com' }, true)
@@ -39,6 +39,37 @@ describe('sfdx force:cmdt:record:insert', async () => {
 
 
       exec(`rm -rf ${fileDir}`);
+    });
+
+
+  const secondTest = 'badCSV';
+  if (!fs.existsSync(secondTest)) {
+  fs.mkdirSync(secondTest);
+  }
+  await fs.writeFile('badCSV/countries.csv','Label,CountryCode__c,CountryName__c\nAustralia,AU,Australia\n',null,function(){});
+
+  test
+    .withOrg({ username: 'test@org.com' }, true)
+    .stderr()
+    .withProject()
+
+    .command(['force:cmdt:create', '--typename', 'Snapple', '--outputdir', 'badCSV'])
+    .command(['force:cmdt:field:create', '--fieldname', 'CountryCode', '--fieldtype', 'Text','--outputdir', 'badCSV/Snapple__mdt'])
+    .command([
+      'force:cmdt:record:insert',
+      '--filepath', 'badCSV/countries.csv',
+      '--typename', 'Snapple__mdt',
+      '--inputdir','badCSV',
+      '--outputdir','badCSV/metadata',
+      '--namecolumn','Label'
+    ])
+    .it('fails force:cmdt:record:insert', ctx => {
+      const uxMessage = 'The column CountryName__c is not found on the custom metadata type Snapple';
+
+      expect(ctx.stderr).to.contain(uxMessage);
+
+
+      exec(`rm -rf ${secondTest}`);
     });
 
     
