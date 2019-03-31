@@ -1,6 +1,6 @@
 import { core } from '@salesforce/command';
 import { AnyJson, toAnyJson } from '@salesforce/ts-types';
-import { ErrorMessage } from '../interfaces/ErrorMessage';
+import { ErrorMessage } from '../interfaces/errorMessage';
 
 export class MetadataUtil {
 
