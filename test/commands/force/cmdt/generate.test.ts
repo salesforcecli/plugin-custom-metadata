@@ -82,6 +82,13 @@ const query = function(){
         }
 };
 
+const errorQuery = function(){ 
+    return  {  
+        name: 'ERROR_NAME',
+        message: 'Failed due to an error.', 
+        stack: 'ERROR_NAME: Failed due to an error' };
+};
+
 describe('sfdx force:cmdt:generate', () => {
 
     describe('generate successful', () => {
@@ -166,6 +173,17 @@ describe('sfdx force:cmdt:generate', () => {
         .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c'])
         .it('Cannot generate custom metadata for the c while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
             expect(ctx.stderr ).to.contain('Cannot generate custom metadata for the custom settings TriggerSettings__c check type & visibility.');
+        });
+
+        test
+        .withOrg({ username: 'test@org.com' }, true)
+        .stderr()
+        .withProject()
+        .stub(Org.prototype, 'getConnection',function(){ return {metadata,query: errorQuery}})
+        .stub(core.Connection,'create',function(){ return {metadata,query: errorQuery}})
+        .command(['force:cmdt:generate', '-n', 'MyCMDT__mdt', '-s', 'TriggerSettings__c'])
+        .it('force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
+            expect(ctx.stderr ).to.contain('Fialed to generate custom metadata. reason: sObjectRecords.records is not iterable.');
         });
 
 })

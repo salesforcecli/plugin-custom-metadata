@@ -17,7 +17,10 @@ export class MetadataUtil {
     public async describeObj(objName: string): Promise<AnyJson> {
       const result = await this.conn.metadata.read('CustomObject', objName, (err, meta) => {
         if (err) {
-          return err;
+          const errorResponse: ErrorMessage = {errorCode: '', errorMessage: ''};
+          errorResponse.errorCode = err.name;
+          errorResponse.errorMessage = err.message;
+          return errorResponse;
         }
         return meta;
       });
@@ -34,10 +37,10 @@ export class MetadataUtil {
     public async queryObject(soqlStr: string): Promise<AnyJson> {
       const result = await this.conn.query(soqlStr, {}, (err, meta) => {
         if (err) {
-          let errorResponse: ErrorMessage = {errorCode: '', errorMessage: ''};
+          const errorResponse: ErrorMessage = {errorCode: '', errorMessage: ''};
           errorResponse.errorCode = err.name;
           errorResponse.errorMessage = err.message;
-          return err;
+          return errorResponse;
         }
 
         return meta;

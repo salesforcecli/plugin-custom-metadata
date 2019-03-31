@@ -1,7 +1,7 @@
 import { core, flags, SfdxCommand } from '@salesforce/command';
 import { Aliases, SfdxError } from '@salesforce/core';
 import { isEmpty } from '@salesforce/kit';
-import { AnyJson, ensureJsonArray, asString } from '@salesforce/ts-types';
+import { AnyJson, asString, ensureJsonArray } from '@salesforce/ts-types';
 import { isNullOrUndefined } from 'util';
 import { CreateUtil } from '../../../lib/helpers/createUtil';
 import { FileWriter } from '../../../lib/helpers/fileWriter';
@@ -151,7 +151,7 @@ export default class Generate extends SfdxCommand {
         // query records from source
         sObjectRecords = await metadataUtil.queryRecords(describeObj);
         if (sObjectRecords.errorCode && sObjectRecords.errorCode !== null) {
-            const errMsg = messages.getMessage('queryError', [objname,asString(sObjectRecords.errorMsg)]);
+            const errMsg = messages.getMessage('queryError', [objname, asString(sObjectRecords.errorMsg)]);
             throw new SfdxError (errMsg, 'queryError');
         }
 
