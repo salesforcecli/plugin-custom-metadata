@@ -106,7 +106,6 @@ describe('metadataUtil', () => {
             const metadataUtil = new MetadataUtil(conn);
 
             const objDescribe = await metadataUtil.describeObj('TriggerSettings__c');
-            const queryRes = await metadataUtil.queryRecords(objDescribe);
             const queryObject = await metadataUtil.queryObject('SELECT IsAfterDeleteDisabled__c, IsDisabled__c, Test_Geo_location__c FROM TriggerSettings__c');
             deepStrictEqual(objDescribe, readResponse);
             deepStrictEqual(queryObject['name'], queryResponse['name']);
