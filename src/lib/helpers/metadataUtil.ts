@@ -1,5 +1,6 @@
 import { core } from '@salesforce/command';
 import { AnyJson, toAnyJson } from '@salesforce/ts-types';
+import { ErrorMessage } from '../interfaces/ErrorMessage';
 
 export class MetadataUtil {
 
@@ -33,6 +34,9 @@ export class MetadataUtil {
     public async queryObject(soqlStr: string): Promise<AnyJson> {
       const result = await this.conn.query(soqlStr, {}, (err, meta) => {
         if (err) {
+          let errorResponse: ErrorMessage = {errorCode: '', errorMessage: ''};
+          errorResponse.errorCode = err.name;
+          errorResponse.errorMessage = err.message;
           return err;
         }
 
@@ -99,14 +103,21 @@ export class MetadataUtil {
       return false;
     }
 
-    public cleanQueryResponse(sObjecRecord: AnyJson) {
+    public cleanQueryResponse(sObjecRecord: AnyJson, objectDescribe: AnyJson) {
       const record: AnyJson = {};
       Object.keys(sObjecRecord).forEach(fieldName => {
           if (fieldName !== 'attributes' && fieldName !== 'Name') {
+            const fieldDescribe = this.describeField(objectDescribe, fieldName);
+            const fieldType = fieldDescribe['type'];
             const fieldValue = JSON.stringify(sObjecRecord[fieldName]);
-            if (fieldValue.includes('latitude') || fieldValue.includes('longitude')) {
-              record['Lat_' + fieldName] = fieldValue.slice(fieldValue.indexOf(':') + 1, fieldValue.indexOf(','));
-              record['Long_' + fieldName] = fieldValue.slice(fieldValue.lastIndexOf(':') + 1, fieldValue.indexOf('}'));
+            if (fieldType === 'Location') {
+              if (fieldValue.includes('latitude') || fieldValue.includes('longitude')) {
+                record['Lat_' + fieldName] = fieldValue.slice(fieldValue.indexOf(':') + 1, fieldValue.indexOf(','));
+                record['Long_' + fieldName] = fieldValue.slice(fieldValue.lastIndexOf(':') + 1, fieldValue.indexOf('}'));
+              } else {
+                record['Lat_' + fieldName] = '';
+                record['Long_' + fieldName] = '';
+              }
             } else {
               record[fieldName] = sObjecRecord[fieldName];
             }

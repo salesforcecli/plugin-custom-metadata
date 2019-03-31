@@ -1,7 +1,7 @@
 import { core, flags, SfdxCommand } from '@salesforce/command';
 import { Aliases, SfdxError } from '@salesforce/core';
 import { isEmpty } from '@salesforce/kit';
-import { AnyJson, ensureJsonArray } from '@salesforce/ts-types';
+import { AnyJson, ensureJsonArray, asString } from '@salesforce/ts-types';
 import { isNullOrUndefined } from 'util';
 import { CreateUtil } from '../../../lib/helpers/createUtil';
 import { FileWriter } from '../../../lib/helpers/fileWriter';
@@ -150,6 +150,10 @@ export default class Generate extends SfdxCommand {
         let sObjectRecords;
         // query records from source
         sObjectRecords = await metadataUtil.queryRecords(describeObj);
+        if (sObjectRecords.errorCode && sObjectRecords.errorCode !== null) {
+            const errMsg = messages.getMessage('queryError', [objname,asString(sObjectRecords.errorMsg)]);
+            throw new SfdxError (errMsg, 'queryError');
+        }
 
         // check for Geo Location fields before hand and create two different fields for longitude and latitude.
         const fields = ensureJsonArray(describeAllFields);
@@ -204,7 +208,7 @@ export default class Generate extends SfdxCommand {
         const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
 
         for (const rec of sObjectRecords.records) {
-            const record = metadataUtil.cleanQueryResponse(rec);
+            const record = metadataUtil.cleanQueryResponse(rec, describeObj);
             const lblName = rec['Name'];
             let recordName = rec['Name'];
             if (!validator.validateMetadataRecordName(rec['Name'])) {
