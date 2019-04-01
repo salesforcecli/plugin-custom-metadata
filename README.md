@@ -15,22 +15,8 @@ Tools for working with custom metadata types and their records.
 <!-- toc -->
 * [Debugging your plugin](#debugging-your-plugin)
 <!-- tocstop -->
-* [Debugging your plugin](#debugging-your-plugin)
-<!-- tocstop -->
 <!-- install -->
 <!-- usage -->
-```sh-session
-$ npm install -g custommetadata
-$ custommetadata COMMAND
-running command...
-$ custommetadata (-v|--version|version)
-custommetadata/0.0.0 win32-x64 node-v10.14.2
-$ custommetadata --help [COMMAND]
-USAGE
-  $ custommetadata COMMAND
-...
-```
-<!-- usagestop -->
 ```sh-session
 $ npm install -g custommetadata
 $ custommetadata COMMAND
