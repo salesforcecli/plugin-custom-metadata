@@ -15,8 +15,22 @@ Tools for working with custom metadata types and their records.
 <!-- toc -->
 * [Debugging your plugin](#debugging-your-plugin)
 <!-- tocstop -->
+* [Debugging your plugin](#debugging-your-plugin)
+<!-- tocstop -->
 <!-- install -->
 <!-- usage -->
+```sh-session
+$ npm install -g custommetadata
+$ custommetadata COMMAND
+running command...
+$ custommetadata (-v|--version|version)
+custommetadata/0.0.0 win32-x64 node-v10.14.2
+$ custommetadata --help [COMMAND]
+USAGE
+  $ custommetadata COMMAND
+...
+```
+<!-- usagestop -->
 ```sh-session
 $ npm install -g custommetadata
 $ custommetadata COMMAND
@@ -31,6 +45,211 @@ USAGE
 <!-- usagestop -->
 
 <!-- commands -->
+* [`custommetadata force:cmdt:create [FILE]`](#custommetadata-forcecmdtcreate-file)
+* [`custommetadata force:cmdt:field:create [FILE]`](#custommetadata-forcecmdtfieldcreate-file)
+* [`custommetadata force:cmdt:generate [FILE]`](#custommetadata-forcecmdtgenerate-file)
+* [`custommetadata force:cmdt:record:create`](#custommetadata-forcecmdtrecordcreate)
+* [`custommetadata force:cmdt:record:insert`](#custommetadata-forcecmdtrecordinsert)
+
+## `custommetadata force:cmdt:create [FILE]`
+
+Creates a new custom metadata type in the current project
+
+```
+USAGE
+  $ custommetadata force:cmdt:create [FILE]
+
+OPTIONS
+  -d, --outputdir=outputdir                       The directory to store the newly created files. The location can be an
+                                                  absolute path or relative to the current working directory. The
+                                                  default is the current directory.
+
+  -l, --label=label                               Label for the custom metadata type
+
+  -n, --typename=typename                         (required) Object Name for the custom metadata type
+
+  -p, --plurallabel=plurallabel                   Plural label for the custom metadata type. If blank, uses label
+
+  -v, --visibility=(Protected|Public)             Visibility for the type. Valid values are 'Public' and 'Protected'. If
+                                                  blank, uses Public
+
+  --json                                          format output as json
+
+  --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
+
+EXAMPLES
+    $ sfdx force:cmdt:create --typename MyCustomType
+    $ sfdx force:cmdt:create --typename MyCustomType --label "Custom Type" --plurallabel "Custom Types" --visibility 
+  Public
+```
+
+_See code: [src\commands\force\cmdt\create.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src\commands\force\cmdt\create.ts)_
+
+## `custommetadata force:cmdt:field:create [FILE]`
+
+generates a custom metadata field based on the field type provided
+
+```
+USAGE
+  $ custommetadata force:cmdt:field:create [FILE]
+
+OPTIONS
+  -d, --outputdir=outputdir
+      The directory to store the newly created files. The location can be an absolute path or relative to the current 
+      working directory. The default is the current directory.
+
+  -f, --fieldtype=(Checkbox|Date|DateTime|Email|Number|Percent|Phone|Picklist|Text|TextArea|LongTextArea|Url)
+      (required) The type of field.
+
+  -l, --label=label
+      Label for the new field
+
+  -n, --fieldname=fieldname
+      (required) Name for the field
+
+  -p, --picklistvalues=picklistvalues
+      List of picklist values that are added when creating a picklist
+
+  -s, --decimalplaces=decimalplaces
+      Number of decimal places
+
+  --json
+      format output as json
+
+  --loglevel=(trace|debug|info|warn|error|fatal)
+      logging level for this command invocation
+
+EXAMPLES
+  $ sfdx force:cmdt:field:create --fieldname MyField --fieldtype Checkbox
+  $ sfdx force:cmdt:field:create --fieldname MyField --fieldtype Picklist --picklistvalues "A,B,C"
+```
+
+_See code: [src\commands\force\cmdt\field\create.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src\commands\force\cmdt\field\create.ts)_
+
+## `custommetadata force:cmdt:generate [FILE]`
+
+generates a custom metadata type and all its records for the provided sobject
+
+```
+USAGE
+  $ custommetadata force:cmdt:generate [FILE]
+
+OPTIONS
+  -d, --typeoutputdir=typeoutputdir        Specify the directory where the custom metadata will be created (default is
+                                           'force-app/main/default/objects')
+
+  -i, --ignoreunsupported                  Flag to ignore non-supported field types (these fields will not be created).
+                                           Default is to create text fields and convert source to text.
+
+  -l, --label=label                        Label for the custom metadata type
+
+  -l, --loglevel=loglevel                  logging level for this command invocation
+
+  -n, --devname=devname                    (required) The name of the new custom metadata type.
+
+  -p, --plurallabel=plurallabel            Plural label for the custom metadata type. If blank, uses label
+
+  -r, --recordsoutputdir=recordsoutputdir  Specify the directory where the custom metadata will be created (default is
+                                           'force-app/main/default/customMetadata')
+
+  -s, --sobjectname=sobjectname            (required) The API Name of the sObject you are generating to Custommetadata
+
+  -u, --targetusername=targetusername      username or alias for the target org; overrides default target org
+
+  -v, --visibility=(Protected|Public)      Visibility for the type. Valid values are 'Public' and 'Protected'. If blank,
+                                           uses 'Public'
+
+  -x, --sourceusername=sourceusername      username or alias for the source org that contains the Custom Setting or
+                                           SObject and data to be generateed
+
+  --apiversion=apiversion                  override the api version used for api requests made by this command
+
+  --json                                   format output as json
+
+EXAMPLES
+  "$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c 
+  "$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c  --ignoreunsupported --sourceusername 
+  'alias or the email of the source org'
+  "$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomObject__c  --visibility Protected
+  "$ sfdx force:cmdt:generate --devname MyCMDT --label 'My CMDT' --plurallabel 'My CMDTs' --sobjectname 
+  SourceCustomSetting__c  --visibility Protected
+  "$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c  --typeoutputdir 'your desired Path 
+  for custom metadata'
+  "$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c  --recordsoutputdir 'your desired 
+  Path for custom metadata Records'
+```
+
+_See code: [src\commands\force\cmdt\generate.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src\commands\force\cmdt\generate.ts)_
+
+## `custommetadata force:cmdt:record:create`
+
+creates a new record for a given custom metadata type in the current project
+
+```
+USAGE
+  $ custommetadata force:cmdt:record:create
+
+OPTIONS
+  -d, --outputdir=outputdir                       Specify the directory where the file will be created (default is
+                                                  'force-app/main/default/customMetadata')
+
+  -l, --label=label                               Label for the new record
+
+  -n, --inputdir=inputdir                         Specify the directory where the custom metadata type definition will
+                                                  be pulled from (default is 'force-app/main/default/objects')
+
+  -p, --protection=protection                     Visibility for the record. Valid values are 'true' and 'false'.  If
+                                                  blank, uses false.
+
+  -r, --recname=recname                           RecordName for the new record
+
+  -t, --typename=typename                         API Name of the custom metadata type to create a record for
+
+  --json                                          format output as json
+
+  --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
+
+EXAMPLES
+  $ sfdx force:cmdt:create --typename MyCMT__mdt --recname MyRecord My_Custom_Field_1=Foo My_Custom_Field_2=Bar
+  $ sfdx force:cmdt:create --typename MyCMT__mdt --recname MyRecord --label "My Record" --protected true 
+  My_Custom_Field_1=Foo My_Custom_Field_2=Bar
+```
+
+_See code: [src\commands\force\cmdt\record\create.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src\commands\force\cmdt\record\create.ts)_
+
+## `custommetadata force:cmdt:record:insert`
+
+creates new custom Metadata type records from a CSV
+
+```
+USAGE
+  $ custommetadata force:cmdt:record:insert
+
+OPTIONS
+  -d, --outputdir=outputdir                       Specify the directory where the file will be created (default is
+                                                  'force-app/main/default/customMetadata')
+
+  -f, --filepath=filepath                         (required) Path to the CSV file
+
+  -l, --namecolumn=namecolumn                     Column that is used to determine the name of the record. Defaults to
+                                                  Name
+
+  -n, --inputdir=inputdir                         Specify the directory where the custom metadata type definition will
+                                                  be pulled from (default is 'force-app/main/default/objects')
+
+  -t, --typename=typename                         (required) API Name of the custom metadata type
+
+  --json                                          format output as json
+
+  --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
+
+EXAMPLES
+  $ sfdx force:cmdt:record:insert -f path/to/my.csv -t My_CMDT_Name
+  $ sfdx force:cmdt:record:insert -f path/to/my.csv -t My_CMDT_Name -n path/to/my/cmdtDirectory
+```
+
+_See code: [src\commands\force\cmdt\record\insert.ts](https://github.com/cgrabill/sfdx-custommetadata/blob/v0.0.0/src\commands\force\cmdt\record\insert.ts)_
+<!-- commandsstop -->
 * [`custommetadata force:cmdt:create [FILE]`](#custommetadata-forcecmdtcreate-file)
 * [`custommetadata force:cmdt:field:create [FILE]`](#custommetadata-forcecmdtfieldcreate-file)
 * [`custommetadata force:cmdt:generate [FILE]`](#custommetadata-forcecmdtgenerate-file)
