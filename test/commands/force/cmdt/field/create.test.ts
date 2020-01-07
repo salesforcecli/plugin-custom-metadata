@@ -60,4 +60,21 @@ describe('sfdx force:cmdt:field:create' , () => {
     exec(`rm -rf picklistField`);
   })
 
+  test
+  .withOrg({ username: 'test@org.com' }, true)
+  .stderr()
+  .withProject()
+  .command(['force:cmdt:field:create', '--fieldname', 'money','--fieldtype','Currency'])
+  .it('fails running force:cmdt:field:create --fieldname money --fieldtype Currency', ctx => {
+    expect(ctx.stderr).to.contain('Expected --fieldtype=Currency to be one of: Checkbox, Date, DateTime, Email, Number, Percent, Phone, Picklist, Text, TextArea, LongTextArea, Url');
+  })  
+
+  test
+  .withOrg({ username: 'test@org.com' }, true)
+  .stderr()
+  .withProject()
+  .command(['force:cmdt:field:create', '--fieldname', 'myField','--fieldtype','Number', '--decimalplaces', '-2'])
+  .it('fails running force:cmdt:field:create --fieldname myField --fieldtype Number --decimalplaces -2', ctx => {
+    expect(ctx.stderr).to.contain('Decimal places must be greater than or equal to zero.');
+  })
 })

@@ -3,7 +3,7 @@
     "nameFlagDescription": "Object Name for the custom metadata type",
     "labelFlagDescription": "Label for the custom metadata type",
     "plurallabelFlagDescription": "Plural label for the custom metadata type. If blank, uses label",
-    "visibilityFlagDescription": "Visibility for the type. Valid values are 'Public' and 'Protected'. If blank, uses Public",
+    "visibilityFlagDescription": "Visibility for the type. Valid values are 'Public', 'Protected', and 'PackageProtected'. If blank, uses Public",
     "outputDirectoryFlagDescription":"The directory to store the newly created files. The location can be an absolute path or relative to the current working directory. The default is the current directory.",
     "successResponse" : "Created custom metadata type with object name '%s', label '%s', plural label '%s', and visibility '%s' at '%s'.",
     "errorNoOrgResults": "No results found for the organization '%s'.",

@@ -106,7 +106,6 @@ describe('sfdx force:cmdt:generate', () => {
             expect(fs.existsSync(`force-app/main/default/customMetadata/${cmdtName}.Record1.md-meta.xml`)).to.be.true;
             expect(fs.existsSync(`force-app/main/default/customMetadata/${cmdtName}.Record2.md-meta.xml`)).to.be.true;
             exec(`rm -rf force-app`);
-            
         });
         
     });
@@ -129,8 +128,8 @@ describe('sfdx force:cmdt:generate', () => {
         .stub(Org.prototype, 'getConnection',function(){ return {metadata,query}})
         .stub(core.Connection,'create',function(){ return {metadata,query}})
         .command(['force:cmdt:generate', '-n', 'MyCM__DT', '-s', 'TriggerSettings__c'])
-        .it('Not a valid metadatatype name while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
-            expect(ctx.stderr ).to.contain('not a valid custom metadatatype name MyCM__DT');
+        .it('Not a valid metadata type name while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
+            expect(ctx.stderr ).to.contain('not a valid custom metadata type name MyCM__DT');
         });
 
         test
@@ -183,7 +182,7 @@ describe('sfdx force:cmdt:generate', () => {
         .stub(core.Connection,'create',function(){ return {metadata,query: errorQuery}})
         .command(['force:cmdt:generate', '-n', 'MyCMDT__mdt', '-s', 'TriggerSettings__c'])
         .it('force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
-            expect(ctx.stderr ).to.contain('Fialed to generate custom metadata. reason: sObjectRecords.records is not iterable.');
+            expect(ctx.stderr ).to.contain('Failed to generate custom metadata. reason: sObjectRecords.records is not iterable.');
         });
 
 })

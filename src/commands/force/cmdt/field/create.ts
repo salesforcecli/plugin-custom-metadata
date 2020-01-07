@@ -54,6 +54,9 @@ export default class Create extends SfdxCommand {
         if (fieldtype === 'Picklist' && picklistvalues.length === 0) {
             throw new core.SfdxError(messages.getMessage('picklistValuesNotSuppliedError'));
         }
+        if (decimalplaces < 0) {
+            throw new core.SfdxError(messages.getMessage('invalidDecimalError'));
+        }
         const templates = new Templates();
         const data = templates.createDefaultTypeStructure(fieldName, fieldtype, label, picklistvalues, decimalplaces);
         const fieldXML = templates.createFieldXML(data, false);

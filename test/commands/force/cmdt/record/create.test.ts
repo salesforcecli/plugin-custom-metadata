@@ -132,14 +132,6 @@ describe('sfdx force:cmdt:record:create', () => {
       expect(fs.existsSync(filePath)).to.be.true;
       expect(ctx.stdout).to.contain(uxMessage);
 
-      // fs.readFile(`createWithLongFlags/Long_Flags_Create_Test__mdt/fields/Check__c.field-meta.xml`, { encoding: 'utf-8' }, function (err, xml) {
-      //   expect(xml.includes(`<fullName>Check__c</fullName>`)).to.be.true;
-      //   expect(xml.includes(`<fieldManageability>DeveloperControlled</fieldManageability>`)).to.be.true;
-      //   expect(xml.includes(`<label>Check__c</label>`)).to.be.true;
-      //   expect(xml.includes(`<type>Checkbox</type>`)).to.be.true;
-      //   expect(xml.includes(`<defaultValue>false</defaultValue>`)).to.be.true;
-      // });
-
       exec(`rm -rf ${fieldDirPath}`);
     });
 

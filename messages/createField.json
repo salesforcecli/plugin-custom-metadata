@@ -8,6 +8,7 @@
     "invalidCustomFieldError": "%s is an invalid field. Custom fields can only contain alphanumeric characters, must begin with a letter, cannot end with an underscore or contain two consecutive underscore characters.",
     "picklistValuesNotSuppliedError":"Picklist values are required when type is Picklist",
     "decimalplacesDescription": "Number of decimal places",
+    "invalidDecimalError": "%s is an invalid number. Decimal places must be greater than or equal to zero.",
     "targetDirectory" : "target dir = %s",
     "fileCreated": "   create %s",
     "fileUpdate":"   update %s"

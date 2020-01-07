@@ -200,9 +200,7 @@ export default class Generate extends SfdxCommand {
         const security: boolean = (visibility === 'Protected');
 
         let typename = devName;
-        if (typename.endsWith('__mdt')) {
-            typename = typename.substring(0, typename.indexOf('__mdt'));
-        }
+        
         const fieldDirPath = `${fileWriter.createDir(outputDir)}${typename}__mdt/fields`;
         const fileNames = await core.fs.readdir(fieldDirPath);
         const fileData = await createUtil.getFileData(fieldDirPath, fileNames);

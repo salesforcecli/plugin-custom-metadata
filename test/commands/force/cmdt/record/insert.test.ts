@@ -72,5 +72,44 @@ describe('sfdx force:cmdt:record:insert', async () => {
       exec(`rm -rf ${secondTest}`);
     });
 
-    
+  test
+    .withOrg({ username: 'test@org.com' }, true)
+    .stderr()
+    .withProject()
+
+    .command([
+      'force:cmdt:record:insert',
+      '--filepath', 'csv-upload/countries.csv',
+      '--typename', 'Snape__mdt',
+      '--inputdir','csv-upload',
+      '--outputdir','csv-upload/metadata'
+    ])
+    .it('fails force:cmdt:record:insert', ctx => {
+      const uxMessage = 'no such file or directory, scandir \'csv-upload/Snape__mdt/fields\'';
+
+      expect(ctx.stderr).to.contain(uxMessage);
+
+      exec(`rm -rf ${secondTest}`);
+    });
+
+  test
+    .withOrg({ username: 'test@org.com' }, true)
+    .stderr()
+    .withProject()
+
+    .command([
+      'force:cmdt:record:insert',
+      '--filepath', 'badCSV/badcountries.csv',
+      '--typename', 'Snapple__mdt',
+      '--inputdir','badCSV',
+      '--outputdir','badCSV/metadata',
+      '--namecolumn','Label'
+    ])
+    .it('fails force:cmdt:record:insert', ctx => {
+      const uxMessage = 'no such file or directory, scandir \'badCSV/Snapple__mdt/fields\'';
+
+      expect(ctx.stderr).to.contain(uxMessage);
+
+      exec(`rm -rf ${secondTest}`);
+    });
 });
