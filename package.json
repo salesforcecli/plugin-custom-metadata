@@ -2,8 +2,10 @@
   "name": "custommetadata",
   "description": "Tools for working with custom metadata types and their records.",
   "version": "0.0.0",
-  "author": "Carolyn",
-  "bugs": "https://git.soma.salesforce.com/cgrabill/sfdx-custommetadata/issues",
+  "contributors": [
+    { "name": "Carolyn Grabill", "url" : "https://www.salesforce.com/" }
+  ],
+  "bugs": "https://github.com/forcedotcom/sfdx-custommetadata/issues",
   "dependencies": {
     "@oclif/command": "1",
     "@oclif/config": "1",
@@ -42,7 +44,7 @@
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://git.soma.salesforce.com/cgrabill/sfdx-custommetadata",
+  "homepage": "https://github.com/forcedotcom/sfdx-custommetadata",
   "keywords": [
     "sfdx-plugin"
   ],
@@ -58,7 +60,7 @@
       "@oclif/plugin-help"
     ]
   },
-  "repository": "cgrabill/sfdx-custommetadata",
+  "repository": "github:forcedotcom/sfdx-custommetadata",
   "scripts": {
     "postpack": "rm -f oclif.manifest.json npm-shrinkwrap.json",
     "posttest": "tsc -p test --noEmit && tslint -p test -t stylish",
