@@ -36,7 +36,7 @@ export default class Generate extends SfdxCommand {
     devname: flags.string({char: 'n', required: true, description: messages.getMessage('devnameFlagDescription')}),
     label: flags.string({char: 'l', description: messages.getMessage('labelFlagDescription')}),
     plurallabel: flags.string({char: 'p', description: messages.getMessage('plurallabelFlagDescription')}),
-    visibility: flags.enum({char: 'v', description: messages.getMessage('visibilityFlagDescription'),  options: ['Protected', 'Public']}),
+    visibility: flags.enum({char: 'v', description: messages.getMessage('visibilityFlagDescription'),  options: ['PackageProtected', 'Protected', 'Public']}),
     sobjectname: flags.string({char: 's', required: true, description: messages.getMessage('sobjectnameFlagDescription')}),
     sourceusername: flags.string({char: 'x', description: messages.getMessage('sourceusernameFlagDescription')}),
     ignoreunsupported: flags.boolean({char: 'i', description: messages.getMessage('ignoreUnsupportedFlagDescription')}),
@@ -199,8 +199,8 @@ export default class Generate extends SfdxCommand {
         await core.fs.mkdirp(recordsOutputDir);
         const security: boolean = (visibility === 'Protected');
 
-        let typename = devName;
-        
+        const typename = devName;
+
         const fieldDirPath = `${fileWriter.createDir(outputDir)}${typename}__mdt/fields`;
         const fileNames = await core.fs.readdir(fieldDirPath);
         const fileData = await createUtil.getFileData(fieldDirPath, fileNames);

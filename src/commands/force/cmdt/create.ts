@@ -27,7 +27,7 @@ export default class Create extends SfdxCommand {
         typename: flags.string({ char: 'n', required: true, description: messages.getMessage('nameFlagDescription') }),
         label: flags.string({ char: 'l', description: messages.getMessage('labelFlagDescription') }),
         plurallabel: flags.string({ char: 'p', description: messages.getMessage('plurallabelFlagDescription') }),
-        visibility: flags.enum({ char: 'v', description: messages.getMessage('visibilityFlagDescription'), options: ['Protected', 'Public'] }),
+        visibility: flags.enum({ char: 'v', description: messages.getMessage('visibilityFlagDescription'), options: ['PackageProtected', 'Protected', 'Public'] }),
         outputdir: flags.directory({ char: 'd', description: messages.getMessage('outputDirectoryFlagDescription') })
     };
 

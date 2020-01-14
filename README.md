@@ -46,22 +46,22 @@ USAGE
   $ custommetadata force:cmdt:create [FILE]
 
 OPTIONS
-  -d, --outputdir=outputdir                       The directory to store the newly created files. The location can be an
-                                                  absolute path or relative to the current working directory. The
-                                                  default is the current directory.
+  -d, --outputdir=outputdir                             The directory to store the newly created files. The location can
+                                                        be an absolute path or relative to the current working
+                                                        directory. The default is the current directory.
 
-  -l, --label=label                               Label for the custom metadata type
+  -l, --label=label                                     Label for the custom metadata type
 
-  -n, --typename=typename                         (required) Object Name for the custom metadata type
+  -n, --typename=typename                               (required) Object Name for the custom metadata type
 
-  -p, --plurallabel=plurallabel                   Plural label for the custom metadata type. If blank, uses label
+  -p, --plurallabel=plurallabel                         Plural label for the custom metadata type. If blank, uses label
 
-  -v, --visibility=(Protected|Public)             Visibility for the type. Valid values are 'Public' and 'Protected'. If
-                                                  blank, uses Public
+  -v, --visibility=(PackageProtected|Protected|Public)  Visibility for the type. Valid values are 'Public', 'Protected',
+                                                        and 'PackageProtected'. If blank, uses Public
 
-  --json                                          format output as json
+  --json                                                format output as json
 
-  --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
+  --loglevel=(trace|debug|info|warn|error|fatal)        logging level for this command invocation
 
 EXAMPLES
     $ sfdx force:cmdt:create --typename MyCustomType
@@ -121,36 +121,40 @@ USAGE
   $ custommetadata force:cmdt:generate [FILE]
 
 OPTIONS
-  -d, --typeoutputdir=typeoutputdir        Specify the directory where the custom metadata will be created (default is
-                                           'force-app/main/default/objects')
+  -d, --typeoutputdir=typeoutputdir                     Specify the directory where the custom metadata will be created
+                                                        (default is 'force-app/main/default/objects')
 
-  -i, --ignoreunsupported                  Flag to ignore non-supported field types (these fields will not be created).
-                                           Default is to create text fields and convert source to text.
+  -i, --ignoreunsupported                               Flag to ignore non-supported field types (these fields will not
+                                                        be created). Default is to create text fields and convert source
+                                                        to text.
 
-  -l, --label=label                        Label for the custom metadata type
+  -l, --label=label                                     Label for the custom metadata type
 
-  -l, --loglevel=loglevel                  logging level for this command invocation
+  -l, --loglevel=loglevel                               logging level for this command invocation
 
-  -n, --devname=devname                    (required) The name of the new custom metadata type.
+  -n, --devname=devname                                 (required) The name of the new custom metadata type.
 
-  -p, --plurallabel=plurallabel            Plural label for the custom metadata type. If blank, uses label
+  -p, --plurallabel=plurallabel                         Plural label for the custom metadata type. If blank, uses label
 
-  -r, --recordsoutputdir=recordsoutputdir  Specify the directory where the custom metadata will be created (default is
-                                           'force-app/main/default/customMetadata')
+  -r, --recordsoutputdir=recordsoutputdir               Specify the directory where the custom metadata will be created
+                                                        (default is 'force-app/main/default/customMetadata')
 
-  -s, --sobjectname=sobjectname            (required) The API Name of the sObject you are generating to Custommetadata
+  -s, --sobjectname=sobjectname                         (required) The API Name of the sObject you are generating to
+                                                        Custommetadata
 
-  -u, --targetusername=targetusername      username or alias for the target org; overrides default target org
+  -u, --targetusername=targetusername                   username or alias for the target org; overrides default target
+                                                        org
 
-  -v, --visibility=(Protected|Public)      Visibility for the type. Valid values are 'Public' and 'Protected'. If blank,
-                                           uses 'Public'
+  -v, --visibility=(PackageProtected|Protected|Public)  Visibility for the type. Valid values are 'Public', 'Protected',
+                                                        and 'PackageProtected'. If blank, uses 'Public'
 
-  -x, --sourceusername=sourceusername      username or alias for the source org that contains the Custom Setting or
-                                           SObject and data to be generateed
+  -x, --sourceusername=sourceusername                   username or alias for the source org that contains the Custom
+                                                        Setting or SObject and data to be generated
 
-  --apiversion=apiversion                  override the api version used for api requests made by this command
+  --apiversion=apiversion                               override the api version used for api requests made by this
+                                                        command
 
-  --json                                   format output as json
+  --json                                                format output as json
 
 EXAMPLES
   "$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c 
