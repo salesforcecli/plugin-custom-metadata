@@ -3,7 +3,15 @@
   "description": "Tools for working with custom metadata types and their records.",
   "version": "0.0.0",
   "contributors": [
-    { "name": "Carolyn Grabill", "url" : "https://www.salesforce.com/" }
+    { "name": "Carolyn Grabill", "url" : "https://www.salesforce.com/" },
+    { "name": "Bryan Friend", "url" : "https://www.codescience.com/" },
+    { "name": "Abhishek Tangudu", "url" : "https://www.codescience.com/" },
+    { "name": "Matt Turnure", "url" : "https://www.codescience.com/" },
+    { "name": "Mohith Shrivastava", "url" : "https://www.codescience.com/" },
+    { "name": "Brian Runyan", "url" : "https://www.codescience.com/" },
+    { "name": "Brian Buffington", "url" : "https://www.codescience.com/" },
+    { "name": "Catherine Schell", "url" : "https://www.salesforce.com/" },
+    { "name": "Seth Leger", "url" : "https://www.salesforce.com/" }
   ],
   "bugs": "https://github.com/forcedotcom/sfdx-custommetadata/issues",
   "dependencies": {
