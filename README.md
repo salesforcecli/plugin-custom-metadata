@@ -64,8 +64,8 @@ OPTIONS
   --loglevel=(trace|debug|info|warn|error|fatal)        logging level for this command invocation
 
 EXAMPLES
-    $ sfdx force:cmdt:create --typename MyCustomType
-    $ sfdx force:cmdt:create --typename MyCustomType --label "Custom Type" --plurallabel "Custom Types" --visibility 
+  $ sfdx force:cmdt:create --typename MyCustomType
+  $ sfdx force:cmdt:create --typename MyCustomType --label "Custom Type" --plurallabel "Custom Types" --visibility 
   Public
 ```
 
@@ -157,16 +157,16 @@ OPTIONS
   --json                                                format output as json
 
 EXAMPLES
-  "$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c 
-  "$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c  --ignoreunsupported --sourceusername 
+  $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c
+  $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c  --ignoreunsupported --sourceusername 
   'alias or the email of the source org'
-  "$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomObject__c  --visibility Protected
-  "$ sfdx force:cmdt:generate --devname MyCMDT --label 'My CMDT' --plurallabel 'My CMDTs' --sobjectname 
+  $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomObject__c  --visibility Protected
+  $ sfdx force:cmdt:generate --devname MyCMDT --label "My CMDT" --plurallabel "My CMDTs" --sobjectname 
   SourceCustomSetting__c  --visibility Protected
-  "$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c  --typeoutputdir 'your desired Path 
+  $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c --typeoutputdir 'your desired Path 
   for custom metadata'
-  "$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c  --recordsoutputdir 'your desired 
-  Path for custom metadata Records'
+  $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c --recordsoutputdir 'your desired Path 
+  for custom metadata Records'
 ```
 
 _See code: [src/commands/force/cmdt/generate.ts](https://github.com/forcedotcom/sfdx-custommetadata/blob/v0.0.0/src/commands/force/cmdt/generate.ts)_
@@ -200,8 +200,8 @@ OPTIONS
   --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
 
 EXAMPLES
-  $ sfdx force:cmdt:create --typename MyCMT__mdt --recname MyRecord My_Custom_Field_1=Foo My_Custom_Field_2=Bar
-  $ sfdx force:cmdt:create --typename MyCMT__mdt --recname MyRecord --label "My Record" --protected true 
+  $ sfdx force:cmdt:record:create --typename MyCMT__mdt --recname MyRecord My_Custom_Field_1=Foo My_Custom_Field_2=Bar
+  $ sfdx force:cmdt:record:create --typename MyCMT__mdt --recname MyRecord --label "My Record" --protected true 
   My_Custom_Field_1=Foo My_Custom_Field_2=Bar
 ```
 

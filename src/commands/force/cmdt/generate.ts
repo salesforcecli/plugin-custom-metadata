@@ -21,12 +21,13 @@ export default class Generate extends SfdxCommand {
   public static description = messages.getMessage('commandDescription');
 
   public static examples = [
-  '"$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c ',
-  '"$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c  --ignoreunsupported --sourceusername \'alias or the email of the source org\'',
-  '"$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomObject__c  --visibility Protected',
-  '"$ sfdx force:cmdt:generate --devname MyCMDT --label \'My CMDT\' --plurallabel \'My CMDTs\' --sobjectname SourceCustomSetting__c  --visibility Protected',
-  '"$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c  --typeoutputdir \'your desired Path for custom metadata\'',
-  '"$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c  --recordsoutputdir \'your desired Path for custom metadata Records\''
+    '$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c',
+    '$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c  --ignoreunsupported --sourceusername \'' + messages.getMessage('sourceusernameFlagExample') + '\'',
+    '$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomObject__c  --visibility Protected',
+    '$ sfdx force:cmdt:generate --devname MyCMDT --label "' + messages.getMessage('labelFlagExample') + '" ' +
+        '--plurallabel "' + messages.getMessage('plurallabelFlagExample') + '" --sobjectname SourceCustomSetting__c  --visibility Protected',
+    '$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c --typeoutputdir \'' + messages.getMessage('typeoutputdirFlagExample') + '\'',
+    '$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c --recordsoutputdir \'' + messages.getMessage('recordsoutputdirFlagExample') + '\''
   ];
 
   public static args = [{name: 'file'}];
@@ -40,10 +41,10 @@ export default class Generate extends SfdxCommand {
     sobjectname: flags.string({char: 's', required: true, description: messages.getMessage('sobjectnameFlagDescription')}),
     sourceusername: flags.string({char: 'x', description: messages.getMessage('sourceusernameFlagDescription')}),
     ignoreunsupported: flags.boolean({char: 'i', description: messages.getMessage('ignoreUnsupportedFlagDescription')}),
-    typeoutputdir: flags.directory({char: 'd', description: messages.getMessage('outputDirectoryFlagDescription')}),
-    recordsoutputdir: flags.directory({char: 'r', description: messages.getMessage('recordsoutputDirectoryFlagDescription')}),
+    typeoutputdir: flags.directory({char: 'd', description: messages.getMessage('typeoutputdirFlagDescription')}),
+    recordsoutputdir: flags.directory({char: 'r', description: messages.getMessage('recordsoutputdirFlagDescription')}),
     loglevel: flags.string({char: 'l', description: messages.getMessage('loglevelFlagDescription')})
-};
+  };
 
   // Comment this out if your command does not require an org username
   protected static requiresUsername = true;
