@@ -22,7 +22,7 @@ export default class Insert extends SfdxCommand {
     typename: flags.string({ char: 't', description: messages.getMessage('typenameFlagDescription'), required: true }),
     inputdir: flags.directory({ char: 'n', description: messages.getMessage('inputDirectoryFlagDescription') }),
     outputdir: flags.directory({ char: 'd', description: messages.getMessage('outputDirectoryFlagDescription') }),
-    namecolumn: flags.string({ char: 'l', description: messages.getMessage('columnNameDescription') })
+    namecolumn: flags.string({ char: 'l', description: messages.getMessage('namecolumnFlagDescription') })
   };
 
   protected static requiresProject = true;

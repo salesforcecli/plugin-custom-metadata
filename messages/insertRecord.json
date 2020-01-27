@@ -5,6 +5,6 @@
   "outputDirectoryFlagDescription": "Specify the directory where the file will be created (default is 'force-app/main/default/customMetadata')",
   "successResponse": "Created custom metadata type records from '%s' at '%s'.",
   "typenameFlagDescription": "API Name of the custom metadata type",
-  "columnNameDescription":"Column that is used to determine the name of the record. Defaults to Name",
+  "namecolumnFlagDescription":"Column that is used to determine the name of the record. Defaults to Name",
   "fieldNotFoundError":"The column %s is not found on the custom metadata type %s"
 }
