@@ -25,11 +25,29 @@ export default class Create extends SfdxCommand {
     public static args = [{ name: 'file' }];
 
     protected static flagsConfig = {
-        typename: flags.string({ char: 'n', required: true, description: messages.getMessage('nameFlagDescription') }),
-        label: flags.string({ char: 'l', description: messages.getMessage('labelFlagDescription') }),
-        plurallabel: flags.string({ char: 'p', description: messages.getMessage('plurallabelFlagDescription') }),
-        visibility: flags.enum({ char: 'v', description: messages.getMessage('visibilityFlagDescription'), options: ['PackageProtected', 'Protected', 'Public'] }),
-        outputdir: flags.directory({ char: 'd', description: messages.getMessage('outputDirectoryFlagDescription') })
+        typename: flags.string({
+            char: 'n',
+            description: messages.getMessage('nameFlagDescription'),
+            required: true
+        }),
+        label: flags.string({
+            char: 'l',
+            description: messages.getMessage('labelFlagDescription')
+        }),
+        plurallabel: flags.string({
+            char: 'p',
+            description: messages.getMessage('plurallabelFlagDescription')
+        }),
+        visibility: flags.enum({
+            char: 'v',
+            description: messages.getMessage('visibilityFlagDescription'),
+            options: ['PackageProtected', 'Protected', 'Public'],
+            default: 'Public'
+        }),
+        outputdir: flags.directory({
+            char: 'd',
+            description: messages.getMessage('outputDirectoryFlagDescription')
+        })
     };
 
     // Set this to true if your command requires a project workspace; 'requiresProject' is false by default

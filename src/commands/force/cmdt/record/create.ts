@@ -22,12 +22,35 @@ export default class Create extends SfdxCommand {
   ];
 
   protected static flagsConfig = {
-    typename: flags.string({char: 't', description: messages.getMessage('typenameFlagDescription')}),
-    recname: flags.string({char: 'r', description: messages.getMessage('recordNameFlagDescription')}),
-    label: flags.string({char: 'l', description: messages.getMessage('labelFlagDescription')}),
-    protection: flags.string({char: 'p', description: messages.getMessage('protectedFlagDescription')}),
-    inputdir: flags.directory({char: 'n', description: messages.getMessage('inputDirectoryFlagDescription')}),
-    outputdir: flags.directory({char: 'd', description: messages.getMessage('outputDirectoryFlagDescription')})
+    typename: flags.string({
+        char: 't',
+        description: messages.getMessage('typenameFlagDescription'),
+        required: true
+    }),
+    recname: flags.string({
+        char: 'r',
+        description: messages.getMessage('recordNameFlagDescription'),
+        required: true
+    }),
+    label: flags.string({
+        char: 'l',
+        description: messages.getMessage('labelFlagDescription')
+    }),
+    protection: flags.string({
+        char: 'p',
+        description: messages.getMessage('protectedFlagDescription'),
+        options: ['true', 'false'],
+        default: 'false'
+    }),
+    inputdir: flags.directory({
+        char: 'n',
+        description: messages.getMessage('inputDirectoryFlagDescription'),
+        default: 'force-app/main/default/objects'
+    }),
+    outputdir: flags.directory({
+        char: 'd', description: messages.getMessage('outputDirectoryFlagDescription'),
+        default: 'force-app/main/default/customMetadata'
+    })
   };
 
   protected static varargs = {

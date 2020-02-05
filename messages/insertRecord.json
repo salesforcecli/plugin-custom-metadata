@@ -1,10 +1,10 @@
 {
   "commandDescription": "creates new custom metadata type records from a CSV",
   "filepathFlagDescription": "Path to the CSV file",
-  "inputDirectoryFlagDescription": "Specify the directory where the custom metadata type definition will be pulled from (default is 'force-app/main/default/objects')",
-  "outputDirectoryFlagDescription": "Specify the directory where the file will be created (default is 'force-app/main/default/customMetadata')",
+  "inputDirectoryFlagDescription": "Specify the directory where the custom metadata type definition will be pulled from",
+  "outputDirectoryFlagDescription": "Specify the directory where the file will be created",
   "successResponse": "Created custom metadata type records from '%s' at '%s'.",
   "typenameFlagDescription": "API Name of the custom metadata type",
-  "namecolumnFlagDescription":"Column that is used to determine the name of the record. Defaults to Name",
+  "namecolumnFlagDescription":"Column that is used to determine the name of the record.",
   "fieldNotFoundError":"The column %s is not found on the custom metadata type %s"
 }

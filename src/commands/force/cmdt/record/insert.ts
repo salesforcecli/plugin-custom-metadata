@@ -18,11 +18,31 @@ export default class Insert extends SfdxCommand {
   ];
 
   protected static flagsConfig = {
-    filepath: flags.string({ char: 'f', description: messages.getMessage('filepathFlagDescription'), required: true }),
-    typename: flags.string({ char: 't', description: messages.getMessage('typenameFlagDescription'), required: true }),
-    inputdir: flags.directory({ char: 'n', description: messages.getMessage('inputDirectoryFlagDescription') }),
-    outputdir: flags.directory({ char: 'd', description: messages.getMessage('outputDirectoryFlagDescription') }),
-    namecolumn: flags.string({ char: 'l', description: messages.getMessage('namecolumnFlagDescription') })
+    filepath: flags.string({
+        char: 'f',
+        description: messages.getMessage('filepathFlagDescription'),
+        required: true
+    }),
+    typename: flags.string({
+        char: 't',
+        description: messages.getMessage('typenameFlagDescription'),
+        required: true
+    }),
+    inputdir: flags.directory({
+        char: 'n',
+        description: messages.getMessage('inputDirectoryFlagDescription'),
+        default: 'force-app/main/default/objects'
+    }),
+    outputdir: flags.directory({
+        char: 'd',
+        description: messages.getMessage('outputDirectoryFlagDescription'),
+        default: 'force-app/main/default/customMetadata'
+    }),
+    namecolumn: flags.string({
+        char: 'l',
+        description: messages.getMessage('namecolumnFlagDescription'),
+        default: 'Name'
+    })
   };
 
   protected static requiresProject = true;

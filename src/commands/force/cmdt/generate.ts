@@ -34,16 +34,52 @@ export default class Generate extends SfdxCommand {
 
   protected static flagsConfig = {
     // flag with a value (-n, --name=VALUE)
-    devname: flags.string({char: 'n', required: true, description: messages.getMessage('devnameFlagDescription')}),
-    label: flags.string({char: 'l', description: messages.getMessage('labelFlagDescription')}),
-    plurallabel: flags.string({char: 'p', description: messages.getMessage('plurallabelFlagDescription')}),
-    visibility: flags.enum({char: 'v', description: messages.getMessage('visibilityFlagDescription'),  options: ['PackageProtected', 'Protected', 'Public']}),
-    sobjectname: flags.string({char: 's', required: true, description: messages.getMessage('sobjectnameFlagDescription')}),
-    sourceusername: flags.string({char: 'x', description: messages.getMessage('sourceusernameFlagDescription')}),
-    ignoreunsupported: flags.boolean({char: 'i', description: messages.getMessage('ignoreUnsupportedFlagDescription')}),
-    typeoutputdir: flags.directory({char: 'd', description: messages.getMessage('typeoutputdirFlagDescription')}),
-    recordsoutputdir: flags.directory({char: 'r', description: messages.getMessage('recordsoutputdirFlagDescription')}),
-    loglevel: flags.string({char: 'l', description: messages.getMessage('loglevelFlagDescription')})
+    devname: flags.string({
+        char: 'n',
+        required: true,
+        description: messages.getMessage('devnameFlagDescription')
+    }),
+    label: flags.string({
+        char: 'l',
+        description: messages.getMessage('labelFlagDescription')
+    }),
+    plurallabel: flags.string({
+        char: 'p',
+        description: messages.getMessage('plurallabelFlagDescription')
+    }),
+    visibility: flags.enum({
+        char: 'v',
+        description: messages.getMessage('visibilityFlagDescription'),
+        options: ['PackageProtected', 'Protected', 'Public'],
+        default: 'Public'
+    }),
+    sobjectname: flags.string({
+        char: 's',
+        required: true,
+        description: messages.getMessage('sobjectnameFlagDescription')
+    }),
+    sourceusername: flags.string({
+        char: 'x',
+        description: messages.getMessage('sourceusernameFlagDescription')
+    }),
+    ignoreunsupported: flags.boolean({
+        char: 'i',
+        description: messages.getMessage('ignoreUnsupportedFlagDescription')
+    }),
+    typeoutputdir: flags.directory({
+        char: 'd',
+        description: messages.getMessage('typeoutputdirFlagDescription'),
+        default: 'force-app/main/default/objects/'
+    }),
+    recordsoutputdir: flags.directory({
+        char: 'r',
+        description: messages.getMessage('recordsoutputdirFlagDescription'),
+        default: 'force-app/main/default/customMetadata/'
+    }),
+    loglevel: flags.string({
+        char: 'l',
+        description: messages.getMessage('loglevelFlagDescription')
+    })
   };
 
   // Comment this out if your command does not require an org username
@@ -198,7 +234,7 @@ export default class Generate extends SfdxCommand {
         const createUtil = new CreateUtil();
         // if customMetadata folder does not exist, create it
         await core.fs.mkdirp(recordsOutputDir);
-        const security: boolean = (visibility === 'Protected');
+        const security: boolean = (visibility !== 'Public');
 
         const typename = devName;
 

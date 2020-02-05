@@ -56,8 +56,7 @@ OPTIONS
 
   -p, --plurallabel=plurallabel                         Plural label for the custom metadata type. If blank, uses label
 
-  -v, --visibility=(PackageProtected|Protected|Public)  Visibility for the type. Valid values are 'Public', 'Protected',
-                                                        and 'PackageProtected'. If blank, uses Public
+  -v, --visibility=(PackageProtected|Protected|Public)  [default: Public] Visibility for the type.
 
   --json                                                format output as json
 
@@ -121,8 +120,8 @@ USAGE
   $ custommetadata force:cmdt:generate [FILE]
 
 OPTIONS
-  -d, --typeoutputdir=typeoutputdir                     Specify the directory where the custom metadata will be created
-                                                        (default is 'force-app/main/default/objects')
+  -d, --typeoutputdir=typeoutputdir                     [default: force-app/main/default/objects/] Specify the directory
+                                                        where the custom metadata will be created
 
   -i, --ignoreunsupported                               Flag to ignore non-supported field types (these fields will not
                                                         be created). Default is to create text fields and convert source
@@ -136,8 +135,8 @@ OPTIONS
 
   -p, --plurallabel=plurallabel                         Plural label for the custom metadata type. If blank, uses label
 
-  -r, --recordsoutputdir=recordsoutputdir               Specify the directory where the custom metadata will be created
-                                                        (default is 'force-app/main/default/customMetadata')
+  -r, --recordsoutputdir=recordsoutputdir               [default: force-app/main/default/customMetadata/] Specify the
+                                                        directory where the custom metadata will be created
 
   -s, --sobjectname=sobjectname                         (required) The API Name of the sObject you are generating to
                                                         Custommetadata
@@ -145,8 +144,7 @@ OPTIONS
   -u, --targetusername=targetusername                   username or alias for the target org; overrides default target
                                                         org
 
-  -v, --visibility=(PackageProtected|Protected|Public)  Visibility for the type. Valid values are 'Public', 'Protected',
-                                                        and 'PackageProtected'. If blank, uses 'Public'
+  -v, --visibility=(PackageProtected|Protected|Public)  [default: Public] Visibility for the type.
 
   -x, --sourceusername=sourceusername                   username or alias for the source org that contains the Custom
                                                         Setting or SObject and data to be generated
@@ -180,20 +178,19 @@ USAGE
   $ custommetadata force:cmdt:record:create
 
 OPTIONS
-  -d, --outputdir=outputdir                       Specify the directory where the file will be created (default is
-                                                  'force-app/main/default/customMetadata')
+  -d, --outputdir=outputdir                       [default: force-app/main/default/customMetadata] Specify the directory
+                                                  where the file will be created
 
   -l, --label=label                               Label for the new record
 
-  -n, --inputdir=inputdir                         Specify the directory where the custom metadata type definition will
-                                                  be pulled from (default is 'force-app/main/default/objects')
+  -n, --inputdir=inputdir                         [default: force-app/main/default/objects] Specify the directory where
+                                                  the custom metadata type definition will be pulled from
 
-  -p, --protection=protection                     Visibility for the record. Valid values are 'true' and 'false'.  If
-                                                  blank, uses false.
+  -p, --protection=true|false                     [default: false] Visibility for the record.
 
-  -r, --recname=recname                           RecordName for the new record
+  -r, --recname=recname                           (required) RecordName for the new record
 
-  -t, --typename=typename                         API Name of the custom metadata type to create a record for
+  -t, --typename=typename                         (required) API Name of the custom metadata type to create a record for
 
   --json                                          format output as json
 
@@ -216,16 +213,16 @@ USAGE
   $ custommetadata force:cmdt:record:insert
 
 OPTIONS
-  -d, --outputdir=outputdir                       Specify the directory where the file will be created (default is
-                                                  'force-app/main/default/customMetadata')
+  -d, --outputdir=outputdir                       [default: force-app/main/default/customMetadata] Specify the directory
+                                                  where the file will be created
 
   -f, --filepath=filepath                         (required) Path to the CSV file
 
-  -l, --namecolumn=namecolumn                     Column that is used to determine the name of the record. Defaults to
-                                                  Name
+  -l, --namecolumn=namecolumn                     [default: Name] Column that is used to determine the name of the
+                                                  record.
 
-  -n, --inputdir=inputdir                         Specify the directory where the custom metadata type definition will
-                                                  be pulled from (default is 'force-app/main/default/objects')
+  -n, --inputdir=inputdir                         [default: force-app/main/default/objects] Specify the directory where
+                                                  the custom metadata type definition will be pulled from
 
   -t, --typename=typename                         (required) API Name of the custom metadata type
 

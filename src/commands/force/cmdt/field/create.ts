@@ -24,15 +24,33 @@ export default class Create extends SfdxCommand {
     public static args = [{ name: 'file' }];
 
     protected static flagsConfig = {
-        fieldname: flags.string({ char: 'n', required: true, description: messages.getMessage('nameFlagDescription') }),
+        fieldname: flags.string({
+            char: 'n',
+            required: true,
+            description: messages.getMessage('nameFlagDescription')
+        }),
         fieldtype: flags.enum({
-            char: 'f', required: true, description: messages.getMessage('fieldTypeDescription'),
+            char: 'f',
+            required: true,
+            description: messages.getMessage('fieldTypeDescription'),
             options: ['Checkbox', 'Date', 'DateTime', 'Email', 'Number', 'Percent', 'Phone', 'Picklist', 'Text', 'TextArea', 'LongTextArea', 'Url']
         }),
-        picklistvalues: flags.array({ char: 'p', description: messages.getMessage('picklistValuesDescription') }),
-        decimalplaces: flags.array({ char: 's', description: messages.getMessage('decimalplacesDescription') }),
-        label: flags.string({ char: 'l', description: messages.getMessage('labelFlagDescription') }),
-        outputdir: flags.directory({ char: 'd', description: messages.getMessage('outputDirectoryFlagDescription') })
+        picklistvalues: flags.array({
+            char: 'p',
+            description: messages.getMessage('picklistValuesDescription')
+        }),
+        decimalplaces: flags.number({
+            char: 's',
+            description: messages.getMessage('decimalplacesDescription')
+        }),
+        label: flags.string({
+            char: 'l',
+            description: messages.getMessage('labelFlagDescription')
+        }),
+        outputdir: flags.directory({
+            char: 'd',
+            description: messages.getMessage('outputDirectoryFlagDescription')
+        })
     };
 
     // Set this to true if your command requires a project workspace; 'requiresProject' is false by default
