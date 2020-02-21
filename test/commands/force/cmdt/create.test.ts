@@ -57,7 +57,7 @@ describe('sfdx force:cmdt:create', () => {
     .withProject()
     .command(['force:cmdt:create', '--typename', 'MyC__MDT'])
     .it('runs force:cmdt:create --typename MyC__MDT', ctx => {
-      expect(ctx.stderr).to.contain("'MyC__MDT' is not a valid api name for a custom metadata object. Metadata names can only contain alphanumeric characters, must begin with a letter, cannot end with an underscore or contain two consecutive underscore characters.");
+      expect(ctx.stderr).to.contain("'MyC__MDT' is not a valid API name for a custom metadata object. Metadata names can contain only underscores and alphanumeric characters, must begin with a letter, cannot end with an underscore or contain two consecutive underscore characters.");
     })
 
   test

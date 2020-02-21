@@ -1,12 +1,26 @@
 {
     "commandDescription": "creates a new record for a given custom metadata type in the current project",
-    "typenameFlagDescription": "API Name of the custom metadata type to create a record for",
-    "recordNameFlagDescription": "RecordName for the new record",
-    "labelFlagDescription": "Label for the new record",
+    "commandLongDescription": "Creates a new record for a given custom metadata type in the current project.",
+
+    "typenameFlagDescription": "API name of the custom metadata type to create a record for",
+    "typenameFlagLongDescription": "The API name of the custom metadata type to create a record for.",
+
+    "recordNameFlagDescription": "name for the new record",
+    "recordNameFlagLongDescription": "The name for the new record.",
+
+    "labelFlagDescription": "label for the new record",
+    "labelFlagLongDescription": "The label for the new record.",
     "labelFlagExample": "My Record",
-    "protectedFlagDescription": "Visibility for the record.",
-    "inputDirectoryFlagDescription": "Specify the directory where the custom metadata type definition will be pulled from",
-    "outputDirectoryFlagDescription": "Specify the directory where the file will be created",
+
+    "protectedFlagDescription": "visibility for the record",
+    "protectedFlagLongDescription": "The visibility for the record.",
+
+    "inputDirectoryFlagDescription": "directory where the custom metadata type definition will be pulled from",
+    "inputDirectoryFlagLongDescription": "The directory where the custom metadata type definition will be pulled from.",
+
+    "outputDirectoryFlagDescription": "directory where the file will be created",
+    "outputDirectoryFlagLongDescription": "The directory where the file will be created.",
+
     "errorInvalidCustomField": "Custom fields must end in __c.",
     "successResponse": "Created custom metadata record of the type '%s' with record name '%s', label '%s', and protected '%s' at '%s'.",
     "notValidAPINameError": "'%s' is not a valid api name for a custom metadata object.",

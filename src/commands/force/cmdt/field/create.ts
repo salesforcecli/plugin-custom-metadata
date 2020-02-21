@@ -15,6 +15,7 @@ const messages = core.Messages.loadMessages('custommetadata', 'createField');
 export default class Create extends SfdxCommand {
 
     public static description = messages.getMessage('commandDescription');
+    public static longDescription = messages.getMessage('commandLongDescription');
 
     public static examples = [
         '$ sfdx force:cmdt:field:create --fieldname MyField --fieldtype Checkbox',
@@ -27,29 +28,35 @@ export default class Create extends SfdxCommand {
         fieldname: flags.string({
             char: 'n',
             required: true,
-            description: messages.getMessage('nameFlagDescription')
+            description: messages.getMessage('nameFlagDescription'),
+            longDescription: messages.getMessage('nameFlagLongDescription')
         }),
         fieldtype: flags.enum({
             char: 'f',
             required: true,
             description: messages.getMessage('fieldTypeDescription'),
+            longDescription: messages.getMessage('nameFlagLongDescription'),
             options: ['Checkbox', 'Date', 'DateTime', 'Email', 'Number', 'Percent', 'Phone', 'Picklist', 'Text', 'TextArea', 'LongTextArea', 'Url']
         }),
         picklistvalues: flags.array({
             char: 'p',
-            description: messages.getMessage('picklistValuesDescription')
+            description: messages.getMessage('picklistValuesFlagDescription'),
+            longDescription: messages.getMessage('picklistValuesFlagLongDescription')
         }),
         decimalplaces: flags.number({
             char: 's',
-            description: messages.getMessage('decimalplacesDescription')
+            description: messages.getMessage('decimalplacesFlagDescription'),
+            longDescription: messages.getMessage('decimalplacesFlagLongDescription')
         }),
         label: flags.string({
             char: 'l',
-            description: messages.getMessage('labelFlagDescription')
+            description: messages.getMessage('labelFlagDescription'),
+            longDescription: messages.getMessage('labelFlagLongDescription')
         }),
         outputdir: flags.directory({
             char: 'd',
-            description: messages.getMessage('outputDirectoryFlagDescription')
+            description: messages.getMessage('outputDirectoryFlagDescription'),
+            longDescription: messages.getMessage('outputDirectoryFlagLongDescription')
         })
     };
 

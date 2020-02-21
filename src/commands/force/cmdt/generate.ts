@@ -19,6 +19,7 @@ const messages = core.Messages.loadMessages('custommetadata', 'generate');
 export default class Generate extends SfdxCommand {
 
   public static description = messages.getMessage('commandDescription');
+  public static longDescription = messages.getMessage('commandLongDescription');
 
   public static examples = [
     '$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c',
@@ -37,48 +38,58 @@ export default class Generate extends SfdxCommand {
     devname: flags.string({
         char: 'n',
         required: true,
-        description: messages.getMessage('devnameFlagDescription')
+        description: messages.getMessage('devnameFlagDescription'),
+        longDescription: messages.getMessage('devnameFlagLongDescription')
     }),
     label: flags.string({
         char: 'l',
-        description: messages.getMessage('labelFlagDescription')
+        description: messages.getMessage('labelFlagDescription'),
+        longDescription: messages.getMessage('labelFlagLongDescription')
     }),
     plurallabel: flags.string({
         char: 'p',
-        description: messages.getMessage('plurallabelFlagDescription')
+        description: messages.getMessage('plurallabelFlagDescription'),
+        longDescription: messages.getMessage('plurallabelFlagLongDescription')
     }),
     visibility: flags.enum({
         char: 'v',
         description: messages.getMessage('visibilityFlagDescription'),
+        longDescription: messages.getMessage('visibilityFlagLongDescription'),
         options: ['PackageProtected', 'Protected', 'Public'],
         default: 'Public'
     }),
     sobjectname: flags.string({
         char: 's',
         required: true,
-        description: messages.getMessage('sobjectnameFlagDescription')
+        description: messages.getMessage('sobjectnameFlagDescription'),
+        longDescription: messages.getMessage('sobjectnameFlagLongDescription')
     }),
     sourceusername: flags.string({
         char: 'x',
-        description: messages.getMessage('sourceusernameFlagDescription')
+        description: messages.getMessage('sourceusernameFlagDescription'),
+        longDescription: messages.getMessage('sourceusernameFlagLongDescription')
     }),
     ignoreunsupported: flags.boolean({
         char: 'i',
-        description: messages.getMessage('ignoreUnsupportedFlagDescription')
+        description: messages.getMessage('ignoreUnsupportedFlagDescription'),
+        longDescription: messages.getMessage('ignoreUnsupportedFlagLongDescription')
     }),
     typeoutputdir: flags.directory({
         char: 'd',
         description: messages.getMessage('typeoutputdirFlagDescription'),
+        longDescription: messages.getMessage('typeoutputdirFlagLongDescription'),
         default: 'force-app/main/default/objects/'
     }),
     recordsoutputdir: flags.directory({
         char: 'r',
         description: messages.getMessage('recordsoutputdirFlagDescription'),
+        longDescription: messages.getMessage('recordsoutputdirFlagLongDescription'),
         default: 'force-app/main/default/customMetadata/'
     }),
     loglevel: flags.string({
         char: 'l',
-        description: messages.getMessage('loglevelFlagDescription')
+        description: messages.getMessage('loglevelFlagDescription'),
+        longDescription: messages.getMessage('loglevelFlagLongDescription')
     })
   };
 

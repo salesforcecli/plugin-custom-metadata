@@ -1,22 +1,48 @@
 {
-    "commandDescription": "generates a custom metadata type and all its records for the provided sobject",
-    "visibilityFlagDescription": "Visibility for the type.",
-    "devnameFlagDescription": "The name of the new custom metadata type.",
-    "labelFlagDescription": "Label for the custom metadata type",
+    "commandDescription": "generates a custom metadata type and all its records for the provided sObject",
+    "commandLongDescription": "Generates a custom metadata type and all its records for the provided sObject.",
+
+    "visibilityFlagDescription": "visibility for the type",
+    "visibilityFlagLongDescription": "The visibility for the type.",
+
+    "devnameFlagDescription": "name of the new custom metadata type",
+    "devnameFlagLongDescription": "The name of the new custom metadata type.",
+
+    "labelFlagDescription": "label for the custom metadata type",
+    "labelFlagLongDescription": "The label for the custom metadata type.",
     "labelFlagExample": "My CMDT",
-    "plurallabelFlagDescription": "Plural label for the custom metadata type. If blank, uses label",
+
+    "plurallabelFlagDescription": "plural label for the custom metadata type; if blank, uses label",
+    "plurallabelFlagLongDescription": "Plural label for the custom metadata type. If blank, uses label.",
     "plurallabelFlagExample": "My CMDTs",
-    "sobjectnameFlagDescription": "The API Name of the sObject you are generating to Custommetadata",
-    "sourceusernameFlagDescription": "username or alias for the source org that contains the Custom Setting or SObject and data to be generated",
+
+    "sobjectnameFlagDescription": "API name of the sObject you are generating to custom metadata",
+    "sobjectnameFlagLongDescription": "The API Name of the sObject you are generating to custom metadata.",
+
+    "sourceusernameFlagDescription": "username or alias for the source org that contains the custom setting or sObject and data to be generated",
+    "sourceusernameFlagLongDescription": "The username or alias for the source org that contains the custom setting or sObject and data to be generated.",
     "sourceusernameFlagExample": "alias or the email of the source org",
+
     "targetusernameFlagDescription": "username or alias for the target org; overrides default target org",
-    "deployFlagDescription": "Runs the force:source:push command after Source XML is created",
-    "ignoreUnsupportedFlagDescription": "Flag to ignore non-supported field types (these fields will not be created). Default is to create text fields and convert source to text.",
-    "typeoutputdirFlagDescription": "Specify the directory where the custom metadata will be created",
+    "targetusernameFlagLongDescription": "The username or alias for the target org; overrides default target org.",
+
+    "deployFlagDescription": "runs the force:source:push command after source XML is created",
+    "deployFlagLongDescription": "Runs the force:source:push command after source XML is created.",
+
+    "ignoreUnsupportedFlagDescription": "ignores non-supported field types",
+    "ignoreUnsupportedFlagLongDescription": "Ignores non-supported field types (these fields will not be created). Default is to create text fields and convert source to text.",
+
+    "typeoutputdirFlagDescription": "directory where the custom metadata will be created",
+    "typeoutputdirFlagLongDescription": "The directory where the custom metadata will be created.",
     "typeoutputdirFlagExample": "your desired Path for custom metadata",
-    "recordsoutputdirFlagDescription": "Specify the directory where the custom metadata will be created",
+
+    "recordsoutputdirFlagDescription": "directory where the custom metadata will be created",
+    "recordsoutputdirFlagLongDescription": "The directory where the custom metadata will be created.",
     "recordsoutputdirFlagExample": "your desired Path for custom metadata Records",
+
     "loglevelFlagDescription": "logging level for this command invocation",
+    "loglevelFlagLongDescription": "The logging level for this command invocation.",
+
     "typenameFlagError": "not a valid custom metadata type name",
     "sobjectnameFlagError": "not a valid custom setting/custom object name",
     "sobjectnameNoResultError": "No sobject with name %s found in the org.",

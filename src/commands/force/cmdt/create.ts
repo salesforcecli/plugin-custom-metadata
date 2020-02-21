@@ -15,6 +15,7 @@ const messages = core.Messages.loadMessages('custommetadata', 'createType');
 export default class Create extends SfdxCommand {
 
     public static description = messages.getMessage('commandDescription');
+    public static longDescription = messages.getMessage('commandLongDescription');
 
     public static examples = [
         '$ sfdx force:cmdt:create --typename MyCustomType',
@@ -28,25 +29,30 @@ export default class Create extends SfdxCommand {
         typename: flags.string({
             char: 'n',
             description: messages.getMessage('nameFlagDescription'),
+            longDescription: messages.getMessage('nameFlagLongDescription'),
             required: true
         }),
         label: flags.string({
             char: 'l',
-            description: messages.getMessage('labelFlagDescription')
+            description: messages.getMessage('labelFlagDescription'),
+            longDescription: messages.getMessage('labelFlagLongDescription')
         }),
         plurallabel: flags.string({
             char: 'p',
-            description: messages.getMessage('plurallabelFlagDescription')
+            description: messages.getMessage('plurallabelFlagDescription'),
+            longDescription: messages.getMessage('plurallabelFlagLongDescription')
         }),
         visibility: flags.enum({
             char: 'v',
             description: messages.getMessage('visibilityFlagDescription'),
+            longDescription: messages.getMessage('visibilityFlagLongDescription'),
             options: ['PackageProtected', 'Protected', 'Public'],
             default: 'Public'
         }),
         outputdir: flags.directory({
             char: 'd',
-            description: messages.getMessage('outputDirectoryFlagDescription')
+            description: messages.getMessage('outputDirectoryFlagDescription'),
+            longDescription: messages.getMessage('outputDirectoryFlagLongDescription')
         })
     };
 

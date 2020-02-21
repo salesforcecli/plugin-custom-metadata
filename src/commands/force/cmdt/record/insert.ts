@@ -10,7 +10,9 @@ core.Messages.importMessagesDirectory(__dirname);
 const messages = core.Messages.loadMessages('custommetadata', 'insertRecord');
 
 export default class Insert extends SfdxCommand {
+
   public static description = messages.getMessage('commandDescription');
+  public static longDescription = messages.getMessage('commandLongDescription');
 
   public static examples = [
     '$ sfdx force:cmdt:record:insert -f path/to/my.csv -t My_CMDT_Name',
@@ -21,26 +23,31 @@ export default class Insert extends SfdxCommand {
     filepath: flags.string({
         char: 'f',
         description: messages.getMessage('filepathFlagDescription'),
+        longDescription: messages.getMessage('filepathFlagLongDescription'),
         required: true
     }),
     typename: flags.string({
         char: 't',
         description: messages.getMessage('typenameFlagDescription'),
+        longDescription: messages.getMessage('typenameFlagLongDescription'),
         required: true
     }),
     inputdir: flags.directory({
         char: 'n',
         description: messages.getMessage('inputDirectoryFlagDescription'),
+        longDescription: messages.getMessage('inputDirectoryFlagLongDescription'),
         default: 'force-app/main/default/objects'
     }),
     outputdir: flags.directory({
         char: 'd',
         description: messages.getMessage('outputDirectoryFlagDescription'),
+        longDescription: messages.getMessage('outputDirectoryFlagLongDescription'),
         default: 'force-app/main/default/customMetadata'
     }),
     namecolumn: flags.string({
         char: 'l',
         description: messages.getMessage('namecolumnFlagDescription'),
+        longDescription: messages.getMessage('namecolumnFlagLongDescription'),
         default: 'Name'
     })
   };

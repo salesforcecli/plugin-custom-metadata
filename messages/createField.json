@@ -1,13 +1,27 @@
 {
     "commandDescription": "generates a custom metadata field based on the field type provided",
-    "nameFlagDescription":"Name for the field",
-    "fieldTypeDescription":"The type of field.",
-    "picklistValuesDescription":"List of picklist values that are added when creating a picklist",
-    "labelFlagDescription": "Label for the new field",
-    "outputDirectoryFlagDescription":"The directory to store the newly created files. The location can be an absolute path or relative to the current working directory. The default is the current directory.",
+    "commandLongDescription": "Generates a custom metadata field based on the field type provided.",
+
+    "nameFlagDescription": "name for the field",
+    "nameFlagLongDescription": "The name for the field.",
+
+    "fieldTypeDescription": "type of field",
+    "fieldTypeLongDescription": "The type of field.",
+
+    "picklistValuesFlagDescription": "list of picklist values that are added when creating a picklist",
+    "picklistValuesFlagLongDescription": "The list of picklist values that are added when creating a picklist.",
+
+    "decimalplacesFlagDescription": "number of decimal places",
+    "decimalplacesFlagLongDescription": "The number of decimal places to use for number fields.",
+
+    "labelFlagDescription": "label for the new field",
+    "labelFlagLongDescription": "The label for the new field.",
+
+    "outputDirectoryFlagDescription": "directory to store the newly created files",
+    "outputDirectoryFlagLongDescription": "The directory to store the newly created files. The location can be an absolute path or relative to the current working directory. The default is the current directory.",
+
     "invalidCustomFieldError": "%s is an invalid field. Custom fields can only contain alphanumeric characters, must begin with a letter, cannot end with an underscore or contain two consecutive underscore characters.",
-    "picklistValuesNotSuppliedError":"Picklist values are required when type is Picklist",
-    "decimalplacesDescription": "Number of decimal places",
+    "picklistValuesNotSuppliedError": "Picklist values are required when type is Picklist",
     "invalidDecimalError": "%s is an invalid number. Decimal places must be greater than or equal to zero.",
     "targetDirectory" : "target dir = %s",
     "fileCreated": "   create %s",

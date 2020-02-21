@@ -14,6 +14,7 @@ const messages = core.Messages.loadMessages('custommetadata', 'createRecord');
 export default class Create extends SfdxCommand {
 
   public static description = messages.getMessage('commandDescription');
+  public static longDescription = messages.getMessage('commandLongDescription');
 
   public static examples = [
     '$ sfdx force:cmdt:record:create --typename MyCMT__mdt --recname MyRecord My_Custom_Field_1=Foo My_Custom_Field_2=Bar',
@@ -25,30 +26,37 @@ export default class Create extends SfdxCommand {
     typename: flags.string({
         char: 't',
         description: messages.getMessage('typenameFlagDescription'),
+        longDescription: messages.getMessage('typenameFlagLongDescription'),
         required: true
     }),
     recname: flags.string({
         char: 'r',
         description: messages.getMessage('recordNameFlagDescription'),
+        longDescription: messages.getMessage('recordNameFlagLongDescription'),
         required: true
     }),
     label: flags.string({
         char: 'l',
-        description: messages.getMessage('labelFlagDescription')
+        description: messages.getMessage('labelFlagDescription'),
+        longDescription: messages.getMessage('labelFlagLongDescription')
     }),
     protection: flags.string({
         char: 'p',
         description: messages.getMessage('protectedFlagDescription'),
+        longDescription: messages.getMessage('protectedFlagLongDescription'),
         options: ['true', 'false'],
         default: 'false'
     }),
     inputdir: flags.directory({
         char: 'n',
         description: messages.getMessage('inputDirectoryFlagDescription'),
+        longDescription: messages.getMessage('inputDirectoryFlagLongDescription'),
         default: 'force-app/main/default/objects'
     }),
     outputdir: flags.directory({
-        char: 'd', description: messages.getMessage('outputDirectoryFlagDescription'),
+        char: 'd',
+        description: messages.getMessage('outputDirectoryFlagDescription'),
+        longDescription: messages.getMessage('outputDirectoryFlagLongDescription'),
         default: 'force-app/main/default/customMetadata'
     })
   };
