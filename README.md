@@ -98,8 +98,12 @@ OPTIONS
       logging level for this command invocation
 
 EXAMPLES
-  $ sfdx force:cmdt:field:create --fieldname MyField --fieldtype Checkbox
-  $ sfdx force:cmdt:field:create --fieldname MyField --fieldtype Picklist --picklistvalues "A,B,C"
+  Create a metadata file for a custom checkbox field:
+       $ sfdx force:cmdt:field:create --fieldname MyField --fieldtype Checkbox
+  Create a metadata file for a custom picklist field:
+       $ sfdx force:cmdt:field:create --fieldname MyField --fieldtype Picklist --picklistvalues "A,B,C"
+  Create a metadata file for a custom number field:
+       $ sfdx force:cmdt:field:create --fieldname MyField --fieldtype Number --decimalplaces 2
 ```
 
 _See code: [src/commands/force/cmdt/field/create.ts](https://github.com/forcedotcom/sfdx-custommetadata/blob/v0.0.0/src/commands/force/cmdt/field/create.ts)_
