@@ -198,9 +198,12 @@ OPTIONS
   --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
 
 EXAMPLES
-  $ sfdx force:cmdt:record:create --typename MyCMT__mdt --recordname MyRecord My_Custom_Field_1=Foo 
+  Create a record metadata file for custom metadata type "MyCMT" with values specified for two custom fields:
+       $ sfdx force:cmdt:record:create --typename MyCMT__mdt --recordname MyRecord My_Custom_Field_1=Foo 
   My_Custom_Field_2=Bar
-  $ sfdx force:cmdt:record:create --typename MyCMT__mdt --recordname MyRecord --label "My Record" --protected true 
+  Create a protected record metadata file for custom metadata type "MyCMT" with a specific label and values specified 
+  for two custom fields:
+       $ sfdx force:cmdt:record:create --typename MyCMT__mdt --recordname MyRecord --label "My Record" --protected true 
   My_Custom_Field_1=Foo My_Custom_Field_2=Bar
 ```
 
