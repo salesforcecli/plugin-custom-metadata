@@ -233,8 +233,13 @@ OPTIONS
   --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
 
 EXAMPLES
-  $ sfdx force:cmdt:record:insert -f path/to/my.csv -t My_CMDT_Name
-  $ sfdx force:cmdt:record:insert -f path/to/my.csv -t My_CMDT_Name -n path/to/my/cmdtDirectory
+  Create record metadata files for type "My_CMDT_Name" (from your local project) based on values in a CSV file, using 
+  "Name" as the column that specifies the record name:
+       $ sfdx force:cmdt:record:insert --filepath path/to/my.csv --typename My_CMDT_Name
+  Create record metadata files for type "My_CMDT_Name" (from the specified directory) based on values in a CSV file, 
+  using "PrimaryKey" as the column that specifies the record name:
+       $ sfdx force:cmdt:record:insert --filepath path/to/my.csv --typename My_CMDT_Name --inputdir 
+  path/to/my/cmdtDirectory --namecolumn "PrimaryKey"
 ```
 
 _See code: [src/commands/force/cmdt/record/insert.ts](https://github.com/forcedotcom/sfdx-custommetadata/blob/v0.0.0/src/commands/force/cmdt/record/insert.ts)_
