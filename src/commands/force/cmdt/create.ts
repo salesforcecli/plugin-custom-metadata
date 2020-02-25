@@ -18,9 +18,11 @@ export default class Create extends SfdxCommand {
     public static longDescription = messages.getMessage('commandLongDescription');
 
     public static examples = [
-        '$ sfdx force:cmdt:create --typename MyCustomType',
-        '$ sfdx force:cmdt:create --typename MyCustomType --label "' + messages.getMessage('labelFlagExample') + '" ' +
-            '--plurallabel "' + messages.getMessage('plurallabelFlagExample') + '" --visibility Public'
+        'Create a custom metadata type with developer name "MyCustomType"; this name will also be used as the label:',
+        '    $ sfdx force:cmdt:create --typename MyCustomType',
+        'Create a protected custom metadata type with a specific label:',
+        '    $ sfdx force:cmdt:create --typename MyCustomType --label "' + messages.getMessage('labelFlagExample') + '" ' +
+            '--plurallabel "' + messages.getMessage('plurallabelFlagExample') + '" --visibility Protected'
     ];
 
     public static args = [{ name: 'file' }];

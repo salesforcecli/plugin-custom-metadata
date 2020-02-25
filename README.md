@@ -55,9 +55,11 @@ OPTIONS
   --loglevel=(trace|debug|info|warn|error|fatal)        logging level for this command invocation
 
 EXAMPLES
-  $ sfdx force:cmdt:create --typename MyCustomType
-  $ sfdx force:cmdt:create --typename MyCustomType --label "Custom Type" --plurallabel "Custom Types" --visibility 
-  Public
+  Create a custom metadata type with developer name "MyCustomType"; this name will also be used as the label:
+       $ sfdx force:cmdt:create --typename MyCustomType
+  Create a protected custom metadata type with a specific label:
+       $ sfdx force:cmdt:create --typename MyCustomType --label "Custom Type" --plurallabel "Custom Types" --visibility 
+  Protected
 ```
 
 _See code: [src/commands/force/cmdt/create.ts](https://github.com/forcedotcom/sfdx-custommetadata/blob/v0.0.0/src/commands/force/cmdt/create.ts)_
