@@ -33,7 +33,7 @@ export default class Insert extends SfdxCommand {
         required: true
     }),
     inputdir: flags.directory({
-        char: 'n',
+        char: 'i',
         description: messages.getMessage('inputDirectoryFlagDescription'),
         longDescription: messages.getMessage('inputDirectoryFlagLongDescription'),
         default: 'force-app/main/default/objects'
@@ -45,7 +45,7 @@ export default class Insert extends SfdxCommand {
         default: 'force-app/main/default/customMetadata'
     }),
     namecolumn: flags.string({
-        char: 'l',
+        char: 'n',
         description: messages.getMessage('namecolumnFlagDescription'),
         longDescription: messages.getMessage('namecolumnFlagLongDescription'),
         default: 'Name'
@@ -93,7 +93,7 @@ export default class Insert extends SfdxCommand {
     // find the cmdt in the inputdir.
     // loop through files and create records that match fields
     for (const record of csvDataAry) {
-      const recname: string = record[nameField].replace(' ', '_');
+      const recordname: string = record[nameField].replace(' ', '_');
       const varargs: object = {};
       // TODO: throw an error if any of the fields in the csvDataAry do not exist in the fileData
 
@@ -109,11 +109,11 @@ export default class Insert extends SfdxCommand {
 
       recordConfig = {
         typename,
-        recname,
+        recordname,
         label: record[nameField],
         inputdir,
         outputdir,
-        protection: false,
+        protected: false,
         varargs,
         fileData
       };

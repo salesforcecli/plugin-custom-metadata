@@ -9,8 +9,8 @@
     "labelFlagLongDescription": "A label for the custom metadata type.",
     "labelFlagExample": "Custom Type",
 
-    "plurallabelFlagDescription": "plural label for the custom metadata type; if blank, uses label",
-    "plurallabelFlagLongDescription": "A plural label for the custom metadata type. If this flag is missing or blank, the singular label is used as the plural label.",
+    "plurallabelFlagDescription": "plural version of the label value; if blank, uses label",
+    "plurallabelFlagLongDescription": "The plural version of the label value. If this flag is missing or blank, the singular label is used as the plural label.",
     "plurallabelFlagExample": "Custom Types",
 
     "visibilityFlagDescription": "visibility for the type",
@@ -21,9 +21,9 @@
 
     "successResponse" : "Created custom metadata type with object name '%s', label '%s', plural label '%s', and visibility '%s' at '%s'.",
     "errorNoOrgResults": "No results found for the organization '%s'.",
-    "errorNotValidAPIName" :"'%s' is not a valid API name for a custom metadata object. Metadata names can contain only underscores and alphanumeric characters, must begin with a letter, cannot end with an underscore or contain two consecutive underscore characters.",
-    "errorNotValidLabelName" : "'%s' is not a valid label for a custom metadata object.",
-    "errorNotValidPluralLabelName" : "'%s' is not a valid plural label for a custom metadata object.",
+    "errorNotValidAPIName" :"'%s' is not a valid API name for a custom metadata type. Metadata names can contain only underscores and alphanumeric characters, must begin with a letter, cannot end with an underscore or contain two consecutive underscore characters.",
+    "errorNotValidLabelName" : "'%s' is not a valid label for a custom metadata type.",
+    "errorNotValidPluralLabelName" : "'%s' is not a valid plural label for a custom metadata type.",
     "targetDirectory" : "target dir = %s",
     "fileCreated": "   create %s",
     "fileUpdate":"   update %s"

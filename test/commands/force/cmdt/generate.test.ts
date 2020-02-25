@@ -98,8 +98,8 @@ describe('sfdx force:cmdt:generate', () => {
         .withProject()
         .stub(Org.prototype, 'getConnection',function(){ return {metadata,query}})
         .stub(core.Connection,'create',function(){ return {metadata,query}})
-        .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c', '-x', 'test@org.com'])
-        .it('runs force:cmdt:generate -n MyCMDT -s TriggerSettings__c -x test@org.com', ctx => {
+        .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c', '-u', 'test@org.com'])
+        .it('runs force:cmdt:generate -n MyCMDT -s TriggerSettings__c -u test@org.com', ctx => {
             const cmdtName = 'MyCMDT';
             expect(fs.existsSync(`force-app/main/default/objects/${cmdtName}__mdt`)).to.be.true;
             expect(fs.existsSync(`force-app/main/default/objects/${cmdtName}__mdt/fields/IsAfterDeleteDisabled__c.field-meta.xml`)).to.be.true;
@@ -116,8 +116,8 @@ describe('sfdx force:cmdt:generate', () => {
         .withProject()
         .stub(Org.prototype, 'getConnection',function(){ return {metadata,query}})
         .stub(core.Connection,'create',function(){ return {metadata,query}})
-        .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c', '-x', 'test2@org.con'])
-        .it('No user found while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c -x test@org.com', ctx => {
+        .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c', '-u', 'test2@org.con'])
+        .it('No user found while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c -u test@org.com', ctx => {
             expect(ctx.stderr ).to.contain('no user found with the provided username or alias test2@org.con');
         });
 
@@ -161,7 +161,7 @@ describe('sfdx force:cmdt:generate', () => {
         .stub(Org.prototype, 'getConnection',function(){ return {metadata: emptyMetadata,query}})
         .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c'])
         .it('No sobject with name while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
-            expect(ctx.stderr ).to.contain('No sobject with name TriggerSettings__c found in the org.');
+            expect(ctx.stderr ).to.contain('No sObject with name TriggerSettings__c found in the org.');
         });
 
         test

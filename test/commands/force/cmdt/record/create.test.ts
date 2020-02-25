@@ -17,14 +17,14 @@ describe('sfdx force:cmdt:record:create error handling', () => {
     .command([
       'force:cmdt:record:create',
       '-t', 'pbwbFgJM4GyDOaNZn60NjAy3Ciks791y_dKLsPmXS6',
-      '-r', 'Foobar',
+      '-n', 'Foobar',
       '-l', 'Foobar',
       '-p', 'true',
-      '-n', 'badDevNameDir',
+      '-i', 'badDevNameDir',
       '-d', 'badDevNameDir/customMetadata'
     ])
     .it('runs force:cmdt:record:create and throws an error if the API name is invalid', ctx => {
-      expect(ctx.stdout).to.contain("'pbwbFgJM4GyDOaNZn60NjAy3Ciks791y_dKLsPmXS6' is not a valid api name for a custom metadata object");
+      expect(ctx.stdout).to.contain("'pbwbFgJM4GyDOaNZn60NjAy3Ciks791y_dKLsPmXS6' is not a valid API name for a custom metadata type.");
 
       exec(`rm -rf badDevNameDir`);
     });
@@ -47,10 +47,10 @@ describe('sfdx force:cmdt:record:create error handling', () => {
     .command([
       'force:cmdt:record:create',
       '-t', 'Bad_Record_Name_Test',
-      '-r', 'Bad Record Name',
+      '-n', 'Bad Record Name',
       '-l', 'Foobar',
       '-p', 'true',
-      '-n', 'recordNameErrorDir',
+      '-i', 'recordNameErrorDir',
       '-d', 'recordNameErrorDir/customMetadata'
     ])
     .it('runs force:cmdt:record:create and throws an error if the record name is invalid', ctx => {
@@ -78,10 +78,10 @@ describe('sfdx force:cmdt:record:create error handling', () => {
     .command([
       'force:cmdt:record:create',
       '-t', 'Foo__mdt',
-      '-r', 'Foobar',
+      '-n', 'Foobar',
       '-l', 'Foobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobar',
       '-p', 'true',
-      '-n', 'exceedCharDir',
+      '-i', 'exceedCharDir',
       '-d', 'exceedCharDir/customMetadata'
     ])
     .it('runs force:cmdt:record:create and throws an error if there are more than 40 characters in a label', ctx => {
@@ -117,9 +117,9 @@ describe('sfdx force:cmdt:record:create', () => {
     .command([
       'force:cmdt:record:create',
       '--typename', 'Long_Flags_Create_Test',
-      '--recname', 'Long_Flags_Create_Test_Record',
+      '--recordname', 'Long_Flags_Create_Test_Record',
       '--label', 'Long Flags Create Test Record Label',
-      '--protection', 'true',
+      '--protected', 'true',
       '--inputdir', 'createWithLongFlags',
       '--outputdir', 'createWithLongFlags/customMetadata'
     ])
@@ -159,10 +159,10 @@ describe('sfdx force:cmdt:record:create', () => {
     .command([
       'force:cmdt:record:create',
       '-t', 'Short_Flag_Test',
-      '-r', 'Short_Flag_Test_Record',
+      '-n', 'Short_Flag_Test_Record',
       '-l', 'Short Flag Test Record Label',
       '-p', 'true',
-      '-n', 'shortFlagDir',
+      '-i', 'shortFlagDir',
       '-d', 'shortFlagDir/customMetadata'
     ])
     .it('runs force:cmdt:record:create with short flags', ctx => {
@@ -184,10 +184,10 @@ describe('sfdx force:cmdt:record:create', () => {
     .command([
       'force:cmdt:record:create',
       '-t', 'Suffix_Test__mdt',
-      '-r', 'Suffix_Test_Record',
+      '-n', 'Suffix_Test_Record',
       '-l', 'Suffix Test Record Label',
       '-p', 'true',
-      '-n', 'suffixTestDir',
+      '-i', 'suffixTestDir',
       '-d', 'suffixTestDir/customMetadata'
     ])
     .it('runs force:cmdt:record:create and accepts a typename with a __mdt suffix, but removes that suffix during record creation', ctx => {
@@ -211,8 +211,8 @@ describe('sfdx force:cmdt:record:create test contents of record file created', (
     .command([
       'force:cmdt:record:create',
       '-t', 'Output_Test',
-      '-r', 'Output_Test_Record',
-      '-n', 'outputTestDir',
+      '-n', 'Output_Test_Record',
+      '-i', 'outputTestDir',
       '-d', 'outputTestDir/customMetadata'
     ])
     .it('should create records without optional flags', () => {

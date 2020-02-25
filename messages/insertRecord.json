@@ -1,6 +1,6 @@
 {
-  "commandDescription": "creates new custom metadata type records from a CSV",
-  "commandLongDescription": "Creates new custom metadata type records from a CSV.",
+  "commandDescription": "creates new custom metadata type records from a CSV file",
+  "commandLongDescription": "Creates new custom metadata type records from a CSV file.",
 
   "filepathFlagDescription": "path to the CSV file",
   "filepathFlagLongDescription": "The path to the CSV file.",
@@ -12,11 +12,11 @@
   "outputDirectoryFlagLongDescription": "The directory where the file will be created.",
 
   "typenameFlagDescription": "API name of the custom metadata type",
-  "typenameFlagLongDescription": "The API Name of the custom metadata type.",
+  "typenameFlagLongDescription": "The API Name of the custom metadata type. The '__mdt' suffix will be appended to the end of the name if it is omitted.",
 
   "namecolumnFlagDescription": "column that is used to determine the name of the record",
   "namecolumnFlagLongDescription": "The column that is used to determine the name of the record.",
 
   "successResponse": "Created custom metadata type records from '%s' at '%s'.",
-  "fieldNotFoundError": "The column %s is not found on the custom metadata type %s"
+  "fieldNotFoundError": "The column %s is not found on the custom metadata type %s."
 }

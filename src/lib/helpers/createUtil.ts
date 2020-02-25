@@ -35,10 +35,10 @@ export class CreateUtil {
    * @return void
    */
   public async createRecord(createConfig: CreateConfig) {
-    const outputFilePath = `${createConfig.outputdir}/${createConfig.typename}.${createConfig.recname}.md-meta.xml`;
+    const outputFilePath = `${createConfig.outputdir}/${createConfig.typename}.${createConfig.recordname}.md-meta.xml`;
     const newRecordContent = this.getRecordTemplate(
       createConfig.label,
-      createConfig.protection,
+      createConfig.protected,
       this.buildCustomFieldXml(createConfig.fileData, createConfig.varargs, createConfig.ignorefields)
     );
 

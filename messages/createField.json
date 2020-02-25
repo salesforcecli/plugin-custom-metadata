@@ -8,11 +8,11 @@
     "fieldTypeDescription": "type of field",
     "fieldTypeLongDescription": "The type of field.",
 
-    "picklistValuesFlagDescription": "list of picklist values that are added when creating a picklist",
-    "picklistValuesFlagLongDescription": "The list of picklist values that are added when creating a picklist.",
+    "picklistValuesFlagDescription": "comma-separated list of picklist values; required for Picklist fields",
+    "picklistValuesFlagLongDescription": "A comma-separated list of picklist values. These values are required when creating a Picklist field.",
 
-    "decimalplacesFlagDescription": "number of decimal places",
-    "decimalplacesFlagLongDescription": "The number of decimal places to use for number fields.",
+    "decimalplacesFlagDescription": "number of decimal places to use for Number or Percent fields",
+    "decimalplacesFlagLongDescription": "The number of decimal places to use for Number or Percent fields.",
 
     "labelFlagDescription": "label for the new field",
     "labelFlagLongDescription": "The label for the new field.",

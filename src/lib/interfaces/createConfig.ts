@@ -2,11 +2,11 @@ import { CustomField } from './customField';
 
 export interface CreateConfig {
   typename: string;
-  recname: string;
+  recordname: string;
   label: string;
   inputdir: string;
   outputdir: string;
-  protection?: boolean;
+  protected?: boolean;
   varargs?: object;
   fileData?: CustomField[];
   ignorefields?: boolean;

@@ -17,8 +17,8 @@ export default class Create extends SfdxCommand {
   public static longDescription = messages.getMessage('commandLongDescription');
 
   public static examples = [
-    '$ sfdx force:cmdt:record:create --typename MyCMT__mdt --recname MyRecord My_Custom_Field_1=Foo My_Custom_Field_2=Bar',
-    '$ sfdx force:cmdt:record:create --typename MyCMT__mdt --recname MyRecord --label "' + messages.getMessage('labelFlagExample') + '" ' +
+    '$ sfdx force:cmdt:record:create --typename MyCMT__mdt --recordname MyRecord My_Custom_Field_1=Foo My_Custom_Field_2=Bar',
+    '$ sfdx force:cmdt:record:create --typename MyCMT__mdt --recordname MyRecord --label "' + messages.getMessage('labelFlagExample') + '" ' +
         '--protected true My_Custom_Field_1=Foo My_Custom_Field_2=Bar'
   ];
 
@@ -29,8 +29,8 @@ export default class Create extends SfdxCommand {
         longDescription: messages.getMessage('typenameFlagLongDescription'),
         required: true
     }),
-    recname: flags.string({
-        char: 'r',
+    recordname: flags.string({
+        char: 'n',
         description: messages.getMessage('recordNameFlagDescription'),
         longDescription: messages.getMessage('recordNameFlagLongDescription'),
         required: true
@@ -40,7 +40,7 @@ export default class Create extends SfdxCommand {
         description: messages.getMessage('labelFlagDescription'),
         longDescription: messages.getMessage('labelFlagLongDescription')
     }),
-    protection: flags.string({
+    protected: flags.string({
         char: 'p',
         description: messages.getMessage('protectedFlagDescription'),
         longDescription: messages.getMessage('protectedFlagLongDescription'),
@@ -48,7 +48,7 @@ export default class Create extends SfdxCommand {
         default: 'false'
     }),
     inputdir: flags.directory({
-        char: 'n',
+        char: 'i',
         description: messages.getMessage('inputDirectoryFlagDescription'),
         longDescription: messages.getMessage('inputDirectoryFlagLongDescription'),
         default: 'force-app/main/default/objects'
@@ -83,9 +83,9 @@ export default class Create extends SfdxCommand {
       const createUtil = new CreateUtil();
       const fileWriter = new FileWriter();
       let typename = this.flags.typename;
-      const recname = this.flags.recname;
-      const label = this.flags.label || this.flags.recname;
-      const protection = this.flags.protection || 'false';
+      const recordname = this.flags.recordname;
+      const label = this.flags.label || this.flags.recordname;
+      const protectedFlag = this.flags.protected || 'false';
       const inputdir = this.flags.inputdir || 'force-app/main/default/objects';
       const outputdir = this.flags.outputdir || 'force-app/main/default/customMetadata';
       const dirName = createUtil.appendDirectorySuffix(typename);
@@ -95,8 +95,8 @@ export default class Create extends SfdxCommand {
         throw new core.SfdxError(messages.getMessage('notValidAPINameError', [typename]));
       }
 
-      if (!validator.validateMetadataRecordName(recname)) {
-        throw new core.SfdxError(messages.getMessage('notAValidRecordNameError', [recname]));
+      if (!validator.validateMetadataRecordName(recordname)) {
+        throw new core.SfdxError(messages.getMessage('notAValidRecordNameError', [recordname]));
       }
 
       if (!validator.validateLessThanForty(label)) {
@@ -117,27 +117,27 @@ export default class Create extends SfdxCommand {
 
       await createUtil.createRecord({
         typename,
-        recname,
+        recordname,
         label,
         inputdir,
         outputdir,
-        protection,
+        protected: protectedFlag,
         varargs: this.varargs,
         fileData
       });
 
       this.ux.log(messages.getMessage(
-        'successResponse', [typename, recname, label, protection, outputdir]
+        'successResponse', [typename, recordname, label, protectedFlag, outputdir]
       ));
 
       // Return an object to be displayed with --json
       return {
         typename,
-        recname,
+        recordname,
         label,
         inputdir,
         outputdir,
-        protection,
+        protectedFlag,
         varargs: this.varargs,
         fileData
       };

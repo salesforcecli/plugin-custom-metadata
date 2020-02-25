@@ -49,9 +49,9 @@ describe('CreateUtil', () => {
         const createUtil = new CreateUtil();
         const fileWriter = new FileWriter();
         const typename = 'Field_Type_Test';
-        const recname = 'Field_Type_Test_Record';
+        const recordname = 'Field_Type_Test_Record';
         const label = 'Field Type Test Label';
-        const protection = true;
+        const protectedFlag = true;
         const inputdir = 'fieldTypeTest';
         const outputdir = 'fieldTypeTest/customMetadata';
         const dirName = createUtil.appendDirectorySuffix(typename);
@@ -80,11 +80,11 @@ describe('CreateUtil', () => {
 
         await createUtil.createRecord({
           typename,
-          recname,
+          recordname,
           label,
           inputdir,
           outputdir,
-          protection,
+          protected: protectedFlag,
           varargs,
           fileData
         });
@@ -157,9 +157,9 @@ describe('CreateUtil', () => {
         const createUtil = new CreateUtil();
         const fileWriter = new FileWriter();
         const typename = 'Field_Type_Test';
-        const recname = 'Field_Type_Test_Record';
+        const recordname = 'Field_Type_Test_Record';
         const label = 'Field Type Test Label';
-        const protection = true;
+        const protectedFlag = true;
         const inputdir = 'fieldTypeTest';
         const outputdir = 'fieldTypeTest/customMetadata';
         const dirName = createUtil.appendDirectorySuffix(typename);
@@ -188,11 +188,11 @@ describe('CreateUtil', () => {
 
         await createUtil.createRecord({
           typename,
-          recname,
+          recordname,
           label,
           inputdir,
           outputdir,
-          protection,
+          protected: protectedFlag,
           varargs,
           fileData
         });
@@ -278,9 +278,9 @@ describe('CreateUtil', () => {
         const createUtil = new CreateUtil();
         const fileWriter = new FileWriter();
         const typename = 'Dir_File_Test';
-        const recname = 'Dir_File_Test_Record';
+        const recordname = 'Dir_File_Test_Record';
         const label = 'Dir File Test Record Label';
-        const protection = true;
+        const protectedFlag = true;
         const inputdir = 'dirFileTest';
         const outputdir = 'dirFileTest/cmdtRecords';
         const dirName = createUtil.appendDirectorySuffix(typename);
@@ -309,16 +309,16 @@ describe('CreateUtil', () => {
 
         await createUtil.createRecord({
           typename,
-          recname,
+          recordname,
           label,
           inputdir,
           outputdir,
-          protection,
+          protected: protectedFlag,
           varargs,
           fileData
         });
 
-        const filePath = `${outputdir}/${typename}.${recname}.md-meta.xml`;
+        const filePath = `${outputdir}/${typename}.${recordname}.md-meta.xml`;
 
         expect(fs.existsSync(fieldDirPath)).to.be.true;
         expect(fs.existsSync(filePath)).to.be.true;

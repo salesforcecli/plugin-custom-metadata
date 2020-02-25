@@ -49,7 +49,7 @@ OPTIONS
   -d, --outputdir=outputdir                             the directory to store the newly created files
   -l, --label=label                                     label for the custom metadata type
   -n, --typename=typename                               (required) unique object name for the custom metadata type
-  -p, --plurallabel=plurallabel                         plural label for the custom metadata type; if blank, uses label
+  -p, --plurallabel=plurallabel                         plural version of the label value; if blank, uses label
   -v, --visibility=(PackageProtected|Protected|Public)  [default: Public] visibility for the type
   --json                                                format output as json
   --loglevel=(trace|debug|info|warn|error|fatal)        logging level for this command invocation
@@ -84,10 +84,10 @@ OPTIONS
       (required) name for the field
 
   -p, --picklistvalues=picklistvalues
-      list of picklist values that are added when creating a picklist
+      comma-separated list of picklist values; required for Picklist fields
 
   -s, --decimalplaces=decimalplaces
-      number of decimal places
+      number of decimal places to use for Number or Percent fields
 
   --json
       format output as json
@@ -112,48 +112,45 @@ USAGE
 
 OPTIONS
   -d, --typeoutputdir=typeoutputdir                     [default: force-app/main/default/objects/] directory where the
-                                                        custom metadata will be created
+                                                        custom metadata type files will be created
 
-  -i, --ignoreunsupported                               ignores non-supported field types
+  -i, --ignoreunsupported                               ignore unsupported field types
 
   -l, --label=label                                     label for the custom metadata type
 
-  -l, --loglevel=loglevel                               logging level for this command invocation
-
   -n, --devname=devname                                 (required) name of the new custom metadata type
 
-  -p, --plurallabel=plurallabel                         plural label for the custom metadata type; if blank, uses label
+  -p, --plurallabel=plurallabel                         plural version of the label value; if blank, uses label
 
   -r, --recordsoutputdir=recordsoutputdir               [default: force-app/main/default/customMetadata/] directory
-                                                        where the custom metadata will be created
+                                                        where the custom metadata record files will be created
 
-  -s, --sobjectname=sobjectname                         (required) API name of the sObject you are generating to custom
-                                                        metadata
+  -s, --sobjectname=sobjectname                         (required) API name of the sObject you wish to generate custom
+                                                        metadata from
 
   -u, --targetusername=targetusername                   username or alias for the target org; overrides default target
                                                         org
 
   -v, --visibility=(PackageProtected|Protected|Public)  [default: Public] visibility for the type
 
-  -x, --sourceusername=sourceusername                   username or alias for the source org that contains the custom
-                                                        setting or sObject and data to be generated
-
   --apiversion=apiversion                               override the api version used for api requests made by this
                                                         command
 
   --json                                                format output as json
 
+  --loglevel=(trace|debug|info|warn|error|fatal)        logging level for this command invocation
+
 EXAMPLES
   $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c
-  $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c  --ignoreunsupported --sourceusername 
-  'alias or the email of the source org'
+  $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c  --ignoreunsupported --targetusername 
+  'alias or user email of the org containing the source type'
   $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomObject__c  --visibility Protected
   $ sfdx force:cmdt:generate --devname MyCMDT --label "My CMDT" --plurallabel "My CMDTs" --sobjectname 
   SourceCustomSetting__c  --visibility Protected
-  $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c --typeoutputdir 'your desired Path 
-  for custom metadata'
-  $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c --recordsoutputdir 'your desired Path 
-  for custom metadata Records'
+  $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c --typeoutputdir 'your desired path 
+  for custom metadata types'
+  $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c --recordsoutputdir 'your desired path 
+  for custom metadata records'
 ```
 
 _See code: [src/commands/force/cmdt/generate.ts](https://github.com/forcedotcom/sfdx-custommetadata/blob/v0.0.0/src/commands/force/cmdt/generate.ts)_
@@ -170,14 +167,14 @@ OPTIONS
   -d, --outputdir=outputdir                       [default: force-app/main/default/customMetadata] directory where the
                                                   file will be created
 
-  -l, --label=label                               label for the new record
-
-  -n, --inputdir=inputdir                         [default: force-app/main/default/objects] directory where the custom
+  -i, --inputdir=inputdir                         [default: force-app/main/default/objects] directory where the custom
                                                   metadata type definition will be pulled from
 
-  -p, --protection=true|false                     [default: false] visibility for the record
+  -l, --label=label                               label for the new record
 
-  -r, --recname=recname                           (required) name for the new record
+  -n, --recordname=recordname                     (required) name for the new record
+
+  -p, --protected=true|false                      [default: false] protects the record when it is in a managed package
 
   -t, --typename=typename                         (required) API name of the custom metadata type to create a record for
 
@@ -186,8 +183,9 @@ OPTIONS
   --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
 
 EXAMPLES
-  $ sfdx force:cmdt:record:create --typename MyCMT__mdt --recname MyRecord My_Custom_Field_1=Foo My_Custom_Field_2=Bar
-  $ sfdx force:cmdt:record:create --typename MyCMT__mdt --recname MyRecord --label "My Record" --protected true 
+  $ sfdx force:cmdt:record:create --typename MyCMT__mdt --recordname MyRecord My_Custom_Field_1=Foo 
+  My_Custom_Field_2=Bar
+  $ sfdx force:cmdt:record:create --typename MyCMT__mdt --recordname MyRecord --label "My Record" --protected true 
   My_Custom_Field_1=Foo My_Custom_Field_2=Bar
 ```
 
@@ -195,7 +193,7 @@ _See code: [src/commands/force/cmdt/record/create.ts](https://github.com/forcedo
 
 ## `custommetadata force:cmdt:record:insert`
 
-creates new custom metadata type records from a CSV
+creates new custom metadata type records from a CSV file
 
 ```
 USAGE
@@ -207,11 +205,11 @@ OPTIONS
 
   -f, --filepath=filepath                         (required) path to the CSV file
 
-  -l, --namecolumn=namecolumn                     [default: Name] column that is used to determine the name of the
-                                                  record
-
-  -n, --inputdir=inputdir                         [default: force-app/main/default/objects] directory where the custom
+  -i, --inputdir=inputdir                         [default: force-app/main/default/objects] directory where the custom
                                                   metadata type definition will be pulled from
+
+  -n, --namecolumn=namecolumn                     [default: Name] column that is used to determine the name of the
+                                                  record
 
   -t, --typename=typename                         (required) API name of the custom metadata type
 

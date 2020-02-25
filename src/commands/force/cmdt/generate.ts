@@ -23,7 +23,7 @@ export default class Generate extends SfdxCommand {
 
   public static examples = [
     '$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c',
-    '$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c  --ignoreunsupported --sourceusername \'' + messages.getMessage('sourceusernameFlagExample') + '\'',
+    '$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c  --ignoreunsupported --targetusername \'' + messages.getMessage('targetusernameFlagExample') + '\'',
     '$ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomObject__c  --visibility Protected',
     '$ sfdx force:cmdt:generate --devname MyCMDT --label "' + messages.getMessage('labelFlagExample') + '" ' +
         '--plurallabel "' + messages.getMessage('plurallabelFlagExample') + '" --sobjectname SourceCustomSetting__c  --visibility Protected',
@@ -64,11 +64,6 @@ export default class Generate extends SfdxCommand {
         description: messages.getMessage('sobjectnameFlagDescription'),
         longDescription: messages.getMessage('sobjectnameFlagLongDescription')
     }),
-    sourceusername: flags.string({
-        char: 'x',
-        description: messages.getMessage('sourceusernameFlagDescription'),
-        longDescription: messages.getMessage('sourceusernameFlagLongDescription')
-    }),
     ignoreunsupported: flags.boolean({
         char: 'i',
         description: messages.getMessage('ignoreUnsupportedFlagDescription'),
@@ -85,11 +80,6 @@ export default class Generate extends SfdxCommand {
         description: messages.getMessage('recordsoutputdirFlagDescription'),
         longDescription: messages.getMessage('recordsoutputdirFlagLongDescription'),
         default: 'force-app/main/default/customMetadata/'
-    }),
-    loglevel: flags.string({
-        char: 'l',
-        description: messages.getMessage('loglevelFlagDescription'),
-        longDescription: messages.getMessage('loglevelFlagLongDescription')
     })
   };
 
@@ -108,13 +98,13 @@ export default class Generate extends SfdxCommand {
 
     const objname = this.flags.sobjectname;
     const cmdttype = this.flags.devname;
-    const sourceuser = this.flags.sourceusername;
+    const sourceuser = this.flags.targetusername;
     const ignoreFields = this.flags.ignoreunsupported;
 
     let username: string;
     let sourceOrgConn: core.Connection;
     let describeObj;
-    // check whether username or alias is provided as sourceusername
+    // check whether username or alias is provided as targetusername
     if (!isNullOrUndefined(sourceuser)) {
         if (sourceuser.substr(sourceuser.length - 4) !== '.com') {
 
@@ -180,7 +170,7 @@ export default class Generate extends SfdxCommand {
 
     const visibility = this.flags.visibility || 'Public';
     const label = this.flags.label || devName;
-    const pluralLabel = this.flags.plurallabel || devName;
+    const pluralLabel = this.flags.plurallabel || label;
     const outputDir = this.flags.typeoutputdir || 'force-app/main/default/objects/';
     const recordsOutputDir = this.flags.recordsoutputdir || 'force-app/main/default/customMetadata';
 
@@ -235,10 +225,10 @@ export default class Generate extends SfdxCommand {
         for (const field of fields) {
             // added type check here to skip the creation of geo location field  and un supported fields as we are adding it as lat and long field above.
             if ((templates.canConvert(field['type']) || !ignoreFields) && field['type'] !== 'Location') {
-                const recName = field['fullName'];
+                const recordname = field['fullName'];
                 const fieldXML = templates.createFieldXML(field, !ignoreFields);
                 const targetDir = `${outputDir}${devName}__mdt`;
-                await fileWriter.writeFieldFile(core.fs, targetDir, recName, fieldXML);
+                await fileWriter.writeFieldFile(core.fs, targetDir, recordname, fieldXML);
             }
         }
 
@@ -262,11 +252,11 @@ export default class Generate extends SfdxCommand {
             }
             await createUtil.createRecord({
                 typename,
-                recname: recordName,
+                recordname: recordName,
                 label: lblName,
                 inputdir: outputDir,
                 outputdir: recordsOutputDir,
-                protection: security,
+                protected: security,
                 varargs: record,
                 fileData,
                 ignorefields: ignoreFields

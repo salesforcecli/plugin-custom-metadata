@@ -46,7 +46,8 @@ export default class Create extends SfdxCommand {
         decimalplaces: flags.number({
             char: 's',
             description: messages.getMessage('decimalplacesFlagDescription'),
-            longDescription: messages.getMessage('decimalplacesFlagLongDescription')
+            longDescription: messages.getMessage('decimalplacesFlagLongDescription'),
+            default: 0
         }),
         label: flags.string({
             char: 'l',

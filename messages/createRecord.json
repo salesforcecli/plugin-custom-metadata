@@ -12,8 +12,8 @@
     "labelFlagLongDescription": "The label for the new record.",
     "labelFlagExample": "My Record",
 
-    "protectedFlagDescription": "visibility for the record",
-    "protectedFlagLongDescription": "The visibility for the record.",
+    "protectedFlagDescription": "protects the record when it is in a managed package",
+    "protectedFlagLongDescription": "Protects the record when it is in a managed package. Protected records can only be accessed by code in the same managed package namespace.",
 
     "inputDirectoryFlagDescription": "directory where the custom metadata type definition will be pulled from",
     "inputDirectoryFlagLongDescription": "The directory where the custom metadata type definition will be pulled from.",
@@ -23,7 +23,7 @@
 
     "errorInvalidCustomField": "Custom fields must end in __c.",
     "successResponse": "Created custom metadata record of the type '%s' with record name '%s', label '%s', and protected '%s' at '%s'.",
-    "notValidAPINameError": "'%s' is not a valid api name for a custom metadata object.",
+    "notValidAPINameError": "'%s' is not a valid API name for a custom metadata type.",
     "notAValidRecordNameError": "%s is not a valid record name for a custom metadata record.",
     "notAValidLabelNameError": "%s is too long to be a label name."
 }
