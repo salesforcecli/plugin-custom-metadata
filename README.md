@@ -55,7 +55,7 @@ OPTIONS
   --loglevel=(trace|debug|info|warn|error|fatal)        logging level for this command invocation
 
 EXAMPLES
-  Create a custom metadata type with developer name "MyCustomType"; this name will also be used as the label:
+  Create a custom metadata type with developer name 'MyCustomType'; this name will also be used as the label:
        $ sfdx force:cmdt:create --typename MyCustomType
   Create a protected custom metadata type with a specific label:
        $ sfdx force:cmdt:create --typename MyCustomType --label "Custom Type" --plurallabel "Custom Types" --visibility 
@@ -198,10 +198,10 @@ OPTIONS
   --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
 
 EXAMPLES
-  Create a record metadata file for custom metadata type "MyCMT" with values specified for two custom fields:
+  Create a record metadata file for custom metadata type 'MyCMT' with values specified for two custom fields:
        $ sfdx force:cmdt:record:create --typename MyCMT__mdt --recordname MyRecord My_Custom_Field_1=Foo 
   My_Custom_Field_2=Bar
-  Create a protected record metadata file for custom metadata type "MyCMT" with a specific label and values specified 
+  Create a protected record metadata file for custom metadata type 'MyCMT' with a specific label and values specified 
   for two custom fields:
        $ sfdx force:cmdt:record:create --typename MyCMT__mdt --recordname MyRecord --label "My Record" --protected true 
   My_Custom_Field_1=Foo My_Custom_Field_2=Bar
@@ -236,11 +236,11 @@ OPTIONS
   --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
 
 EXAMPLES
-  Create record metadata files for type "My_CMDT_Name" (from your local project) based on values in a CSV file, using 
-  "Name" as the column that specifies the record name:
+  Create record metadata files for type 'My_CMDT_Name' (from your local project) based on values in a CSV file, using 
+  'Name' as the column that specifies the record name:
        $ sfdx force:cmdt:record:insert --filepath path/to/my.csv --typename My_CMDT_Name
-  Create record metadata files for type "My_CMDT_Name" (from the specified directory) based on values in a CSV file, 
-  using "PrimaryKey" as the column that specifies the record name:
+  Create record metadata files for type 'My_CMDT_Name' (from the specified directory) based on values in a CSV file, 
+  using 'PrimaryKey' as the column that specifies the record name:
        $ sfdx force:cmdt:record:insert --filepath path/to/my.csv --typename My_CMDT_Name --inputdir 
   path/to/my/cmdtDirectory --namecolumn "PrimaryKey"
 ```

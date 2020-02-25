@@ -2,6 +2,10 @@
     "commandDescription": "generates a custom metadata field based on the field type provided",
     "commandLongDescription": "Generates a custom metadata field based on the field type provided.",
 
+    "exampleCaption1": "Create a metadata file for a custom checkbox field:",
+    "exampleCaption2": "Create a metadata file for a custom picklist field:",
+    "exampleCaption3": "Create a metadata file for a custom number field:",
+
     "nameFlagDescription": "name for the field",
     "nameFlagLongDescription": "The name for the field.",
 

@@ -2,6 +2,13 @@
     "commandDescription": "generates a custom metadata type and all its records for the provided sObject",
     "commandLongDescription": "Generates a custom metadata type and all its records for the provided sObject.",
 
+    "exampleCaption1": "Generate a custom metadata type from an sObject in the default target org:",
+    "exampleCaption2": "Generate a custom metadata type from an sObject in the specified target org; ignore unsupported field types instead of converting them to text:",
+    "exampleCaption3": "Generate a protected custom metadata type from an sObject in the default target org:",
+    "exampleCaption4": "Generate a protected custom metadata type with a specific label from an sObject in the default target org:",
+    "exampleCaption5": "Generate a custom metadata type from an sObject in the default target org; put the resulting type metadata file in the specified directory:",
+    "exampleCaption6": "Generate a custom metadata type from an sObject in the default target org; put the resulting record metadata file(s) in the specified directory:",
+
     "visibilityFlagDescription": "visibility for the type",
     "visibilityFlagLongDescription": "The visibility for the type.",
 

@@ -18,11 +18,11 @@ export default class Create extends SfdxCommand {
     public static longDescription = messages.getMessage('commandLongDescription');
 
     public static examples = [
-        'Create a metadata file for a custom checkbox field:',
+        messages.getMessage('exampleCaption1'),
         '    $ sfdx force:cmdt:field:create --fieldname MyField --fieldtype Checkbox',
-        'Create a metadata file for a custom picklist field:',
+        messages.getMessage('exampleCaption2'),
         '    $ sfdx force:cmdt:field:create --fieldname MyField --fieldtype Picklist --picklistvalues "A,B,C"',
-        'Create a metadata file for a custom number field:',
+        messages.getMessage('exampleCaption3'),
         '    $ sfdx force:cmdt:field:create --fieldname MyField --fieldtype Number --decimalplaces 2'
     ];
 

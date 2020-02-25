@@ -17,9 +17,9 @@ export default class Create extends SfdxCommand {
   public static longDescription = messages.getMessage('commandLongDescription');
 
   public static examples = [
-    'Create a record metadata file for custom metadata type "MyCMT" with values specified for two custom fields:',
+    messages.getMessage('exampleCaption1'),
     '    $ sfdx force:cmdt:record:create --typename MyCMT__mdt --recordname MyRecord My_Custom_Field_1=Foo My_Custom_Field_2=Bar',
-    'Create a protected record metadata file for custom metadata type "MyCMT" with a specific label and values specified for two custom fields:',
+    messages.getMessage('exampleCaption2'),
     '    $ sfdx force:cmdt:record:create --typename MyCMT__mdt --recordname MyRecord --label "' + messages.getMessage('labelFlagExample') + '" ' +
         '--protected true My_Custom_Field_1=Foo My_Custom_Field_2=Bar'
   ];

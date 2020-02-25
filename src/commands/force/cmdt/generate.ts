@@ -22,18 +22,18 @@ export default class Generate extends SfdxCommand {
   public static longDescription = messages.getMessage('commandLongDescription');
 
   public static examples = [
-    'Generate a custom metadata type from an sObject in the default target org:',
+    messages.getMessage('exampleCaption1'),
     '    $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c',
-    'Generate a custom metadata type from an sObject in the specified target org; ignore unsupported field types instead of converting them to text:',
+    messages.getMessage('exampleCaption2'),
     '    $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c  --ignoreunsupported --targetusername \'' + messages.getMessage('targetusernameFlagExample') + '\'',
-    'Generate a protected custom metadata type from an sObject in the default target org:',
+    messages.getMessage('exampleCaption3'),
     '    $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomObject__c  --visibility Protected',
-    'Generate a protected custom metadata type with a specific label from an sObject in the default target org:',
+    messages.getMessage('exampleCaption4'),
     '    $ sfdx force:cmdt:generate --devname MyCMDT --label "' + messages.getMessage('labelFlagExample') + '" ' +
         '--plurallabel "' + messages.getMessage('plurallabelFlagExample') + '" --sobjectname SourceCustomSetting__c  --visibility Protected',
-    'Generate a custom metadata type from an sObject in the default target org; put the resulting type metadata file in the specified directory:',
+    messages.getMessage('exampleCaption5'),
     '    $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c --typeoutputdir \'' + messages.getMessage('typeoutputdirFlagExample') + '\'',
-    'Generate a custom metadata type from an sObject in the default target org; put the resulting record metadata file(s) in the specified directory:',
+    messages.getMessage('exampleCaption6'),
     '    $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c --recordsoutputdir \'' + messages.getMessage('recordsoutputdirFlagExample') + '\''
   ];
 

@@ -2,6 +2,9 @@
   "commandDescription": "creates new custom metadata type records from a CSV file",
   "commandLongDescription": "Creates new custom metadata type records from a CSV file.",
 
+  "exampleCaption1": "Create record metadata files for type 'My_CMDT_Name' (from your local project) based on values in a CSV file, using 'Name' as the column that specifies the record name:",
+  "exampleCaption2": "Create record metadata files for type 'My_CMDT_Name' (from the specified directory) based on values in a CSV file, using 'PrimaryKey' as the column that specifies the record name:",
+
   "filepathFlagDescription": "path to the CSV file",
   "filepathFlagLongDescription": "The path to the CSV file.",
 

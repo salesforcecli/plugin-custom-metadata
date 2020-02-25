@@ -2,6 +2,9 @@
     "commandDescription": "creates a new record for a given custom metadata type in the current project",
     "commandLongDescription": "Creates a new record for a given custom metadata type in the current project.",
 
+    "exampleCaption1": "Create a record metadata file for custom metadata type 'MyCMT' with values specified for two custom fields:",
+    "exampleCaption2": "Create a protected record metadata file for custom metadata type 'MyCMT' with a specific label and values specified for two custom fields:",
+
     "typenameFlagDescription": "API name of the custom metadata type to create a record for",
     "typenameFlagLongDescription": "The API name of the custom metadata type to create a record for.",
 

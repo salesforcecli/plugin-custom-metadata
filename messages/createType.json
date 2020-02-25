@@ -2,6 +2,9 @@
     "commandDescription": "creates a new custom metadata type in the current project",
     "commandLongDescription": "Creates a new custom metadata type in the current project.",
 
+    "exampleCaption1": "Create a custom metadata type with developer name 'MyCustomType'; this name will also be used as the label:",
+    "exampleCaption2": "Create a protected custom metadata type with a specific label:",
+
     "nameFlagDescription": "unique object name for the custom metadata type",
     "nameFlagLongDescription": "The unique name of the object in the API. This name can contain only underscores and alphanumeric characters, and must be unique in your org. It must begin with a letter, not include spaces, not end with an underscore, and not contain two consecutive underscores.",
 

@@ -15,9 +15,9 @@ export default class Insert extends SfdxCommand {
   public static longDescription = messages.getMessage('commandLongDescription');
 
   public static examples = [
-    'Create record metadata files for type "My_CMDT_Name" (from your local project) based on values in a CSV file, using "Name" as the column that specifies the record name:',
+    messages.getMessage('exampleCaption1'),
     '    $ sfdx force:cmdt:record:insert --filepath path/to/my.csv --typename My_CMDT_Name',
-    'Create record metadata files for type "My_CMDT_Name" (from the specified directory) based on values in a CSV file, using "PrimaryKey" as the column that specifies the record name:',
+    messages.getMessage('exampleCaption2'),
     '    $ sfdx force:cmdt:record:insert --filepath path/to/my.csv --typename My_CMDT_Name --inputdir path/to/my/cmdtDirectory --namecolumn "PrimaryKey"'
   ];
 
