@@ -141,16 +141,25 @@ OPTIONS
   --loglevel=(trace|debug|info|warn|error|fatal)        logging level for this command invocation
 
 EXAMPLES
-  $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c
-  $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c  --ignoreunsupported --targetusername 
+  Generate a custom metadata type from an sObject in the default target org:
+       $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c
+  Generate a custom metadata type from an sObject in the specified target org; ignore unsupported field types instead of 
+  converting them to text:
+       $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c  --ignoreunsupported --targetusername 
   'alias or user email of the org containing the source type'
-  $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomObject__c  --visibility Protected
-  $ sfdx force:cmdt:generate --devname MyCMDT --label "My CMDT" --plurallabel "My CMDTs" --sobjectname 
+  Generate a protected custom metadata type from an sObject in the default target org:
+       $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomObject__c  --visibility Protected
+  Generate a protected custom metadata type with a specific label from an sObject in the default target org:
+       $ sfdx force:cmdt:generate --devname MyCMDT --label "My CMDT" --plurallabel "My CMDTs" --sobjectname 
   SourceCustomSetting__c  --visibility Protected
-  $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c --typeoutputdir 'your desired path 
-  for custom metadata types'
-  $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c --recordsoutputdir 'your desired path 
-  for custom metadata records'
+  Generate a custom metadata type from an sObject in the default target org; put the resulting type metadata file in the 
+  specified directory:
+       $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c --typeoutputdir 'your desired 
+  path for custom metadata types'
+  Generate a custom metadata type from an sObject in the default target org; put the resulting record metadata file(s) 
+  in the specified directory:
+       $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c --recordsoutputdir 'your desired 
+  path for custom metadata records'
 ```
 
 _See code: [src/commands/force/cmdt/generate.ts](https://github.com/forcedotcom/sfdx-custommetadata/blob/v0.0.0/src/commands/force/cmdt/generate.ts)_
