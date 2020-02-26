@@ -10,6 +10,7 @@
 
   "inputDirectoryFlagDescription": "directory where the custom metadata type definition will be pulled from",
   "inputDirectoryFlagLongDescription": "The directory where the custom metadata type definition will be pulled from.",
+  "inputDirectoryFlagExample": "path/to/my/cmdt/directory",
 
   "outputDirectoryFlagDescription": "directory where the file will be created",
   "outputDirectoryFlagLongDescription": "The directory where the file will be created.",

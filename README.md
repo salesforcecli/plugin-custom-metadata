@@ -160,12 +160,12 @@ EXAMPLES
   SourceCustomSetting__c  --visibility Protected
   Generate a custom metadata type from an sObject in the default target org; put the resulting type metadata file in the 
   specified directory:
-       $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c --typeoutputdir 'your desired 
-  path for custom metadata types'
+       $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c --typeoutputdir 
+  'path/to/my/cmdt/directory'
   Generate a custom metadata type from an sObject in the default target org; put the resulting record metadata file(s) 
   in the specified directory:
-       $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c --recordsoutputdir 'your desired 
-  path for custom metadata records'
+       $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c --recordsoutputdir 
+  'path/to/my/cmdt/record/directory'
 ```
 
 _See code: [src/commands/force/cmdt/generate.ts](https://github.com/forcedotcom/sfdx-custommetadata/blob/v0.0.0/src/commands/force/cmdt/generate.ts)_
@@ -242,7 +242,7 @@ EXAMPLES
   Create record metadata files for type 'My_CMDT_Name' (from the specified directory) based on values in a CSV file, 
   using 'PrimaryKey' as the column that specifies the record name:
        $ sfdx force:cmdt:record:insert --filepath path/to/my.csv --typename My_CMDT_Name --inputdir 
-  path/to/my/cmdtDirectory --namecolumn "PrimaryKey"
+  "path/to/my/cmdt/directory" --namecolumn "PrimaryKey"
 ```
 
 _See code: [src/commands/force/cmdt/record/insert.ts](https://github.com/forcedotcom/sfdx-custommetadata/blob/v0.0.0/src/commands/force/cmdt/record/insert.ts)_

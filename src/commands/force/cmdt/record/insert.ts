@@ -18,7 +18,7 @@ export default class Insert extends SfdxCommand {
     messages.getMessage('exampleCaption1'),
     '    $ sfdx force:cmdt:record:insert --filepath path/to/my.csv --typename My_CMDT_Name',
     messages.getMessage('exampleCaption2'),
-    '    $ sfdx force:cmdt:record:insert --filepath path/to/my.csv --typename My_CMDT_Name --inputdir path/to/my/cmdtDirectory --namecolumn "PrimaryKey"'
+    '    $ sfdx force:cmdt:record:insert --filepath path/to/my.csv --typename My_CMDT_Name --inputdir "' + messages.getMessage('inputDirectoryFlagExample') + '" --namecolumn "PrimaryKey"'
   ];
 
   protected static flagsConfig = {

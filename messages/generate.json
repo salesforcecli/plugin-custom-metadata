@@ -33,11 +33,11 @@
 
     "typeoutputdirFlagDescription": "directory where the custom metadata type files will be created",
     "typeoutputdirFlagLongDescription": "The directory where the custom metadata type files will be created.",
-    "typeoutputdirFlagExample": "your desired path for custom metadata types",
+    "typeoutputdirFlagExample": "path/to/my/cmdt/directory",
 
     "recordsoutputdirFlagDescription": "directory where the custom metadata record files will be created",
     "recordsoutputdirFlagLongDescription": "The directory where the custom metadata record files will be created.",
-    "recordsoutputdirFlagExample": "your desired path for custom metadata records",
+    "recordsoutputdirFlagExample": "path/to/my/cmdt/record/directory",
 
     "loglevelFlagDescription": "logging level for this command invocation",
     "loglevelFlagLongDescription": "The logging level for this command invocation.",
