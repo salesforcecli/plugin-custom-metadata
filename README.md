@@ -5,7 +5,6 @@ Tools for working with custom metadata types and their records.
 
 [![Version](https://img.shields.io/npm/v/custommetadata.svg)](https://npmjs.org/package/custommetadata)
 [![CircleCI](https://circleci.com/gh/forcedotcom/sfdx-custommetadata/tree/master.svg?style=shield)](https://circleci.com/gh/forcedotcom/sfdx-custommetadata/tree/master)
-[![Appveyor CI](https://ci.appveyor.com/api/projects/status/github/forcedotcom/sfdx-custommetadata?branch=master&svg=true)](https://ci.appveyor.com/project/heroku/custommetadata/branch/master)
 [![Codecov](https://codecov.io/gh/forcedotcom/sfdx-custommetadata/branch/master/graph/badge.svg)](https://codecov.io/gh/forcedotcom/sfdx-custommetadata)
 [![Greenkeeper](https://badges.greenkeeper.io/forcedotcom/sfdx-custommetadata.svg)](https://greenkeeper.io/)
 [![Known Vulnerabilities](https://snyk.io/test/github/forcedotcom/sfdx-custommetadata/badge.svg)](https://snyk.io/test/github/forcedotcom/sfdx-custommetadata)
