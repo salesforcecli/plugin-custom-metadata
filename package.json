@@ -29,7 +29,7 @@
     "@salesforce/dev-config": "^1.1.4",
     "@types/chai": "^4",
     "@types/csvtojson": "^1.1.5",
-    "@types/jsforce": "1.8.13",
+    "@types/jsforce": "1.9.13",
     "@types/mocha": "^5",
     "@types/node": "^10",
     "@types/xml2js": "^0.4.3",

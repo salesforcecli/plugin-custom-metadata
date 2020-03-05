@@ -297,17 +297,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/events@*":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@types/events/-/events-1.2.0.tgz#81a6731ce4df43619e5c8c945383b3e62a89ea86"
-  integrity sha512-KEIlhXnIutzKwRbQkGWb/I4HFqBuUykAdHgDED6xqwXJfONCjF5VoE0cXEiurh3XauygxzeDzgtXUqvLkxFzzA==
-
-"@types/jsforce@1.8.13":
-  version "1.8.13"
-  resolved "https://registry.yarnpkg.com/@types/jsforce/-/jsforce-1.8.13.tgz#a3a958c45b56167d1287e323bfc04567484ecdfd"
-  integrity sha512-IihaWG/A3tgnESXQvdyE29R4TqsVWPNoNCKE1iTkYBl1IXBMJ5D7XKm2gaVqi3ElWZIKH1/s/h23yu+SGUZUXg==
-  dependencies:
-    "@types/events" "*"
+"@types/jsforce@1.9.13":
+  version "1.9.13"
+  resolved "https://registry.yarnpkg.com/@types/jsforce/-/jsforce-1.9.13.tgz#d648b290c7a96d0ca0846e3d0e5e6b4497e2c05b"
+  integrity sha512-yoOL7I3upbBmMH6Pn+qaj9CXmGvXGOsWYr38lqttRoDHZJmn611iDaM4WDoRdN6cEGBOOZmcuCo2+sr4KhMCTw==
 
 "@types/jsforce@1.9.2":
   version "1.9.2"
