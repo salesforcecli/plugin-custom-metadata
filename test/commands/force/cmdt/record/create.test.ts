@@ -55,7 +55,7 @@ describe('sfdx force:cmdt:record:create error handling', () => {
     ])
     .it('runs force:cmdt:record:create and throws an error if the record name is invalid', ctx => {
       console.log(ctx);
-      expect(ctx.stdout).to.contain("Bad Record Name is not a valid record name for a custom metadata record");
+      expect(ctx.stdout).to.contain("'Bad Record Name' is not a valid record name for a custom metadata record");
 
       exec(`rm -rf recordNameErrorDir`);
     });
@@ -85,7 +85,7 @@ describe('sfdx force:cmdt:record:create error handling', () => {
       '-d', 'exceedCharDir/customMetadata'
     ])
     .it('runs force:cmdt:record:create and throws an error if there are more than 40 characters in a label', ctx => {
-      expect(ctx.stdout).to.contain('Foobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobar is too long to be a label name');
+      expect(ctx.stdout).to.contain("'Foobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobar' is too long to be a label. The maximum length of the label is 40 characters.");
 
       exec(`rm -rf exceedCharDir`);
     });

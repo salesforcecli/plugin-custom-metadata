@@ -36,7 +36,7 @@ describe('sfdx force:cmdt:field:create' , () => {
   .withProject()
   .command(['force:cmdt:field:create', '--fieldname', 'myFi__eld','--fieldtype','Text'])
   .it('fails running force:cmdt:field:create --fieldname myFi__eld --fieldtype Text', ctx => {
-    expect(ctx.stderr).to.contain('myFi__eld is an invalid field. Custom fields can only contain alphanumeric characters, must begin with a letter, cannot end with an underscore or contain two consecutive underscore characters.' );
+    expect(ctx.stderr).to.contain("'myFi__eld' is an invalid field. Custom fields can only contain alphanumeric characters, must begin with a letter, cannot end with an underscore, and cannot contain two consecutive underscore characters.");
   })
 
   test
@@ -45,7 +45,7 @@ describe('sfdx force:cmdt:field:create' , () => {
   .withProject()
   .command(['force:cmdt:field:create', '--fieldname', 'myField','--fieldtype','Picklist'])
   .it('fails running force:cmdt:field:create --fieldname myField --fieldtype Picklist', ctx => {
-    expect(ctx.stderr).to.contain('Picklist values are required when type is Picklist' );
+    expect(ctx.stderr).to.contain('Picklist values are required when field type is Picklist' );
   })
 
   test
@@ -75,6 +75,6 @@ describe('sfdx force:cmdt:field:create' , () => {
   .withProject()
   .command(['force:cmdt:field:create', '--fieldname', 'myField','--fieldtype','Number', '--decimalplaces', '-2'])
   .it('fails running force:cmdt:field:create --fieldname myField --fieldtype Number --decimalplaces -2', ctx => {
-    expect(ctx.stderr).to.contain('Decimal places must be greater than or equal to zero.');
+    expect(ctx.stderr).to.contain('Number of decimal places must be greater than or equal to zero.');
   })
 })

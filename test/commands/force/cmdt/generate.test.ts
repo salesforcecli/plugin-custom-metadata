@@ -118,7 +118,7 @@ describe('sfdx force:cmdt:generate', () => {
         .stub(core.Connection,'create',function(){ return {metadata,query}})
         .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c', '-u', 'test2@org.con'])
         .it('No user found while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c -u test@org.com', ctx => {
-            expect(ctx.stderr ).to.contain('no user found with the provided username or alias test2@org.con');
+            expect(ctx.stderr ).to.contain('No user found with the provided username or alias test2@org.con');
         });
 
         test
@@ -129,7 +129,7 @@ describe('sfdx force:cmdt:generate', () => {
         .stub(core.Connection,'create',function(){ return {metadata,query}})
         .command(['force:cmdt:generate', '-n', 'MyCM__DT', '-s', 'TriggerSettings__c'])
         .it('Not a valid metadata type name while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
-            expect(ctx.stderr ).to.contain('not a valid custom metadata type name MyCM__DT');
+            expect(ctx.stderr ).to.contain('Not a valid custom metadata type name MyCM__DT');
         });
 
         test
@@ -151,7 +151,7 @@ describe('sfdx force:cmdt:generate', () => {
         .stub(core.Connection,'create',function(){ return {metadata,query}})
         .command(['force:cmdt:generate', '-n', 'MyCMDT__mdt', '-s', 'Trigger__Settings__c'])
         .it('Not a valid custom set while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
-            expect(ctx.stderr ).to.contain('not a valid custom setting/custom object name Trigger__Settings__c');
+            expect(ctx.stderr ).to.contain('Not a valid custom setting/custom object name Trigger__Settings__c');
         });
 
         test
@@ -171,7 +171,7 @@ describe('sfdx force:cmdt:generate', () => {
         .stub(Org.prototype, 'getConnection',function(){ return {metadata: hierarchyMetadata,query}})
         .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c'])
         .it('Cannot generate custom metadata for the c while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
-            expect(ctx.stderr ).to.contain('Cannot generate custom metadata for the custom settings TriggerSettings__c check type & visibility.');
+            expect(ctx.stderr ).to.contain('Cannot generate custom metadata for the custom setting TriggerSettings__c. Check type and visibility.');
         });
 
         test
@@ -182,7 +182,7 @@ describe('sfdx force:cmdt:generate', () => {
         .stub(core.Connection,'create',function(){ return {metadata,query: errorQuery}})
         .command(['force:cmdt:generate', '-n', 'MyCMDT__mdt', '-s', 'TriggerSettings__c'])
         .it('force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
-            expect(ctx.stderr ).to.contain('Failed to generate custom metadata. reason: sObjectRecords.records is not iterable.');
+            expect(ctx.stderr ).to.contain('Failed to generate custom metadata. Reason: sObjectRecords.records is not iterable.');
         });
 
 })

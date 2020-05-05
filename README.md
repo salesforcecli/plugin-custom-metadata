@@ -45,11 +45,11 @@ USAGE
   $ custommetadata force:cmdt:create [FILE]
 
 OPTIONS
-  -d, --outputdir=outputdir                             the directory to store the newly created files
+  -d, --outputdir=outputdir                             directory to store the newly-created custom metadata type files
   -l, --label=label                                     label for the custom metadata type
   -n, --typename=typename                               (required) unique object name for the custom metadata type
   -p, --plurallabel=plurallabel                         plural version of the label value; if blank, uses label
-  -v, --visibility=(PackageProtected|Protected|Public)  [default: Public] visibility for the type
+  -v, --visibility=(PackageProtected|Protected|Public)  [default: Public] visibility of the custom metadata type
   --json                                                format output as json
   --loglevel=(trace|debug|info|warn|error|fatal)        logging level for this command invocation
 
@@ -65,7 +65,7 @@ _See code: [src/commands/force/cmdt/create.ts](https://github.com/forcedotcom/sf
 
 ## `custommetadata force:cmdt:field:create [FILE]`
 
-generates a custom metadata field based on the field type provided
+generate a custom metadata field based on the field type provided
 
 ```
 USAGE
@@ -73,16 +73,16 @@ USAGE
 
 OPTIONS
   -d, --outputdir=outputdir
-      directory to store the newly created files
+      directory to store newly-created field definition files
 
   -f, --fieldtype=(Checkbox|Date|DateTime|Email|Number|Percent|Phone|Picklist|Text|TextArea|LongTextArea|Url)
       (required) type of field
 
   -l, --label=label
-      label for the new field
+      label for the field
 
   -n, --fieldname=fieldname
-      (required) name for the field
+      (required) unique name for the field
 
   -p, --picklistvalues=picklistvalues
       comma-separated list of picklist values; required for Picklist fields
@@ -116,27 +116,27 @@ USAGE
   $ custommetadata force:cmdt:generate [FILE]
 
 OPTIONS
-  -d, --typeoutputdir=typeoutputdir                     [default: force-app/main/default/objects/] directory where the
-                                                        custom metadata type files will be created
+  -d, --typeoutputdir=typeoutputdir                     [default: force-app/main/default/objects/] directory to store
+                                                        newly-created custom metadata type files
 
   -i, --ignoreunsupported                               ignore unsupported field types
 
   -l, --label=label                                     label for the custom metadata type
 
-  -n, --devname=devname                                 (required) name of the new custom metadata type
+  -n, --devname=devname                                 (required) name of the custom metadata type
 
   -p, --plurallabel=plurallabel                         plural version of the label value; if blank, uses label
 
-  -r, --recordsoutputdir=recordsoutputdir               [default: force-app/main/default/customMetadata/] directory
-                                                        where the custom metadata record files will be created
+  -r, --recordsoutputdir=recordsoutputdir               [default: force-app/main/default/customMetadata/] directory to
+                                                        store newly-created custom metadata record files
 
-  -s, --sobjectname=sobjectname                         (required) API name of the sObject you wish to generate custom
-                                                        metadata from
+  -s, --sobjectname=sobjectname                         (required) API name of the sObject source for custom metadata
+                                                        generation
 
   -u, --targetusername=targetusername                   username or alias for the target org; overrides default target
                                                         org
 
-  -v, --visibility=(PackageProtected|Protected|Public)  [default: Public] visibility for the type
+  -v, --visibility=(PackageProtected|Protected|Public)  [default: Public] visibility of the custom metadata type
 
   --apiversion=apiversion                               override the api version used for api requests made by this
                                                         command
@@ -171,24 +171,24 @@ _See code: [src/commands/force/cmdt/generate.ts](https://github.com/forcedotcom/
 
 ## `custommetadata force:cmdt:record:create`
 
-creates a new record for a given custom metadata type in the current project
+create a new record for a given custom metadata type in the current project
 
 ```
 USAGE
   $ custommetadata force:cmdt:record:create
 
 OPTIONS
-  -d, --outputdir=outputdir                       [default: force-app/main/default/customMetadata] directory where the
-                                                  file will be created
+  -d, --outputdir=outputdir                       [default: force-app/main/default/customMetadata] directory to store
+                                                  newly-created custom metadata record files
 
-  -i, --inputdir=inputdir                         [default: force-app/main/default/objects] directory where the custom
-                                                  metadata type definition will be pulled from
+  -i, --inputdir=inputdir                         [default: force-app/main/default/objects] directory to pull the custom
+                                                  metadata type definition from
 
   -l, --label=label                               label for the new record
 
   -n, --recordname=recordname                     (required) name for the new record
 
-  -p, --protected=true|false                      [default: false] protects the record when it is in a managed package
+  -p, --protected=true|false                      [default: false] protect the record when it is in a managed package
 
   -t, --typename=typename                         (required) API name of the custom metadata type to create a record for
 
@@ -210,20 +210,20 @@ _See code: [src/commands/force/cmdt/record/create.ts](https://github.com/forcedo
 
 ## `custommetadata force:cmdt:record:insert`
 
-creates new custom metadata type records from a CSV file
+create new custom metadata type records from a CSV file
 
 ```
 USAGE
   $ custommetadata force:cmdt:record:insert
 
 OPTIONS
-  -d, --outputdir=outputdir                       [default: force-app/main/default/customMetadata] directory where the
-                                                  file will be created
+  -d, --outputdir=outputdir                       [default: force-app/main/default/customMetadata] directory to store
+                                                  newly-created custom metadata record files
 
   -f, --filepath=filepath                         (required) path to the CSV file
 
-  -i, --inputdir=inputdir                         [default: force-app/main/default/objects] directory where the custom
-                                                  metadata type definition will be pulled from
+  -i, --inputdir=inputdir                         [default: force-app/main/default/objects] directory to pull the custom
+                                                  metadata type definition from
 
   -n, --namecolumn=namecolumn                     [default: Name] column that is used to determine the name of the
                                                   record
