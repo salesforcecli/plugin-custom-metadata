@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2018-2020, salesforce.com, inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ */
+
 import { core } from '@salesforce/command';
 import { testSetup } from '@salesforce/core/lib/testSetup';
 import { fromStub, stubInterface } from '@salesforce/ts-sinon';
