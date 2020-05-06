@@ -56,7 +56,7 @@
   "keywords": [
     "sfdx-plugin"
   ],
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "oclif": {
     "commands": "./lib/commands",
     "topics": {
