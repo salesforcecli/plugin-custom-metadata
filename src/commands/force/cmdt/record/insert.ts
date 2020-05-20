@@ -14,7 +14,7 @@ import { CreateConfig } from '../../../../lib/interfaces/createConfig';
 
 core.Messages.importMessagesDirectory(__dirname);
 
-const messages = core.Messages.loadMessages('custommetadata', 'insertRecord');
+const messages = core.Messages.loadMessages('@salesforce/plugin-custom-metadata', 'insertRecord');
 
 export default class Insert extends SfdxCommand {
 

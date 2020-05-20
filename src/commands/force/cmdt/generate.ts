@@ -21,7 +21,7 @@ core.Messages.importMessagesDirectory(__dirname);
 
 // Load the specific messages for this file. Messages from @salesforce/command, @salesforce/core,
 // or any library that is using the messages framework can also be loaded this way.
-const messages = core.Messages.loadMessages('custommetadata', 'generate');
+const messages = core.Messages.loadMessages('@salesforce/plugin-custom-metadata', 'generate');
 
 export default class Generate extends SfdxCommand {
 
@@ -123,7 +123,7 @@ export default class Generate extends SfdxCommand {
 
             username = await Aliases.fetch(sourceuser); // if alias is provided get the corresponding username
             if (username === undefined) {
-                throw SfdxError.create('custommetadata', 'generate', 'sourceusernameError', [sourceuser]);
+                throw SfdxError.create('@salesforce/plugin-custom-metadata', 'generate', 'sourceusernameError', [sourceuser]);
             }
         } else {
             username = sourceuser;
@@ -142,12 +142,12 @@ export default class Generate extends SfdxCommand {
     }
 
     if (!validator.validateAPIName(objname)) {
-        throw SfdxError.create('custommetadata', 'generate', 'sobjectnameFlagError', [objname]);
+        throw SfdxError.create('@salesforce/plugin-custom-metadata', 'generate', 'sobjectnameFlagError', [objname]);
     }
 
     let devName;
     if (!validator.validateMetadataTypeName(cmdttype)) {
-        throw  SfdxError.create('custommetadata', 'generate', 'typenameFlagError', [cmdttype]);
+        throw  SfdxError.create('@salesforce/plugin-custom-metadata', 'generate', 'typenameFlagError', [cmdttype]);
     }
 
     if ( cmdttype.endsWith('__mdt') || cmdttype.endsWith('__MDT')) {

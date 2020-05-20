@@ -115,7 +115,7 @@ export class Templates {
         } else if (defaultToMetadataType) {
             return `\t<type>${this.getConvertType(data)}</type>\n`;
         } else {
-            throw SfdxError.create('custommetadata', 'template', 'errorNotAValidaType', [data.type]);
+            throw SfdxError.create('@salesforce/plugin-custom-metadata', 'template', 'errorNotAValidaType', [data.type]);
         }
 
     }

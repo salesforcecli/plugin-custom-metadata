@@ -4,12 +4,12 @@ custommetadata
 Tools for working with custom metadata types and their records.
 
 [![Version](https://img.shields.io/npm/v/custommetadata.svg)](https://npmjs.org/package/custommetadata)
-[![CircleCI](https://circleci.com/gh/forcedotcom/sfdx-custommetadata/tree/master.svg?style=shield)](https://circleci.com/gh/forcedotcom/sfdx-custommetadata/tree/master)
-[![Codecov](https://codecov.io/gh/forcedotcom/sfdx-custommetadata/branch/master/graph/badge.svg)](https://codecov.io/gh/forcedotcom/sfdx-custommetadata)
-[![Greenkeeper](https://badges.greenkeeper.io/forcedotcom/sfdx-custommetadata.svg)](https://greenkeeper.io/)
-[![Known Vulnerabilities](https://snyk.io/test/github/forcedotcom/sfdx-custommetadata/badge.svg)](https://snyk.io/test/github/forcedotcom/sfdx-custommetadata)
+[![CircleCI](https://circleci.com/gh/salesforcecli/plugin-custom-metadata/tree/master.svg?style=shield)](https://circleci.com/gh/salesforcecli/plugin-custom-metadata/tree/master)
+[![Codecov](https://codecov.io/gh/salesforcecli/plugin-custom-metadata/branch/master/graph/badge.svg)](https://codecov.io/gh/salesforcecli/plugin-custom-metadata)
+[![Greenkeeper](https://badges.greenkeeper.io/salesforcecli/plugin-custom-metadata.svg)](https://greenkeeper.io/)
+[![Known Vulnerabilities](https://snyk.io/test/github/salesforcecli/plugin-custom-metadata/badge.svg)](https://snyk.io/test/github/salesforcecli/plugin-custom-metadata)
 [![Downloads/week](https://img.shields.io/npm/dw/custommetadata.svg)](https://npmjs.org/package/custommetadata)
-[![License](https://img.shields.io/npm/l/custommetadata.svg)](https://github.com/forcedotcom/sfdx-custommetadata/blob/master/cmtPlugin/custommetadata/package.json)
+[![License](https://img.shields.io/npm/l/custommetadata.svg)](https://github.com/salesforcecli/plugin-custom-metadata/blob/master/cmtPlugin/custommetadata/package.json)
 
 <!-- toc -->
 * [Debugging your plugin](#debugging-your-plugin)
@@ -17,32 +17,32 @@ Tools for working with custom metadata types and their records.
 <!-- install -->
 <!-- usage -->
 ```sh-session
-$ npm install -g custommetadata
-$ custommetadata COMMAND
+$ npm install -g @salesforce/plugin-custom-metadata
+$ sfdx COMMAND
 running command...
-$ custommetadata (-v|--version|version)
-custommetadata/0.0.0 darwin-x64 node-v12.12.0
-$ custommetadata --help [COMMAND]
+$ sfdx (-v|--version|version)
+@salesforce/plugin-custom-metadata/0.0.0 darwin-x64 node-v12.12.0
+$ sfdx --help [COMMAND]
 USAGE
-  $ custommetadata COMMAND
+  $ sfdx COMMAND
 ...
 ```
 <!-- usagestop -->
 
 <!-- commands -->
-* [`custommetadata force:cmdt:create [FILE]`](#custommetadata-forcecmdtcreate-file)
-* [`custommetadata force:cmdt:field:create [FILE]`](#custommetadata-forcecmdtfieldcreate-file)
-* [`custommetadata force:cmdt:generate [FILE]`](#custommetadata-forcecmdtgenerate-file)
-* [`custommetadata force:cmdt:record:create`](#custommetadata-forcecmdtrecordcreate)
-* [`custommetadata force:cmdt:record:insert`](#custommetadata-forcecmdtrecordinsert)
+* [`sfdx force:cmdt:create [FILE]`](#sfdx-forcecmdtcreate-file)
+* [`sfdx force:cmdt:field:create [FILE]`](#sfdx-forcecmdtfieldcreate-file)
+* [`sfdx force:cmdt:generate [FILE]`](#sfdx-forcecmdtgenerate-file)
+* [`sfdx force:cmdt:record:create`](#sfdx-forcecmdtrecordcreate)
+* [`sfdx force:cmdt:record:insert`](#sfdx-forcecmdtrecordinsert)
 
-## `custommetadata force:cmdt:create [FILE]`
+## `sfdx force:cmdt:create [FILE]`
 
 creates a new custom metadata type in the current project
 
 ```
 USAGE
-  $ custommetadata force:cmdt:create [FILE]
+  $ sfdx force:cmdt:create [FILE]
 
 OPTIONS
   -d, --outputdir=outputdir                             directory to store the newly-created custom metadata type files
@@ -61,15 +61,15 @@ EXAMPLES
   Protected
 ```
 
-_See code: [src/commands/force/cmdt/create.ts](https://github.com/forcedotcom/sfdx-custommetadata/blob/v0.0.0/src/commands/force/cmdt/create.ts)_
+_See code: [src/commands/force/cmdt/create.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v0.0.0/src/commands/force/cmdt/create.ts)_
 
-## `custommetadata force:cmdt:field:create [FILE]`
+## `sfdx force:cmdt:field:create [FILE]`
 
 generate a custom metadata field based on the field type provided
 
 ```
 USAGE
-  $ custommetadata force:cmdt:field:create [FILE]
+  $ sfdx force:cmdt:field:create [FILE]
 
 OPTIONS
   -d, --outputdir=outputdir
@@ -105,15 +105,15 @@ EXAMPLES
        $ sfdx force:cmdt:field:create --fieldname MyField --fieldtype Number --decimalplaces 2
 ```
 
-_See code: [src/commands/force/cmdt/field/create.ts](https://github.com/forcedotcom/sfdx-custommetadata/blob/v0.0.0/src/commands/force/cmdt/field/create.ts)_
+_See code: [src/commands/force/cmdt/field/create.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v0.0.0/src/commands/force/cmdt/field/create.ts)_
 
-## `custommetadata force:cmdt:generate [FILE]`
+## `sfdx force:cmdt:generate [FILE]`
 
 generates a custom metadata type and all its records for the provided sObject
 
 ```
 USAGE
-  $ custommetadata force:cmdt:generate [FILE]
+  $ sfdx force:cmdt:generate [FILE]
 
 OPTIONS
   -d, --typeoutputdir=typeoutputdir                     [default: force-app/main/default/objects/] directory to store
@@ -167,15 +167,15 @@ EXAMPLES
   'path/to/my/cmdt/record/directory'
 ```
 
-_See code: [src/commands/force/cmdt/generate.ts](https://github.com/forcedotcom/sfdx-custommetadata/blob/v0.0.0/src/commands/force/cmdt/generate.ts)_
+_See code: [src/commands/force/cmdt/generate.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v0.0.0/src/commands/force/cmdt/generate.ts)_
 
-## `custommetadata force:cmdt:record:create`
+## `sfdx force:cmdt:record:create`
 
 create a new record for a given custom metadata type in the current project
 
 ```
 USAGE
-  $ custommetadata force:cmdt:record:create
+  $ sfdx force:cmdt:record:create
 
 OPTIONS
   -d, --outputdir=outputdir                       [default: force-app/main/default/customMetadata] directory to store
@@ -206,15 +206,15 @@ EXAMPLES
   My_Custom_Field_1=Foo My_Custom_Field_2=Bar
 ```
 
-_See code: [src/commands/force/cmdt/record/create.ts](https://github.com/forcedotcom/sfdx-custommetadata/blob/v0.0.0/src/commands/force/cmdt/record/create.ts)_
+_See code: [src/commands/force/cmdt/record/create.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v0.0.0/src/commands/force/cmdt/record/create.ts)_
 
-## `custommetadata force:cmdt:record:insert`
+## `sfdx force:cmdt:record:insert`
 
 create new custom metadata type records from a CSV file
 
 ```
 USAGE
-  $ custommetadata force:cmdt:record:insert
+  $ sfdx force:cmdt:record:insert
 
 OPTIONS
   -d, --outputdir=outputdir                       [default: force-app/main/default/customMetadata] directory to store
@@ -244,7 +244,7 @@ EXAMPLES
   "path/to/my/cmdt/directory" --namecolumn "PrimaryKey"
 ```
 
-_See code: [src/commands/force/cmdt/record/insert.ts](https://github.com/forcedotcom/sfdx-custommetadata/blob/v0.0.0/src/commands/force/cmdt/record/insert.ts)_
+_See code: [src/commands/force/cmdt/record/insert.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v0.0.0/src/commands/force/cmdt/record/insert.ts)_
 <!-- commandsstop -->
 
 <!-- debugging-your-plugin -->

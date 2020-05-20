@@ -1,5 +1,5 @@
 {
-  "name": "custommetadata",
+  "name": "@salesforce/plugin-custom-metadata",
   "description": "Tools for working with custom metadata types and their records.",
   "version": "0.0.0",
   "contributors": [
@@ -13,7 +13,7 @@
     { "name": "Catherine Schell", "url" : "https://www.salesforce.com/" },
     { "name": "Seth Leger", "url" : "https://www.salesforce.com/" }
   ],
-  "bugs": "https://github.com/forcedotcom/sfdx-custommetadata/issues",
+  "bugs": "https://github.com/salesforcecli/plugin-custom-metadata/issues",
   "dependencies": {
     "@oclif/command": "1",
     "@oclif/config": "1",
@@ -52,23 +52,19 @@
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/forcedotcom/sfdx-custommetadata",
+  "homepage": "https://github.com/salesforcecli/plugin-custom-metadata",
   "keywords": [
     "sfdx-plugin"
   ],
   "license": "BSD-3-Clause",
   "oclif": {
     "commands": "./lib/commands",
-    "topics": {
-      "hello": {
-        "description": "Commands to say hello."
-      }
-    },
+    "bin": "sfdx",
     "devPlugins": [
       "@oclif/plugin-help"
     ]
   },
-  "repository": "github:forcedotcom/sfdx-custommetadata",
+  "repository": "github:salesforcecli/plugin-custom-metadata",
   "scripts": {
     "postpack": "rm -f oclif.manifest.json npm-shrinkwrap.json",
     "posttest": "tsc -p test --noEmit && tslint -p test -t stylish",

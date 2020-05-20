@@ -16,7 +16,7 @@ core.Messages.importMessagesDirectory(__dirname);
 
 // Load the specific messages for this file. Messages from @salesforce/command, @salesforce/core,
 // or any library that is using the messages framework can also be loaded this way.
-const messages = core.Messages.loadMessages('custommetadata', 'createRecord');
+const messages = core.Messages.loadMessages('@salesforce/plugin-custom-metadata', 'createRecord');
 
 export default class Create extends SfdxCommand {
 
