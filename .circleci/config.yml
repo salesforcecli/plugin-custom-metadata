@@ -24,7 +24,7 @@ commands:
 _refs:
   ssh-config: &ssh-config
     fingerprints:
-      - '35:98:a7:97:be:15:e2:ed:e6:01:5c:9d:0e:9d:d6:54'
+      - '7e:59:29:c8:d1:f5:0e:83:01:bc:4b:6e:1c:cf:4d:b4'
   cache-config: &cache-config
     key: dependency-cache-{{ checksum "package.json" }}
   restore-cache: &restore-cache
