@@ -1,4 +1,4 @@
-custommetadata
+Custom Metadata Plugin
 ==============
 
 Tools for working with custom metadata types and their records.
@@ -9,14 +9,16 @@ Tools for working with custom metadata types and their records.
 [![Downloads/week](https://img.shields.io/npm/dw/custommetadata.svg)](https://npmjs.org/package/custommetadata)
 [![License](https://img.shields.io/npm/l/custommetadata.svg)](https://github.com/salesforcecli/plugin-custom-metadata/blob/master/cmtPlugin/custommetadata/package.json)
 
-<!-- toc -->
-* [Debugging your plugin](#debugging-your-plugin)
-<!-- tocstop -->
+# Installation
+This is a [Salesforce CLI](https://developer.salesforce.com/tools/sfdxcli) plugin and bundled with the CLI via [salesforcedx](https://www.npmjs.com/package/salesforcedx) as of `48.18.0`.
+
+To install it manually or install a specific plugin version, run the following.
 <!-- install -->
 ```sh-session
-$ sfdx plugins:install custom-metadata
+$ sfdx plugins:install custom-metadata@1.0.0
 ```
 
+# Commands
 <!-- commands -->
 * [`sfdx force:cmdt:create [FILE]`](#sfdx-forcecmdtcreate-file)
 * [`sfdx force:cmdt:field:create [FILE]`](#sfdx-forcecmdtfieldcreate-file)
