@@ -72,5 +72,8 @@
     "prepare": "rm -rf lib && tsc && oclif-dev manifest && oclif-dev readme && npm shrinkwrap",
     "test": "nyc mocha --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif-dev readme && git add README.md"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

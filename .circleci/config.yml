@@ -47,9 +47,9 @@ jobs:
       - add_ssh_keys: *ssh-config
       - checkout
       - restore_cache: *restore-cache
-      - command: install
-      - run: test
-      - run: coverage
+      - install
+      - test
+      - coverage
       - save_cache: *save-cache
   node-10:
     <<: *node-test
@@ -65,23 +65,21 @@ jobs:
       - add_ssh_keys: *ssh-config
       - checkout
       - restore_cache: *restore-cache
-      - run: gh-config
-      - command: install
+      - gh-config
+      - install
       - run: yarn global add semantic-release@15
       - run: yarn global add @oclif/semantic-release@3
-      # - run: semantic-release -e @oclif/semantic-release
+      - run: semantic-release -e @oclif/semantic-release
       - run: git status
       - save_cache: *save-cache
 
 workflows:
   version: 2
-  test:
+  test-release:
     jobs:
       - node-latest
       - node-12
       - node-10
-  release:
-    jobs:
       - release:
           filters:
             branches: { only: master }
@@ -89,3 +87,4 @@ workflows:
             - node-latest
             - node-12
             - node-10
+      
