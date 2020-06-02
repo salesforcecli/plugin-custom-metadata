@@ -18,28 +18,40 @@ $ sfdx plugins:install custom-metadata@1.0.0
 
 # Commands
 <!-- commands -->
-* [`sfdx force:cmdt:create [FILE]`](#sfdx-forcecmdtcreate-file)
-* [`sfdx force:cmdt:field:create [FILE]`](#sfdx-forcecmdtfieldcreate-file)
-* [`sfdx force:cmdt:generate [FILE]`](#sfdx-forcecmdtgenerate-file)
-* [`sfdx force:cmdt:record:create`](#sfdx-forcecmdtrecordcreate)
-* [`sfdx force:cmdt:record:insert`](#sfdx-forcecmdtrecordinsert)
+* [`sfdx force:cmdt:create -n <string> [-l <string>] [-p <string>] [-v PackageProtected|Protected|Public] [-d <directory>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-forcecmdtcreate--n-string--l-string--p-string--v-packageprotectedprotectedpublic--d-directory---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+* [`sfdx force:cmdt:field:create -n <string> -f Checkbox|Date|DateTime|Email|Number|Percent|Phone|Picklist|Text|TextArea|LongTextArea|Url [-p <array>] [-s <number>] [-l <string>] [-d <directory>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-forcecmdtfieldcreate--n-string--f-checkboxdatedatetimeemailnumberpercentphonepicklisttexttextarealongtextareaurl--p-array--s-number--l-string--d-directory---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+* [`sfdx force:cmdt:generate -n <string> -s <string> [-l <string>] [-p <string>] [-v PackageProtected|Protected|Public] [-i] [-d <directory>] [-r <directory>] [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-forcecmdtgenerate--n-string--s-string--l-string--p-string--v-packageprotectedprotectedpublic--i--d-directory--r-directory--u-string---apiversion-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+* [`sfdx force:cmdt:record:create [name=value...] -t <string> -n <string> [-l <string>] [-p <string>] [-i <directory>] [-d <directory>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-forcecmdtrecordcreate-namevalue--t-string--n-string--l-string--p-string--i-directory--d-directory---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+* [`sfdx force:cmdt:record:insert -f <string> -t <string> [-i <directory>] [-d <directory>] [-n <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-forcecmdtrecordinsert--f-string--t-string--i-directory--d-directory--n-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
 
-## `sfdx force:cmdt:create [FILE]`
+## `sfdx force:cmdt:create -n <string> [-l <string>] [-p <string>] [-v PackageProtected|Protected|Public] [-d <directory>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
 creates a new custom metadata type in the current project
 
 ```
 USAGE
-  $ sfdx force:cmdt:create [FILE]
+  $ sfdx force:cmdt:create -n <string> [-l <string>] [-p <string>] [-v PackageProtected|Protected|Public] [-d 
+  <directory>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
 OPTIONS
-  -d, --outputdir=outputdir                             directory to store the newly-created custom metadata type files
-  -l, --label=label                                     label for the custom metadata type
-  -n, --typename=typename                               (required) unique object name for the custom metadata type
-  -p, --plurallabel=plurallabel                         plural version of the label value; if blank, uses label
-  -v, --visibility=(PackageProtected|Protected|Public)  [default: Public] visibility of the custom metadata type
-  --json                                                format output as json
-  --loglevel=(trace|debug|info|warn|error|fatal)        logging level for this command invocation
+  -d, --outputdir=outputdir                                                         directory to store the newly-created
+                                                                                    custom metadata type files
+
+  -l, --label=label                                                                 label for the custom metadata type
+
+  -n, --typename=typename                                                           (required) unique object name for
+                                                                                    the custom metadata type
+
+  -p, --plurallabel=plurallabel                                                     plural version of the label value;
+                                                                                    if blank, uses label
+
+  -v, --visibility=(PackageProtected|Protected|Public)                              [default: Public] visibility of the
+                                                                                    custom metadata type
+
+  --json                                                                            format output as json
+
+  --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
+                                                                                    this command invocation
 
 EXAMPLES
   Create a custom metadata type with developer name 'MyCustomType'; this name will also be used as the label:
@@ -49,15 +61,18 @@ EXAMPLES
   Protected
 ```
 
-_See code: [src/commands/force/cmdt/create.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v0.0.0/src/commands/force/cmdt/create.ts)_
+_See code: [src/commands/force/cmdt/create.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v0.0.0-dev/src/commands/force/cmdt/create.ts)_
 
-## `sfdx force:cmdt:field:create [FILE]`
+## `sfdx force:cmdt:field:create -n <string> -f Checkbox|Date|DateTime|Email|Number|Percent|Phone|Picklist|Text|TextArea|LongTextArea|Url [-p <array>] [-s <number>] [-l <string>] [-d <directory>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
 generate a custom metadata field based on the field type provided
 
 ```
 USAGE
-  $ sfdx force:cmdt:field:create [FILE]
+  $ sfdx force:cmdt:field:create -n <string> -f 
+  Checkbox|Date|DateTime|Email|Number|Percent|Phone|Picklist|Text|TextArea|LongTextArea|Url [-p <array>] [-s <number>] 
+  [-l <string>] [-d <directory>] [--json] [--loglevel 
+  trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
 OPTIONS
   -d, --outputdir=outputdir
@@ -81,8 +96,8 @@ OPTIONS
   --json
       format output as json
 
-  --loglevel=(trace|debug|info|warn|error|fatal)
-      logging level for this command invocation
+  --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)
+      [default: warn] logging level for this command invocation
 
 EXAMPLES
   Create a metadata file for a custom checkbox field:
@@ -93,45 +108,56 @@ EXAMPLES
        $ sfdx force:cmdt:field:create --fieldname MyField --fieldtype Number --decimalplaces 2
 ```
 
-_See code: [src/commands/force/cmdt/field/create.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v0.0.0/src/commands/force/cmdt/field/create.ts)_
+_See code: [src/commands/force/cmdt/field/create.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v0.0.0-dev/src/commands/force/cmdt/field/create.ts)_
 
-## `sfdx force:cmdt:generate [FILE]`
+## `sfdx force:cmdt:generate -n <string> -s <string> [-l <string>] [-p <string>] [-v PackageProtected|Protected|Public] [-i] [-d <directory>] [-r <directory>] [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
 generates a custom metadata type and all its records for the provided sObject
 
 ```
 USAGE
-  $ sfdx force:cmdt:generate [FILE]
+  $ sfdx force:cmdt:generate -n <string> -s <string> [-l <string>] [-p <string>] [-v PackageProtected|Protected|Public] 
+  [-i] [-d <directory>] [-r <directory>] [-u <string>] [--apiversion <string>] [--json] [--loglevel 
+  trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
 OPTIONS
-  -d, --typeoutputdir=typeoutputdir                     [default: force-app/main/default/objects/] directory to store
-                                                        newly-created custom metadata type files
+  -d, --typeoutputdir=typeoutputdir                                                 [default:
+                                                                                    force-app/main/default/objects/]
+                                                                                    directory to store newly-created
+                                                                                    custom metadata type files
 
-  -i, --ignoreunsupported                               ignore unsupported field types
+  -i, --ignoreunsupported                                                           ignore unsupported field types
 
-  -l, --label=label                                     label for the custom metadata type
+  -l, --label=label                                                                 label for the custom metadata type
 
-  -n, --devname=devname                                 (required) name of the custom metadata type
+  -n, --devname=devname                                                             (required) name of the custom
+                                                                                    metadata type
 
-  -p, --plurallabel=plurallabel                         plural version of the label value; if blank, uses label
+  -p, --plurallabel=plurallabel                                                     plural version of the label value;
+                                                                                    if blank, uses label
 
-  -r, --recordsoutputdir=recordsoutputdir               [default: force-app/main/default/customMetadata/] directory to
-                                                        store newly-created custom metadata record files
+  -r, --recordsoutputdir=recordsoutputdir                                           [default:
+                                                                                    force-app/main/default/customMetadat
+                                                                                    a/] directory to store newly-created
+                                                                                    custom metadata record files
 
-  -s, --sobjectname=sobjectname                         (required) API name of the sObject source for custom metadata
-                                                        generation
+  -s, --sobjectname=sobjectname                                                     (required) API name of the sObject
+                                                                                    source for custom metadata
+                                                                                    generation
 
-  -u, --targetusername=targetusername                   username or alias for the target org; overrides default target
-                                                        org
+  -u, --targetusername=targetusername                                               username or alias for the target
+                                                                                    org; overrides default target org
 
-  -v, --visibility=(PackageProtected|Protected|Public)  [default: Public] visibility of the custom metadata type
+  -v, --visibility=(PackageProtected|Protected|Public)                              [default: Public] visibility of the
+                                                                                    custom metadata type
 
-  --apiversion=apiversion                               override the api version used for api requests made by this
-                                                        command
+  --apiversion=apiversion                                                           override the api version used for
+                                                                                    api requests made by this command
 
-  --json                                                format output as json
+  --json                                                                            format output as json
 
-  --loglevel=(trace|debug|info|warn|error|fatal)        logging level for this command invocation
+  --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
+                                                                                    this command invocation
 
 EXAMPLES
   Generate a custom metadata type from an sObject in the default target org:
@@ -155,34 +181,42 @@ EXAMPLES
   'path/to/my/cmdt/record/directory'
 ```
 
-_See code: [src/commands/force/cmdt/generate.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v0.0.0/src/commands/force/cmdt/generate.ts)_
+_See code: [src/commands/force/cmdt/generate.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v0.0.0-dev/src/commands/force/cmdt/generate.ts)_
 
-## `sfdx force:cmdt:record:create`
+## `sfdx force:cmdt:record:create [name=value...] -t <string> -n <string> [-l <string>] [-p <string>] [-i <directory>] [-d <directory>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
 create a new record for a given custom metadata type in the current project
 
 ```
 USAGE
-  $ sfdx force:cmdt:record:create
+  $ sfdx force:cmdt:record:create [name=value...] -t <string> -n <string> [-l <string>] [-p <string>] [-i <directory>] 
+  [-d <directory>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
 OPTIONS
-  -d, --outputdir=outputdir                       [default: force-app/main/default/customMetadata] directory to store
-                                                  newly-created custom metadata record files
+  -d, --outputdir=outputdir                                                         [default:
+                                                                                    force-app/main/default/customMetadat
+                                                                                    a] directory to store newly-created
+                                                                                    custom metadata record files
 
-  -i, --inputdir=inputdir                         [default: force-app/main/default/objects] directory to pull the custom
-                                                  metadata type definition from
+  -i, --inputdir=inputdir                                                           [default:
+                                                                                    force-app/main/default/objects]
+                                                                                    directory to pull the custom
+                                                                                    metadata type definition from
 
-  -l, --label=label                               label for the new record
+  -l, --label=label                                                                 label for the new record
 
-  -n, --recordname=recordname                     (required) name for the new record
+  -n, --recordname=recordname                                                       (required) name for the new record
 
-  -p, --protected=true|false                      [default: false] protect the record when it is in a managed package
+  -p, --protected=true|false                                                        [default: false] protect the record
+                                                                                    when it is in a managed package
 
-  -t, --typename=typename                         (required) API name of the custom metadata type to create a record for
+  -t, --typename=typename                                                           (required) API name of the custom
+                                                                                    metadata type to create a record for
 
-  --json                                          format output as json
+  --json                                                                            format output as json
 
-  --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
+  --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
+                                                                                    this command invocation
 
 EXAMPLES
   Create a record metadata file for custom metadata type 'MyCMT' with values specified for two custom fields:
@@ -194,33 +228,40 @@ EXAMPLES
   My_Custom_Field_1=Foo My_Custom_Field_2=Bar
 ```
 
-_See code: [src/commands/force/cmdt/record/create.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v0.0.0/src/commands/force/cmdt/record/create.ts)_
+_See code: [src/commands/force/cmdt/record/create.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v0.0.0-dev/src/commands/force/cmdt/record/create.ts)_
 
-## `sfdx force:cmdt:record:insert`
+## `sfdx force:cmdt:record:insert -f <string> -t <string> [-i <directory>] [-d <directory>] [-n <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
 create new custom metadata type records from a CSV file
 
 ```
 USAGE
-  $ sfdx force:cmdt:record:insert
+  $ sfdx force:cmdt:record:insert -f <string> -t <string> [-i <directory>] [-d <directory>] [-n <string>] [--json] 
+  [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
 OPTIONS
-  -d, --outputdir=outputdir                       [default: force-app/main/default/customMetadata] directory to store
-                                                  newly-created custom metadata record files
+  -d, --outputdir=outputdir                                                         [default:
+                                                                                    force-app/main/default/customMetadat
+                                                                                    a] directory to store newly-created
+                                                                                    custom metadata record files
 
-  -f, --filepath=filepath                         (required) path to the CSV file
+  -f, --filepath=filepath                                                           (required) path to the CSV file
 
-  -i, --inputdir=inputdir                         [default: force-app/main/default/objects] directory to pull the custom
-                                                  metadata type definition from
+  -i, --inputdir=inputdir                                                           [default:
+                                                                                    force-app/main/default/objects]
+                                                                                    directory to pull the custom
+                                                                                    metadata type definition from
 
-  -n, --namecolumn=namecolumn                     [default: Name] column that is used to determine the name of the
-                                                  record
+  -n, --namecolumn=namecolumn                                                       [default: Name] column that is used
+                                                                                    to determine the name of the record
 
-  -t, --typename=typename                         (required) API name of the custom metadata type
+  -t, --typename=typename                                                           (required) API name of the custom
+                                                                                    metadata type
 
-  --json                                          format output as json
+  --json                                                                            format output as json
 
-  --loglevel=(trace|debug|info|warn|error|fatal)  logging level for this command invocation
+  --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
+                                                                                    this command invocation
 
 EXAMPLES
   Create record metadata files for type 'My_CMDT_Name' (from your local project) based on values in a CSV file, using 
@@ -232,7 +273,7 @@ EXAMPLES
   "path/to/my/cmdt/directory" --namecolumn "PrimaryKey"
 ```
 
-_See code: [src/commands/force/cmdt/record/insert.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v0.0.0/src/commands/force/cmdt/record/insert.ts)_
+_See code: [src/commands/force/cmdt/record/insert.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v0.0.0-dev/src/commands/force/cmdt/record/insert.ts)_
 <!-- commandsstop -->
 
 <!-- debugging-your-plugin -->

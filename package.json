@@ -1,47 +1,75 @@
 {
   "name": "@salesforce/plugin-custom-metadata",
   "description": "Tools for working with custom metadata types and their records.",
-  "version": "1.0.0",
+  "version": "0.0.0-dev",
   "contributors": [
-    { "name": "Carolyn Grabill", "url" : "https://www.salesforce.com/" },
-    { "name": "Bryan Friend", "url" : "https://www.codescience.com/" },
-    { "name": "Abhishek Tangudu", "url" : "https://www.codescience.com/" },
-    { "name": "Matt Turnure", "url" : "https://www.codescience.com/" },
-    { "name": "Mohith Shrivastava", "url" : "https://www.codescience.com/" },
-    { "name": "Brian Runyan", "url" : "https://www.codescience.com/" },
-    { "name": "Brian Buffington", "url" : "https://www.codescience.com/" },
-    { "name": "Catherine Schell", "url" : "https://www.salesforce.com/" },
-    { "name": "Seth Leger", "url" : "https://www.salesforce.com/" }
+    {
+      "name": "Carolyn Grabill",
+      "url": "https://www.salesforce.com/"
+    },
+    {
+      "name": "Bryan Friend",
+      "url": "https://www.codescience.com/"
+    },
+    {
+      "name": "Abhishek Tangudu",
+      "url": "https://www.codescience.com/"
+    },
+    {
+      "name": "Matt Turnure",
+      "url": "https://www.codescience.com/"
+    },
+    {
+      "name": "Mohith Shrivastava",
+      "url": "https://www.codescience.com/"
+    },
+    {
+      "name": "Brian Runyan",
+      "url": "https://www.codescience.com/"
+    },
+    {
+      "name": "Brian Buffington",
+      "url": "https://www.codescience.com/"
+    },
+    {
+      "name": "Catherine Schell",
+      "url": "https://www.salesforce.com/"
+    },
+    {
+      "name": "Seth Leger",
+      "url": "https://www.salesforce.com/"
+    }
   ],
   "bugs": "https://github.com/salesforcecli/plugin-custom-metadata/issues",
   "dependencies": {
-    "@oclif/command": "1",
-    "@oclif/config": "1",
-    "@oclif/errors": "1",
-    "@salesforce/command": "^1.1.0",
-    "@salesforce/ts-types": "^1.0.1",
-    "tslib": "1"
+    "@oclif/command": "^1.6.1",
+    "@oclif/config": "^1.15.1",
+    "@oclif/errors": "^1.2.2",
+    "@salesforce/command": "^3.0.0",
+    "@salesforce/ts-types": "^1.2.2",
+    "tslib": "^2.0.0"
   },
   "devDependencies": {
-    "@oclif/dev-cli": "^1",
-    "@oclif/plugin-help": "^2",
-    "@oclif/test": "^1",
-    "@salesforce/dev-config": "^1.1.4",
-    "@types/chai": "^4",
+    "@oclif/dev-cli": "^1.22.2",
+    "@oclif/plugin-help": "^3.0.1",
+    "@oclif/test": "^1.2.6",
+    "@salesforce/dev-config": "^1.5.0",
+    "@salesforce/ts-sinon": "^1.1.2",
+    "@types/chai": "^4.2.11",
     "@types/csvtojson": "^1.1.5",
-    "@types/jsforce": "1.9.13",
-    "@types/mocha": "^5",
-    "@types/node": "^10",
-    "@types/xml2js": "^0.4.3",
-    "chai": "^4",
-    "csvtojson": "^2.0.8",
-    "globby": "^8",
-    "mocha": "^5",
-    "nyc": "^13",
-    "sinon": "5",
-    "ts-node": "^7",
-    "typescript": "^3.0",
-    "xml2js": "^0.4.19"
+    "@types/jsforce": "1.9.18",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^14.0.9",
+    "@types/xml2js": "^0.4.5",
+    "chai": "^4.2.0",
+    "csvtojson": "^2.0.10",
+    "globby": "^11.0.1",
+    "mocha": "^7.2.0",
+    "nyc": "^15.1.0",
+    "sinon": "9.0.2",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.3",
+    "xml2js": "^0.4.23"
   },
   "engines": {
     "node": ">=8.0.0"
@@ -69,7 +97,6 @@
     "postpack": "rm -f oclif.manifest.json npm-shrinkwrap.json",
     "posttest": "tsc -p test --noEmit && tslint -p test -t stylish",
     "prepack": "rm -rf lib && tsc && oclif-dev manifest && oclif-dev readme && npm shrinkwrap",
-    "prepare": "rm -rf lib && tsc && oclif-dev manifest && oclif-dev readme && npm shrinkwrap",
     "test": "nyc mocha --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif-dev readme && git add README.md"
   },
