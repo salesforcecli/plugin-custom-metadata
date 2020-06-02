@@ -1,0 +1,91 @@
+version: 2.1
+
+commands:
+  install:
+    description: Install Dependencies
+    steps:
+      - run: yarn
+  test:
+    description: Test
+    steps:
+      - run: yarn test
+  coverage:
+    description: Upload Test Coverage
+    steps:
+      - run: ./node_modules/.bin/nyc report --reporter text-lcov > coverage.lcov
+      - run: curl -s https://codecov.io/bash | bash
+  gh-config:
+    description: Configure Github
+    steps:
+      - run: git config credential.helper 'cache --timeout=120'
+      - run: git config user.email "$GH_EMAIL"
+      - run: git config user.name "Deployment Bot"
+
+_refs:
+  ssh-config: &ssh-config
+    fingerprints:
+      - '35:98:a7:97:be:15:e2:ed:e6:01:5c:9d:0e:9d:d6:54'
+  cache-config: &cache-config
+    key: dependency-cache-{{ checksum "package.json" }}
+  restore-cache: &restore-cache
+    <<: *cache-config
+  save-cache: &save-cache
+    <<: *cache-config
+    paths:
+      - node_modules
+      - /usr/local/share/.cache/yarn
+      - /usr/local/share/.config/yarn
+
+_defaults: &defaults
+  docker:
+    - image: node:latest
+
+jobs:
+  node-latest: &node-test
+    <<: *defaults
+    steps:
+      - add_ssh_keys: *ssh-config
+      - checkout
+      - restore_cache: *restore-cache
+      - command: install
+      - run: test
+      - run: coverage
+      - save_cache: *save-cache
+  node-10:
+    <<: *node-test
+    docker:
+      - image: node:10
+  node-12:
+    <<: *node-test
+    docker:
+      - image: node:12
+  release:
+    <<: *defaults
+    steps:
+      - add_ssh_keys: *ssh-config
+      - checkout
+      - restore_cache: *restore-cache
+      - run: gh-config
+      - command: install
+      - run: yarn global add semantic-release@15
+      - run: yarn global add @oclif/semantic-release@3
+      # - run: semantic-release -e @oclif/semantic-release
+      - run: git status
+      - save_cache: *save-cache
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - node-latest
+      - node-12
+      - node-10
+  release:
+    jobs:
+      - release:
+          filters:
+            branches: { only: master }
+          requires:
+            - node-latest
+            - node-12
+            - node-10
