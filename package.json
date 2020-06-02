@@ -1,7 +1,7 @@
 {
   "name": "@salesforce/plugin-custom-metadata",
   "description": "Tools for working with custom metadata types and their records.",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "contributors": [
     { "name": "Carolyn Grabill", "url" : "https://www.salesforce.com/" },
     { "name": "Bryan Friend", "url" : "https://www.codescience.com/" },

@@ -49,7 +49,8 @@ jobs:
       - restore_cache: *restore-cache
       - install
       - test
-      - coverage
+      # Add back in when repository is public
+      # - coverage
       - save_cache: *save-cache
   node-10:
     <<: *node-test

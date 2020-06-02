@@ -5,8 +5,6 @@ Tools for working with custom metadata types and their records.
 
 [![Version](https://img.shields.io/npm/v/custommetadata.svg)](https://npmjs.org/package/custommetadata)
 [![CircleCI](https://circleci.com/gh/salesforcecli/plugin-custom-metadata/tree/master.svg?style=shield)](https://circleci.com/gh/salesforcecli/plugin-custom-metadata/tree/master)
-[![Codecov](https://codecov.io/gh/salesforcecli/plugin-custom-metadata/branch/master/graph/badge.svg)](https://codecov.io/gh/salesforcecli/plugin-custom-metadata)
-[![Downloads/week](https://img.shields.io/npm/dw/custommetadata.svg)](https://npmjs.org/package/custommetadata)
 [![License](https://img.shields.io/npm/l/custommetadata.svg)](https://github.com/salesforcecli/plugin-custom-metadata/blob/master/cmtPlugin/custommetadata/package.json)
 
 # Installation
