@@ -3,9 +3,9 @@ Custom Metadata Plugin
 
 Tools for working with custom metadata types and their records.
 
-[![Version](https://img.shields.io/npm/v/custommetadata.svg)](https://npmjs.org/package/custommetadata)
+[![Version](https://img.shields.io/npm/v/@salesforce/plugin-custom-metadata.svg)](https://www.npmjs.com/package/@salesforce/plugin-custom-metadata)
 [![CircleCI](https://circleci.com/gh/salesforcecli/plugin-custom-metadata/tree/master.svg?style=shield)](https://circleci.com/gh/salesforcecli/plugin-custom-metadata/tree/master)
-[![License](https://img.shields.io/npm/l/custommetadata.svg)](https://github.com/salesforcecli/plugin-custom-metadata/blob/master/cmtPlugin/custommetadata/package.json)
+[![License](https://img.shields.io/npm/l/@salesforce/plugin-custom-metadata.svg)](https://github.com/salesforcecli/plugin-custom-metadata/blob/master/LICENSE.txt)
 
 # Installation
 This is a [Salesforce CLI](https://developer.salesforce.com/tools/sfdxcli) plugin and bundled with the CLI via [salesforcedx](https://www.npmjs.com/package/salesforcedx) as of `48.18.0`.
