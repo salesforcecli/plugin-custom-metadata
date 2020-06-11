@@ -1,4 +1,4 @@
-Custom Metadata Plugin
+Custom Metadata Plugin 
 ==============
 
 Tools for working with custom metadata types and their records.
