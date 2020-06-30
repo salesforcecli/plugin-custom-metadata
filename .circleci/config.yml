@@ -68,7 +68,7 @@ jobs:
       - restore_cache: *restore-cache
       - gh-config
       - install
-      - test
+      - run: echo unsafe-perm = true >> ~/.npmrc
       - run: yarn release
       - run: git status
       - save_cache: *save-cache
