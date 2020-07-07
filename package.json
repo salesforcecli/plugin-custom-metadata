@@ -47,7 +47,7 @@
     "@oclif/errors": "^1.2.2",
     "@salesforce/command": "^3.0.0",
     "@salesforce/ts-types": "^1.2.2",
-    "@types/csvtojson": "^1.1.5",
+    "csvtojson": "^2.0.10",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
@@ -58,12 +58,12 @@
     "@salesforce/ts-sinon": "^1.1.2",
     "@semantic-release/git": "^9.0.0",
     "@types/chai": "^4.2.11",
+    "@types/csvtojson": "^1.1.5",
     "@types/jsforce": "1.9.18",
     "@types/mocha": "^7.0.2",
     "@types/node": "^14.0.9",
     "@types/xml2js": "^0.4.5",
     "chai": "^4.2.0",
-    "csvtojson": "^2.0.10",
     "globby": "^11.0.1",
     "mocha": "^7.2.0",
     "nyc": "^15.1.0",
