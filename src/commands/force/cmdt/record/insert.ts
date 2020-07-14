@@ -7,7 +7,7 @@
 
 import { core, flags, SfdxCommand } from '@salesforce/command';
 import { AnyJson } from '@salesforce/ts-types';
-import * as csv from 'csvtojson';
+import * as csv from '../../../../../csvtojson';
 import { CreateUtil } from '../../../../lib/helpers/createUtil';
 import { FileWriter } from '../../../../lib/helpers/fileWriter';
 import { CreateConfig } from '../../../../lib/interfaces/createConfig';

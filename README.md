@@ -61,7 +61,7 @@ EXAMPLES
   Protected
 ```
 
-_See code: [src/commands/force/cmdt/create.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v1.0.0/src/commands/force/cmdt/create.ts)_
+_See code: [src/commands/force/cmdt/create.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v1.0.1/src/commands/force/cmdt/create.ts)_
 
 ## `sfdx force:cmdt:field:create -n <string> -f Checkbox|Date|DateTime|Email|Number|Percent|Phone|Picklist|Text|TextArea|LongTextArea|Url [-p <array>] [-s <number>] [-l <string>] [-d <directory>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -108,7 +108,7 @@ EXAMPLES
        $ sfdx force:cmdt:field:create --fieldname MyField --fieldtype Number --decimalplaces 2
 ```
 
-_See code: [src/commands/force/cmdt/field/create.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v1.0.0/src/commands/force/cmdt/field/create.ts)_
+_See code: [src/commands/force/cmdt/field/create.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v1.0.1/src/commands/force/cmdt/field/create.ts)_
 
 ## `sfdx force:cmdt:generate -n <string> -s <string> [-l <string>] [-p <string>] [-v PackageProtected|Protected|Public] [-i] [-d <directory>] [-r <directory>] [-u <string>] [--apiversion <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -181,7 +181,7 @@ EXAMPLES
   'path/to/my/cmdt/record/directory'
 ```
 
-_See code: [src/commands/force/cmdt/generate.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v1.0.0/src/commands/force/cmdt/generate.ts)_
+_See code: [src/commands/force/cmdt/generate.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v1.0.1/src/commands/force/cmdt/generate.ts)_
 
 ## `sfdx force:cmdt:record:create [name=value...] -t <string> -n <string> [-l <string>] [-p <string>] [-i <directory>] [-d <directory>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -228,7 +228,7 @@ EXAMPLES
   My_Custom_Field_1=Foo My_Custom_Field_2=Bar
 ```
 
-_See code: [src/commands/force/cmdt/record/create.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v1.0.0/src/commands/force/cmdt/record/create.ts)_
+_See code: [src/commands/force/cmdt/record/create.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v1.0.1/src/commands/force/cmdt/record/create.ts)_
 
 ## `sfdx force:cmdt:record:insert -f <string> -t <string> [-i <directory>] [-d <directory>] [-n <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -273,7 +273,7 @@ EXAMPLES
   "path/to/my/cmdt/directory" --namecolumn "PrimaryKey"
 ```
 
-_See code: [src/commands/force/cmdt/record/insert.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v1.0.0/src/commands/force/cmdt/record/insert.ts)_
+_See code: [src/commands/force/cmdt/record/insert.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/v1.0.1/src/commands/force/cmdt/record/insert.ts)_
 <!-- commandsstop -->
 
 <!-- debugging-your-plugin -->
