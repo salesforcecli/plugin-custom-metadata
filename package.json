@@ -75,6 +75,7 @@
     "node": ">=8.0.0"
   },
   "files": [
+    "/csvtojson",
     "/lib",
     "/messages",
     "/oclif.manifest.json"
