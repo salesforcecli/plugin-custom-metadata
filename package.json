@@ -51,9 +51,11 @@
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.22.2",
+    "@oclif/plugin-command-snapshot": "^1.0.0",
     "@oclif/plugin-help": "^3.0.1",
     "@oclif/test": "^1.2.6",
     "@salesforce/dev-config": "^1.5.0",
+    "@salesforce/plugin-command-reference": "^1.1.0",
     "@salesforce/ts-sinon": "^1.1.2",
     "@semantic-release/git": "^9.0.0",
     "@types/chai": "^4.2.11",
@@ -89,17 +91,36 @@
     "commands": "./lib/commands",
     "bin": "sfdx",
     "devPlugins": [
-      "@oclif/plugin-help"
-    ]
+      "@oclif/plugin-help",
+      "@oclif/plugin-command-snapshot",
+      "@salesforce/plugin-command-reference"
+    ],
+    "topics": {
+      "force": {
+        "external": true,
+        "subtopics": {
+          "cmdt": {
+            "description": "tools for working with custom metadata types and their records",
+            "subtopics": {
+              "record": {
+                "description": "create and insert custom metadata type records"
+              }
+            }
+          }
+        }
+      }
+    }
   },
   "repository": "github:salesforcecli/plugin-custom-metadata",
   "scripts": {
     "postpack": "rm -f oclif.manifest.json",
-    "posttest": "tsc -p test --noEmit && tslint -p test -t stylish",
+    "posttest": "tsc -p test --noEmit && tslint -p test -t stylish && yarn test:deprecation-policy && yarn test:command-reference",
     "prepack": "rm -rf lib && tsc && oclif-dev manifest && oclif-dev readme",
     "test": "nyc mocha --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif-dev readme && git add README.md",
-    "release": "semantic-release -p @semantic-release/git -p @semantic-release/npm -p @semantic-release/github -p @semantic-release/commit-analyzer"
+    "release": "semantic-release -p @semantic-release/git -p @semantic-release/npm -p @semantic-release/github -p @semantic-release/commit-analyzer",
+    "test:deprecation-policy": "./bin/run snapshot:compare",
+    "test:command-reference": "./bin/run commandreference:generate -p @salesforce/plugin-custom-metadata --erroronwarnings"
   },
   "publishConfig": {
     "access": "public"
