@@ -1,7 +1,7 @@
 {
   "name": "@salesforce/plugin-custom-metadata",
   "description": "Tools for working with custom metadata types and their records.",
-  "version": "1.0.1",
+  "version": "1.0.9",
   "contributors": [
     {
       "name": "Carolyn Grabill",
@@ -55,6 +55,7 @@
     "@oclif/plugin-help": "^3.0.1",
     "@oclif/test": "^1.2.6",
     "@salesforce/dev-config": "^1.5.0",
+    "@salesforce/dev-scripts": "0.6.1",
     "@salesforce/plugin-command-reference": "^1.1.0",
     "@salesforce/ts-sinon": "^1.1.2",
     "@semantic-release/git": "^9.0.0",
@@ -65,9 +66,11 @@
     "@types/xml2js": "^0.4.5",
     "chai": "^4.2.0",
     "globby": "^11.0.1",
+    "husky": "^4.2.5",
     "mocha": "^7.2.0",
     "nyc": "^15.1.0",
     "semantic-release": "^17.0.8",
+    "shx": "0.2.2",
     "sinon": "9.0.2",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.3",
@@ -113,6 +116,9 @@
   },
   "repository": "github:salesforcecli/plugin-custom-metadata",
   "scripts": {
+    "clean:lib": "shx rm -rf lib && shx rm -rf coverage && shx rm -rf .nyc_output && shx rm -f oclif.manifest.json",
+    "compile": "tsc -b",
+    "build": "yarn run clean:lib && yarn compile",
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "tsc -p test --noEmit && tslint -p test -t stylish && yarn test:deprecation-policy && yarn test:command-reference",
     "prepack": "rm -rf lib && tsc && oclif-dev manifest && oclif-dev readme",
@@ -121,6 +127,11 @@
     "release": "semantic-release -p @semantic-release/git -p @semantic-release/npm -p @semantic-release/github -p @semantic-release/commit-analyzer",
     "test:deprecation-policy": "./bin/run snapshot:compare",
     "test:command-reference": "./bin/run commandreference:generate -p @salesforce/plugin-custom-metadata --erroronwarnings"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "yarn sf-husky-commit-msg"
+    }
   },
   "publishConfig": {
     "access": "public"
