@@ -1,90 +1,21 @@
 version: 2.1
-
-commands:
-  install:
-    description: Install Dependencies
-    steps:
-      - run: yarn
-  test:
-    description: Test
-    steps:
-      - run: yarn test
-  coverage:
-    description: Upload Test Coverage
-    steps:
-      - run: ./node_modules/.bin/nyc report --reporter text-lcov > coverage.lcov
-      - run: curl -s https://codecov.io/bash | bash
-  gh-config:
-    description: Configure Github
-    steps:
-      - run: git config credential.helper 'cache --timeout=120'
-      - run: git config user.email "$GH_EMAIL"
-      - run: git config user.name "Deployment Bot"
-
-_refs:
-  ssh-config: &ssh-config
-    fingerprints:
-      - '7e:59:29:c8:d1:f5:0e:83:01:bc:4b:6e:1c:cf:4d:b4'
-  cache-config: &cache-config
-    key: dependency-cache-{{ checksum "package.json" }}
-  restore-cache: &restore-cache
-    <<: *cache-config
-  save-cache: &save-cache
-    <<: *cache-config
-    paths:
-      - node_modules
-      - /usr/local/share/.cache/yarn
-      - /usr/local/share/.config/yarn
-
-_defaults: &defaults
-  docker:
-    - image: node:latest
-
-jobs:
-  node-latest: &node-test
-    <<: *defaults
-    steps:
-      - add_ssh_keys: *ssh-config
-      - checkout
-      - restore_cache: *restore-cache
-      - install
-      - test
-      # Add back in when repository is public
-      # - coverage
-      - save_cache: *save-cache
-  node-10:
-    <<: *node-test
-    docker:
-      - image: node:10
-  node-12:
-    <<: *node-test
-    docker:
-      - image: node:12
-  release:
-    <<: *defaults
-    steps:
-      - add_ssh_keys: *ssh-config
-      - checkout
-      - restore_cache: *restore-cache
-      - gh-config
-      - install
-      - run: echo unsafe-perm = true >> ~/.npmrc
-      - run: yarn release
-      - run: git status
-      - save_cache: *save-cache
+orbs:
+  release-management: salesforce/npm-release-management@3
 
 workflows:
   version: 2
-  test-release:
+  test-and-release:
     jobs:
-      - node-latest
-      - node-12
-      - node-10
-      - release:
-          filters:
-            branches: { only: master }
+      - release-management/test-package:
+          name: node-latest
+          node_version: latest
+      - release-management/test-package:
+          name: node-12
+      - release-management/release-package:
+          sign: true
           requires:
             - node-latest
             - node-12
-            - node-10
-      
+          filters:
+            branches:
+              only: master
