@@ -1,3 +1,14 @@
+# Changelog
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [1.0.10](https://github.com/salesforcecli/plugin-custom-metadata/compare/v1.0.8...v1.0.10) (2020-08-27)
+
+
+### Features
+
+* use npm-release-management-orb ([7154761](https://github.com/salesforcecli/plugin-custom-metadata/commit/7154761d3f0cfedc223f3a38cb7c8970f616bf22))
+
 # 1.0.0 (2020-06-02)
 
 
