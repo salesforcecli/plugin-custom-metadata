@@ -124,7 +124,7 @@
     "posttest": "yarn lint && yarn test:deprecation-policy && yarn test:command-reference",
     "prepack": "rm -rf lib && tsc && oclif-dev manifest && oclif-dev readme",
     "test": "nyc mocha --forbid-only \"test/**/*.test.ts\"",
-    "version": "oclif-dev readme && git add README.md",
+    "version": "oclif-dev readme",
     "release": "semantic-release -p @semantic-release/git -p @semantic-release/npm -p @semantic-release/github -p @semantic-release/commit-analyzer",
     "test:deprecation-policy": "./bin/run snapshot:compare",
     "test:command-reference": "./bin/run commandreference:generate --erroronwarnings",
