@@ -6,8 +6,22 @@ workflows:
   test-and-release:
     jobs:
       - release-management/test-package:
-          name: node-latest
+          name: <<parameters.os>>-unit-tests
           node_version: latest
+          matrix:
+            parameters:
+              os:
+                - linux
+                - windows
+              node_version:
+                - latest
+                - lts
+                - maintenance
+          exclude:
+            - os: windows
+              node_version: lts
+            - os: windows
+              node_version: maintenance
       - release-management/test-package:
           name: node-12
       - release-management/release-package:
