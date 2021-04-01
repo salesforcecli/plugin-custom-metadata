@@ -6,7 +6,6 @@ workflows:
   test-and-release:
     jobs:
       - release-management/test-package:
-          name: <<parameters.os>>-unit-tests
           node_version: latest
           matrix:
             parameters:
@@ -22,18 +21,10 @@ workflows:
                 node_version: lts
               - os: windows
                 node_version: maintenance
-          exclude:
-            - os: windows
-              node_version: lts
-            - os: windows
-              node_version: maintenance
-      - release-management/test-package:
-          name: node-12
       - release-management/release-package:
           sign: true
           requires:
-            - node-latest
-            - node-12
+            - release-management/test-package
           filters:
             branches:
               only: master
