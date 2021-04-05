@@ -92,9 +92,7 @@ describe('sfdx force:cmdt:record:insert', async () => {
       '--outputdir','csv-upload/metadata'
     ])
     .it('fails force:cmdt:record:insert', ctx => {
-      const uxMessage = 'no such file or directory, scandir \'csv-upload/Snape__mdt/fields\'';
-
-      expect(ctx.stderr).to.contain(uxMessage);
+      expect((/.*?no such file or directory, scandir.*?csv-upload.*?Snape__mdt.*?fields.*/g).test(ctx.stderr)).to.be.equal(true);
 
       exec(`rm -rf ${secondTest}`);
     });
@@ -113,9 +111,7 @@ describe('sfdx force:cmdt:record:insert', async () => {
       '--namecolumn','Label'
     ])
     .it('fails force:cmdt:record:insert', ctx => {
-      const uxMessage = 'no such file or directory, scandir \'badCSV/Snapple__mdt/fields\'';
-
-      expect(ctx.stderr).to.contain(uxMessage);
+      expect((/.*?no such file or directory, scandir.*?badCSV.*?Snapple__mdt.*?fields.*/g).test(ctx.stderr)).to.be.equal(true);
 
       exec(`rm -rf ${secondTest}`);
     });
