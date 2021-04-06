@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.12](https://github.com/salesforcecli/plugin-custom-metadata/compare/v1.0.11...v1.0.12) (2021-04-06)
+
+
+### Bug Fixes
+
+* leif .yml merge [skip-validate-pr] ([9177fdc](https://github.com/salesforcecli/plugin-custom-metadata/commit/9177fdc23b42f6cd1c96ee1d34cf74093994c407))
+
 ### [1.0.11](https://github.com/salesforcecli/plugin-custom-metadata/compare/v1.0.10...v1.0.11) (2020-12-10)
 
 ### [1.0.10](https://github.com/salesforcecli/plugin-custom-metadata/compare/v1.0.8...v1.0.10) (2020-08-27)
