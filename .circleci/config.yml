@@ -37,11 +37,11 @@ workflows:
   test-and-release:
     when: << pipeline.parameters.run-auto-workflows >>
     jobs:
-     - release-management/validate-pr:
+      - release-management/validate-pr:
           filters:
             branches:
               ignore: master
-     - release-management/test-package:
+      - release-management/test-package:
           node_version: latest
           matrix:
             parameters:
