@@ -40,7 +40,7 @@ workflows:
       - release-management/validate-pr:
           filters:
             branches:
-              ignore: master
+              ignore: main
       - release-management/test-package:
           node_version: latest
           matrix:
@@ -63,7 +63,8 @@ workflows:
             - release-management/test-package
           filters:
             branches:
-              only: master
+              only: main
+          github-release: true
   test-ts-update:
     triggers:
       - schedule:
@@ -71,7 +72,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
     jobs:
       - release-management/test-ts-update
   just-nuts:
