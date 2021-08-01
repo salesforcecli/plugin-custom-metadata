@@ -55,7 +55,7 @@
     "@oclif/plugin-help": "^3.0.1",
     "@oclif/test": "^1.2.6",
     "@salesforce/dev-config": "^1.5.0",
-    "@salesforce/dev-scripts": "0.6.1",
+    "@salesforce/dev-scripts": "0.9.18",
     "@salesforce/plugin-command-reference": "^1.1.0",
     "@salesforce/ts-sinon": "^1.1.2",
     "@semantic-release/git": "^9.0.0",
