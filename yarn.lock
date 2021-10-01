@@ -989,17 +989,17 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/jsforce@1.9.18":
-  version "1.9.18"
-  resolved "https://registry.yarnpkg.com/@types/jsforce/-/jsforce-1.9.18.tgz#57aa1908dc69e2e2e7556c7263abc61c59a961e8"
-  integrity sha512-IVKsVnPf7B/YFT21QGZTz9NNGNAMFto/VHizrq6uD6r8PDaIqth/RH9UL3cS6c6nkyXnHFUi/UDUuUj4hCiDYA==
-  dependencies:
-    "@types/node" "*"
-
 "@types/jsforce@1.9.2":
   version "1.9.2"
   resolved "https://registry.yarnpkg.com/@types/jsforce/-/jsforce-1.9.2.tgz#a321866dcb7c9c4c57a1d794d54ec52e3f07ff0b"
   integrity sha512-ZRRPNf/e44QnFI8VEsPxzrM/+Y5vx/HGsMI8qE4JvBHDkSfoFWAdZ93uW6Oh3sHmcoShexcoTH9gufihTgYBLQ==
+
+"@types/jsforce@1.9.35":
+  version "1.9.35"
+  resolved "https://registry.yarnpkg.com/@types/jsforce/-/jsforce-1.9.35.tgz#abda87c796910d286420b07a97382c782b576ca8"
+  integrity sha512-GEb1iMAK8raElbBbozR7aVEuMl47jrPYLNkeh+3h2vLJIG21uQ/kOk4kPgMiMFwCmgfX4/tPDugnjb7qrMav4A==
+  dependencies:
+    "@types/node" "*"
 
 "@types/json5@^0.0.29":
   version "0.0.29"
