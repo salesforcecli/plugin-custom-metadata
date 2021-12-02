@@ -8,7 +8,7 @@
 import { expect, test } from '@salesforce/command/lib/test';
 import { CreateUtil } from '../../src/lib/helpers/createUtil';
 import { FileWriter } from '../../src/lib/helpers/fileWriter';
-import { core } from '@salesforce/command';
+import { fs as coreFs } from '@salesforce/core';
 import * as fs from 'fs';
 import { promisify } from 'util';
 
@@ -34,7 +34,7 @@ describe('CreateUtil', () => {
         username: 'test@org.com'
       }, true)
       .stdout()
-      .withProject()
+      // .withProject()
       .command(['force:cmdt:create', '--typename', 'Field_Type_Test', '--outputdir', 'fieldTypeTest'])
       .command(['force:cmdt:field:create', '--fieldname', 'Check', '--fieldtype', 'Checkbox', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
       .command(['force:cmdt:field:create', '--fieldname', 'Date', '--fieldtype', 'Date', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
@@ -63,7 +63,7 @@ describe('CreateUtil', () => {
         const outputdir = 'fieldTypeTest/customMetadata';
         const dirName = createUtil.appendDirectorySuffix(typename);
         const fieldDirPath = `${fileWriter.createDir(inputdir)}${dirName}/fields`;
-        const fileNames = await core.fs.readdir(fieldDirPath);
+        const fileNames = await coreFs.readdir(fieldDirPath);
         const varargs = {
           Check__c: true,
           Date_Time__c: '2019-01-21T18:37:00.000Z',
@@ -81,7 +81,7 @@ describe('CreateUtil', () => {
           Percent_Double__c: 78.91
         };
 
-        await core.fs.mkdirp(outputdir);
+        await coreFs.mkdirp(outputdir);
 
         const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
 
@@ -142,7 +142,7 @@ describe('CreateUtil', () => {
         username: 'test@org.com'
       }, true)
       .stdout()
-      .withProject()
+      // .withProject()
       .command(['force:cmdt:create', '--typename', 'Field_Type_Test', '--outputdir', 'fieldTypeTest'])
       .command(['force:cmdt:field:create', '--fieldname', 'Check', '--fieldtype', 'Checkbox', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
       .command(['force:cmdt:field:create', '--fieldname', 'Date', '--fieldtype', 'Date', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
@@ -171,7 +171,7 @@ describe('CreateUtil', () => {
         const outputdir = 'fieldTypeTest/customMetadata';
         const dirName = createUtil.appendDirectorySuffix(typename);
         const fieldDirPath = `${fileWriter.createDir(inputdir)}${dirName}/fields`;
-        const fileNames = await core.fs.readdir(fieldDirPath);
+        const fileNames = await coreFs.readdir(fieldDirPath);
         const varargs = {
           Check__c: true,
           Date_Time__c: '2019-01-21T18:37:00.000Z',
@@ -189,7 +189,7 @@ describe('CreateUtil', () => {
           Percent_Double__c: 78.91
         };
 
-        await core.fs.mkdirp(outputdir);
+        await coreFs.mkdirp(outputdir);
 
         const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
 
@@ -244,7 +244,7 @@ describe('CreateUtil', () => {
         username: 'test@org.com'
       }, true)
       .stdout()
-      .withProject()
+      // .withProject()
       .command(['force:cmdt:create', '--typename', 'Default_Type', '--outputdir', 'defaultTypes'])
       .command(['force:cmdt:field:create', '--fieldname', 'Check', '--fieldtype', 'Checkbox', '--outputdir', 'defaultTypes/Default_Type__mdt'])
       .it('should handle an empty array return the field type needed to create a custom metadata type record', async () => {
@@ -262,7 +262,7 @@ describe('CreateUtil', () => {
     test
       .withOrg({username: 'test@org.com'}, true)
       .stdout()
-      .withProject()
+      // .withProject()
       .command(['force:cmdt:create', '--typename', 'Dir_File_Test', '--outputdir', 'dirFileTest'])
       .command(['force:cmdt:field:create', '--fieldname', 'Check', '--fieldtype', 'Checkbox', '--outputdir', 'dirFileTest/Dir_File_Test__mdt'])
       .command(['force:cmdt:field:create', '--fieldname', 'Date', '--fieldtype', 'Date', '--outputdir', 'dirFileTest/Dir_File_Test__mdt'])
@@ -292,7 +292,7 @@ describe('CreateUtil', () => {
         const outputdir = 'dirFileTest/cmdtRecords';
         const dirName = createUtil.appendDirectorySuffix(typename);
         const fieldDirPath = `${fileWriter.createDir(inputdir)}${dirName}/fields`;
-        const fileNames = await core.fs.readdir(fieldDirPath);
+        const fileNames = await coreFs.readdir(fieldDirPath);
         const varargs = {
           Check__c: true,
           Date_Time__c: '2019-01-21T18:37:00.000Z',
@@ -310,7 +310,7 @@ describe('CreateUtil', () => {
           Percent_Double__c: 78.91
         };
 
-        await core.fs.mkdirp(outputdir);
+        await coreFs.mkdirp(outputdir);
 
         const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
 

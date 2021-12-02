@@ -8,8 +8,7 @@
 import { expect, test } from '@salesforce/command/lib/test';
 import * as fs from 'fs';
 import { promisify } from 'util';
-import { Org } from '@salesforce/core';
-import { core } from '@salesforce/command';
+import { Connection, Org } from '@salesforce/core';
 
 const child_process = require('child_process');
 
@@ -97,99 +96,94 @@ const errorQuery = function(){
 };
 
 describe('sfdx force:cmdt:generate', () => {
-
-    describe('generate successful', () => {
-        test
-        .withOrg({ username: 'test@org.com' }, true)
-        .stdout()
-        .withProject()
-        .stub(Org.prototype, 'getConnection',function(){ return {metadata,query}})
-        .stub(core.Connection,'create',function(){ return {metadata,query}})
-        .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c', '-u', 'test@org.com'])
-        .it('runs force:cmdt:generate -n MyCMDT -s TriggerSettings__c -u test@org.com', ctx => {
-            const cmdtName = 'MyCMDT';
-            expect(fs.existsSync(`force-app/main/default/objects/${cmdtName}__mdt`)).to.be.true;
-            expect(fs.existsSync(`force-app/main/default/objects/${cmdtName}__mdt/fields/IsAfterDeleteDisabled__c.field-meta.xml`)).to.be.true;
-            expect(fs.existsSync(`force-app/main/default/customMetadata/${cmdtName}.Record1.md-meta.xml`)).to.be.true;
-            expect(fs.existsSync(`force-app/main/default/customMetadata/${cmdtName}.Record2.md-meta.xml`)).to.be.true;
-            exec(`rm -rf force-app`);
-        });
-        
+    test
+    .withOrg({ username: 'test@org.com' }, true)
+    .stdout()
+    .stderr()
+    .stub(Org.prototype, 'getConnection',function(){ return {metadata,query}})
+    .stub(Connection,'create',function(){ return {metadata,query}})
+    .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c', '-u', 'test@org.com'])
+    .it('runs force:cmdt:generate -n MyCMDT -s TriggerSettings__c -u test@org.com', ctx => {
+        const cmdtName = 'MyCMDT';
+        expect(fs.existsSync(`force-app/main/default/objects/${cmdtName}__mdt`)).to.be.true;
+        expect(fs.existsSync(`force-app/main/default/objects/${cmdtName}__mdt/fields/IsAfterDeleteDisabled__c.field-meta.xml`)).to.be.true;
+        expect(fs.existsSync(`force-app/main/default/customMetadata/${cmdtName}.Record1.md-meta.xml`)).to.be.true;
+        expect(fs.existsSync(`force-app/main/default/customMetadata/${cmdtName}.Record2.md-meta.xml`)).to.be.true;
+        exec(`rm -rf force-app`);
     });
 
-        test
-        .withOrg({ username: 'test@org.com' }, true)
-        .stderr()
-        .withProject()
-        .stub(Org.prototype, 'getConnection',function(){ return {metadata,query}})
-        .stub(core.Connection,'create',function(){ return {metadata,query}})
-        .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c', '-u', 'test2@org.con'])
-        .it('No user found while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c -u test@org.com', ctx => {
-            expect(ctx.stderr ).to.contain('No user found with the provided username or alias test2@org.con');
-        });
+    test
+    .stub(Org.prototype, 'getConnection', () => ({ metadata, query }))
+    .stub(Connection, 'create', () => ({ metadata, query }))
+    .withOrg({ username: 'test@org.com' }, true)
+    .stdout()
+    .stderr()
+    .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c', '-u', 'test2@org.con'])
+    .it('No user found while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c -u test@org.com', ctx => {
+        expect(ctx.stderr).to.contain('No user found with the provided username or alias test2@org.con');
+    });
 
-        test
-        .withOrg({ username: 'test@org.com' }, true)
-        .stderr()
-        .withProject()
-        .stub(Org.prototype, 'getConnection',function(){ return {metadata,query}})
-        .stub(core.Connection,'create',function(){ return {metadata,query}})
-        .command(['force:cmdt:generate', '-n', 'MyCM__DT', '-s', 'TriggerSettings__c'])
-        .it('Not a valid metadata type name while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
-            expect(ctx.stderr ).to.contain('Not a valid custom metadata type name MyCM__DT');
-        });
+    test
+    .withOrg({ username: 'test@org.com' }, true)
+    .stdout()
+    .stderr()
+    .stub(Org.prototype, 'getConnection',function(){ return {metadata,query}})
+    .stub(Connection,'create',function(){ return {metadata,query}})
+    .command(['force:cmdt:generate', '-n', 'MyCM__DT', '-s', 'TriggerSettings__c'])
+    .it('Not a valid metadata type name while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
+        expect(ctx.stderr ).to.contain('Not a valid custom metadata type name MyCM__DT');
+    });
 
-        test
-        .withOrg({ username: 'test@org.com' }, true)
-        .stderr()
-        .withProject()
-        .stub(Org.prototype, 'getConnection',function(){ return {metadata,query}})
-        .stub(core.Connection,'create',function(){ return {metadata,query}})
-        .command(['force:cmdt:generate', '-n', 'MyCMDT__mdt', '-s', 'TriggerSettings__c'])
-        .it('force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
-            expect(ctx.stderr ).to.contain('custom metadata type and records creation in completed');
-        });
+    test
+    .withOrg({ username: 'test@org.com' }, true)
+    .stdout()
+    .stderr()
+    .stub(Org.prototype, 'getConnection',function(){ return {metadata,query}})
+    .stub(Connection,'create',function(){ return {metadata,query}})
+    .command(['force:cmdt:generate', '-n', 'MyCMDT__mdt', '-s', 'TriggerSettings__c'])
+    .it('force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
+        expect(ctx.stderr ).to.contain('custom metadata type and records creation in completed');
+    });
 
-        test
-        .withOrg({ username: 'test@org.com' }, true)
-        .stderr()
-        .withProject()
-        .stub(Org.prototype, 'getConnection',function(){ return {metadata,query}})
-        .stub(core.Connection,'create',function(){ return {metadata,query}})
-        .command(['force:cmdt:generate', '-n', 'MyCMDT__mdt', '-s', 'Trigger__Settings__c'])
-        .it('Not a valid custom set while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
-            expect(ctx.stderr ).to.contain('Not a valid custom setting/custom object name Trigger__Settings__c');
-        });
+    test
+    .withOrg({ username: 'test@org.com' }, true)
+    .stdout()
+    .stderr()
+    .stub(Org.prototype, 'getConnection',function(){ return {metadata,query}})
+    .stub(Connection,'create',function(){ return {metadata,query}})
+    .command(['force:cmdt:generate', '-n', 'MyCMDT__mdt', '-s', 'Trigger__Settings__c'])
+    .it('Not a valid custom set while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
+        expect(ctx.stderr ).to.contain('Not a valid custom setting/custom object name Trigger__Settings__c');
+    });
 
-        test
-        .withOrg({ username: 'test@org.com' }, true)
-        .stderr()
-        .withProject()
-        .stub(Org.prototype, 'getConnection',function(){ return {metadata: emptyMetadata,query}})
-        .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c'])
-        .it('No sobject with name while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
-            expect(ctx.stderr ).to.contain('No sObject with name TriggerSettings__c found in the org.');
-        });
+    test
+    .withOrg({ username: 'test@org.com' }, true)
+    .stdout()
+    .stderr()
+    .stub(Org.prototype, 'getConnection',function(){ return {metadata: emptyMetadata,query}})
+    .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c'])
+    .it('No sobject with name while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
+        expect(ctx.stderr ).to.contain('No sObject with name TriggerSettings__c found in the org.');
+    });
 
-        test
-        .withOrg({ username: 'test@org.com' }, true)
-        .stderr()
-        .withProject()
-        .stub(Org.prototype, 'getConnection',function(){ return {metadata: hierarchyMetadata,query}})
-        .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c'])
-        .it('Cannot generate custom metadata for the c while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
-            expect(ctx.stderr ).to.contain('Cannot generate custom metadata for the custom setting TriggerSettings__c. Check type and visibility.');
-        });
+    test
+    .withOrg({ username: 'test@org.com' }, true)
+    .stdout()
+    .stderr()
+    .stub(Org.prototype, 'getConnection',function(){ return {metadata: hierarchyMetadata,query}})
+    .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c'])
+    .it('Cannot generate custom metadata for the c while running force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
+        expect(ctx.stderr ).to.contain('Cannot generate custom metadata for the custom setting TriggerSettings__c. Check type and visibility.');
+    });
 
-        test
-        .withOrg({ username: 'test@org.com' }, true)
-        .stderr()
-        .withProject()
-        .stub(Org.prototype, 'getConnection',function(){ return {metadata,query: errorQuery}})
-        .stub(core.Connection,'create',function(){ return {metadata,query: errorQuery}})
-        .command(['force:cmdt:generate', '-n', 'MyCMDT__mdt', '-s', 'TriggerSettings__c'])
-        .it('force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
-            expect(ctx.stderr ).to.contain('Failed to generate custom metadata. Reason: sObjectRecords.records is not iterable.');
-        });
-
+    test
+    .withOrg({ username: 'test@org.com' }, true)
+    .stdout()
+    .stderr()
+    .stub(Org.prototype, 'getConnection',function(){ return {metadata,query: errorQuery}})
+    .stub(Connection,'create',function(){ return {metadata,query: errorQuery}})
+    .command(['force:cmdt:generate', '-n', 'MyCMDT__mdt', '-s', 'TriggerSettings__c'])
+    .it('force:cmdt:generate -n MyCMDT -s TriggerSettings__c', ctx => {
+        expect(ctx.stderr ).to.contain('Failed to generate custom metadata. Reason: sObjectRecords.records is not iterable.');
+    });
 })

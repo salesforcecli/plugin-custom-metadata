@@ -1,16 +1,5 @@
 [
     {
-        "command": "commandreference:generate",
-        "flags": [
-            "json",
-            "loglevel",
-            "outputdir",
-            "plugins",
-            "hidden",
-            "erroronwarnings"
-        ]
-    },
-    {
         "command": "force:cmdt:create",
         "flags": [
             "json",
@@ -75,24 +64,6 @@
             "inputdir",
             "outputdir",
             "namecolumn"
-        ]
-    },
-    {
-        "command": "help",
-        "flags": [
-            "all"
-        ]
-    },
-    {
-        "command": "snapshot:compare",
-        "flags": [
-            "filepath"
-        ]
-    },
-    {
-        "command": "snapshot:generate",
-        "flags": [
-            "filepath"
         ]
     }
 ]

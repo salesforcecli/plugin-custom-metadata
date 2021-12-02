@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2018-2020, salesforce.com, inc.
+ * Copyright (c) 2020, salesforce.com, inc.
  * All rights reserved.
- * SPDX-License-Identifier: BSD-3-Clause
- * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ * Licensed under the BSD 3-Clause license.
+ * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { core } from '@salesforce/command';
+import { fs } from '@salesforce/core';
 import { parseString } from 'xml2js';
 import { CreateConfig } from '../interfaces/createConfig';
 import { CustomField } from '../interfaces/customField';
@@ -13,7 +13,6 @@ import { Templates } from '../templates/templates';
 
 // NOTE: the template string indentation is important to output well-formatted XML. Altering that whitespace will change the whitespace of the output.
 export class CreateUtil {
-
   private fieldTypeMap: object;
 
   /**
@@ -31,7 +30,7 @@ export class CreateUtil {
       Text: 'string',
       TextArea: 'string',
       LongTextArea: 'string',
-      Url: 'string'
+      Url: 'string',
     };
   }
 
@@ -46,10 +45,14 @@ export class CreateUtil {
     const newRecordContent = this.getRecordTemplate(
       createConfig.label,
       createConfig.protected,
-      this.buildCustomFieldXml(createConfig.fileData, createConfig.varargs, createConfig.ignorefields)
+      this.buildCustomFieldXml(
+        createConfig.fileData,
+        createConfig.varargs,
+        createConfig.ignorefields
+      )
     );
 
-    return core.fs.writeFile(outputFilePath, newRecordContent);
+    return fs.writeFile(outputFilePath, newRecordContent);
   }
 
   public async getFileData(fieldDirPath, fileNames) {
@@ -60,7 +63,7 @@ export class CreateUtil {
 
     for (const file of fileNames) {
       filePath = `${fieldDirPath}/${file}`;
-      fileData = await core.fs.readFile(filePath);
+      fileData = await fs.readFile(filePath);
       str = fileData.toString('utf8');
 
       parseString(str, (err, res) => {
@@ -91,7 +94,7 @@ export class CreateUtil {
    * @param  fieldName Name of the field
    * @return {string} Type used by a custom metadata record
    */
-  public getFieldPrimitiveType(fileData: CustomField[] = [], fieldName: string = '') {
+  public getFieldPrimitiveType(fileData: CustomField[] = [], fieldName = '') {
     let thisFieldName = '';
     let type = '';
     let ret = 'string';
@@ -121,7 +124,7 @@ export class CreateUtil {
    * @param  fieldName Name of the field
    * @return {string} Data Type of the field.
    */
-  public getFieldDataType(fileData: CustomField[] = [], fieldName: string = '') {
+  public getFieldDataType(fileData: CustomField[] = [], fieldName = '') {
     let thisFieldName = '';
     let type = '';
 
@@ -161,7 +164,11 @@ export class CreateUtil {
    * @param  fileData Array of objects that contain field data
    * @return {string} String representation of XML
    */
-  private buildCustomFieldXml(fileData: CustomField[], cliParams: object, ignoreFields: boolean) {
+  private buildCustomFieldXml(
+    fileData: CustomField[],
+    cliParams: object,
+    ignoreFields: boolean
+  ) {
     let ret = '';
     let type = '';
     let dataType = '';
@@ -191,7 +198,10 @@ export class CreateUtil {
    * @return {string} int or double
    */
   private getNumberType(type: string, scale: string) {
-    if (type === 'Number' && parseFloat(scale) === 0 || type === 'Percent' && parseFloat(scale) === 0) {
+    if (
+      (type === 'Number' && parseFloat(scale) === 0) ||
+      (type === 'Percent' && parseFloat(scale) === 0)
+    ) {
       return 'int';
     }
 
@@ -209,7 +219,10 @@ export class CreateUtil {
   private getFieldTemplate(fieldName: string, val: string, type: string) {
     // update to handle the null situation
     let value = '';
-    const cleanValue = String(val).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const cleanValue = String(val)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
     if (val === null || val === '') {
       value = '<value xsi:nil="true"/>';
     } else {
@@ -230,7 +243,11 @@ export class CreateUtil {
    * @param  values Template string representation of values
    * @return {string} String representation of XML
    */
-  private getRecordTemplate(label: string, protection: boolean, values: string) {
+  private getRecordTemplate(
+    label: string,
+    protection: boolean,
+    values: string
+  ) {
     return `
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
