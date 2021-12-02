@@ -20,7 +20,6 @@ describe('sfdx force:cmdt:field:create' , () => {
   test
   .withOrg({ username: 'test@org.com' }, true)
   .stdout()
-  .withProject()
   .command(['force:cmdt:field:create', '--fieldname', 'myField','--fieldtype','Text'])
   .it('runs force:cmdt:field:create --fieldname myField --fieldtype Text', ctx => {
     const cmdtName = 'myField';
@@ -40,7 +39,6 @@ describe('sfdx force:cmdt:field:create' , () => {
   test
   .withOrg({ username: 'test@org.com' }, true)
   .stderr()
-  .withProject()
   .command(['force:cmdt:field:create', '--fieldname', 'myFi__eld','--fieldtype','Text'])
   .it('fails running force:cmdt:field:create --fieldname myFi__eld --fieldtype Text', ctx => {
     expect(ctx.stderr).to.contain("'myFi__eld' is an invalid field. Custom fields can only contain alphanumeric characters, must begin with a letter, cannot end with an underscore, and cannot contain two consecutive underscore characters.");
@@ -49,7 +47,6 @@ describe('sfdx force:cmdt:field:create' , () => {
   test
   .withOrg({ username: 'test@org.com' }, true)
   .stderr()
-  .withProject()
   .command(['force:cmdt:field:create', '--fieldname', 'myField','--fieldtype','Picklist'])
   .it('fails running force:cmdt:field:create --fieldname myField --fieldtype Picklist', ctx => {
     expect(ctx.stderr).to.contain('Picklist values are required when field type is Picklist' );
@@ -58,7 +55,6 @@ describe('sfdx force:cmdt:field:create' , () => {
   test
   .withOrg({ username: 'test@org.com' }, true)
   .stdout()
-  .withProject()
   .command(['force:cmdt:field:create', '--fieldname', 'myField','--fieldtype','Picklist','--picklistvalues','a,b,c','-d','picklistField'])
   .it('runs force:cmdt:field:create --fieldname myField --fieldtype Picklist --picklistvalues a,b,c', ctx => {
     const cmdtName = 'myField';
@@ -70,7 +66,6 @@ describe('sfdx force:cmdt:field:create' , () => {
   test
   .withOrg({ username: 'test@org.com' }, true)
   .stderr()
-  .withProject()
   .command(['force:cmdt:field:create', '--fieldname', 'money','--fieldtype','Currency'])
   .it('fails running force:cmdt:field:create --fieldname money --fieldtype Currency', ctx => {
     expect(ctx.stderr).to.contain('Expected --fieldtype=Currency to be one of: Checkbox, Date, DateTime, Email, Number, Percent, Phone, Picklist, Text, TextArea, LongTextArea, Url');
@@ -79,7 +74,6 @@ describe('sfdx force:cmdt:field:create' , () => {
   test
   .withOrg({ username: 'test@org.com' }, true)
   .stderr()
-  .withProject()
   .command(['force:cmdt:field:create', '--fieldname', 'myField','--fieldtype','Number', '--decimalplaces', '-2'])
   .it('fails running force:cmdt:field:create --fieldname myField --fieldtype Number --decimalplaces -2', ctx => {
     expect(ctx.stderr).to.contain('Number of decimal places must be greater than or equal to zero.');

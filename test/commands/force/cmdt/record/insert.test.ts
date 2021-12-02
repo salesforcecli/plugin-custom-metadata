@@ -23,8 +23,6 @@ describe('sfdx force:cmdt:record:insert', async () => {
   test
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
-    .withProject()
-
     .command(['force:cmdt:create', '--typename', 'Snapple', '--outputdir', 'csv-upload'])
     .command(['force:cmdt:field:create', '--fieldname', 'CountryCode', '--fieldtype', 'Text','--outputdir', 'csv-upload/Snapple__mdt'])
     .command(['force:cmdt:field:create', '--fieldname', 'CountryName', '--fieldtype', 'Text','--outputdir', 'csv-upload/Snapple__mdt'])
@@ -44,7 +42,6 @@ describe('sfdx force:cmdt:record:insert', async () => {
       expect(fs.existsSync(filePath)).to.be.true;
       expect(ctx.stdout).to.contain(uxMessage);
 
-
       exec(`rm -rf ${fileDir}`);
     });
 
@@ -57,9 +54,8 @@ describe('sfdx force:cmdt:record:insert', async () => {
 
   test
     .withOrg({ username: 'test@org.com' }, true)
+    .stdout()
     .stderr()
-    .withProject()
-
     .command(['force:cmdt:create', '--typename', 'Snapple', '--outputdir', 'badCSV'])
     .command(['force:cmdt:field:create', '--fieldname', 'CountryCode', '--fieldtype', 'Text','--outputdir', 'badCSV/Snapple__mdt'])
     .command([
@@ -72,18 +68,14 @@ describe('sfdx force:cmdt:record:insert', async () => {
     ])
     .it('fails force:cmdt:record:insert', ctx => {
       const uxMessage = 'The column CountryName__c is not found on the custom metadata type Snapple';
-
       expect(ctx.stderr).to.contain(uxMessage);
-
-
       exec(`rm -rf ${secondTest}`);
     });
 
   test
     .withOrg({ username: 'test@org.com' }, true)
+    .stdout()
     .stderr()
-    .withProject()
-
     .command([
       'force:cmdt:record:insert',
       '--filepath', 'csv-upload/countries.csv',
@@ -99,9 +91,8 @@ describe('sfdx force:cmdt:record:insert', async () => {
 
   test
     .withOrg({ username: 'test@org.com' }, true)
+    .stdout()
     .stderr()
-    .withProject()
-
     .command([
       'force:cmdt:record:insert',
       '--filepath', 'badCSV/badcountries.csv',
@@ -112,7 +103,6 @@ describe('sfdx force:cmdt:record:insert', async () => {
     ])
     .it('fails force:cmdt:record:insert', ctx => {
       expect((/.*?no such file or directory, scandir.*?badCSV.*?Snapple__mdt.*?fields.*/g).test(ctx.stderr)).to.be.equal(true);
-
       exec(`rm -rf ${secondTest}`);
     });
 });

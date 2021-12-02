@@ -16,7 +16,7 @@ describe('sfdx force:cmdt:record:create error handling', () => {
   test
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
-    .withProject()
+    // .withProject() this is broken with recent versions of @salesforce/command. Ok to comment out since it's already stubbed.
     .command([
       'force:cmdt:create',
       '--typename', 'Bad_Dev_Name',
@@ -39,7 +39,7 @@ describe('sfdx force:cmdt:record:create error handling', () => {
   test
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
-    .withProject()
+    // .withProject()
     .command([
       'force:cmdt:create',
       '--typename', 'Bad_Record_Name_Test',
@@ -70,7 +70,7 @@ describe('sfdx force:cmdt:record:create error handling', () => {
   test
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
-    .withProject()
+    // .withProject()
     .command([
       'force:cmdt:create',
       '--typename', 'Exceed_Char_Test',
@@ -103,7 +103,7 @@ describe('sfdx force:cmdt:record:create', () => {
   test
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
-    .withProject()
+    // .withProject()
     .command(['force:cmdt:create', '--typename', 'Long_Flags_Create_Test', '--outputdir', 'createWithLongFlags'])
     .command(['force:cmdt:field:create', '--fieldname', 'Check', '--fieldtype', 'Checkbox', '--outputdir', 'createWithLongFlags/Long_Flags_Create_Test__mdt'])
     .command(['force:cmdt:field:create', '--fieldname', 'Date', '--fieldtype', 'Date', '--outputdir', 'createWithLongFlags/Long_Flags_Create_Test__mdt'])
@@ -145,7 +145,7 @@ describe('sfdx force:cmdt:record:create', () => {
   test
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
-    .withProject()
+    // .withProject()
     .command(['force:cmdt:create', '--typename', 'Short_Flag_Test', '--outputdir', 'shortFlagDir'])
     .command(['force:cmdt:field:create', '--fieldname', 'Check', '--fieldtype', 'Checkbox', '--outputdir', 'shortFlagDir/Short_Flag_Test__mdt'])
     .command(['force:cmdt:field:create', '--fieldname', 'Date', '--fieldtype', 'Date', '--outputdir', 'shortFlagDir/Short_Flag_Test__mdt'])
@@ -185,7 +185,7 @@ describe('sfdx force:cmdt:record:create', () => {
   test
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
-    .withProject()
+    // .withProject()
     .command(['force:cmdt:create', '--typename', 'Suffix_Test', '--outputdir', 'suffixTestDir'])
     .command(['force:cmdt:field:create', '--fieldname', 'Check', '--fieldtype', 'Checkbox', '--outputdir', 'suffixTestDir/Suffix_Test__mdt'])
     .command([
@@ -212,7 +212,7 @@ describe('sfdx force:cmdt:record:create test contents of record file created', (
   test
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
-    .withProject()
+    // .withProject()
     .command(['force:cmdt:create', '--typename', 'Output_Test', '--outputdir', 'outputTestDir'])
     .command(['force:cmdt:field:create', '--fieldname', 'Check', '--fieldtype', 'Checkbox', '--outputdir', 'outputTestDir/Output_Test__mdt'])
     .command([

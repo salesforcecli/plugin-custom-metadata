@@ -5,7 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { core } from '@salesforce/command';
+import { Connection } from '@salesforce/core';
 import { testSetup } from '@salesforce/core/lib/testSetup';
 import { fromStub, stubInterface } from '@salesforce/ts-sinon';
 import { deepStrictEqual } from 'assert';
@@ -53,7 +53,7 @@ describe('metadataUtil', () => {
             }));
 
             // Setup your connection mock using the mock metadata
-            const conn = fromStub(stubInterface<core.Connection>($$.SANDBOX, { metadata }));
+            const conn = fromStub(stubInterface<Connection>($$.SANDBOX, { metadata }));
 
             // Pass in the mock connection
             const metadataUtil = new MetadataUtil(conn);
@@ -107,7 +107,7 @@ describe('metadataUtil', () => {
             }));
 
             // Setup your connection mock using the mock metadata
-            const conn = fromStub(stubInterface<core.Connection>($$.SANDBOX, { metadata, query: async () => (queryResponse) }));
+            const conn = fromStub(stubInterface<Connection>($$.SANDBOX, { metadata, query: async () => (queryResponse) }));
 
             // Pass in the mock connection
             const metadataUtil = new MetadataUtil(conn);
@@ -174,7 +174,7 @@ describe('metadataUtil', () => {
             }));
 
             // Setup your connection mock using the mock metadata
-            const conn = fromStub(stubInterface<core.Connection>($$.SANDBOX, { metadata, query: async () => (queryResponse) }));
+            const conn = fromStub(stubInterface<Connection>($$.SANDBOX, { metadata, query: async () => (queryResponse) }));
 
             // Pass in the mock connection
             const metadataUtil = new MetadataUtil(conn);
@@ -220,7 +220,7 @@ describe('metadataUtil', () => {
             }));
 
             // Setup your connection mock using the mock metadata
-            const conn = fromStub(stubInterface<core.Connection>($$.SANDBOX, { metadata }));
+            const conn = fromStub(stubInterface<Connection>($$.SANDBOX, { metadata }));
 
             // Pass in the mock connection
             const metadataUtil = new MetadataUtil(conn);
@@ -243,7 +243,7 @@ describe('metadataUtil', () => {
             }));
 
             // Setup your connection mock using the mock metadata
-            const conn = fromStub(stubInterface<core.Connection>($$.SANDBOX, { metadata }));
+            const conn = fromStub(stubInterface<Connection>($$.SANDBOX, { metadata }));
 
             // Pass in the mock connection
             const metadataUtil = new MetadataUtil(conn);
@@ -284,7 +284,7 @@ describe('metadataUtil', () => {
             }));
 
             // Setup your connection mock using the mock metadata
-            const conn = fromStub(stubInterface<core.Connection>($$.SANDBOX, { metadata }));
+            const conn = fromStub(stubInterface<Connection>($$.SANDBOX, { metadata }));
 
             // Pass in the mock connection
             const metadataUtil = new MetadataUtil(conn);
@@ -325,7 +325,7 @@ describe('metadataUtil', () => {
             }));
 
             // Setup your connection mock using the mock metadata
-            const conn = fromStub(stubInterface<core.Connection>($$.SANDBOX, { metadata }));
+            const conn = fromStub(stubInterface<Connection>($$.SANDBOX, { metadata }));
 
             // Pass in the mock connection
             const metadataUtil = new MetadataUtil(conn);
@@ -363,7 +363,7 @@ describe('metadataUtil', () => {
             }));
 
             // Setup your connection mock using the mock metadata
-            const conn = fromStub(stubInterface<core.Connection>($$.SANDBOX, { metadata }));
+            const conn = fromStub(stubInterface<Connection>($$.SANDBOX, { metadata }));
 
             // Pass in the mock connection
             const metadataUtil = new MetadataUtil(conn);

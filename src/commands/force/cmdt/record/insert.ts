@@ -1,23 +1,26 @@
 /*
- * Copyright (c) 2018-2020, salesforce.com, inc.
+ * Copyright (c) 2020, salesforce.com, inc.
  * All rights reserved.
- * SPDX-License-Identifier: BSD-3-Clause
- * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ * Licensed under the BSD 3-Clause license.
+ * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { core, flags, SfdxCommand } from '@salesforce/command';
+import { flags, SfdxCommand } from '@salesforce/command';
+import { Messages, fs, SfdxError } from '@salesforce/core';
 import { AnyJson } from '@salesforce/ts-types';
 import * as csv from '../../../../../csvtojson';
 import { CreateUtil } from '../../../../lib/helpers/createUtil';
 import { FileWriter } from '../../../../lib/helpers/fileWriter';
 import { CreateConfig } from '../../../../lib/interfaces/createConfig';
 
-core.Messages.importMessagesDirectory(__dirname);
+Messages.importMessagesDirectory(__dirname);
 
-const messages = core.Messages.loadMessages('@salesforce/plugin-custom-metadata', 'insertRecord');
+const messages = Messages.loadMessages(
+  '@salesforce/plugin-custom-metadata',
+  'insertRecord'
+);
 
 export default class Insert extends SfdxCommand {
-
   public static description = messages.getMessage('commandDescription');
   public static longDescription = messages.getMessage('commandLongDescription');
 
@@ -25,40 +28,44 @@ export default class Insert extends SfdxCommand {
     messages.getMessage('exampleCaption1'),
     '    $ sfdx force:cmdt:record:insert --filepath path/to/my.csv --typename My_CMDT_Name',
     messages.getMessage('exampleCaption2'),
-    '    $ sfdx force:cmdt:record:insert --filepath path/to/my.csv --typename My_CMDT_Name --inputdir "' + messages.getMessage('inputDirectoryFlagExample') + '" --namecolumn "PrimaryKey"'
+    '    $ sfdx force:cmdt:record:insert --filepath path/to/my.csv --typename My_CMDT_Name --inputdir "' +
+      messages.getMessage('inputDirectoryFlagExample') +
+      '" --namecolumn "PrimaryKey"',
   ];
 
   protected static flagsConfig = {
     filepath: flags.string({
-        char: 'f',
-        description: messages.getMessage('filepathFlagDescription'),
-        longDescription: messages.getMessage('filepathFlagLongDescription'),
-        required: true
+      char: 'f',
+      description: messages.getMessage('filepathFlagDescription'),
+      longDescription: messages.getMessage('filepathFlagLongDescription'),
+      required: true,
     }),
     typename: flags.string({
-        char: 't',
-        description: messages.getMessage('typenameFlagDescription'),
-        longDescription: messages.getMessage('typenameFlagLongDescription'),
-        required: true
+      char: 't',
+      description: messages.getMessage('typenameFlagDescription'),
+      longDescription: messages.getMessage('typenameFlagLongDescription'),
+      required: true,
     }),
     inputdir: flags.directory({
-        char: 'i',
-        description: messages.getMessage('inputDirectoryFlagDescription'),
-        longDescription: messages.getMessage('inputDirectoryFlagLongDescription'),
-        default: 'force-app/main/default/objects'
+      char: 'i',
+      description: messages.getMessage('inputDirectoryFlagDescription'),
+      longDescription: messages.getMessage('inputDirectoryFlagLongDescription'),
+      default: 'force-app/main/default/objects',
     }),
     outputdir: flags.directory({
-        char: 'd',
-        description: messages.getMessage('outputDirectoryFlagDescription'),
-        longDescription: messages.getMessage('outputDirectoryFlagLongDescription'),
-        default: 'force-app/main/default/customMetadata'
+      char: 'd',
+      description: messages.getMessage('outputDirectoryFlagDescription'),
+      longDescription: messages.getMessage(
+        'outputDirectoryFlagLongDescription'
+      ),
+      default: 'force-app/main/default/customMetadata',
     }),
     namecolumn: flags.string({
-        char: 'n',
-        description: messages.getMessage('namecolumnFlagDescription'),
-        longDescription: messages.getMessage('namecolumnFlagLongDescription'),
-        default: 'Name'
-    })
+      char: 'n',
+      description: messages.getMessage('namecolumnFlagDescription'),
+      longDescription: messages.getMessage('namecolumnFlagLongDescription'),
+      default: 'Name',
+    }),
   };
 
   protected static requiresProject = true;
@@ -69,10 +76,11 @@ export default class Insert extends SfdxCommand {
     const filepath = this.flags.filepath;
     let typename = this.flags.typename;
     const inputdir = this.flags.inputdir || 'force-app/main/default/objects';
-    const outputdir = this.flags.outputdir || 'force-app/main/default/customMetadata';
+    const outputdir =
+      this.flags.outputdir || 'force-app/main/default/customMetadata';
     const dirName = createUtil.appendDirectorySuffix(typename);
     const fieldDirPath = `${fileWriter.createDir(inputdir)}${dirName}/fields`;
-    const fileNames = await core.fs.readdir(fieldDirPath);
+    const fileNames = await fs.readdir(fieldDirPath);
     const nameField = this.flags.namecolumn || 'Name';
 
     // forgive them if they passed in type__mdt, and cut off the __mdt
@@ -81,7 +89,7 @@ export default class Insert extends SfdxCommand {
     }
 
     // if customMetadata folder does not exist, create it
-    await core.fs.mkdirp(outputdir);
+    await fs.mkdirp(outputdir);
 
     const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
     const csvDataAry = await csv().fromFile(filepath);
@@ -94,7 +102,9 @@ export default class Insert extends SfdxCommand {
       const record = csvDataAry[0];
       for (const key in record) {
         if (!metadataTypeFields.includes(key)) {
-          throw new core.SfdxError(messages.getMessage('fieldNotFoundError', [key, typename]));
+          throw new SfdxError(
+            messages.getMessage('fieldNotFoundError', [key, typename])
+          );
         }
       }
     }
@@ -124,7 +134,7 @@ export default class Insert extends SfdxCommand {
         outputdir,
         protected: false,
         varargs,
-        fileData
+        fileData,
       };
 
       ret.push(recordConfig);
@@ -132,9 +142,7 @@ export default class Insert extends SfdxCommand {
       await createUtil.createRecord(recordConfig);
     }
 
-    this.ux.log(messages.getMessage(
-      'successResponse', [filepath, outputdir]
-    ));
+    this.ux.log(messages.getMessage('successResponse', [filepath, outputdir]));
 
     return ret;
   }
