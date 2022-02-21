@@ -69,6 +69,8 @@ workflows:
             branches:
               only: main
           github-release: true
+          context:
+            - AWS
   test-ts-update:
     triggers:
       - schedule:
