@@ -71,6 +71,7 @@ workflows:
           github-release: true
           context:
             - AWS
+            - release
   test-ts-update:
     triggers:
       - schedule:
