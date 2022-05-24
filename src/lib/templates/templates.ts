@@ -5,8 +5,12 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { SfdxError } from '@salesforce/core';
-
+import { SfError, Messages } from '@salesforce/core';
+Messages.importMessagesDirectory(__dirname);
+const messages = Messages.load(
+  '@salesforce/plugin-custom-metadata',
+  'template', ['errorNotAValidType']
+);
 export class Templates {
   /**
    * Using the given data and visibility, creates the body of a type metadata file
@@ -139,12 +143,9 @@ export class Templates {
     } else if (defaultToMetadataType) {
       return `\t<type>${this.getConvertType(data)}</type>\n`;
     } else {
-      throw SfdxError.create(
-        '@salesforce/plugin-custom-metadata',
-        'template',
-        'errorNotAValidaType',
-        [data.type]
-      );
+      throw new SfError(
+        messages.getMessage('errorNotAValidType', [data.type])
+      )
     }
   }
 
