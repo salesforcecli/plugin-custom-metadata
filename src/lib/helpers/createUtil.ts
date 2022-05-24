@@ -4,8 +4,7 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-
-import { fs } from '@salesforce/core';
+import * as fs from 'fs';
 import { parseString } from 'xml2js';
 import { CreateConfig } from '../interfaces/createConfig';
 import { CustomField } from '../interfaces/customField';
@@ -52,7 +51,7 @@ export class CreateUtil {
       )
     );
 
-    return fs.writeFile(outputFilePath, newRecordContent);
+    return fs.promises.writeFile(outputFilePath, newRecordContent);
   }
 
   public async getFileData(fieldDirPath, fileNames) {
@@ -63,7 +62,7 @@ export class CreateUtil {
 
     for (const file of fileNames) {
       filePath = `${fieldDirPath}/${file}`;
-      fileData = await fs.readFile(filePath);
+      fileData = await fs.promises.readFile(filePath);
       str = fileData.toString('utf8');
 
       parseString(str, (err, res) => {

@@ -4,9 +4,9 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-
+import * as fs from 'fs';
 import { flags, SfdxCommand } from '@salesforce/command';
-import { Messages, fs, SfdxError } from '@salesforce/core';
+import { Messages, SfdxError } from '@salesforce/core';
 import { AnyJson } from '@salesforce/ts-types';
 import * as csv from '../../../../../csvtojson';
 import { CreateUtil } from '../../../../lib/helpers/createUtil';
@@ -80,7 +80,7 @@ export default class Insert extends SfdxCommand {
       this.flags.outputdir || 'force-app/main/default/customMetadata';
     const dirName = createUtil.appendDirectorySuffix(typename);
     const fieldDirPath = `${fileWriter.createDir(inputdir)}${dirName}/fields`;
-    const fileNames = await fs.readdir(fieldDirPath);
+    const fileNames = await fs.promises.readdir(fieldDirPath);
     const nameField = this.flags.namecolumn || 'Name';
 
     // forgive them if they passed in type__mdt, and cut off the __mdt
@@ -89,7 +89,7 @@ export default class Insert extends SfdxCommand {
     }
 
     // if customMetadata folder does not exist, create it
-    await fs.mkdirp(outputdir);
+    await fs.promises.mkdir(outputdir, {recursive: true});
 
     const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
     const csvDataAry = await csv().fromFile(filepath);

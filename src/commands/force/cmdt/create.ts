@@ -4,9 +4,9 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-
+import * as fs from 'fs';
 import { flags, SfdxCommand } from '@salesforce/command';
-import { Messages, SfdxError, fs } from '@salesforce/core';
+import { Messages, SfdxError } from '@salesforce/core';
 import { AnyJson } from '@salesforce/ts-types';
 import { FileWriter } from '../../../lib/helpers/fileWriter';
 import { ValidationUtil } from '../../../lib/helpers/validationUtil';

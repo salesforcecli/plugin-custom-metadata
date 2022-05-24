@@ -4,13 +4,12 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-
+import * as fs from 'fs';
 import { flags, SfdxCommand } from '@salesforce/command';
 import {
   Aliases,
   AuthInfo,
   Connection,
-  fs,
   SfdxError,
   Messages,
 } from '@salesforce/core';
@@ -297,7 +296,7 @@ export default class Generate extends SfdxCommand {
 
       const createUtil = new CreateUtil();
       // if customMetadata folder does not exist, create it
-      await fs.mkdirp(recordsOutputDir);
+      await fs.promises.mkdir(recordsOutputDir, {recursive:true});
       const security: boolean = visibility !== 'Public';
 
       const typename = devName;
@@ -305,7 +304,7 @@ export default class Generate extends SfdxCommand {
       const fieldDirPath = `${fileWriter.createDir(
         outputDir
       )}${typename}__mdt/fields`;
-      const fileNames = await fs.readdir(fieldDirPath);
+      const fileNames = await fs.promises.readdir(fieldDirPath);
       const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
 
       for (const rec of sObjectRecords.records) {
@@ -334,12 +333,12 @@ export default class Generate extends SfdxCommand {
         `Congrats! Created a ${devName} custom metadata type with ${sObjectRecords.records.length} records!`
       );
     } catch (e) {
-      await fs.remove(`${outputDir}${devName}__mdt`);
-      const fileNames = await fs.readdir(recordsOutputDir);
+      await fs.promises.rm(`${outputDir}${devName}__mdt`, {recursive:true});
+      const fileNames = await fs.promises.readdir(recordsOutputDir);
       for (const file of fileNames) {
         if (file.startsWith(devName)) {
           try {
-            await fs.unlink(`${recordsOutputDir}/${file}`);
+            await fs.promises.unlink(`${recordsOutputDir}/${file}`);
           } catch (e) {
             this.ux.log(e.message);
           }

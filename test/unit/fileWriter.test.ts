@@ -7,7 +7,6 @@
 
 import { expect } from '@salesforce/command/lib/test';
 import { FileWriter } from '../../src/lib/helpers/fileWriter';
-import { fs as coreFs } from '@salesforce/core';
 import * as fs from 'fs';
 import { promisify } from 'util';
 const child_process = require('child_process');
@@ -21,7 +20,7 @@ describe('FileWriter', () => {
             const fileWriter = new FileWriter();
             const fileName = 'Candle';
             const fileContent = 'Wick';
-            await fileWriter.writeTypeFile(coreFs, '', fileName, fileContent);
+            await fileWriter.writeTypeFile(fs, '', fileName, fileContent);
             expect(fs.existsSync(`${fileName}__mdt`)).to.be.true;
             expect(fs.existsSync(`${fileName}__mdt/${fileName}__mdt.object-meta.xml`)).to.be.true;
             fs.readFile(`${fileName}__mdt/${fileName}__mdt.object-meta.xml`, { encoding: 'utf-8' }, function (err, data) {
@@ -33,7 +32,7 @@ describe('FileWriter', () => {
             const fileWriter = new FileWriter();
             const fileName = 'Torch__mdt';
             const fileContent = 'rag';
-            await fileWriter.writeTypeFile(coreFs, '', fileName, fileContent);
+            await fileWriter.writeTypeFile(fs, '', fileName, fileContent);
             expect(fs.existsSync(`${fileName}`)).to.be.true;
             expect(fs.existsSync(`${fileName}/${fileName}.object-meta.xml`)).to.be.true;
             await exec(`rm -rf ${fileName}`);
@@ -43,7 +42,7 @@ describe('FileWriter', () => {
             const fileName = 'Lantern';
             const apiName = `${fileName}__c`;
             const fileContent = 'oil';
-            await fileWriter.writeTypeFile(coreFs, '', apiName, fileContent);
+            await fileWriter.writeTypeFile(fs, '', apiName, fileContent);
             expect(fs.existsSync(`${fileName}__mdt`)).to.be.true;
             expect(fs.existsSync(`${fileName}__mdt/${fileName}__mdt.object-meta.xml`)).to.be.true;
             await exec(`rm -rf ${fileName}__mdt`);
@@ -53,7 +52,7 @@ describe('FileWriter', () => {
             const fileName = 'Lantern';
             const apiName = `${fileName}__c`;
             const fileContent = 'oil';
-            await fileWriter.writeTypeFile(coreFs, 'sampledir/', apiName, fileContent);
+            await fileWriter.writeTypeFile(fs, 'sampledir/', apiName, fileContent);
             expect(fs.existsSync(`sampledir/${fileName}__mdt`)).to.be.true;
             expect(fs.existsSync(`sampledir/${fileName}__mdt/${fileName}__mdt.object-meta.xml`)).to.be.true;
             await exec(`rm -rf sampledir`);
@@ -65,7 +64,7 @@ describe('FileWriter', () => {
             const fileWriter = new FileWriter();
             const fileName = 'Candle';
             const fileContent = 'Wick';
-            await fileWriter.writeFieldFile(coreFs, '', fileName, fileContent);
+            await fileWriter.writeFieldFile(fs, '', fileName, fileContent);
             expect(fs.existsSync('fields')).to.be.true;
             expect(fs.existsSync(`fields/${fileName}__c.field-meta.xml`)).to.be.true;
             fs.readFile(`fields/${fileName}__c.field-meta.xml`, { encoding: 'utf-8' }, function (err, data) {
@@ -77,7 +76,7 @@ describe('FileWriter', () => {
             const fileWriter = new FileWriter();
             const fileName = 'Lantern__c';
             const fileContent = 'Oil';
-            await fileWriter.writeFieldFile(coreFs, 'fieldFolder', fileName, fileContent);
+            await fileWriter.writeFieldFile(fs, 'fieldFolder', fileName, fileContent);
             expect(fs.existsSync('fieldFolder/fields')).to.be.true;
             expect(fs.existsSync(`fieldFolder/fields/${fileName}.field-meta.xml`)).to.be.true;
             exec(`rm -rf fieldFolder`);

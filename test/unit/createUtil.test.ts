@@ -8,7 +8,6 @@
 import { expect, test } from '@salesforce/command/lib/test';
 import { CreateUtil } from '../../src/lib/helpers/createUtil';
 import { FileWriter } from '../../src/lib/helpers/fileWriter';
-import { fs as coreFs } from '@salesforce/core';
 import * as fs from 'fs';
 import { promisify } from 'util';
 
@@ -63,7 +62,7 @@ describe('CreateUtil', () => {
         const outputdir = 'fieldTypeTest/customMetadata';
         const dirName = createUtil.appendDirectorySuffix(typename);
         const fieldDirPath = `${fileWriter.createDir(inputdir)}${dirName}/fields`;
-        const fileNames = await coreFs.readdir(fieldDirPath);
+        const fileNames = await fs.promises.readdir(fieldDirPath);
         const varargs = {
           Check__c: true,
           Date_Time__c: '2019-01-21T18:37:00.000Z',
@@ -81,7 +80,7 @@ describe('CreateUtil', () => {
           Percent_Double__c: 78.91
         };
 
-        await coreFs.mkdirp(outputdir);
+        await fs.promises.mkdir(outputdir, {recursive: true});
 
         const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
 
@@ -171,7 +170,7 @@ describe('CreateUtil', () => {
         const outputdir = 'fieldTypeTest/customMetadata';
         const dirName = createUtil.appendDirectorySuffix(typename);
         const fieldDirPath = `${fileWriter.createDir(inputdir)}${dirName}/fields`;
-        const fileNames = await coreFs.readdir(fieldDirPath);
+        const fileNames = await fs.promises.readdir(fieldDirPath);
         const varargs = {
           Check__c: true,
           Date_Time__c: '2019-01-21T18:37:00.000Z',
@@ -189,7 +188,7 @@ describe('CreateUtil', () => {
           Percent_Double__c: 78.91
         };
 
-        await coreFs.mkdirp(outputdir);
+        await fs.promises.mkdir(outputdir, {recursive:true});
 
         const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
 
@@ -292,7 +291,7 @@ describe('CreateUtil', () => {
         const outputdir = 'dirFileTest/cmdtRecords';
         const dirName = createUtil.appendDirectorySuffix(typename);
         const fieldDirPath = `${fileWriter.createDir(inputdir)}${dirName}/fields`;
-        const fileNames = await coreFs.readdir(fieldDirPath);
+        const fileNames = await fs.promises.readdir(fieldDirPath);
         const varargs = {
           Check__c: true,
           Date_Time__c: '2019-01-21T18:37:00.000Z',
@@ -310,7 +309,7 @@ describe('CreateUtil', () => {
           Percent_Double__c: 78.91
         };
 
-        await coreFs.mkdirp(outputdir);
+        await fs.promises.mkdir(outputdir, {recursive: true} );
 
         const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
 
