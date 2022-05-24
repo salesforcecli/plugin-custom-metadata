@@ -6,7 +6,7 @@
  */
 import * as fs from 'fs';
 import { flags, SfdxCommand } from '@salesforce/command';
-import { Messages, SfdxError } from '@salesforce/core';
+import { Messages, SfError } from '@salesforce/core';
 import { AnyJson } from '@salesforce/ts-types';
 import { FileWriter } from '../../../../lib/helpers/fileWriter';
 import { ValidationUtil } from '../../../../lib/helpers/validationUtil';
@@ -104,17 +104,17 @@ export default class Create extends SfdxCommand {
 
     const validator = new ValidationUtil();
     if (!validator.validateAPIName(fieldName)) {
-      throw new SfdxError(
+      throw new SfError(
         messages.getMessage('invalidCustomFieldError', [fieldName])
       );
     }
     if (fieldtype === 'Picklist' && picklistvalues.length === 0) {
-      throw new SfdxError(
+      throw new SfError(
         messages.getMessage('picklistValuesNotSuppliedError')
       );
     }
     if (decimalplaces < 0) {
-      throw new SfdxError(messages.getMessage('invalidDecimalError'));
+      throw new SfError(messages.getMessage('invalidDecimalError'));
     }
     const templates = new Templates();
     const data = templates.createDefaultTypeStructure(

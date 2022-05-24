@@ -6,7 +6,7 @@
  */
 import * as fs from 'fs';
 import { flags, SfdxCommand } from '@salesforce/command';
-import { Messages, SfdxError } from '@salesforce/core';
+import { Messages, SfError } from '@salesforce/core';
 import { AnyJson } from '@salesforce/ts-types';
 import { CreateUtil } from '../../../../lib/helpers/createUtil';
 import { FileWriter } from '../../../../lib/helpers/fileWriter';
@@ -85,7 +85,7 @@ export default class Create extends SfdxCommand {
         const errMsg = `Invalid parameter [${name}] found`;
         const errName = 'InvalidVarargName';
         const errAction = messages.getMessage('errorInvalidCustomField');
-        throw new SfdxError(errMsg, errName, [errAction]);
+        throw new SfError(errMsg, errName, [errAction]);
       }
     },
   };
@@ -109,19 +109,19 @@ export default class Create extends SfdxCommand {
       const fieldDirPath = `${fileWriter.createDir(inputdir)}${dirName}/fields`;
 
       if (!validator.validateMetadataTypeName(typename)) {
-        throw new SfdxError(
+        throw new SfError(
           messages.getMessage('notValidAPINameError', [typename])
         );
       }
 
       if (!validator.validateMetadataRecordName(recordname)) {
-        throw new SfdxError(
+        throw new SfError(
           messages.getMessage('notAValidRecordNameError', [recordname])
         );
       }
 
       if (!validator.validateLessThanForty(label)) {
-        throw new SfdxError(
+        throw new SfError(
           messages.getMessage('notAValidLabelNameError', [label])
         );
       }

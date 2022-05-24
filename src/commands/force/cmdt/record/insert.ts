@@ -6,7 +6,7 @@
  */
 import * as fs from 'fs';
 import { flags, SfdxCommand } from '@salesforce/command';
-import { Messages, SfdxError } from '@salesforce/core';
+import { Messages, SfError } from '@salesforce/core';
 import { AnyJson } from '@salesforce/ts-types';
 import * as csv from '../../../../../csvtojson';
 import { CreateUtil } from '../../../../lib/helpers/createUtil';
@@ -102,7 +102,7 @@ export default class Insert extends SfdxCommand {
       const record = csvDataAry[0];
       for (const key in record) {
         if (!metadataTypeFields.includes(key)) {
-          throw new SfdxError(
+          throw new SfError(
             messages.getMessage('fieldNotFoundError', [key, typename])
           );
         }

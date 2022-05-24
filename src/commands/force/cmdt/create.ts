@@ -6,7 +6,7 @@
  */
 import * as fs from 'fs';
 import { flags, SfdxCommand } from '@salesforce/command';
-import { Messages, SfdxError } from '@salesforce/core';
+import { Messages, SfError } from '@salesforce/core';
 import { AnyJson } from '@salesforce/ts-types';
 import { FileWriter } from '../../../lib/helpers/fileWriter';
 import { ValidationUtil } from '../../../lib/helpers/validationUtil';
@@ -89,18 +89,18 @@ export default class Create extends SfdxCommand {
 
     const validator = new ValidationUtil();
     if (!validator.validateMetadataTypeName(typename)) {
-      throw new SfdxError(
+      throw new SfError(
         messages.getMessage('errorNotValidAPIName', [typename])
       );
     }
     if (!validator.validateLessThanForty(label)) {
-      throw new SfdxError(
+      throw new SfError(
         messages.getMessage('errorNotValidLabelName', [label])
       );
     }
 
     if (!validator.validateLessThanForty(pluralLabel)) {
-      throw new SfdxError(
+      throw new SfError(
         messages.getMessage('errorNotValidPluralLabelName', [pluralLabel])
       );
     }

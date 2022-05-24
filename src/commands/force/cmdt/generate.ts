@@ -10,7 +10,7 @@ import {
   Aliases,
   AuthInfo,
   Connection,
-  SfdxError,
+  SfError,
   Messages,
 } from '@salesforce/core';
 import { isEmpty } from '@salesforce/kit';
@@ -143,12 +143,9 @@ export default class Generate extends SfdxCommand {
       if (sourceuser.substr(sourceuser.length - 4) !== '.com') {
         username = await Aliases.fetch(sourceuser); // if alias is provided get the corresponding username
         if (username === undefined) {
-          throw SfdxError.create(
-            '@salesforce/plugin-custom-metadata',
-            'generate',
-            'sourceusernameError',
-            [sourceuser]
-          );
+          throw new SfError(
+            messages.getMessage('sourceusernameError', [sourceuser])
+          )
         }
       } else {
         username = sourceuser;
@@ -165,27 +162,21 @@ export default class Generate extends SfdxCommand {
           sourceuser,
           err.message,
         ]);
-        throw new SfdxError(errMsg, 'sourceuserAuthenticationError');
+        throw new SfError(errMsg, 'sourceuserAuthenticationError');
       }
     }
 
     if (!validator.validateAPIName(objname)) {
-      throw SfdxError.create(
-        '@salesforce/plugin-custom-metadata',
-        'generate',
-        'sobjectnameFlagError',
-        [objname]
-      );
+      throw new SfError(
+        messages.getMessage('sobjectnameFlagError', [objname])
+      )
     }
 
     let devName;
     if (!validator.validateMetadataTypeName(cmdttype)) {
-      throw SfdxError.create(
-        '@salesforce/plugin-custom-metadata',
-        'generate',
-        'typenameFlagError',
-        [cmdttype]
-      );
+      throw new SfError(
+        messages.getMessage('typenameFlagError', [cmdttype])
+      )
     }
 
     if (cmdttype.endsWith('__mdt') || cmdttype.endsWith('__MDT')) {
@@ -208,14 +199,14 @@ export default class Generate extends SfdxCommand {
     // throw error if the object doesnot exist(empty json as response from the describe call.)
     if (isEmpty(describeObj)) {
       const errMsg = messages.getMessage('sobjectnameNoResultError', [objname]);
-      throw new SfdxError(errMsg, 'sobjectnameNoResultError');
+      throw new SfError(errMsg, 'sobjectnameNoResultError');
     }
     // check for custom setting
     if (describeObj['customSettingsType'] !== undefined) {
       // if custom setting check for type and visbility
       if (!metadataUtil.validCustomSettingType(describeObj)) {
         const errMsg = messages.getMessage('customSettingTypeError', [objname]);
-        throw new SfdxError(errMsg, 'customSettingTypeError');
+        throw new SfError(errMsg, 'customSettingTypeError');
       }
     }
 
@@ -249,7 +240,7 @@ export default class Generate extends SfdxCommand {
           objname,
           asString(sObjectRecords.errorMsg),
         ]);
-        throw new SfdxError(errMsg, 'queryError');
+        throw new SfError(errMsg, 'queryError');
       }
 
       // check for Geo Location fields before hand and create two different fields for longitude and latitude.
@@ -346,7 +337,7 @@ export default class Generate extends SfdxCommand {
       }
       this.ux.stopSpinner('generate command failed to run');
       const errMsg = messages.getMessage('generateError', [e.message]);
-      throw new SfdxError(errMsg, 'generateError');
+      throw new SfError(errMsg, 'generateError');
     }
 
     return { outputDir, recordsOutputDir };
