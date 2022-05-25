@@ -5,22 +5,24 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import * as fs from 'fs';
+import * as path from 'path';
 import { flags, SfdxCommand } from '@salesforce/command';
 import { Messages, SfError } from '@salesforce/core';
 import { AnyJson } from '@salesforce/ts-types';
 import { CreateUtil } from '../../../../lib/helpers/createUtil';
 import { FileWriter } from '../../../../lib/helpers/fileWriter';
-import { ValidationUtil } from '../../../../lib/helpers/validationUtil';
+import {
+  validateMetadataRecordName,
+  validateMetadataTypeName,
+  validateLessThanForty,
+} from '../../../../lib/helpers/validationUtil';
 
 // Initialize Messages with the current plugin directory
 Messages.importMessagesDirectory(__dirname);
 
 // Load the specific messages for this file. Messages from @salesforce/command, @salesforce/core,
 // or any library that is using the messages framework can also be loaded this way.
-const messages = Messages.loadMessages(
-  '@salesforce/plugin-custom-metadata',
-  'createRecord'
-);
+const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'createRecord');
 
 export default class Create extends SfdxCommand {
   public static description = messages.getMessage('commandDescription');
@@ -42,44 +44,44 @@ export default class Create extends SfdxCommand {
       description: messages.getMessage('typenameFlagDescription'),
       longDescription: messages.getMessage('typenameFlagLongDescription'),
       required: true,
+      parse: async (input) => Promise.resolve(validateMetadataTypeName(input)),
     }),
     recordname: flags.string({
       char: 'n',
       description: messages.getMessage('recordNameFlagDescription'),
       longDescription: messages.getMessage('recordNameFlagLongDescription'),
       required: true,
+      parse: async (input) => Promise.resolve(validateMetadataRecordName(input)),
     }),
     label: flags.string({
       char: 'l',
       description: messages.getMessage('labelFlagDescription'),
       longDescription: messages.getMessage('labelFlagLongDescription'),
+      parse: async (input) =>
+        Promise.resolve(validateLessThanForty(input, messages.getMessage('notAValidLabelNameError', [input]))),
     }),
-    protected: flags.string({
+    protected: flags.boolean({
       char: 'p',
       description: messages.getMessage('protectedFlagDescription'),
       longDescription: messages.getMessage('protectedFlagLongDescription'),
-      options: ['true', 'false'],
-      default: 'false',
     }),
     inputdir: flags.directory({
       char: 'i',
       description: messages.getMessage('inputDirectoryFlagDescription'),
       longDescription: messages.getMessage('inputDirectoryFlagLongDescription'),
-      default: 'force-app/main/default/objects',
+      default: path.join('force-app', 'main', 'default', 'objects'),
     }),
     outputdir: flags.directory({
       char: 'd',
       description: messages.getMessage('outputDirectoryFlagDescription'),
-      longDescription: messages.getMessage(
-        'outputDirectoryFlagLongDescription'
-      ),
-      default: 'force-app/main/default/customMetadata',
+      longDescription: messages.getMessage('outputDirectoryFlagLongDescription'),
+      default: path.join('force-app', 'main', 'default', 'customMetadata'),
     }),
   };
 
   protected static varargs = {
     required: false,
-    validator: (name, value) => {
+    validator: (name: string): void => {
       // only custom fields allowed
       if (!name.endsWith('__c')) {
         const errMsg = `Invalid parameter [${name}] found`;
@@ -90,42 +92,21 @@ export default class Create extends SfdxCommand {
     },
   };
 
-  // Set this to true if your command requires a project workspace; 'requiresProject' is false by default
   protected static requiresProject = true;
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   public async run(): Promise<AnyJson> {
     try {
-      const validator = new ValidationUtil();
       const createUtil = new CreateUtil();
       const fileWriter = new FileWriter();
-      let typename = this.flags.typename;
-      const recordname = this.flags.recordname;
-      const label = this.flags.label || this.flags.recordname;
-      const protectedFlag = this.flags.protected || 'false';
-      const inputdir = this.flags.inputdir || 'force-app/main/default/objects';
-      const outputdir =
-        this.flags.outputdir || 'force-app/main/default/customMetadata';
+      let typename = this.flags.typename as string;
+      const recordname = this.flags.recordname as string;
+      const label = (this.flags.label as string) ?? recordname;
+      const protectedFlag = this.flags.protected as boolean;
+      const inputdir = this.flags.inputdir as string;
+      const outputdir = this.flags.outputdir as string;
       const dirName = createUtil.appendDirectorySuffix(typename);
-      const fieldDirPath = `${fileWriter.createDir(inputdir)}${dirName}/fields`;
-
-      if (!validator.validateMetadataTypeName(typename)) {
-        throw new SfError(
-          messages.getMessage('notValidAPINameError', [typename])
-        );
-      }
-
-      if (!validator.validateMetadataRecordName(recordname)) {
-        throw new SfError(
-          messages.getMessage('notAValidRecordNameError', [recordname])
-        );
-      }
-
-      if (!validator.validateLessThanForty(label)) {
-        throw new SfError(
-          messages.getMessage('notAValidLabelNameError', [label])
-        );
-      }
-
+      const fieldDirPath = path.join(`${fileWriter.createDir(inputdir)}${dirName}`, 'fields');
       const fileNames = await fs.promises.readdir(fieldDirPath);
 
       // forgive them if they passed in type__mdt, and cut off the __mdt
@@ -134,7 +115,7 @@ export default class Create extends SfdxCommand {
       }
 
       // if customMetadata folder does not exist, create it
-      await fs.promises.mkdir(outputdir, {recursive: true});
+      await fs.promises.mkdir(outputdir, { recursive: true });
 
       const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
 
@@ -149,15 +130,7 @@ export default class Create extends SfdxCommand {
         fileData,
       });
 
-      this.ux.log(
-        messages.getMessage('successResponse', [
-          typename,
-          recordname,
-          label,
-          protectedFlag,
-          outputdir,
-        ])
-      );
+      this.ux.log(messages.getMessage('successResponse', [typename, recordname, label, protectedFlag, outputdir]));
 
       // Return an object to be displayed with --json
       return {
@@ -171,7 +144,9 @@ export default class Create extends SfdxCommand {
         fileData,
       };
     } catch (err) {
-      this.ux.log(err.message);
+      if (err instanceof Error) {
+        this.ux.log(err.message);
+      }
     }
   }
 }

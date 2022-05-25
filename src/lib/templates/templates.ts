@@ -7,10 +7,12 @@
 
 import { SfError, Messages } from '@salesforce/core';
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.load(
-  '@salesforce/plugin-custom-metadata',
-  'template', ['errorNotAValidType']
-);
+const messages = Messages.load('@salesforce/plugin-custom-metadata', 'template', ['errorNotAValidType']);
+import { CustomValue, CustomField } from 'jsforce/api/metadata';
+
+const createPicklistValues = (values: string[]): CustomValue[] =>
+  values.map((value) => ({ fullName: value, label: value, default: false }));
+
 export class Templates {
   /**
    * Using the given data and visibility, creates the body of a type metadata file
@@ -18,12 +20,11 @@ export class Templates {
    * @param data
    * @param visibility
    */
-  public createObjectXML(data, visibility) {
+  public createObjectXML({ label, pluralLabel }: { label: string; pluralLabel: string }, visibility: string): string {
     let returnValue = '<?xml version="1.0" encoding="UTF-8"?>\n';
-    returnValue +=
-      '<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">\n';
-    returnValue += `\t<label>${data.label}</label>\n`;
-    returnValue += `\t<pluralLabel>${data.pluralLabel}</pluralLabel>\n`;
+    returnValue += '<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">\n';
+    returnValue += `\t<label>${label}</label>\n`;
+    returnValue += `\t<pluralLabel>${pluralLabel}</pluralLabel>\n`;
     returnValue += `\t<visibility>${visibility}</visibility>\n`;
     returnValue += '</CustomObject>\n';
     return returnValue;
@@ -35,10 +36,9 @@ export class Templates {
    * @param data Record details
    * @param defaultToString If the defaultToString set type to Text for unsupported field types
    */
-  public createFieldXML(data, defaultToString: boolean) {
+  public createFieldXML(data: CustomField, defaultToString: boolean): string {
     let returnValue = '<?xml version="1.0" encoding="UTF-8"?>\n';
-    returnValue +=
-      '<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">\n';
+    returnValue += '<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">\n';
     returnValue += this.getFullName(data);
     returnValue += this.getDescription(data);
     returnValue += this.getExternalId(data);
@@ -70,52 +70,47 @@ export class Templates {
     label: string,
     picklistValues: string[],
     decimalplaces = 0
-  ) {
+  ): CustomField {
     const precision = 18 - decimalplaces;
     const scale = decimalplaces;
-
+    const baseObject = { fullName, type, label, summaryFilterItems: [] };
     switch (type) {
       case 'Checkbox':
-        return { fullName, defaultValue: 'false', type, label };
-      case 'Date':
-        return { fullName, type, label };
-      case 'DateTime':
-        return { fullName, type, label };
+        return { ...baseObject, defaultValue: 'false' };
       case 'Email':
-        return { fullName, type, label, unique: 'false' };
+        return { ...baseObject, unique: false };
       case 'Number':
-        return { fullName, type, label, precision, scale, unique: 'false' };
+        return { ...baseObject, precision, scale, unique: false };
       case 'Percent':
-        return { fullName, type, label, precision, scale };
-      case 'Phone':
-        return { fullName, type, label };
+        return { ...baseObject, precision, scale };
       case 'Picklist':
         return {
-          fullName,
-          type,
-          label,
+          ...baseObject,
           valueSet: {
-            restricted: 'true',
+            restricted: true,
             valueSetDefinition: {
-              sorted: 'false',
-              value: this.createPicklistValues(picklistValues),
+              sorted: false,
+              value: createPicklistValues(picklistValues),
             },
+            valueSettings: [],
           },
         };
       case 'Text':
-        return { fullName, type, label, unique: 'false', length: '100' };
-      case 'TextArea':
-        return { fullName, type, label };
+        return { ...baseObject, unique: false, length: 100 };
       case 'LongTextArea':
-        return { fullName, type, label, length: '32768', visibleLines: 3 };
+        return { ...baseObject, length: 32768, visibleLines: 3 };
+      case 'Date':
+      case 'DateTime':
+      case 'Phone':
+      case 'TextArea':
       case 'Url':
-        return { fullName, type, label };
+        return baseObject;
       default:
-        return { fullName, type, label };
+        return baseObject;
     }
   }
 
-  public canConvert(type) {
+  public canConvert(type: string): boolean {
     const metadataFieldTypes = [
       'Checkbox',
       'Date',
@@ -133,7 +128,7 @@ export class Templates {
     return metadataFieldTypes.includes(type);
   }
 
-  private getType(data, defaultToMetadataType: boolean) {
+  private getType(data: CustomField, defaultToMetadataType: boolean): string {
     if (this.canConvert(data.type)) {
       // To handle the text formula field scenario where field type will be Text with no length attribute
       if (data.type === 'Text' && data.length === undefined) {
@@ -143,13 +138,11 @@ export class Templates {
     } else if (defaultToMetadataType) {
       return `\t<type>${this.getConvertType(data)}</type>\n`;
     } else {
-      throw new SfError(
-        messages.getMessage('errorNotAValidType', [data.type])
-      )
+      throw new SfError(messages.getMessage('errorNotAValidType', [data.type]));
     }
   }
 
-  private getConvertType(data) {
+  private getConvertType(data: CustomField): string {
     if (
       data.type === 'Html' ||
       data.type === 'MultiselectPicklist' ||
@@ -161,61 +154,46 @@ export class Templates {
     }
   }
 
-  private getFullName(data) {
-    const name = data.fullName.endsWith('__c')
-      ? data.fullName
-      : data.fullName + '__c';
+  private getFullName(data: CustomField): string {
+    const name = data.fullName.endsWith('__c') ? data.fullName : data.fullName + '__c';
     return `\t<fullName>${name}</fullName>\n`;
   }
 
-  private getDescription(data) {
-    return data.description
-      ? `\t<description>${data.description}</description>\n`
-      : '';
+  private getDescription(data: CustomField): string {
+    return data.description ? `\t<description>${data.description}</description>\n` : '';
   }
 
-  private getExternalId(data) {
-    return data.externalId
-      ? `\t<externalId>${data.externalId}</externalId>\n`
-      : '';
+  private getExternalId(data: CustomField): string {
+    return data.externalId ? `\t<externalId>${data.externalId}</externalId>\n` : '';
   }
 
-  private getFieldManageability(data) {
-    return `\t<fieldManageability>${
-      data.fieldManageability || 'DeveloperControlled'
-    }</fieldManageability>\n`;
+  private getFieldManageability(data: CustomField): string {
+    return `\t<fieldManageability>${data.fieldManageability || 'DeveloperControlled'}</fieldManageability>\n`;
   }
 
-  private getInlineHelpText(data) {
-    return data.inlineHelpText
-      ? `\t<inlineHelpText>${data.inlineHelpText}</inlineHelpText>\n`
-      : '';
+  private getInlineHelpText(data: CustomField): string {
+    return data.inlineHelpText ? `\t<inlineHelpText>${data.inlineHelpText}</inlineHelpText>\n` : '';
   }
-  private getLabel(data) {
+  private getLabel(data: CustomField): string {
     return `\t<label>${data.label}</label>\n`;
   }
 
-  private getRequiredTag(data) {
+  private getRequiredTag(data: CustomField): string {
     return data.unique ? `\t<unique>${data.unique}</unique>\n` : '';
   }
 
-  private getPrecisionTag(data) {
+  private getPrecisionTag(data: CustomField): string {
     return data.precision ? `\t<precision>${data.precision}</precision>\n` : '';
   }
 
-  private getScaleTag(data) {
-    return typeof data.scale !== 'undefined'
-      ? `\t<scale>${data.scale}</scale>\n`
-      : '';
+  private getScaleTag(data: CustomField): string {
+    return typeof data.scale !== 'undefined' ? `\t<scale>${data.scale}</scale>\n` : '';
   }
 
-  private getLengthTag(data) {
+  private getLengthTag(data: CustomField): string {
     // If field type is multiselect or
     // data type is text with no length attribute then it is formula field then set the length to 32768 as we are setting the type LongTextArea
-    if (
-      data.type === 'MultiselectPicklist' ||
-      (data.type === 'Text' && data.length === undefined)
-    ) {
+    if (data.type === 'MultiselectPicklist' || (data.type === 'Text' && data.length === undefined)) {
       return '\t<length>32768</length>\n';
     }
 
@@ -225,44 +203,32 @@ export class Templates {
     // For fields that are being translated from Custom objects that do not have a matching type they are
     // being defaulted to a Text field. They need to have a minimum length to them
     // e.g. Field types that are getting converted: Currency, Location, MasterDetail, Lookup
-    return !this.canConvert(data.type) && this.getConvertType(data) === 'Text'
-      ? '\t<length>100</length>\n'
-      : '';
+    return !this.canConvert(data.type) && this.getConvertType(data) === 'Text' ? '\t<length>100</length>\n' : '';
   }
 
-  private getVisibleLines(data) {
+  private getVisibleLines(data: CustomField): string {
     if (data.type === 'Text' && data.length === undefined) {
       return '\t<visibleLines>3</visibleLines>\n';
     }
-    return data.visibleLines
-      ? `\t<visibleLines>${data.visibleLines}</visibleLines>\n`
-      : '';
+    return data.visibleLines ? `\t<visibleLines>${data.visibleLines}</visibleLines>\n` : '';
   }
 
-  private getDefaultValue(data) {
+  private getDefaultValue(data: CustomField): string {
     if (data.type === 'Currency') {
-      return data.defaultValue
-        ? `\t<defaultValue>'${data.defaultValue}'</defaultValue>\n`
-        : '';
+      return data.defaultValue ? `\t<defaultValue>'${data.defaultValue}'</defaultValue>\n` : '';
     } else if (data.type === 'Checkbox' && data.defaultValue === undefined) {
       return '\t<defaultValue>false</defaultValue>\n';
     }
-    return data.defaultValue
-      ? `\t<defaultValue>${data.defaultValue}</defaultValue>\n`
-      : '';
+    return data.defaultValue ? `\t<defaultValue>${data.defaultValue}</defaultValue>\n` : '';
   }
 
-  private getValueSet(data) {
+  private getValueSet(data: CustomField): string {
     let fieldValue = '';
     if (data.valueSet) {
       fieldValue += '\t<valueSet>\n';
-      fieldValue += `\t\t<restricted>${
-        data.valueSet.restricted || false
-      }</restricted>\n`;
+      fieldValue += `\t\t<restricted>${data.valueSet.restricted || false}</restricted>\n`;
       fieldValue += '\t\t<valueSetDefinition>\n';
-      fieldValue += `\t\t\t<sorted>${
-        data.valueSet.valueSetDefinition.sorted || false
-      }</sorted>\n`;
+      fieldValue += `\t\t\t<sorted>${data.valueSet.valueSetDefinition.sorted || false}</sorted>\n`;
       data.valueSet.valueSetDefinition.value.forEach((value) => {
         fieldValue += '\t\t\t<value>\n';
         fieldValue += `\t\t\t\t<fullName>${value.fullName}</fullName>\n`;
@@ -274,13 +240,5 @@ export class Templates {
       fieldValue += '\t</valueSet>\n';
     }
     return fieldValue;
-  }
-
-  private createPicklistValues(values: string[]) {
-    const picklistValues = [];
-    values.forEach((value) => {
-      picklistValues.push({ fullName: value, label: value });
-    });
-    return picklistValues;
   }
 }

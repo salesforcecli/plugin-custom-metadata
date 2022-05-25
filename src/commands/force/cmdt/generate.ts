@@ -5,20 +5,20 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import * as fs from 'fs';
+import * as path from 'path';
 import { flags, SfdxCommand } from '@salesforce/command';
-import {
-  Aliases,
-  AuthInfo,
-  Connection,
-  SfError,
-  Messages,
-} from '@salesforce/core';
+import { SfError, Messages } from '@salesforce/core';
 import { isEmpty } from '@salesforce/kit';
-import { AnyJson, asString, ensureJsonArray } from '@salesforce/ts-types';
+import { AnyJson } from '@salesforce/ts-types';
+import { CustomObject } from 'jsforce/api/metadata';
 import { CreateUtil } from '../../../lib/helpers/createUtil';
 import { FileWriter } from '../../../lib/helpers/fileWriter';
-import { MetadataUtil } from '../../../lib/helpers/metadataUtil';
-import { ValidationUtil } from '../../../lib/helpers/validationUtil';
+import { describeObjFields, cleanQueryResponse, validCustomSettingType } from '../../../lib/helpers/metadataUtil';
+import {
+  validateAPIName,
+  validateMetadataTypeName,
+  isValidMetadataRecordName,
+} from '../../../lib/helpers/validationUtil';
 import { Templates } from '../../../lib/templates/templates';
 
 // Initialize Messages with the current plugin directory
@@ -26,10 +26,7 @@ Messages.importMessagesDirectory(__dirname);
 
 // Load the specific messages for this file. Messages from @salesforce/command, @salesforce/core,
 // or any library that is using the messages framework can also be loaded this way.
-const messages = Messages.loadMessages(
-  '@salesforce/plugin-custom-metadata',
-  'generate'
-);
+const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'generate');
 
 export default class Generate extends SfdxCommand {
   public static description = messages.getMessage('commandDescription');
@@ -70,6 +67,7 @@ export default class Generate extends SfdxCommand {
       required: true,
       description: messages.getMessage('devnameFlagDescription'),
       longDescription: messages.getMessage('devnameFlagLongDescription'),
+      parse: async (input: string) => Promise.resolve(validateMetadataTypeName(input)),
     }),
     label: flags.string({
       char: 'l',
@@ -93,13 +91,12 @@ export default class Generate extends SfdxCommand {
       required: true,
       description: messages.getMessage('sobjectnameFlagDescription'),
       longDescription: messages.getMessage('sobjectnameFlagLongDescription'),
+      parse: async (sobjectname: string) => Promise.resolve(validateAPIName(sobjectname)),
     }),
     ignoreunsupported: flags.boolean({
       char: 'i',
       description: messages.getMessage('ignoreUnsupportedFlagDescription'),
-      longDescription: messages.getMessage(
-        'ignoreUnsupportedFlagLongDescription'
-      ),
+      longDescription: messages.getMessage('ignoreUnsupportedFlagLongDescription'),
     }),
     typeoutputdir: flags.directory({
       char: 'd',
@@ -110,91 +107,23 @@ export default class Generate extends SfdxCommand {
     recordsoutputdir: flags.directory({
       char: 'r',
       description: messages.getMessage('recordsoutputdirFlagDescription'),
-      longDescription: messages.getMessage(
-        'recordsoutputdirFlagLongDescription'
-      ),
+      longDescription: messages.getMessage('recordsoutputdirFlagLongDescription'),
       default: 'force-app/main/default/customMetadata/',
     }),
   };
 
-  // Comment this out if your command does not require an org username
   protected static requiresUsername = true;
-
-  // Set this to true if your command requires a project workspace; 'requiresProject' is false by default
   protected static requiresProject = true;
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   public async run(): Promise<AnyJson> {
-    // this.org is guaranteed because requiresUsername=true, as opposed to supportsUsername
     const conn = this.org.getConnection();
-
-    // to validate different flags provided by the user
-    const validator = new ValidationUtil();
-
-    const objname = this.flags.sobjectname;
-    const cmdttype = this.flags.devname;
-    const sourceuser = this.flags.targetusername;
-    const ignoreFields = this.flags.ignoreunsupported;
-
-    let username: string;
-    let sourceOrgConn: Connection;
-    let describeObj;
-    // check whether username or alias is provided as targetusername
-    if (sourceuser) {
-      if (sourceuser.substr(sourceuser.length - 4) !== '.com') {
-        username = await Aliases.fetch(sourceuser); // if alias is provided get the corresponding username
-        if (username === undefined) {
-          throw new SfError(
-            messages.getMessage('sourceusernameError', [sourceuser])
-          )
-        }
-      } else {
-        username = sourceuser;
-      }
-    }
-    if (username) {
-      try {
-        // connect to source org if source user name provided
-        sourceOrgConn = await Connection.create({
-          authInfo: await AuthInfo.create({ username }),
-        });
-      } catch (err) {
-        const errMsg = messages.getMessage('sourceuserAuthenticationError', [
-          sourceuser,
-          err.message,
-        ]);
-        throw new SfError(errMsg, 'sourceuserAuthenticationError');
-      }
-    }
-
-    if (!validator.validateAPIName(objname)) {
-      throw new SfError(
-        messages.getMessage('sobjectnameFlagError', [objname])
-      )
-    }
-
-    let devName;
-    if (!validator.validateMetadataTypeName(cmdttype)) {
-      throw new SfError(
-        messages.getMessage('typenameFlagError', [cmdttype])
-      )
-    }
-
-    if (cmdttype.endsWith('__mdt') || cmdttype.endsWith('__MDT')) {
-      devName = cmdttype.substring(0, cmdttype.indexOf('__mdt'));
-    } else {
-      devName = cmdttype;
-    }
-
-    let metadataUtil;
-    // get defined only if there is source username provided
-    if (!sourceOrgConn) {
-      metadataUtil = new MetadataUtil(conn);
-    } else {
-      metadataUtil = new MetadataUtil(sourceOrgConn);
-    }
+    const objname = this.flags.sobjectname as string;
+    const devName = this.flags.devname as string;
+    const ignoreFields = this.flags.ignoreunsupported as boolean;
 
     // use default target org connection to get object describe if no source is provided.
-    describeObj = await metadataUtil.describeObj(objname);
+    const describeObj = await conn.metadata.read('CustomObject', objname);
 
     // throw error if the object doesnot exist(empty json as response from the describe call.)
     if (isEmpty(describeObj)) {
@@ -202,70 +131,65 @@ export default class Generate extends SfdxCommand {
       throw new SfError(errMsg, 'sobjectnameNoResultError');
     }
     // check for custom setting
-    if (describeObj['customSettingsType'] !== undefined) {
+    if (describeObj.customSettingsType) {
       // if custom setting check for type and visbility
-      if (!metadataUtil.validCustomSettingType(describeObj)) {
+      if (!validCustomSettingType(describeObj)) {
         const errMsg = messages.getMessage('customSettingTypeError', [objname]);
         throw new SfError(errMsg, 'customSettingTypeError');
       }
     }
 
-    const visibility = this.flags.visibility || 'Public';
-    const label = this.flags.label || devName;
-    const pluralLabel = this.flags.plurallabel || label;
-    const outputDir =
-      this.flags.typeoutputdir || 'force-app/main/default/objects/';
-    const recordsOutputDir =
-      this.flags.recordsoutputdir || 'force-app/main/default/customMetadata';
+    const visibility = this.flags.visibility as string;
+    const label = (this.flags.label as string) ?? devName;
+    const pluralLabel = (this.flags.plurallabel as string) ?? label;
+    const outputDir = this.flags.typeoutputdir as string;
+    const recordsOutputDir = this.flags.recordsoutputdir as string;
 
     try {
       this.ux.startSpinner('custom metadata generation in progress');
       // create custom metadata type
       const templates = new Templates();
-      const objectXML = templates.createObjectXML(
-        { label, pluralLabel },
-        visibility
-      );
+      const objectXML = templates.createObjectXML({ label, pluralLabel }, visibility);
       const fileWriter = new FileWriter();
       await fileWriter.writeTypeFile(fs, outputDir, devName, objectXML);
 
-      // get all the field details before creating feild metadata
-      const describeAllFields = metadataUtil.describeObjFields(describeObj);
+      // get all the field details before creating field metadata
+      const fields = describeObjFields(describeObj);
 
-      let sObjectRecords;
       // query records from source
-      sObjectRecords = await metadataUtil.queryRecords(describeObj);
-      if (sObjectRecords.errorCode && sObjectRecords.errorCode !== null) {
-        const errMsg = messages.getMessage('queryError', [
-          objname,
-          asString(sObjectRecords.errorMsg),
-        ]);
-        throw new SfError(errMsg, 'queryError');
-      }
+      const sObjectRecords = await conn.query(getSoqlQuery(describeObj));
+      // if (sObjectRecords.errorCode && sObjectRecords.errorCode !== null) {
+      //   const errMsg = messages.getMessage('queryError', [
+      //     objname,
+      //     asString(sObjectRecords.errorMsg),
+      //   ]);
+      //   throw new SfError(errMsg, 'queryError');
+      // }
 
       // check for Geo Location fields before hand and create two different fields for longitude and latitude.
-      const fields = ensureJsonArray(describeAllFields);
       fields.map((field) => {
-        if (field['type'] === 'Location') {
-          const lat: AnyJson = {
-            fullName: 'Lat_' + field['fullName'],
-            label: 'Lat ' + field['label'],
+        if (field.type === 'Location') {
+          const lat = {
+            fullName: `Lat_${field.fullName}`,
+            label: `Lat ${field.label}`,
             required: field['required'],
             trackHistory: field['trackHistory'],
             trackTrending: field['trackTrending'],
             type: 'Text',
-            length: '40',
+            length: 40,
+            summaryFilterItems: [],
           };
           fields.push(lat);
 
-          const long: AnyJson = {
+          const long = {
             fullName: 'Long_' + field['fullName'],
             label: 'Long_' + field['label'],
             required: field['required'],
             trackHistory: field['trackHistory'],
             trackTrending: field['trackTrending'],
             type: 'Text',
-            length: '40',
+            length: 40,
+            summaryFilterItems: [],
           };
           fields.push(long);
         }
@@ -274,10 +198,7 @@ export default class Generate extends SfdxCommand {
       // create custom metdata fields
       for (const field of fields) {
         // added type check here to skip the creation of geo location field  and un supported fields as we are adding it as lat and long field above.
-        if (
-          (templates.canConvert(field['type']) || !ignoreFields) &&
-          field['type'] !== 'Location'
-        ) {
+        if ((templates.canConvert(field['type']) || !ignoreFields) && field['type'] !== 'Location') {
           const recordname = field['fullName'];
           const fieldXML = templates.createFieldXML(field, !ignoreFields);
           const targetDir = `${outputDir}${devName}__mdt`;
@@ -287,59 +208,62 @@ export default class Generate extends SfdxCommand {
 
       const createUtil = new CreateUtil();
       // if customMetadata folder does not exist, create it
-      await fs.promises.mkdir(recordsOutputDir, {recursive:true});
-      const security: boolean = visibility !== 'Public';
-
+      await fs.promises.mkdir(recordsOutputDir, { recursive: true });
       const typename = devName;
-
-      const fieldDirPath = `${fileWriter.createDir(
-        outputDir
-      )}${typename}__mdt/fields`;
+      const fieldDirPath = path.join(`${fileWriter.createDir(outputDir)}${typename}__mdt`, 'fields');
       const fileNames = await fs.promises.readdir(fieldDirPath);
       const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
 
-      for (const rec of sObjectRecords.records) {
-        const record = metadataUtil.cleanQueryResponse(rec, describeObj);
-        const lblName = rec['Name'];
-        let recordName = rec['Name'];
-        if (!validator.validateMetadataRecordName(rec['Name'])) {
-          recordName = recordName.replace(/ +/g, '_');
-        }
-        await createUtil.createRecord({
-          typename,
-          recordname: recordName,
-          label: lblName,
-          inputdir: outputDir,
-          outputdir: recordsOutputDir,
-          protected: security,
-          varargs: record,
-          fileData,
-          ignorefields: ignoreFields,
-        });
-      }
-      this.ux.stopSpinner(
-        'custom metadata type and records creation in completed'
+      await Promise.all(
+        sObjectRecords.records.map((rec) => {
+          const record = cleanQueryResponse(rec, describeObj);
+          const lblName = rec['Name'] as string;
+          const recordName = isValidMetadataRecordName(lblName) ? lblName : lblName.replace(/ +/g, '_');
+          return createUtil.createRecord({
+            typename,
+            recordname: recordName,
+            label: lblName,
+            inputdir: outputDir,
+            outputdir: recordsOutputDir,
+            protected: visibility !== 'Public',
+            varargs: record,
+            fileData,
+            ignorefields: ignoreFields,
+          });
+        })
       );
-      this.ux.log(
-        `Congrats! Created a ${devName} custom metadata type with ${sObjectRecords.records.length} records!`
-      );
+
+      this.ux.stopSpinner('custom metadata type and records creation in completed');
+      this.ux.log(`Congrats! Created a ${devName} custom metadata type with ${sObjectRecords.records.length} records!`);
     } catch (e) {
-      await fs.promises.rm(`${outputDir}${devName}__mdt`, {recursive:true});
+      await fs.promises.rm(`${outputDir}${devName}__mdt`, { recursive: true });
       const fileNames = await fs.promises.readdir(recordsOutputDir);
       for (const file of fileNames) {
         if (file.startsWith(devName)) {
           try {
-            await fs.promises.unlink(`${recordsOutputDir}/${file}`);
-          } catch (e) {
-            this.ux.log(e.message);
+            await fs.promises.unlink(path.join(recordsOutputDir, file));
+          } catch (err) {
+            if (err instanceof Error) {
+              this.ux.log(err.message);
+            }
           }
         }
       }
       this.ux.stopSpinner('generate command failed to run');
-      const errMsg = messages.getMessage('generateError', [e.message]);
+      const errMsg = messages.getMessage('generateError', [e instanceof Error ? e.message : 'unknown error']);
       throw new SfError(errMsg, 'generateError');
     }
 
     return { outputDir, recordsOutputDir };
   }
 }
+
+const getSoqlQuery = (describeResult: CustomObject): string => {
+  const fieldNames = describeResult.fields
+    .map((field) => {
+      return field.fullName;
+    })
+    .join(',');
+  // Added Name hardcoded as Name field is not retrieved as part of object describe.
+  return `SELECT Name, ${fieldNames} FROM ${describeResult.fullName}`;
+};

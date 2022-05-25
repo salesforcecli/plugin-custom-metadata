@@ -1,81 +1,88 @@
 /*
- * Copyright (c) 2018-2020, salesforce.com, inc.
+ * Copyright (c) 2020, salesforce.com, inc.
  * All rights reserved.
- * SPDX-License-Identifier: BSD-3-Clause
- * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ * Licensed under the BSD 3-Clause license.
+ * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { expect,test } from '@salesforce/command/lib/test';
 import * as fs from 'fs';
 
-import { promisify } from 'util';
-const child_process = require('child_process');
+import { expect, test } from '@salesforce/command/lib/test';
 
-const exec = promisify(child_process.exec);
-
-
-describe('sfdx force:cmdt:field:create' , () => {
-
-
+describe('sfdx force:cmdt:field:create', () => {
   test
-  .withOrg({ username: 'test@org.com' }, true)
-  .stdout()
-  .command(['force:cmdt:field:create', '--fieldname', 'myField','--fieldtype','Text'])
-  .it('runs force:cmdt:field:create --fieldname myField --fieldtype Text', ctx => {
-    const cmdtName = 'myField';
-    expect(fs.existsSync(`fields`)).to.be.true;
-    expect(fs.existsSync(`fields/${cmdtName}__c.field-meta.xml`)).to.be.true;
-    fs.readFile(`fields/${cmdtName}__c.field-meta.xml`, { encoding: 'utf-8' }, function (err, xml) {
-      expect(xml.includes(`<fullName>myField__c</fullName>`)).to.be.true;
-      expect(xml.includes(`<fieldManageability>DeveloperControlled</fieldManageability>`)).to.be.true;
-      expect(xml.includes(`<label>myField</label>`)).to.be.true;
-      expect(xml.includes(`<type>Text</type>`)).to.be.true;
-      expect(xml.includes(`<unique>false</unique>`)).to.be.true;
-      expect(xml.includes(`<length>100</length>`)).to.be.true;
+    .withOrg({ username: 'test@org.com' }, true)
+    .stdout()
+    .command(['force:cmdt:field:create', '--fieldname', 'myField', '--fieldtype', 'Text'])
+    .it('runs force:cmdt:field:create --fieldname myField --fieldtype Text', (ctx) => {
+      const cmdtName = 'myField';
+      expect(fs.existsSync('fields')).to.be.true;
+      expect(fs.existsSync(`fields/${cmdtName}__c.field-meta.xml`)).to.be.true;
+      fs.readFile(`fields/${cmdtName}__c.field-meta.xml`, { encoding: 'utf-8' }, function (err, xml) {
+        expect(xml.includes('<fullName>myField__c</fullName>')).to.be.true;
+        expect(xml.includes('<fieldManageability>DeveloperControlled</fieldManageability>')).to.be.true;
+        expect(xml.includes('<label>myField</label>')).to.be.true;
+        expect(xml.includes('<type>Text</type>')).to.be.true;
+        expect(xml.includes('<unique>false</unique>')).to.be.true;
+        expect(xml.includes('<length>100</length>')).to.be.true;
+      });
+      fs.rmSync('fields', { recursive: true });
     });
-    exec(`rm -rf fields`);
-  })
 
   test
-  .withOrg({ username: 'test@org.com' }, true)
-  .stderr()
-  .command(['force:cmdt:field:create', '--fieldname', 'myFi__eld','--fieldtype','Text'])
-  .it('fails running force:cmdt:field:create --fieldname myFi__eld --fieldtype Text', ctx => {
-    expect(ctx.stderr).to.contain("'myFi__eld' is an invalid field. Custom fields can only contain alphanumeric characters, must begin with a letter, cannot end with an underscore, and cannot contain two consecutive underscore characters.");
-  })
+    .withOrg({ username: 'test@org.com' }, true)
+    .stderr()
+    .command(['force:cmdt:field:create', '--fieldname', 'myFi__eld', '--fieldtype', 'Text'])
+    .it('fails running force:cmdt:field:create --fieldname myFi__eld --fieldtype Text', (ctx) => {
+      expect(ctx.stderr).to.contain(
+        "'myFi__eld' is an invalid field. Custom fields can only contain alphanumeric characters, must begin with a letter, cannot end with an underscore, and cannot contain two consecutive underscore characters."
+      );
+    });
 
   test
-  .withOrg({ username: 'test@org.com' }, true)
-  .stderr()
-  .command(['force:cmdt:field:create', '--fieldname', 'myField','--fieldtype','Picklist'])
-  .it('fails running force:cmdt:field:create --fieldname myField --fieldtype Picklist', ctx => {
-    expect(ctx.stderr).to.contain('Picklist values are required when field type is Picklist' );
-  })
+    .withOrg({ username: 'test@org.com' }, true)
+    .stderr()
+    .command(['force:cmdt:field:create', '--fieldname', 'myField', '--fieldtype', 'Picklist'])
+    .it('fails running force:cmdt:field:create --fieldname myField --fieldtype Picklist', (ctx) => {
+      expect(ctx.stderr).to.contain('Picklist values are required when field type is Picklist');
+    });
 
   test
-  .withOrg({ username: 'test@org.com' }, true)
-  .stdout()
-  .command(['force:cmdt:field:create', '--fieldname', 'myField','--fieldtype','Picklist','--picklistvalues','a,b,c','-d','picklistField'])
-  .it('runs force:cmdt:field:create --fieldname myField --fieldtype Picklist --picklistvalues a,b,c', ctx => {
-    const cmdtName = 'myField';
-    expect(fs.existsSync(`picklistField/fields`)).to.be.true;
-    expect(fs.existsSync(`picklistField/fields/${cmdtName}__c.field-meta.xml`)).to.be.true;
-    exec(`rm -rf picklistField`);
-  })
+    .withOrg({ username: 'test@org.com' }, true)
+    .stdout()
+    .command([
+      'force:cmdt:field:create',
+      '--fieldname',
+      'myField',
+      '--fieldtype',
+      'Picklist',
+      '--picklistvalues',
+      'a,b,c',
+      '-d',
+      'picklistField',
+    ])
+    .it('runs force:cmdt:field:create --fieldname myField --fieldtype Picklist --picklistvalues a,b,c', (ctx) => {
+      const cmdtName = 'myField';
+      expect(fs.existsSync('picklistField/fields')).to.be.true;
+      expect(fs.existsSync(`picklistField/fields/${cmdtName}__c.field-meta.xml`)).to.be.true;
+      fs.rmSync('picklistField', { recursive: true });
+    });
 
   test
-  .withOrg({ username: 'test@org.com' }, true)
-  .stderr()
-  .command(['force:cmdt:field:create', '--fieldname', 'money','--fieldtype','Currency'])
-  .it('fails running force:cmdt:field:create --fieldname money --fieldtype Currency', ctx => {
-    expect(ctx.stderr).to.contain('Expected --fieldtype=Currency to be one of: Checkbox, Date, DateTime, Email, Number, Percent, Phone, Picklist, Text, TextArea, LongTextArea, Url');
-  })  
+    .withOrg({ username: 'test@org.com' }, true)
+    .stderr()
+    .command(['force:cmdt:field:create', '--fieldname', 'money', '--fieldtype', 'Currency'])
+    .it('fails running force:cmdt:field:create --fieldname money --fieldtype Currency', (ctx) => {
+      expect(ctx.stderr).to.contain(
+        'Expected --fieldtype=Currency to be one of: Checkbox, Date, DateTime, Email, Number, Percent, Phone, Picklist, Text, TextArea, LongTextArea, Url'
+      );
+    });
 
   test
-  .withOrg({ username: 'test@org.com' }, true)
-  .stderr()
-  .command(['force:cmdt:field:create', '--fieldname', 'myField','--fieldtype','Number', '--decimalplaces', '-2'])
-  .it('fails running force:cmdt:field:create --fieldname myField --fieldtype Number --decimalplaces -2', ctx => {
-    expect(ctx.stderr).to.contain('Number of decimal places must be greater than or equal to zero.');
-  })
-})
+    .withOrg({ username: 'test@org.com' }, true)
+    .stderr()
+    .command(['force:cmdt:field:create', '--fieldname', 'myField', '--fieldtype', 'Number', '--decimalplaces', '-2'])
+    .it('fails running force:cmdt:field:create --fieldname myField --fieldtype Number --decimalplaces -2', (ctx) => {
+      expect(ctx.stderr).to.contain('Number of decimal places must be greater than or equal to zero.');
+    });
+});

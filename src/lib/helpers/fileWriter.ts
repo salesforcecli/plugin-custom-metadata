@@ -6,6 +6,13 @@
  */
 
 import * as fs from 'fs';
+import * as path from 'path';
+
+interface FileWriterResult {
+  dir: string;
+  fileName: string;
+  updated: boolean;
+}
 
 export class FileWriter {
   /**
@@ -15,12 +22,7 @@ export class FileWriter {
    * @param devname
    * @param objectXML
    */
-  public async writeTypeFile(
-    corefs,
-    dir: string,
-    devName: string,
-    objectXML: string
-  ) {
+  public async writeTypeFile(corefs = fs, dir: string, devName: string, objectXML: string): Promise<FileWriterResult> {
     let apiName = devName;
     const dirName = this.createDir(dir);
 
@@ -34,12 +36,12 @@ export class FileWriter {
       apiName += '__mdt';
     }
 
-    const outputFilePath = `${dirName}${apiName}/`;
+    const outputFilePath = `${dirName}${apiName}${path.sep}`;
     const fileName = `${apiName}.object-meta.xml`;
     const updated = fs.existsSync(outputFilePath + fileName);
 
-    await corefs.mkdirp(`${dirName}${apiName}`);
-    await corefs.writeFile(outputFilePath + fileName, objectXML);
+    await corefs.promises.mkdir(`${dirName}${apiName}`, { recursive: true });
+    await corefs.promises.writeFile(outputFilePath + fileName, objectXML);
 
     return { dir: outputFilePath, fileName, updated };
   }
@@ -52,28 +54,33 @@ export class FileWriter {
    * @param fieldXML
    */
   // /fields/{fieldAPI}.field-meta.xml
-  public async writeFieldFile(corefs, dir, fieldName, fieldXML) {
+  public async writeFieldFile(
+    corefs = fs,
+    dir: string,
+    fieldName: string,
+    fieldXML: string
+  ): Promise<FileWriterResult> {
     const dirName = this.createDir(dir);
 
     // appending __c if its not already there
     if (fieldName.endsWith('__c') === false) {
       fieldName += '__c';
     }
-    const outputFilePath = `${dirName}fields/`;
+    const outputFilePath = `${dirName}fields${path.sep}`;
     const fileName = `${fieldName}.field-meta.xml`;
     const updated = fs.existsSync(outputFilePath + fileName);
-    await corefs.mkdirp(`${dirName}fields`);
-    await corefs.writeFile(outputFilePath + fileName, fieldXML);
+    await corefs.promises.mkdir(`${dirName}fields`, { recursive: true });
+    await corefs.promises.writeFile(`${outputFilePath}${fileName}`, fieldXML);
 
     return { dir: outputFilePath, fileName, updated };
   }
 
-  public createDir(dir) {
+  public createDir(dir?: string): string {
     if (dir) {
-      if (dir.endsWith('/')) {
+      if (dir.endsWith(path.sep)) {
         return dir;
       } else {
-        return dir + '/';
+        return `${dir}${path.sep}`;
       }
     }
     return '';

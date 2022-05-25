@@ -9,8 +9,7 @@ import { flags, SfdxCommand } from '@salesforce/command';
 import { Messages, SfError } from '@salesforce/core';
 import { AnyJson } from '@salesforce/ts-types';
 import { FileWriter } from '../../../../lib/helpers/fileWriter';
-import { ValidationUtil } from '../../../../lib/helpers/validationUtil';
-import { SaveResults } from '../../../../lib/interfaces/saveResults';
+import { validateAPIName } from '../../../../lib/helpers/validationUtil';
 import { Templates } from '../../../../lib/templates/templates';
 
 // Initialize Messages with the current plugin directory
@@ -18,10 +17,7 @@ Messages.importMessagesDirectory(__dirname);
 
 // Load the specific messages for this file. Messages from @salesforce/command, @salesforce/core,
 // or any library that is using the messages framework can also be loaded this way.
-const messages = Messages.loadMessages(
-  '@salesforce/plugin-custom-metadata',
-  'createField'
-);
+const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'createField');
 
 export default class Create extends SfdxCommand {
   public static description = messages.getMessage('commandDescription');
@@ -44,6 +40,8 @@ export default class Create extends SfdxCommand {
       required: true,
       description: messages.getMessage('nameFlagDescription'),
       longDescription: messages.getMessage('nameFlagLongDescription'),
+      parse: async (input: string) =>
+        Promise.resolve(validateAPIName(input, messages.getMessage('invalidCustomFieldError', [input]))),
     }),
     fieldtype: flags.enum({
       char: 'f',
@@ -75,6 +73,7 @@ export default class Create extends SfdxCommand {
       description: messages.getMessage('decimalplacesFlagDescription'),
       longDescription: messages.getMessage('decimalplacesFlagLongDescription'),
       default: 0,
+      min: 0,
     }),
     label: flags.string({
       char: 'l',
@@ -84,56 +83,32 @@ export default class Create extends SfdxCommand {
     outputdir: flags.directory({
       char: 'd',
       description: messages.getMessage('outputDirectoryFlagDescription'),
-      longDescription: messages.getMessage(
-        'outputDirectoryFlagLongDescription'
-      ),
+      longDescription: messages.getMessage('outputDirectoryFlagLongDescription'),
+      default: '',
     }),
   };
 
-  // Set this to true if your command requires a project workspace; 'requiresProject' is false by default
   protected static requiresProject = true;
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   public async run(): Promise<AnyJson> {
-    const fieldName = this.flags.fieldname; // this should become the new file name
-    const label = this.flags.label || this.flags.fieldname;
-    const fieldtype = this.flags.fieldtype;
-    const picklistvalues = this.flags.picklistvalues || [];
-    const decimalplaces = this.flags.decimalplaces || 0;
-    const dir = this.flags.outputdir || '';
-    let saveResults: SaveResults;
+    const fieldName = this.flags.fieldname as string; // this should become the new file name
+    const label = (this.flags.label as string) ?? fieldName;
+    const fieldtype = this.flags.fieldtype as string;
+    const picklistvalues = (this.flags.picklistvalues as string[]) ?? [];
+    const decimalplaces = this.flags.decimalplaces as number;
 
-    const validator = new ValidationUtil();
-    if (!validator.validateAPIName(fieldName)) {
-      throw new SfError(
-        messages.getMessage('invalidCustomFieldError', [fieldName])
-      );
-    }
     if (fieldtype === 'Picklist' && picklistvalues.length === 0) {
-      throw new SfError(
-        messages.getMessage('picklistValuesNotSuppliedError')
-      );
-    }
-    if (decimalplaces < 0) {
-      throw new SfError(messages.getMessage('invalidDecimalError'));
+      throw new SfError(messages.getMessage('picklistValuesNotSuppliedError'));
     }
     const templates = new Templates();
-    const data = templates.createDefaultTypeStructure(
-      fieldName,
-      fieldtype,
-      label,
-      picklistvalues,
-      decimalplaces
-    );
+    const data = templates.createDefaultTypeStructure(fieldName, fieldtype, label, picklistvalues, decimalplaces);
     const fieldXML = templates.createFieldXML(data, false);
     const writer = new FileWriter();
-    saveResults = await writer.writeFieldFile(fs, dir, fieldName, fieldXML);
+    const saveResults = await writer.writeFieldFile(fs, this.flags.outputdir as string, fieldName, fieldXML);
 
     this.ux.log(messages.getMessage('targetDirectory', [saveResults.dir]));
-    this.ux.log(
-      messages.getMessage(saveResults.updated ? 'fileUpdate' : 'fileCreated', [
-        saveResults.fileName,
-      ])
-    );
+    this.ux.log(messages.getMessage(saveResults.updated ? 'fileUpdate' : 'fileCreated', [saveResults.fileName]));
 
     // Return an object to be displayed with --json
     return {

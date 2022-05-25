@@ -5,20 +5,17 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import * as fs from 'fs';
+import * as path from 'path';
 import { flags, SfdxCommand } from '@salesforce/command';
 import { Messages, SfError } from '@salesforce/core';
-import { AnyJson } from '@salesforce/ts-types';
+import { Record } from 'jsforce';
 import * as csv from '../../../../../csvtojson';
 import { CreateUtil } from '../../../../lib/helpers/createUtil';
 import { FileWriter } from '../../../../lib/helpers/fileWriter';
 import { CreateConfig } from '../../../../lib/interfaces/createConfig';
 
 Messages.importMessagesDirectory(__dirname);
-
-const messages = Messages.loadMessages(
-  '@salesforce/plugin-custom-metadata',
-  'insertRecord'
-);
+const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'insertRecord');
 
 export default class Insert extends SfdxCommand {
   public static description = messages.getMessage('commandDescription');
@@ -50,15 +47,13 @@ export default class Insert extends SfdxCommand {
       char: 'i',
       description: messages.getMessage('inputDirectoryFlagDescription'),
       longDescription: messages.getMessage('inputDirectoryFlagLongDescription'),
-      default: 'force-app/main/default/objects',
+      default: path.join('force-app', 'main', 'default', 'objects'),
     }),
     outputdir: flags.directory({
       char: 'd',
       description: messages.getMessage('outputDirectoryFlagDescription'),
-      longDescription: messages.getMessage(
-        'outputDirectoryFlagLongDescription'
-      ),
-      default: 'force-app/main/default/customMetadata',
+      longDescription: messages.getMessage('outputDirectoryFlagLongDescription'),
+      default: path.join('force-app', 'main', 'default', 'customMetadata'),
     }),
     namecolumn: flags.string({
       char: 'n',
@@ -70,18 +65,18 @@ export default class Insert extends SfdxCommand {
 
   protected static requiresProject = true;
 
-  public async run(): Promise<AnyJson> {
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  public async run(): Promise<CreateConfig[]> {
     const createUtil = new CreateUtil();
     const fileWriter = new FileWriter();
-    const filepath = this.flags.filepath;
-    let typename = this.flags.typename;
-    const inputdir = this.flags.inputdir || 'force-app/main/default/objects';
-    const outputdir =
-      this.flags.outputdir || 'force-app/main/default/customMetadata';
+    const filepath = this.flags.filepath as string;
+    let typename = this.flags.typename as string;
+    const inputdir = this.flags.inputdir as string;
+    const outputdir = this.flags.outputdir as string;
     const dirName = createUtil.appendDirectorySuffix(typename);
-    const fieldDirPath = `${fileWriter.createDir(inputdir)}${dirName}/fields`;
+    const fieldDirPath = path.join(`${fileWriter.createDir(inputdir)}${dirName}`, 'fields');
     const fileNames = await fs.promises.readdir(fieldDirPath);
-    const nameField = this.flags.namecolumn || 'Name';
+    const nameField = this.flags.namecolumn as string;
 
     // forgive them if they passed in type__mdt, and cut off the __mdt
     if (typename.endsWith('__mdt')) {
@@ -89,61 +84,44 @@ export default class Insert extends SfdxCommand {
     }
 
     // if customMetadata folder does not exist, create it
-    await fs.promises.mkdir(outputdir, {recursive: true});
+    await fs.promises.mkdir(outputdir, { recursive: true });
 
     const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
-    const csvDataAry = await csv().fromFile(filepath);
-
-    let recordConfig: CreateConfig;
-    const ret = [];
+    const csvDataAry = (await csv().fromFile(filepath)) as Record[];
 
     const metadataTypeFields = createUtil.getFieldNames(fileData, nameField);
     if (csvDataAry.length > 0) {
       const record = csvDataAry[0];
       for (const key in record) {
         if (!metadataTypeFields.includes(key)) {
-          throw new SfError(
-            messages.getMessage('fieldNotFoundError', [key, typename])
-          );
+          throw new SfError(messages.getMessage('fieldNotFoundError', [key, typename]));
         }
       }
     }
 
     // find the cmdt in the inputdir.
     // loop through files and create records that match fields
-    for (const record of csvDataAry) {
-      const recordname: string = record[nameField].replace(' ', '_');
-      const varargs: object = {};
-      // TODO: throw an error if any of the fields in the csvDataAry do not exist in the fileData
 
-      // create varargs
-      for (const file of fileData) {
-        const fullName: string = file.CustomField.fullName[0];
-
-        // only create fields indicated from the CSV
-        if (record.hasOwnProperty(fullName)) {
-          varargs[fullName] = record[fullName];
-        }
-      }
-
-      recordConfig = {
+    const recordConfigs = csvDataAry.map(
+      (record): CreateConfig => ({
         typename,
-        recordname,
-        label: record[nameField],
+        recordname: (record[nameField] as string).replace(' ', '_'),
+        label: record[nameField] as string,
         inputdir,
         outputdir,
         protected: false,
-        varargs,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        varargs: Object.fromEntries(
+          // TODO: throw an error if any of the fields in the csvDataAry do not exist in the fileData
+          fileData.map((file) => (record[file.fullName] ? [file.fullName, record[file.fullName]] : []))
+        ),
         fileData,
-      };
-
-      ret.push(recordConfig);
-
-      await createUtil.createRecord(recordConfig);
-    }
+      })
+    );
+    await Promise.all(recordConfigs.map((r) => createUtil.createRecord(r)));
 
     this.ux.log(messages.getMessage('successResponse', [filepath, outputdir]));
 
-    return ret;
+    return recordConfigs;
   }
 }
