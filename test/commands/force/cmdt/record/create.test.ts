@@ -563,19 +563,18 @@ describe('sfdx force:cmdt:record:create test contents of record file created', (
       '-d',
       path.join('outputTestDir', 'customMetadata'),
     ])
-    .it('should create records without optional flags', () => {
+    .it('should create records without optional flags', async () => {
       const fieldDirPath = path.join('outputTestDir', 'Output_Test__mdt', 'fields');
       const filePath = path.join(fieldDirPath, 'Check__c.field-meta.xml');
 
       expect(fs.existsSync(fieldDirPath)).to.be.true;
       expect(fs.existsSync(filePath)).to.be.true;
 
-      fs.readFile(filePath, { encoding: 'utf-8' }, function (err, xml) {
-        expect(xml.includes('<fullName>Check__c</fullName>')).to.be.true;
-        expect(xml.includes('<fieldManageability>DeveloperControlled</fieldManageability>')).to.be.true;
-        expect(xml.includes('<label>Check</label>')).to.be.true;
-        expect(xml.includes('<type>Checkbox</type>')).to.be.true;
-        expect(xml.includes('<defaultValue>false</defaultValue>')).to.be.true;
-      });
+      const xml = await fs.promises.readFile(filePath, { encoding: 'utf-8' });
+      expect(xml.includes('<fullName>Check__c</fullName>')).to.be.true;
+      expect(xml.includes('<fieldManageability>DeveloperControlled</fieldManageability>')).to.be.true;
+      expect(xml.includes('<label>Check</label>')).to.be.true;
+      expect(xml.includes('<type>Checkbox</type>')).to.be.true;
+      expect(xml.includes('<defaultValue>false</defaultValue>')).to.be.true;
     });
 });

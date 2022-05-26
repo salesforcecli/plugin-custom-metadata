@@ -21,19 +21,18 @@ describe('sfdx force:cmdt:field:create', () => {
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
     .command(['force:cmdt:field:create', '--fieldname', 'myField', '--fieldtype', 'Text'])
-    .it('runs force:cmdt:field:create --fieldname myField --fieldtype Text', (ctx) => {
+    .it('runs force:cmdt:field:create --fieldname myField --fieldtype Text', async (ctx) => {
       const cmdtName = 'myField';
       const fieldLocation = path.join('fields', `${cmdtName}__c.field-meta.xml`);
       expect(fs.existsSync('fields')).to.be.true;
       expect(fs.existsSync(fieldLocation)).to.be.true;
-      fs.readFile(fieldLocation, { encoding: 'utf-8' }, function (err, xml) {
-        expect(xml.includes('<fullName>myField__c</fullName>')).to.be.true;
-        expect(xml.includes('<fieldManageability>DeveloperControlled</fieldManageability>')).to.be.true;
-        expect(xml.includes('<label>myField</label>')).to.be.true;
-        expect(xml.includes('<type>Text</type>')).to.be.true;
-        expect(xml.includes('<unique>false</unique>')).to.be.true;
-        expect(xml.includes('<length>100</length>')).to.be.true;
-      });
+      const xml = await fs.promises.readFile(fieldLocation, { encoding: 'utf-8' });
+      expect(xml.includes('<fullName>myField__c</fullName>')).to.be.true;
+      expect(xml.includes('<fieldManageability>DeveloperControlled</fieldManageability>')).to.be.true;
+      expect(xml.includes('<label>myField</label>')).to.be.true;
+      expect(xml.includes('<type>Text</type>')).to.be.true;
+      expect(xml.includes('<unique>false</unique>')).to.be.true;
+      expect(xml.includes('<length>100</length>')).to.be.true;
     });
 
   test

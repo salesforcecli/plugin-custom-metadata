@@ -20,16 +20,15 @@ describe('sfdx force:cmdt:create', () => {
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
     .command(['force:cmdt:create', '--typename', cmdtName, '--outputdir', 'sample'])
-    .it('runs force:cmdt:create --typename MyCMDT --outputdir sample', (ctx) => {
+    .it('runs force:cmdt:create --typename MyCMDT --outputdir sample', async (ctx) => {
       const sampleFolder = path.join('sample', mdtFolder);
       const sampleObjectPath = path.join('sample', mdtObject);
       expect(fs.existsSync(sampleFolder)).to.be.true;
       expect(fs.existsSync(sampleObjectPath)).to.be.true;
-      fs.readFile(sampleObjectPath, { encoding: 'utf-8' }, function (err, xml) {
-        expect(xml).to.include('<label>MyCMDT</label>');
-        expect(xml).to.include('<pluralLabel>MyCMDT</pluralLabel>');
-        expect(xml).to.include('<visibility>Public</visibility>');
-      });
+      const xml = await fs.promises.readFile(sampleObjectPath, { encoding: 'utf-8' });
+      expect(xml).to.include('<label>MyCMDT</label>');
+      expect(xml).to.include('<pluralLabel>MyCMDT</pluralLabel>');
+      expect(xml).to.include('<visibility>Public</visibility>');
     });
 
   test
