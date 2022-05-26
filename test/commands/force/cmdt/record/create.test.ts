@@ -11,7 +11,7 @@ import { expect, test } from '@salesforce/command/lib/test';
 import { Messages } from '@salesforce/core';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'validation');
+const validationMessages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'validation');
 const commandMessages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'createRecord');
 
 describe('sfdx force:cmdt:record:create error handling', () => {
@@ -39,7 +39,7 @@ describe('sfdx force:cmdt:record:create error handling', () => {
     ])
     .it('runs force:cmdt:record:create and throws an error if the API name is invalid', (ctx) => {
       expect(ctx.stderr).to.contain(
-        messages.getMessage('invalidCMDTApiName', ['pbwbFgJM4GyDOaNZn60NjAy3Ciks791y_dKLsPmXS6'])
+        validationMessages.getMessage('invalidCMDTApiName', ['pbwbFgJM4GyDOaNZn60NjAy3Ciks791y_dKLsPmXS6'])
       );
     });
 
@@ -74,7 +74,7 @@ describe('sfdx force:cmdt:record:create error handling', () => {
       path.join('recordNameErrorDir', 'customMetadata'),
     ])
     .it('runs force:cmdt:record:create and throws an error if the record name is invalid', (ctx) => {
-      expect(ctx.stderr).to.contain(messages.getMessage('notAValidRecordNameError', ['Bad Record Name']));
+      expect(ctx.stderr).to.contain(validationMessages.getMessage('notAValidRecordNameError', ['Bad Record Name']));
     });
 
   test
@@ -297,7 +297,7 @@ describe('sfdx force:cmdt:record:create', () => {
         'customMetadata',
         'Long_Flags_Create_Test.Long_Flags_Create_Test_Record.md-meta.xml'
       );
-      const uxMessage = messages.getMessage('successResponse', [
+      const uxMessage = commandMessages.getMessage('successResponse', [
         'Long_Flags_Create_Test',
         'Long_Flags_Create_Test_Record',
         'Long Flags Create Test Record Label',
