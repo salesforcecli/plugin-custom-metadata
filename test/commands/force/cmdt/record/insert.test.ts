@@ -8,6 +8,10 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { expect, test } from '@salesforce/command/lib/test';
+import { Messages } from '@salesforce/core';
+
+Messages.importMessagesDirectory(__dirname);
+const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'insertRecord');
 
 describe('sfdx force:cmdt:record:insert', () => {
   describe('good csv', () => {
@@ -61,8 +65,10 @@ describe('sfdx force:cmdt:record:insert', () => {
         const fieldDirPath = path.join('csv-upload', 'metadata');
 
         const filePath = path.join('csv-upload', 'metadata', 'Snapple.Australia.md-meta.xml');
-        const uxMessage =
-          "Created custom metadata type records from 'csv-upload/countries.csv' at 'csv-upload/metadata'.\n";
+        const uxMessage = messages.getMessage('successResponse', [
+          path.join('csv-upload', 'countries.csv'),
+          path.join('csv-upload', 'metadata'),
+        ]);
         expect(fs.existsSync(fieldDirPath)).to.be.true;
         expect(fs.existsSync(filePath)).to.be.true;
         expect(ctx.stdout).to.contain(uxMessage);

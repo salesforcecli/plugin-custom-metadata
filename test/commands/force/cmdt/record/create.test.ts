@@ -9,6 +9,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { expect, test } from '@salesforce/command/lib/test';
 import { Messages } from '@salesforce/core';
+
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'validation');
 const commandMessages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'createRecord');
@@ -296,8 +297,13 @@ describe('sfdx force:cmdt:record:create', () => {
         'customMetadata',
         'Long_Flags_Create_Test.Long_Flags_Create_Test_Record.md-meta.xml'
       );
-      const uxMessage =
-        "Created custom metadata record of the type 'Long_Flags_Create_Test' with record name 'Long_Flags_Create_Test_Record', label 'Long Flags Create Test Record Label', and protected 'true' at 'createWithLongFlags/customMetadata'";
+      const uxMessage = messages.getMessage('successResponse', [
+        'Long_Flags_Create_Test',
+        'Long_Flags_Create_Test_Record',
+        'Long Flags Create Test Record Label',
+        'true',
+        path.join('createWithLongFlags', 'customMetadata'),
+      ]);
 
       expect(fs.existsSync(fieldDirPath)).to.be.true;
       expect(fs.existsSync(filePath)).to.be.true;
