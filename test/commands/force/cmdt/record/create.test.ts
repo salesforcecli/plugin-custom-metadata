@@ -8,11 +8,17 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { expect, test } from '@salesforce/command/lib/test';
+import { Messages } from '@salesforce/core';
+Messages.importMessagesDirectory(__dirname);
+const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'validation');
+const commandMessages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'createRecord');
 
 describe('sfdx force:cmdt:record:create error handling', () => {
   test
     .withOrg({ username: 'test@org.com' }, true)
+    .finally(() => fs.rmSync('badDevNameDir', { recursive: true }))
     .stdout()
+    .stderr()
     // .withProject() this is broken with recent versions of @salesforce/command. Ok to comment out since it's already stubbed.
     .command(['force:cmdt:create', '--typename', 'Bad_Dev_Name', '--outputdir', 'badDevNameDir'])
     .command([
@@ -28,18 +34,19 @@ describe('sfdx force:cmdt:record:create error handling', () => {
       '-i',
       'badDevNameDir',
       '-d',
-      'badDevNameDir/customMetadata',
+      path.join('badDevNameDir', 'customMetadata'),
     ])
     .it('runs force:cmdt:record:create and throws an error if the API name is invalid', (ctx) => {
-      expect(ctx.stdout).to.contain(
-        "'pbwbFgJM4GyDOaNZn60NjAy3Ciks791y_dKLsPmXS6' is not a valid API name for a custom metadata type."
+      expect(ctx.stderr).to.contain(
+        messages.getMessage('invalidCMDTApiName', ['pbwbFgJM4GyDOaNZn60NjAy3Ciks791y_dKLsPmXS6'])
       );
-      fs.rmSync('badDevNameDir', { recursive: true });
     });
 
   test
     .withOrg({ username: 'test@org.com' }, true)
+    .finally(() => fs.rmSync('recordNameErrorDir', { recursive: true }))
     .stdout()
+    .stderr()
     .command(['force:cmdt:create', '--typename', 'Bad_Record_Name_Test', '--outputdir', 'recordNameErrorDir'])
     .command([
       'force:cmdt:field:create',
@@ -66,14 +73,13 @@ describe('sfdx force:cmdt:record:create error handling', () => {
       path.join('recordNameErrorDir', 'customMetadata'),
     ])
     .it('runs force:cmdt:record:create and throws an error if the record name is invalid', (ctx) => {
-      // console.log(ctx);
-      expect(ctx.stdout).to.contain("'Bad Record Name' is not a valid record name for a custom metadata record");
-      fs.rmSync('recordNameErrorDir', { recursive: true });
+      expect(ctx.stderr).to.contain(messages.getMessage('notAValidRecordNameError', ['Bad Record Name']));
     });
 
   test
     .withOrg({ username: 'test@org.com' }, true)
-    .stdout()
+    .finally(() => fs.rmSync('exceedCharDir', { recursive: true }))
+    .stderr()
     .command(['force:cmdt:create', '--typename', 'Exceed_Char_Test', '--outputdir', 'exceedCharDir'])
     .command([
       'force:cmdt:field:create',
@@ -100,15 +106,17 @@ describe('sfdx force:cmdt:record:create error handling', () => {
       path.join('exceedCharDir', 'customMetadata'),
     ])
     .it('runs force:cmdt:record:create and throws an error if there are more than 40 characters in a label', (ctx) => {
-      expect(ctx.stdout).to.contain(
-        "'Foobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobar' is too long to be a label. The maximum length of the label is 40 characters."
+      expect(ctx.stderr).to.contain(
+        commandMessages.getMessage('notAValidLabelNameError', [
+          'Foobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobar',
+        ])
       );
-      fs.rmSync('exceedCharDir', { recursive: true });
     });
 });
 
 describe('sfdx force:cmdt:record:create', () => {
   test
+    .finally(() => fs.rmSync('createWithLongFlags', { recursive: true }))
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
     .command(['force:cmdt:create', '--typename', 'Long_Flags_Create_Test', '--outputdir', 'createWithLongFlags'])
@@ -283,19 +291,22 @@ describe('sfdx force:cmdt:record:create', () => {
     ])
     .it('runs force:cmdt:record:create with long flags', (ctx) => {
       const fieldDirPath = 'createWithLongFlags';
-      const filePath =
-        'createWithLongFlags/customMetadata/Long_Flags_Create_Test.Long_Flags_Create_Test_Record.md-meta.xml';
+      const filePath = path.join(
+        fieldDirPath,
+        'customMetadata',
+        'Long_Flags_Create_Test.Long_Flags_Create_Test_Record.md-meta.xml'
+      );
       const uxMessage =
         "Created custom metadata record of the type 'Long_Flags_Create_Test' with record name 'Long_Flags_Create_Test_Record', label 'Long Flags Create Test Record Label', and protected 'true' at 'createWithLongFlags/customMetadata'";
 
       expect(fs.existsSync(fieldDirPath)).to.be.true;
       expect(fs.existsSync(filePath)).to.be.true;
       expect(ctx.stdout).to.contain(uxMessage);
-      fs.rmSync(fieldDirPath, { recursive: true });
     });
 
   test
     .withOrg({ username: 'test@org.com' }, true)
+    .finally(() => fs.rmSync('shortFlagDir', { recursive: true }))
     .stdout()
     .command(['force:cmdt:create', '--typename', 'Short_Flag_Test', '--outputdir', 'shortFlagDir'])
     .command([
@@ -473,11 +484,11 @@ describe('sfdx force:cmdt:record:create', () => {
 
       expect(fs.existsSync(fieldDirPath)).to.be.true;
       expect(fs.existsSync(filePath)).to.be.true;
-      fs.rmSync(fieldDirPath, { recursive: true });
     });
 
   test
     .withOrg({ username: 'test@org.com' }, true)
+    .finally(() => fs.rmSync('suffixTestDir', { recursive: true }))
     .stdout()
     .command(['force:cmdt:create', '--typename', 'Suffix_Test', '--outputdir', 'suffixTestDir'])
     .command([
@@ -512,8 +523,6 @@ describe('sfdx force:cmdt:record:create', () => {
 
         expect(fs.existsSync(fieldDirPath)).to.be.true;
         expect(fs.existsSync(filePath)).to.be.true;
-
-        fs.rmSync(fieldDirPath, { recursive: true });
       }
     );
 });
@@ -521,6 +530,7 @@ describe('sfdx force:cmdt:record:create', () => {
 describe('sfdx force:cmdt:record:create test contents of record file created', () => {
   test
     .withOrg({ username: 'test@org.com' }, true)
+    .finally(() => fs.rmSync('outputTestDir', { recursive: true }))
     .stdout()
     .command(['force:cmdt:create', '--typename', 'Output_Test', '--outputdir', 'outputTestDir'])
     .command([
@@ -530,7 +540,7 @@ describe('sfdx force:cmdt:record:create test contents of record file created', (
       '--fieldtype',
       'Checkbox',
       '--outputdir',
-      'outputTestDir/Output_Test__mdt',
+      path.join('outputTestDir', 'Output_Test__mdt'),
     ])
     .command([
       'force:cmdt:record:create',
@@ -541,14 +551,14 @@ describe('sfdx force:cmdt:record:create test contents of record file created', (
       '-i',
       'outputTestDir',
       '-d',
-      'outputTestDir/customMetadata',
+      path.join('outputTestDir', 'customMetadata'),
     ])
     .it('should create records without optional flags', () => {
-      const fieldDirPath = 'outputTestDir/Output_Test__mdt/fields';
-      const filePath = `${fieldDirPath}/Check__c.field-meta.xml`;
+      const fieldDirPath = path.join('outputTestDir', 'Output_Test__mdt', 'fields');
+      const filePath = path.join(fieldDirPath, 'Check__c.field-meta.xml');
 
       expect(fs.existsSync(fieldDirPath)).to.be.true;
-      expect(fs.existsSync(`${fieldDirPath}/Check__c.field-meta.xml`)).to.be.true;
+      expect(fs.existsSync(filePath)).to.be.true;
 
       fs.readFile(filePath, { encoding: 'utf-8' }, function (err, xml) {
         expect(xml.includes('<fullName>Check__c</fullName>')).to.be.true;
@@ -557,6 +567,5 @@ describe('sfdx force:cmdt:record:create test contents of record file created', (
         expect(xml.includes('<type>Checkbox</type>')).to.be.true;
         expect(xml.includes('<defaultValue>false</defaultValue>')).to.be.true;
       });
-      fs.rmSync('outputTestDir', { recursive: true });
     });
 });

@@ -14,7 +14,7 @@ import { Record } from 'jsforce';
  * @param  fieldName API name of the field to query
  * @returns Promise - Promise - record in JSON format
  */
-const describeField = (objDescribe: CustomObject, fieldName: string): CustomField => {
+export const describeField = (objDescribe: CustomObject, fieldName: string): CustomField => {
   return describeObjFields(objDescribe).find((field) => field.fullName === fieldName);
 };
 
@@ -46,7 +46,7 @@ export const cleanQueryResponse = (sObjectRecord: Record, objectDescribe: Custom
         // everything but location returns as is
         if (fieldDescribe.type !== 'Location') {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-          return [fieldName, value];
+          return [[fieldName, value]];
         }
         const fieldValue = JSON.stringify(value);
         if (fieldValue.includes('latitude') || fieldValue.includes('longitude')) {

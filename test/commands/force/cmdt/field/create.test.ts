@@ -8,6 +8,9 @@
 import * as fs from 'fs';
 
 import { expect, test } from '@salesforce/command/lib/test';
+import { Messages } from '@salesforce/core';
+Messages.importMessagesDirectory(__dirname);
+const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'createField');
 
 describe('sfdx force:cmdt:field:create', () => {
   test
@@ -34,9 +37,7 @@ describe('sfdx force:cmdt:field:create', () => {
     .stderr()
     .command(['force:cmdt:field:create', '--fieldname', 'myFi__eld', '--fieldtype', 'Text'])
     .it('fails running force:cmdt:field:create --fieldname myFi__eld --fieldtype Text', (ctx) => {
-      expect(ctx.stderr).to.contain(
-        "'myFi__eld' is an invalid field. Custom fields can only contain alphanumeric characters, must begin with a letter, cannot end with an underscore, and cannot contain two consecutive underscore characters."
-      );
+      expect(ctx.stderr).to.contain(messages.getMessage('invalidCustomFieldError', ['myFi__eld']));
     });
 
   test
@@ -83,6 +84,7 @@ describe('sfdx force:cmdt:field:create', () => {
     .stderr()
     .command(['force:cmdt:field:create', '--fieldname', 'myField', '--fieldtype', 'Number', '--decimalplaces', '-2'])
     .it('fails running force:cmdt:field:create --fieldname myField --fieldtype Number --decimalplaces -2', (ctx) => {
-      expect(ctx.stderr).to.contain('Number of decimal places must be greater than or equal to zero.');
+      // default message from the flag's `min` param
+      expect(ctx.stderr).to.contain('Expected number greater than or equal to 0 but received -2');
     });
 });

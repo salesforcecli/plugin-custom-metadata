@@ -179,7 +179,7 @@ export class Templates {
   }
 
   private getRequiredTag(data: CustomField): string {
-    return data.unique ? `\t<unique>${data.unique}</unique>\n` : '';
+    return typeof data.unique === 'boolean' ? `\t<unique>${data.unique}</unique>\n` : '';
   }
 
   private getPrecisionTag(data: CustomField): string {

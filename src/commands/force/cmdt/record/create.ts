@@ -60,10 +60,12 @@ export default class Create extends SfdxCommand {
       parse: async (input) =>
         Promise.resolve(validateLessThanForty(input, messages.getMessage('notAValidLabelNameError', [input]))),
     }),
-    protected: flags.boolean({
+    protected: flags.string({
       char: 'p',
       description: messages.getMessage('protectedFlagDescription'),
       longDescription: messages.getMessage('protectedFlagLongDescription'),
+      options: ['true', 'false'],
+      default: 'false',
     }),
     inputdir: flags.directory({
       char: 'i',
@@ -102,7 +104,7 @@ export default class Create extends SfdxCommand {
       let typename = this.flags.typename as string;
       const recordname = this.flags.recordname as string;
       const label = (this.flags.label as string) ?? recordname;
-      const protectedFlag = this.flags.protected as boolean;
+      const protectedFlag = (this.flags.protected as string) === 'true';
       const inputdir = this.flags.inputdir as string;
       const outputdir = this.flags.outputdir as string;
       const dirName = createUtil.appendDirectorySuffix(typename);

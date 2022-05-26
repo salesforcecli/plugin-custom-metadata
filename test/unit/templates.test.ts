@@ -47,7 +47,7 @@ describe('Templates', () => {
       expect(xml).to.include('<label>test</label>');
     });
     it('Email field created', () => {
-      const data: any = { fullName: 'Email', type: 'Email', label: 'test', unique: 'false' };
+      const data: any = { fullName: 'Email', type: 'Email', label: 'test', unique: false };
       const xml: string = templates.createFieldXML(data, false);
       expect(xml).to.include('<fullName>Email__c</fullName>');
       expect(xml).to.include('<type>Email</type>');
@@ -62,7 +62,7 @@ describe('Templates', () => {
         label: 'test',
         precision: '18',
         scale: '0',
-        unique: 'false',
+        unique: false,
       };
       const xml: string = templates.createFieldXML(data, false);
       expect(xml).to.include('<fullName>Number__c</fullName>');
@@ -140,7 +140,7 @@ describe('Templates', () => {
       expect(xml).to.not.include('<label>value2</label>');
     });
     it('Text field created', () => {
-      const data: any = { fullName: 'Text', type: 'Text', label: 'test', unique: 'false', length: '100' };
+      const data: any = { fullName: 'Text', type: 'Text', label: 'test', unique: false, length: '100' };
       const xml = templates.createFieldXML(data, false);
       expect(xml);
       expect(xml).to.include('<fullName>Text__c</fullName>');
@@ -150,7 +150,7 @@ describe('Templates', () => {
       expect(xml).to.include('<length>100</length>');
     });
     it('default to Text field', () => {
-      const data: any = { fullName: 'Text', type: 'Lookup', label: 'test', unique: 'false', length: '100' };
+      const data: any = { fullName: 'Text', type: 'Lookup', label: 'test', unique: false, length: '100' };
       const xml = templates.createFieldXML(data, true);
       expect(xml).to.include('<fullName>Text__c</fullName>');
       expect(xml).to.include('<type>Text</type>');
@@ -159,7 +159,7 @@ describe('Templates', () => {
       expect(xml).to.include('<length>100</length>');
     });
     it('TextArea field created', () => {
-      const data: any = { fullName: 'TextArea', type: 'TextArea', label: 'test', unique: 'false', length: '100' };
+      const data: any = { fullName: 'TextArea', type: 'TextArea', label: 'test', unique: false, length: '100' };
       const xml = templates.createFieldXML(data, false);
       expect(xml).to.include('<fullName>TextArea__c</fullName>');
       expect(xml).to.include('<type>TextArea</type>');
@@ -214,7 +214,7 @@ describe('Templates', () => {
         label: 'test',
         precision: '18',
         scale: '0',
-        unique: 'false',
+        unique: false,
         defaultValue: '1000',
       };
       const xml: string = templates.createFieldXML(data, true);
@@ -231,7 +231,7 @@ describe('Templates', () => {
         type: 'Text',
         label: 'test',
         externalId: 'false',
-        unique: 'false',
+        unique: false,
         inlineHelpText: 'Formula text field',
       };
       const xml: string = templates.createFieldXML(data, true);

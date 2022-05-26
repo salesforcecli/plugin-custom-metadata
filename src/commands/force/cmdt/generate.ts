@@ -10,7 +10,7 @@ import { flags, SfdxCommand } from '@salesforce/command';
 import { SfError, Messages } from '@salesforce/core';
 import { isEmpty } from '@salesforce/kit';
 import { AnyJson } from '@salesforce/ts-types';
-import { CustomObject } from 'jsforce/api/metadata';
+import { CustomField, CustomObject } from 'jsforce/api/metadata';
 import { CreateUtil } from '../../../lib/helpers/createUtil';
 import { FileWriter } from '../../../lib/helpers/fileWriter';
 import { describeObjFields, cleanQueryResponse, validCustomSettingType } from '../../../lib/helpers/metadataUtil';
@@ -126,7 +126,7 @@ export default class Generate extends SfdxCommand {
     const describeObj = await conn.metadata.read('CustomObject', objname);
 
     // throw error if the object doesnot exist(empty json as response from the describe call.)
-    if (isEmpty(describeObj)) {
+    if (isEmpty(describeObj.fields)) {
       const errMsg = messages.getMessage('sobjectnameNoResultError', [objname]);
       throw new SfError(errMsg, 'sobjectnameNoResultError');
     }
@@ -146,81 +146,52 @@ export default class Generate extends SfdxCommand {
     const recordsOutputDir = this.flags.recordsoutputdir as string;
 
     try {
-      this.ux.startSpinner('custom metadata generation in progress');
+      this.ux.startSpinner('creating the CMDT object');
       // create custom metadata type
       const templates = new Templates();
       const objectXML = templates.createObjectXML({ label, pluralLabel }, visibility);
       const fileWriter = new FileWriter();
       await fileWriter.writeTypeFile(fs, outputDir, devName, objectXML);
 
+      this.ux.setSpinnerStatus('creating the CMDT fields');
+
       // get all the field details before creating field metadata
-      const fields = describeObjFields(describeObj);
-
-      // query records from source
-      const sObjectRecords = await conn.query(getSoqlQuery(describeObj));
-      // if (sObjectRecords.errorCode && sObjectRecords.errorCode !== null) {
-      //   const errMsg = messages.getMessage('queryError', [
-      //     objname,
-      //     asString(sObjectRecords.errorMsg),
-      //   ]);
-      //   throw new SfError(errMsg, 'queryError');
-      // }
-
-      // check for Geo Location fields before hand and create two different fields for longitude and latitude.
-      fields.map((field) => {
-        if (field.type === 'Location') {
-          const lat = {
-            fullName: `Lat_${field.fullName}`,
-            label: `Lat ${field.label}`,
-            required: field['required'],
-            trackHistory: field['trackHistory'],
-            trackTrending: field['trackTrending'],
-            type: 'Text',
-            length: 40,
-            summaryFilterItems: [],
-          };
-          fields.push(lat);
-
-          const long = {
-            fullName: 'Long_' + field['fullName'],
-            label: 'Long_' + field['label'],
-            required: field['required'],
-            trackHistory: field['trackHistory'],
-            trackTrending: field['trackTrending'],
-            type: 'Text',
-            length: 40,
-            summaryFilterItems: [],
-          };
-          fields.push(long);
-        }
-      });
-
+      const fields = describeObjFields(describeObj)
+        // added type check here to skip the creation of un supported fields
+        .filter((f) => !ignoreFields || templates.canConvert(f['type']))
+        .flatMap((f) =>
+          // check for Geo Location fields before hand and create two different fields for longitude and latitude.
+          f.type !== 'Location' ? [f] : convertLocationFieldToText(f)
+        );
       // create custom metdata fields
-      for (const field of fields) {
-        // added type check here to skip the creation of geo location field  and un supported fields as we are adding it as lat and long field above.
-        if ((templates.canConvert(field['type']) || !ignoreFields) && field['type'] !== 'Location') {
-          const recordname = field['fullName'];
-          const fieldXML = templates.createFieldXML(field, !ignoreFields);
-          const targetDir = `${outputDir}${devName}__mdt`;
-          await fileWriter.writeFieldFile(fs, targetDir, recordname, fieldXML);
-        }
-      }
+      await Promise.all(
+        fields.map((f) =>
+          fileWriter.writeFieldFile(
+            fs,
+            `${outputDir}${devName}__mdt`,
+            f.fullName,
+            templates.createFieldXML(f, !ignoreFields)
+          )
+        )
+      );
 
+      this.ux.setSpinnerStatus('creating the CMDT records');
       const createUtil = new CreateUtil();
       // if customMetadata folder does not exist, create it
       await fs.promises.mkdir(recordsOutputDir, { recursive: true });
-      const typename = devName;
-      const fieldDirPath = path.join(`${fileWriter.createDir(outputDir)}${typename}__mdt`, 'fields');
+      const fieldDirPath = path.join(`${fileWriter.createDir(outputDir)}${devName}__mdt`, 'fields');
       const fileNames = await fs.promises.readdir(fieldDirPath);
       const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
 
+      // query records from source
+      const sObjectRecords = await conn.query(getSoqlQuery(describeObj));
       await Promise.all(
         sObjectRecords.records.map((rec) => {
           const record = cleanQueryResponse(rec, describeObj);
           const lblName = rec['Name'] as string;
           const recordName = isValidMetadataRecordName(lblName) ? lblName : lblName.replace(/ +/g, '_');
           return createUtil.createRecord({
-            typename,
+            typename: devName,
             recordname: recordName,
             label: lblName,
             inputdir: outputDir,
@@ -236,19 +207,17 @@ export default class Generate extends SfdxCommand {
       this.ux.stopSpinner('custom metadata type and records creation in completed');
       this.ux.log(`Congrats! Created a ${devName} custom metadata type with ${sObjectRecords.records.length} records!`);
     } catch (e) {
-      await fs.promises.rm(`${outputDir}${devName}__mdt`, { recursive: true });
-      const fileNames = await fs.promises.readdir(recordsOutputDir);
-      for (const file of fileNames) {
-        if (file.startsWith(devName)) {
-          try {
-            await fs.promises.unlink(path.join(recordsOutputDir, file));
-          } catch (err) {
-            if (err instanceof Error) {
-              this.ux.log(err.message);
-            }
-          }
-        }
+      const targetDir = `${outputDir}${devName}__mdt`;
+      // dir might not exist if we never got to the creation step
+      if (fs.existsSync(targetDir)) {
+        await fs.promises.rm(targetDir, { recursive: true });
       }
+      await Promise.all(
+        (await fs.promises.readdir(recordsOutputDir))
+          .filter((f) => f.startsWith(devName))
+          .map((f) => fs.promises.unlink(path.join(recordsOutputDir, f)))
+      );
+
       this.ux.stopSpinner('generate command failed to run');
       const errMsg = messages.getMessage('generateError', [e instanceof Error ? e.message : 'unknown error']);
       throw new SfError(errMsg, 'generateError');
@@ -266,4 +235,20 @@ const getSoqlQuery = (describeResult: CustomObject): string => {
     .join(',');
   // Added Name hardcoded as Name field is not retrieved as part of object describe.
   return `SELECT Name, ${fieldNames} FROM ${describeResult.fullName}`;
+};
+
+const convertLocationFieldToText = (field: CustomField): CustomField[] => {
+  const baseTextField = {
+    required: field['required'],
+    trackHistory: field['trackHistory'],
+    trackTrending: field['trackTrending'],
+    type: 'Text',
+    length: 40,
+    summaryFilterItems: [],
+  };
+  return ['Lat_', 'Long_'].map((prefix) => ({
+    ...baseTextField,
+    fullName: `${prefix}${field.fullName}`,
+    label: `${prefix}${field.label}`,
+  }));
 };

@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "@oclif/plugin-command-snapshot": "^3.1.3",
+    "@salesforce/cli-plugins-testkit": "^1.5.35",
     "@salesforce/dev-config": "^3.0.1",
     "@salesforce/dev-scripts": "^2.0.2",
     "@salesforce/plugin-command-reference": "^1.3.17",
@@ -74,6 +75,7 @@
     "eslint-plugin-prettier": "^3.4.1",
     "globby": "^11.0.1",
     "husky": "^7.0.4",
+    "jsforce": "2.0.0-beta.10",
     "mocha": "^9.1.3",
     "nyc": "^15.1.0",
     "oclif": "^3.0.1",
@@ -139,6 +141,7 @@
     "prepare": "sf-install",
     "pretest": "sf-compile-test",
     "test": "sf-test",
+    "test:nuts": "nyc mocha \"**/*.nut.ts\" --slow 4500 --timeout 600000 --parallel",
     "test:command-reference": "./bin/dev commandreference:generate --erroronwarnings",
     "test:deprecation-policy": "./bin/dev snapshot:compare",
     "test:json-schema": "./bin/dev schema:compare",
