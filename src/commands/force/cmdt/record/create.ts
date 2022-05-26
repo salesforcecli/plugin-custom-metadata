@@ -8,7 +8,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { flags, SfdxCommand } from '@salesforce/command';
 import { Messages, SfError } from '@salesforce/core';
-import { AnyJson } from '@salesforce/ts-types';
+import { CustomField } from 'jsforce/api/metadata';
 import { CreateUtil } from '../../../../lib/helpers/createUtil';
 import { FileWriter } from '../../../../lib/helpers/fileWriter';
 import {
@@ -24,6 +24,16 @@ Messages.importMessagesDirectory(__dirname);
 // or any library that is using the messages framework can also be loaded this way.
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'createRecord');
 
+interface CmdtRecordCreateResponse {
+  typename: string;
+  recordname: string;
+  label: string;
+  inputdir: string;
+  outputdir: string;
+  protectedFlag: boolean;
+  varargs: Record<string, unknown>;
+  fileData: CustomField[];
+}
 export default class Create extends SfdxCommand {
   public static description = messages.getMessage('commandDescription');
   public static longDescription = messages.getMessage('commandLongDescription');
@@ -97,7 +107,7 @@ export default class Create extends SfdxCommand {
   protected static requiresProject = true;
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
-  public async run(): Promise<AnyJson> {
+  public async run(): Promise<CmdtRecordCreateResponse> {
     try {
       const createUtil = new CreateUtil();
       const fileWriter = new FileWriter();

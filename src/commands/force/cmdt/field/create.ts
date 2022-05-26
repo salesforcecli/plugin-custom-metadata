@@ -7,7 +7,6 @@
 import * as fs from 'fs';
 import { flags, SfdxCommand } from '@salesforce/command';
 import { Messages, SfError } from '@salesforce/core';
-import { AnyJson } from '@salesforce/ts-types';
 import { FileWriter } from '../../../../lib/helpers/fileWriter';
 import { validateAPIName } from '../../../../lib/helpers/validationUtil';
 import { Templates } from '../../../../lib/templates/templates';
@@ -19,6 +18,11 @@ Messages.importMessagesDirectory(__dirname);
 // or any library that is using the messages framework can also be loaded this way.
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'createField');
 
+interface CmdtFieldCreateResponse {
+  fieldName: string;
+  label: string;
+  fieldtype: string;
+}
 export default class Create extends SfdxCommand {
   public static description = messages.getMessage('commandDescription');
   public static longDescription = messages.getMessage('commandLongDescription');
@@ -91,7 +95,7 @@ export default class Create extends SfdxCommand {
   protected static requiresProject = true;
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
-  public async run(): Promise<AnyJson> {
+  public async run(): Promise<CmdtFieldCreateResponse> {
     const fieldName = this.flags.fieldname as string; // this should become the new file name
     const label = (this.flags.label as string) ?? fieldName;
     const fieldtype = this.flags.fieldtype as string;
@@ -110,7 +114,6 @@ export default class Create extends SfdxCommand {
     this.ux.log(messages.getMessage('targetDirectory', [saveResults.dir]));
     this.ux.log(messages.getMessage(saveResults.updated ? 'fileUpdate' : 'fileCreated', [saveResults.fileName]));
 
-    // Return an object to be displayed with --json
     return {
       fieldName,
       label,

@@ -7,7 +7,6 @@
 import * as fs from 'fs';
 import { flags, SfdxCommand } from '@salesforce/command';
 import { Messages } from '@salesforce/core';
-import { AnyJson } from '@salesforce/ts-types';
 import { FileWriter } from '../../../lib/helpers/fileWriter';
 import { validateMetadataTypeName, validateLessThanForty } from '../../../lib/helpers/validationUtil';
 import { Templates } from '../../../lib/templates/templates';
@@ -19,6 +18,12 @@ Messages.importMessagesDirectory(__dirname);
 // or any library that is using the messages framework can also be loaded this way.
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'createType');
 
+interface CmdtCreateResponse {
+  typename: string;
+  label: string;
+  pluralLabel: string;
+  visibility: string;
+}
 export default class Create extends SfdxCommand {
   public static description = messages.getMessage('commandDescription');
   public static longDescription = messages.getMessage('commandLongDescription');
@@ -77,7 +82,7 @@ export default class Create extends SfdxCommand {
   protected static requiresProject = true;
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
-  public async run(): Promise<AnyJson> {
+  public async run(): Promise<CmdtCreateResponse> {
     const typename = this.flags.typename as string; // this should become the new file name
     const label = (this.flags.label as string) ?? typename.replace('__mdt', ''); // If a label is not provided default using the dev name. trim __mdt out
     const visibility = this.flags.visibility as string;

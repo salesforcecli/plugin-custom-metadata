@@ -9,7 +9,6 @@ import * as path from 'path';
 import { flags, SfdxCommand } from '@salesforce/command';
 import { SfError, Messages } from '@salesforce/core';
 import { isEmpty } from '@salesforce/kit';
-import { AnyJson } from '@salesforce/ts-types';
 import { CustomField, CustomObject } from 'jsforce/api/metadata';
 import { CreateUtil } from '../../../lib/helpers/createUtil';
 import { FileWriter } from '../../../lib/helpers/fileWriter';
@@ -28,6 +27,10 @@ Messages.importMessagesDirectory(__dirname);
 // or any library that is using the messages framework can also be loaded this way.
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'generate');
 
+interface CmdtGenerateResponse {
+  outputDir: string;
+  recordsOutputDir: string;
+}
 export default class Generate extends SfdxCommand {
   public static description = messages.getMessage('commandDescription');
   public static longDescription = messages.getMessage('commandLongDescription');
@@ -116,7 +119,7 @@ export default class Generate extends SfdxCommand {
   protected static requiresProject = true;
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
-  public async run(): Promise<AnyJson> {
+  public async run(): Promise<CmdtGenerateResponse> {
     const conn = this.org.getConnection();
     const objname = this.flags.sobjectname as string;
     const devName = this.flags.devname as string;
