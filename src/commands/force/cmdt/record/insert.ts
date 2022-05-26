@@ -11,7 +11,6 @@ import { Messages, SfError } from '@salesforce/core';
 import { Record } from 'jsforce';
 import * as csv from '../../../../../csvtojson';
 import { CreateUtil } from '../../../../lib/helpers/createUtil';
-import { FileWriter } from '../../../../lib/helpers/fileWriter';
 import { CreateConfig } from '../../../../lib/interfaces/createConfig';
 
 Messages.importMessagesDirectory(__dirname);
@@ -68,13 +67,12 @@ export default class Insert extends SfdxCommand {
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public async run(): Promise<CreateConfig[]> {
     const createUtil = new CreateUtil();
-    const fileWriter = new FileWriter();
     const filepath = this.flags.filepath as string;
     let typename = this.flags.typename as string;
     const inputdir = this.flags.inputdir as string;
     const outputdir = this.flags.outputdir as string;
     const dirName = createUtil.appendDirectorySuffix(typename);
-    const fieldDirPath = path.join(`${fileWriter.createDir(inputdir)}${dirName}`, 'fields');
+    const fieldDirPath = path.join(inputdir, dirName, 'fields');
     const fileNames = await fs.promises.readdir(fieldDirPath);
     const nameField = this.flags.namecolumn as string;
 

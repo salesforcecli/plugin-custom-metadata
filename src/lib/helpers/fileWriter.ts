@@ -24,7 +24,6 @@ export class FileWriter {
    */
   public async writeTypeFile(corefs = fs, dir: string, devName: string, objectXML: string): Promise<FileWriterResult> {
     let apiName = devName;
-    const dirName = this.createDir(dir);
 
     // replace __c with __mdt
     if (apiName.endsWith('__c')) {
@@ -36,12 +35,12 @@ export class FileWriter {
       apiName += '__mdt';
     }
 
-    const outputFilePath = `${dirName}${apiName}${path.sep}`;
+    const outputFilePath = path.join(removeTrailingSlash(dir), apiName);
     const fileName = `${apiName}.object-meta.xml`;
-    const updated = fs.existsSync(outputFilePath + fileName);
+    const updated = fs.existsSync(path.join(outputFilePath, fileName));
 
-    await corefs.promises.mkdir(`${dirName}${apiName}`, { recursive: true });
-    await corefs.promises.writeFile(outputFilePath + fileName, objectXML);
+    await corefs.promises.mkdir(outputFilePath, { recursive: true });
+    await corefs.promises.writeFile(path.join(outputFilePath, fileName), objectXML);
 
     return { dir: outputFilePath, fileName, updated };
   }
@@ -60,29 +59,18 @@ export class FileWriter {
     fieldName: string,
     fieldXML: string
   ): Promise<FileWriterResult> {
-    const dirName = this.createDir(dir);
-
     // appending __c if its not already there
     if (fieldName.endsWith('__c') === false) {
       fieldName += '__c';
     }
-    const outputFilePath = `${dirName}fields${path.sep}`;
+    const outputFilePath = path.join(removeTrailingSlash(dir), 'fields');
     const fileName = `${fieldName}.field-meta.xml`;
-    const updated = fs.existsSync(outputFilePath + fileName);
-    await corefs.promises.mkdir(`${dirName}fields`, { recursive: true });
-    await corefs.promises.writeFile(`${outputFilePath}${fileName}`, fieldXML);
+    const updated = fs.existsSync(path.join(outputFilePath, fileName));
+    await corefs.promises.mkdir(outputFilePath, { recursive: true });
+    await corefs.promises.writeFile(path.join(outputFilePath, fileName), fieldXML);
 
     return { dir: outputFilePath, fileName, updated };
   }
-
-  public createDir(dir?: string): string {
-    if (dir) {
-      if (dir.endsWith(path.sep)) {
-        return dir;
-      } else {
-        return `${dir}${path.sep}`;
-      }
-    }
-    return '';
-  }
 }
+
+export const removeTrailingSlash = (dir: string): string => dir.replace(/\/+$/, '');

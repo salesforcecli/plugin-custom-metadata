@@ -171,7 +171,7 @@ export default class Generate extends SfdxCommand {
         fields.map((f) =>
           fileWriter.writeFieldFile(
             fs,
-            `${outputDir}${devName}__mdt`,
+            path.join(outputDir, `${devName}__mdt`),
             f.fullName,
             templates.createFieldXML(f, !ignoreFields)
           )
@@ -182,7 +182,7 @@ export default class Generate extends SfdxCommand {
       const createUtil = new CreateUtil();
       // if customMetadata folder does not exist, create it
       await fs.promises.mkdir(recordsOutputDir, { recursive: true });
-      const fieldDirPath = path.join(`${fileWriter.createDir(outputDir)}${devName}__mdt`, 'fields');
+      const fieldDirPath = path.join(outputDir, `${devName}__mdt`, 'fields');
       const fileNames = await fs.promises.readdir(fieldDirPath);
       const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
 

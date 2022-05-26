@@ -10,7 +10,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { expect, test } from '@salesforce/command/lib/test';
 import { CreateUtil } from '../../src/lib/helpers/createUtil';
-import { FileWriter } from '../../src/lib/helpers/fileWriter';
 
 describe('CreateUtil', () => {
   describe('appendDirectorySuffix', () => {
@@ -191,7 +190,6 @@ describe('CreateUtil', () => {
       ])
       .it('should return the field type needed to create a custom metadata type record', async () => {
         const createUtil = new CreateUtil();
-        const fileWriter = new FileWriter();
         const typename = 'Field_Type_Test';
         const recordname = 'Field_Type_Test_Record';
         const label = 'Field Type Test Label';
@@ -199,7 +197,7 @@ describe('CreateUtil', () => {
         const inputdir = 'fieldTypeTest';
         const outputdir = path.join('fieldTypeTest', 'customMetadata');
         const dirName = createUtil.appendDirectorySuffix(typename);
-        const fieldDirPath = path.join(`${fileWriter.createDir(inputdir)}${dirName}`, 'fields');
+        const fieldDirPath = path.join(inputdir, dirName, 'fields');
         const fileNames = await fs.promises.readdir(fieldDirPath);
         const varargs = {
           Check__c: true,
@@ -440,7 +438,6 @@ describe('CreateUtil', () => {
       ])
       .it('should return the field type needed to create a custom metadata type record', async () => {
         const createUtil = new CreateUtil();
-        const fileWriter = new FileWriter();
         const typename = 'Field_Type_Test';
         const recordname = 'Field_Type_Test_Record';
         const label = 'Field Type Test Label';
@@ -448,7 +445,7 @@ describe('CreateUtil', () => {
         const inputdir = 'fieldTypeTest';
         const outputdir = path.join('fieldTypeTest', 'customMetadata');
         const dirName = createUtil.appendDirectorySuffix(typename);
-        const fieldDirPath = path.join(`${fileWriter.createDir(inputdir)}${dirName}`, 'fields');
+        const fieldDirPath = path.join(inputdir, dirName, 'fields');
         const fileNames = await fs.promises.readdir(fieldDirPath);
         const varargs = {
           Check__c: true,
@@ -713,7 +710,6 @@ describe('CreateUtil', () => {
       .it('should create a customMetadata directory and a file for custom metadata type', async () => {
         // create input directory with cmdt object and fields
         const createUtil = new CreateUtil();
-        const fileWriter = new FileWriter();
         const typename = 'Dir_File_Test';
         const recordname = 'Dir_File_Test_Record';
         const label = 'Dir File Test Record Label';
@@ -721,7 +717,7 @@ describe('CreateUtil', () => {
         const inputdir = 'dirFileTest';
         const outputdir = 'dirFileTest/cmdtRecords';
         const dirName = createUtil.appendDirectorySuffix(typename);
-        const fieldDirPath = path.join(`${fileWriter.createDir(inputdir)}${dirName}`, 'fields');
+        const fieldDirPath = path.join(inputdir, dirName, 'fields');
         const fileNames = await fs.promises.readdir(fieldDirPath);
         const varargs = {
           Check__c: true,

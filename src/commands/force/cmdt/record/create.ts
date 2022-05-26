@@ -10,7 +10,6 @@ import { flags, SfdxCommand } from '@salesforce/command';
 import { Messages, SfError } from '@salesforce/core';
 import { CustomField } from 'jsforce/api/metadata';
 import { CreateUtil } from '../../../../lib/helpers/createUtil';
-import { FileWriter } from '../../../../lib/helpers/fileWriter';
 import {
   validateMetadataRecordName,
   validateMetadataTypeName,
@@ -110,7 +109,6 @@ export default class Create extends SfdxCommand {
   public async run(): Promise<CmdtRecordCreateResponse> {
     try {
       const createUtil = new CreateUtil();
-      const fileWriter = new FileWriter();
       let typename = this.flags.typename as string;
       const recordname = this.flags.recordname as string;
       const label = (this.flags.label as string) ?? recordname;
@@ -118,7 +116,7 @@ export default class Create extends SfdxCommand {
       const inputdir = this.flags.inputdir as string;
       const outputdir = this.flags.outputdir as string;
       const dirName = createUtil.appendDirectorySuffix(typename);
-      const fieldDirPath = path.join(`${fileWriter.createDir(inputdir)}${dirName}`, 'fields');
+      const fieldDirPath = path.join(inputdir, dirName, 'fields');
       const fileNames = await fs.promises.readdir(fieldDirPath);
 
       // forgive them if they passed in type__mdt, and cut off the __mdt
