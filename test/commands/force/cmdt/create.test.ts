@@ -14,7 +14,7 @@ describe('sfdx force:cmdt:create', () => {
   const mdtFolder = `${cmdtName}__mdt`;
   const mdtObject = path.join(mdtFolder, `${cmdtName}__mdt.object-meta.xml`);
   test
-    .finally(async () => {
+    .finally(() => {
       fs.rmSync('sample', { recursive: true, force: true });
     })
     .withOrg({ username: 'test@org.com' }, true)

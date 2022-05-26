@@ -23,9 +23,10 @@ describe('sfdx force:cmdt:field:create', () => {
     .command(['force:cmdt:field:create', '--fieldname', 'myField', '--fieldtype', 'Text'])
     .it('runs force:cmdt:field:create --fieldname myField --fieldtype Text', (ctx) => {
       const cmdtName = 'myField';
+      const fieldLocation = path.join('fields', `${cmdtName}__c.field-meta.xml`);
       expect(fs.existsSync('fields')).to.be.true;
-      expect(fs.existsSync(`fields/${cmdtName}__c.field-meta.xml`)).to.be.true;
-      fs.readFile(`fields/${cmdtName}__c.field-meta.xml`, { encoding: 'utf-8' }, function (err, xml) {
+      expect(fs.existsSync(fieldLocation)).to.be.true;
+      fs.readFile(fieldLocation, { encoding: 'utf-8' }, function (err, xml) {
         expect(xml.includes('<fullName>myField__c</fullName>')).to.be.true;
         expect(xml.includes('<fieldManageability>DeveloperControlled</fieldManageability>')).to.be.true;
         expect(xml.includes('<label>myField</label>')).to.be.true;
@@ -53,6 +54,9 @@ describe('sfdx force:cmdt:field:create', () => {
 
   test
     .withOrg({ username: 'test@org.com' }, true)
+    .finally(() => {
+      fs.rmSync('picklistField', { recursive: true, force: true });
+    })
     .stdout()
     .command([
       'force:cmdt:field:create',
@@ -69,7 +73,6 @@ describe('sfdx force:cmdt:field:create', () => {
       const cmdtName = 'myField';
       expect(fs.existsSync(path.join('picklistField', 'fields'))).to.be.true;
       expect(fs.existsSync(path.join('picklistField', 'fields', `${cmdtName}__c.field-meta.xml`))).to.be.true;
-      fs.rmSync('picklistField', { recursive: true });
     });
 
   test
