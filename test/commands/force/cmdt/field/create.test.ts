@@ -15,6 +15,9 @@ const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'cr
 
 describe('sfdx force:cmdt:field:create', () => {
   test
+    .finally(() => {
+      fs.rmSync('fields', { recursive: true, force: true });
+    })
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
     .command(['force:cmdt:field:create', '--fieldname', 'myField', '--fieldtype', 'Text'])
@@ -30,7 +33,6 @@ describe('sfdx force:cmdt:field:create', () => {
         expect(xml.includes('<unique>false</unique>')).to.be.true;
         expect(xml.includes('<length>100</length>')).to.be.true;
       });
-      fs.rmSync('fields', { recursive: true });
     });
 
   test

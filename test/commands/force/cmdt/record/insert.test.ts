@@ -23,7 +23,7 @@ describe('sfdx force:cmdt:record:insert', () => {
     test
       .withOrg({ username: 'test@org.com' }, true)
       .finally(() => {
-        fs.rmSync(fileDir, { recursive: true });
+        fs.rmSync(fileDir, { recursive: true, force: true });
       })
       .stdout()
       .stderr()
@@ -81,7 +81,7 @@ describe('sfdx force:cmdt:record:insert', () => {
       );
     });
     afterEach(() => {
-      fs.rmSync(secondTest, { recursive: true });
+      fs.rmSync(secondTest, { recursive: true, force: true });
     });
 
     test

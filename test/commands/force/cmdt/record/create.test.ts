@@ -16,7 +16,7 @@ const commandMessages = Messages.loadMessages('@salesforce/plugin-custom-metadat
 describe('sfdx force:cmdt:record:create error handling', () => {
   test
     .withOrg({ username: 'test@org.com' }, true)
-    .finally(() => fs.rmSync('badDevNameDir', { recursive: true }))
+    .finally(() => fs.rmSync('badDevNameDir', { recursive: true, force: true }))
     .stdout()
     .stderr()
     // .withProject() this is broken with recent versions of @salesforce/command. Ok to comment out since it's already stubbed.
@@ -44,7 +44,7 @@ describe('sfdx force:cmdt:record:create error handling', () => {
 
   test
     .withOrg({ username: 'test@org.com' }, true)
-    .finally(() => fs.rmSync('recordNameErrorDir', { recursive: true }))
+    .finally(() => fs.rmSync('recordNameErrorDir', { recursive: true, force: true }))
     .stdout()
     .stderr()
     .command(['force:cmdt:create', '--typename', 'Bad_Record_Name_Test', '--outputdir', 'recordNameErrorDir'])
@@ -78,7 +78,7 @@ describe('sfdx force:cmdt:record:create error handling', () => {
 
   test
     .withOrg({ username: 'test@org.com' }, true)
-    .finally(() => fs.rmSync('exceedCharDir', { recursive: true }))
+    .finally(() => fs.rmSync('exceedCharDir', { recursive: true, force: true }))
     .stderr()
     .command(['force:cmdt:create', '--typename', 'Exceed_Char_Test', '--outputdir', 'exceedCharDir'])
     .command([
@@ -116,7 +116,7 @@ describe('sfdx force:cmdt:record:create error handling', () => {
 
 describe('sfdx force:cmdt:record:create', () => {
   test
-    .finally(() => fs.rmSync('createWithLongFlags', { recursive: true }))
+    .finally(() => fs.rmSync('createWithLongFlags', { recursive: true, force: true }))
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
     .command(['force:cmdt:create', '--typename', 'Long_Flags_Create_Test', '--outputdir', 'createWithLongFlags'])
@@ -306,7 +306,7 @@ describe('sfdx force:cmdt:record:create', () => {
 
   test
     .withOrg({ username: 'test@org.com' }, true)
-    .finally(() => fs.rmSync('shortFlagDir', { recursive: true }))
+    .finally(() => fs.rmSync('shortFlagDir', { recursive: true, force: true }))
     .stdout()
     .command(['force:cmdt:create', '--typename', 'Short_Flag_Test', '--outputdir', 'shortFlagDir'])
     .command([
@@ -492,7 +492,7 @@ describe('sfdx force:cmdt:record:create', () => {
 
   test
     .withOrg({ username: 'test@org.com' }, true)
-    .finally(() => fs.rmSync('suffixTestDir', { recursive: true }))
+    .finally(() => fs.rmSync('suffixTestDir', { recursive: true, force: true }))
     .stdout()
     .command(['force:cmdt:create', '--typename', 'Suffix_Test', '--outputdir', 'suffixTestDir'])
     .command([
@@ -534,7 +534,7 @@ describe('sfdx force:cmdt:record:create', () => {
 describe('sfdx force:cmdt:record:create test contents of record file created', () => {
   test
     .withOrg({ username: 'test@org.com' }, true)
-    .finally(() => fs.rmSync('outputTestDir', { recursive: true }))
+    .finally(() => fs.rmSync('outputTestDir', { recursive: true, force: true }))
     .stdout()
     .command(['force:cmdt:create', '--typename', 'Output_Test', '--outputdir', 'outputTestDir'])
     .command([

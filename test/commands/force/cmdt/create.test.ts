@@ -14,8 +14,8 @@ describe('sfdx force:cmdt:create', () => {
   const mdtFolder = `${cmdtName}__mdt`;
   const mdtObject = path.join(mdtFolder, `${cmdtName}__mdt.object-meta.xml`);
   test
-    .finally(() => {
-      fs.rmSync('sample', { recursive: true });
+    .finally(async () => {
+      fs.rmSync('sample', { recursive: true, force: true });
     })
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
@@ -34,7 +34,7 @@ describe('sfdx force:cmdt:create', () => {
 
   test
     .finally(() => {
-      fs.rmSync(mdtFolder, { recursive: true });
+      fs.rmSync(mdtFolder, { recursive: true, force: true });
     })
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
@@ -46,7 +46,7 @@ describe('sfdx force:cmdt:create', () => {
 
   test
     .finally(() => {
-      fs.rmSync(mdtFolder, { recursive: true });
+      fs.rmSync(mdtFolder, { recursive: true, force: true });
     })
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
