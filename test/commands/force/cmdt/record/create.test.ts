@@ -316,7 +316,7 @@ describe('sfdx force:cmdt:record:create', () => {
       '--fieldtype',
       'Checkbox',
       '--outputdir',
-      'shortFlagDir/Short_Flag_Test__mdt',
+      path.join('shortFlagDir', 'Short_Flag_Test__mdt'),
     ])
     .command([
       'force:cmdt:field:create',
@@ -325,7 +325,7 @@ describe('sfdx force:cmdt:record:create', () => {
       '--fieldtype',
       'Date',
       '--outputdir',
-      'shortFlagDir/Short_Flag_Test__mdt',
+      path.join('shortFlagDir', 'Short_Flag_Test__mdt'),
     ])
     .command([
       'force:cmdt:field:create',
@@ -334,7 +334,7 @@ describe('sfdx force:cmdt:record:create', () => {
       '--fieldtype',
       'DateTime',
       '--outputdir',
-      'shortFlagDir/Short_Flag_Test__mdt',
+      path.join('shortFlagDir', 'Short_Flag_Test__mdt'),
     ])
     .command([
       'force:cmdt:field:create',
@@ -343,7 +343,7 @@ describe('sfdx force:cmdt:record:create', () => {
       '--fieldtype',
       'Email',
       '--outputdir',
-      'shortFlagDir/Short_Flag_Test__mdt',
+      path.join('shortFlagDir', 'Short_Flag_Test__mdt'),
     ])
     .command([
       'force:cmdt:field:create',
@@ -354,7 +354,7 @@ describe('sfdx force:cmdt:record:create', () => {
       '--decimalplaces',
       '0',
       '--outputdir',
-      'shortFlagDir/Short_Flag_Test__mdt',
+      path.join('shortFlagDir', 'Short_Flag_Test__mdt'),
     ])
     .command([
       'force:cmdt:field:create',
@@ -363,7 +363,7 @@ describe('sfdx force:cmdt:record:create', () => {
       '--fieldtype',
       'Number',
       '--outputdir',
-      'shortFlagDir/Short_Flag_Test__mdt',
+      path.join('shortFlagDir', 'Short_Flag_Test__mdt'),
     ])
     .command([
       'force:cmdt:field:create',
@@ -374,7 +374,7 @@ describe('sfdx force:cmdt:record:create', () => {
       '--decimalplaces',
       '4',
       '--outputdir',
-      'shortFlagDir/Short_Flag_Test__mdt',
+      path.join('shortFlagDir', 'Short_Flag_Test__mdt'),
     ])
     .command([
       'force:cmdt:field:create',
@@ -385,7 +385,7 @@ describe('sfdx force:cmdt:record:create', () => {
       '--decimalplaces',
       '0',
       '--outputdir',
-      'shortFlagDir/Short_Flag_Test__mdt',
+      path.join('shortFlagDir', 'Short_Flag_Test__mdt'),
     ])
     .command([
       'force:cmdt:field:create',
@@ -394,7 +394,7 @@ describe('sfdx force:cmdt:record:create', () => {
       '--fieldtype',
       'Percent',
       '--outputdir',
-      'shortFlagDir/Short_Flag_Test__mdt',
+      path.join('shortFlagDir', 'Short_Flag_Test__mdt'),
     ])
     .command([
       'force:cmdt:field:create',
@@ -405,7 +405,7 @@ describe('sfdx force:cmdt:record:create', () => {
       '--decimalplaces',
       '2',
       '--outputdir',
-      'shortFlagDir/Short_Flag_Test__mdt',
+      path.join('shortFlagDir', 'Short_Flag_Test__mdt'),
     ])
     .command([
       'force:cmdt:field:create',
@@ -414,7 +414,7 @@ describe('sfdx force:cmdt:record:create', () => {
       '--fieldtype',
       'Phone',
       '--outputdir',
-      'shortFlagDir/Short_Flag_Test__mdt',
+      path.join('shortFlagDir', 'Short_Flag_Test__mdt'),
     ])
     .command([
       'force:cmdt:field:create',
@@ -425,7 +425,7 @@ describe('sfdx force:cmdt:record:create', () => {
       '--picklistvalues',
       'Short_Flag_Test',
       '--outputdir',
-      'shortFlagDir/Short_Flag_Test__mdt',
+      path.join('shortFlagDir', 'Short_Flag_Test__mdt'),
     ])
     .command([
       'force:cmdt:field:create',
@@ -434,7 +434,7 @@ describe('sfdx force:cmdt:record:create', () => {
       '--fieldtype',
       'Text',
       '--outputdir',
-      'shortFlagDir/Short_Flag_Test__mdt',
+      path.join('shortFlagDir', 'Short_Flag_Test__mdt'),
     ])
     .command([
       'force:cmdt:field:create',
@@ -443,7 +443,7 @@ describe('sfdx force:cmdt:record:create', () => {
       '--fieldtype',
       'TextArea',
       '--outputdir',
-      'shortFlagDir/Short_Flag_Test__mdt',
+      path.join('shortFlagDir', 'Short_Flag_Test__mdt'),
     ])
     .command([
       'force:cmdt:field:create',
@@ -452,7 +452,7 @@ describe('sfdx force:cmdt:record:create', () => {
       '--fieldtype',
       'LongTextArea',
       '--outputdir',
-      'shortFlagDir/Short_Flag_Test__mdt',
+      path.join('shortFlagDir', 'Short_Flag_Test__mdt'),
     ])
     .command([
       'force:cmdt:field:create',
@@ -461,7 +461,7 @@ describe('sfdx force:cmdt:record:create', () => {
       '--fieldtype',
       'Url',
       '--outputdir',
-      'shortFlagDir/Short_Flag_Test__mdt',
+      path.join('shortFlagDir', 'Short_Flag_Test__mdt'),
     ])
     .command([
       'force:cmdt:record:create',
@@ -476,11 +476,15 @@ describe('sfdx force:cmdt:record:create', () => {
       '-i',
       'shortFlagDir',
       '-d',
-      'shortFlagDir/customMetadata',
+      path.join('shortFlagDir', 'customMetadata'),
     ])
     .it('runs force:cmdt:record:create with short flags', (ctx) => {
       const fieldDirPath = 'shortFlagDir';
-      const filePath = 'shortFlagDir/customMetadata/Short_Flag_Test.Short_Flag_Test_Record.md-meta.xml';
+      const filePath = path.join(
+        'shortFlagDir',
+        'customMetadata',
+        'Short_Flag_Test.Short_Flag_Test_Record.md-meta.xml'
+      );
 
       expect(fs.existsSync(fieldDirPath)).to.be.true;
       expect(fs.existsSync(filePath)).to.be.true;
@@ -498,7 +502,7 @@ describe('sfdx force:cmdt:record:create', () => {
       '--fieldtype',
       'Checkbox',
       '--outputdir',
-      'suffixTestDir/Suffix_Test__mdt',
+      path.join('suffixTestDir', 'Suffix_Test__mdt'),
     ])
     .command([
       'force:cmdt:record:create',
@@ -513,13 +517,13 @@ describe('sfdx force:cmdt:record:create', () => {
       '-i',
       'suffixTestDir',
       '-d',
-      'suffixTestDir/customMetadata',
+      path.join('suffixTestDir', 'customMetadata'),
     ])
     .it(
       'runs force:cmdt:record:create and accepts a typename with a __mdt suffix, but removes that suffix during record creation',
       (ctx) => {
         const fieldDirPath = 'suffixTestDir';
-        const filePath = 'suffixTestDir/customMetadata/Suffix_Test.Suffix_Test_Record.md-meta.xml';
+        const filePath = path.join('suffixTestDir', 'customMetadata', 'Suffix_Test.Suffix_Test_Record.md-meta.xml');
 
         expect(fs.existsSync(fieldDirPath)).to.be.true;
         expect(fs.existsSync(filePath)).to.be.true;

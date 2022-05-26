@@ -119,7 +119,7 @@ describe('sfdx force:cmdt:record:insert', () => {
         '--fieldtype',
         'Text',
         '--outputdir',
-        'badCSV/Snapple__mdt',
+        path.join('badCSV', 'Snapple__mdt'),
       ])
       .command([
         'force:cmdt:record:insert',

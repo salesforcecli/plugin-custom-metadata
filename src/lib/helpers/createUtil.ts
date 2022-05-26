@@ -132,19 +132,13 @@ export class CreateUtil {
     ignoreFields: boolean
   ): string {
     let ret = '';
-    let type = '';
-    let dataType = '';
     const templates = new Templates();
     for (const fieldName of Object.keys(cliParams)) {
-      type = this.getFieldPrimitiveType(fileData, fieldName);
-      dataType = this.getFieldDataType(fileData, fieldName);
+      const type = this.getFieldPrimitiveType(fileData, fieldName);
+      const dataType = this.getFieldDataType(fileData, fieldName);
       // Added functionality to handle the igonre fields scenario.
-      if (templates.canConvert(dataType)) {
+      if (templates.canConvert(dataType) || !ignoreFields) {
         ret += this.getFieldTemplate(fieldName, cliParams[fieldName], type);
-      } else {
-        if (!ignoreFields) {
-          ret += this.getFieldTemplate(fieldName, cliParams[fieldName], type);
-        }
       }
     }
 
@@ -172,14 +166,10 @@ export class CreateUtil {
    * @return {string} String representation of XML
    */
   private getFieldTemplate(fieldName: string, val: string, type: string): string {
-    // update to handle the null situation
-    let value = '';
     const cleanValue = String(val).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    if (val === null || val === '') {
-      value = '<value xsi:nil="true"/>';
-    } else {
-      value = `<value xsi:type="xsd:${type}">${cleanValue}</value>`;
-    }
+    const value =
+      val === null || val === '' ? '<value xsi:nil="true"/>' : `<value xsi:type="xsd:${type}">${cleanValue}</value>`;
+
     return `
     <values>
         <field>${fieldName}</field>

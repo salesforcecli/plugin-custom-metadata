@@ -105,13 +105,13 @@ export default class Generate extends SfdxCommand {
       char: 'd',
       description: messages.getMessage('typeoutputdirFlagDescription'),
       longDescription: messages.getMessage('typeoutputdirFlagLongDescription'),
-      default: 'force-app/main/default/objects/',
+      default: path.join('force-app', 'main', 'default', 'objects'),
     }),
     recordsoutputdir: flags.directory({
       char: 'r',
       description: messages.getMessage('recordsoutputdirFlagDescription'),
       longDescription: messages.getMessage('recordsoutputdirFlagLongDescription'),
-      default: 'force-app/main/default/customMetadata/',
+      default: path.join('force-app', 'main', 'default', 'customMetadata'),
     }),
   };
 

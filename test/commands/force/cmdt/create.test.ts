@@ -14,6 +14,9 @@ describe('sfdx force:cmdt:create', () => {
   const mdtFolder = `${cmdtName}__mdt`;
   const mdtObject = path.join(mdtFolder, `${cmdtName}__mdt.object-meta.xml`);
   test
+    .finally(() => {
+      fs.rmSync('sample', { recursive: true });
+    })
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
     .command(['force:cmdt:create', '--typename', cmdtName, '--outputdir', 'sample'])
@@ -27,27 +30,30 @@ describe('sfdx force:cmdt:create', () => {
         expect(xml).to.include('<pluralLabel>MyCMDT</pluralLabel>');
         expect(xml).to.include('<visibility>Public</visibility>');
       });
-      fs.rmSync('sample', { recursive: true });
     });
 
   test
+    .finally(() => {
+      fs.rmSync(mdtFolder, { recursive: true });
+    })
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
     .command(['force:cmdt:create', '--typename', cmdtName])
     .it('runs force:cmdt:create --typename MyCMDT', (ctx) => {
       expect(fs.existsSync(mdtFolder)).to.be.true;
       expect(fs.existsSync(mdtObject)).to.be.true;
-      fs.rmSync(mdtFolder, { recursive: true });
     });
 
   test
+    .finally(() => {
+      fs.rmSync(mdtFolder, { recursive: true });
+    })
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
     .command(['force:cmdt:create', '--typename', cmdtName, '--visibility', 'PackageProtected'])
     .it('runs force:cmdt:create --typename MyCMDT --visibility PackageProtected', (ctx) => {
       expect(fs.existsSync(mdtFolder)).to.be.true;
       expect(fs.existsSync(mdtObject)).to.be.true;
-      fs.rmSync(mdtFolder, { recursive: true });
     });
 
   test

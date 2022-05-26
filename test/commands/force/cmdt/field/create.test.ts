@@ -6,6 +6,7 @@
  */
 
 import * as fs from 'fs';
+import * as path from 'path';
 
 import { expect, test } from '@salesforce/command/lib/test';
 import { Messages } from '@salesforce/core';
@@ -64,8 +65,8 @@ describe('sfdx force:cmdt:field:create', () => {
     ])
     .it('runs force:cmdt:field:create --fieldname myField --fieldtype Picklist --picklistvalues a,b,c', (ctx) => {
       const cmdtName = 'myField';
-      expect(fs.existsSync('picklistField/fields')).to.be.true;
-      expect(fs.existsSync(`picklistField/fields/${cmdtName}__c.field-meta.xml`)).to.be.true;
+      expect(fs.existsSync(path.join('picklistField', 'fields'))).to.be.true;
+      expect(fs.existsSync(path.join('picklistField', 'fields', `${cmdtName}__c.field-meta.xml`))).to.be.true;
       fs.rmSync('picklistField', { recursive: true });
     });
 
