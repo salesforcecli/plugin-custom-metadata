@@ -42,6 +42,7 @@ workflows:
     when: << pipeline.parameters.run-auto-workflows >>
     jobs:
       - release-management/validate-pr:
+          context: release
           filters:
             branches:
               ignore: main
