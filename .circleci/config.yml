@@ -29,7 +29,7 @@ parameters:
     default: ''
     type: string
   repo_tag:
-    description: 'The tag of the module repo to checkout, '''' defaults to branch/PR'
+    description: "The tag of the module repo to checkout, '' defaults to branch/PR"
     default: ''
     type: string
   npm_module_name:
@@ -42,6 +42,7 @@ workflows:
     when: << pipeline.parameters.run-auto-workflows >>
     jobs:
       - release-management/validate-pr:
+          context: release
           filters:
             branches:
               ignore: main
@@ -61,6 +62,16 @@ workflows:
                 node_version: lts
               - os: windows
                 node_version: maintenance
+      - release-management/test-nut:
+          sfdx_version: latest
+          requires:
+            - release-management/test-package
+          context: na40-auth-url
+          matrix:
+            parameters:
+              os:
+                - linux
+                - windows
       - release-management/release-package:
           sign: true
           requires:

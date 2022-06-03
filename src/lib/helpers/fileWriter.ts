@@ -6,6 +6,13 @@
  */
 
 import * as fs from 'fs';
+import * as path from 'path';
+
+interface FileWriterResult {
+  dir: string;
+  fileName: string;
+  updated: boolean;
+}
 
 export class FileWriter {
   /**
@@ -15,14 +22,8 @@ export class FileWriter {
    * @param devname
    * @param objectXML
    */
-  public async writeTypeFile(
-    corefs,
-    dir: string,
-    devName: string,
-    objectXML: string
-  ) {
+  public async writeTypeFile(corefs = fs, dir: string, devName: string, objectXML: string): Promise<FileWriterResult> {
     let apiName = devName;
-    const dirName = this.createDir(dir);
 
     // replace __c with __mdt
     if (apiName.endsWith('__c')) {
@@ -34,12 +35,12 @@ export class FileWriter {
       apiName += '__mdt';
     }
 
-    const outputFilePath = `${dirName}${apiName}/`;
+    const outputFilePath = path.join(removeTrailingSlash(dir), apiName);
     const fileName = `${apiName}.object-meta.xml`;
-    const updated = fs.existsSync(outputFilePath + fileName);
+    const updated = fs.existsSync(path.join(outputFilePath, fileName));
 
-    await corefs.mkdirp(`${dirName}${apiName}`);
-    await corefs.writeFile(outputFilePath + fileName, objectXML);
+    await corefs.promises.mkdir(outputFilePath, { recursive: true });
+    await corefs.promises.writeFile(path.join(outputFilePath, fileName), objectXML);
 
     return { dir: outputFilePath, fileName, updated };
   }
@@ -52,30 +53,24 @@ export class FileWriter {
    * @param fieldXML
    */
   // /fields/{fieldAPI}.field-meta.xml
-  public async writeFieldFile(corefs, dir, fieldName, fieldXML) {
-    const dirName = this.createDir(dir);
-
+  public async writeFieldFile(
+    corefs = fs,
+    dir: string,
+    fieldName: string,
+    fieldXML: string
+  ): Promise<FileWriterResult> {
     // appending __c if its not already there
     if (fieldName.endsWith('__c') === false) {
       fieldName += '__c';
     }
-    const outputFilePath = `${dirName}fields/`;
+    const outputFilePath = path.join(removeTrailingSlash(dir), 'fields');
     const fileName = `${fieldName}.field-meta.xml`;
-    const updated = fs.existsSync(outputFilePath + fileName);
-    await corefs.mkdirp(`${dirName}fields`);
-    await corefs.writeFile(outputFilePath + fileName, fieldXML);
+    const updated = fs.existsSync(path.join(outputFilePath, fileName));
+    await corefs.promises.mkdir(outputFilePath, { recursive: true });
+    await corefs.promises.writeFile(path.join(outputFilePath, fileName), fieldXML);
 
     return { dir: outputFilePath, fileName, updated };
   }
-
-  public createDir(dir) {
-    if (dir) {
-      if (dir.endsWith('/')) {
-        return dir;
-      } else {
-        return dir + '/';
-      }
-    }
-    return '';
-  }
 }
+
+export const removeTrailingSlash = (dir: string): string => dir.replace(/\/+$/, '');

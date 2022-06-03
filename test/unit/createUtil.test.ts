@@ -1,22 +1,17 @@
 /*
- * Copyright (c) 2018-2020, salesforce.com, inc.
+ * Copyright (c) 2020, salesforce.com, inc.
  * All rights reserved.
- * SPDX-License-Identifier: BSD-3-Clause
- * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ * Licensed under the BSD 3-Clause license.
+ * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+/* eslint-disable camelcase */
 
+import * as fs from 'fs';
+import * as path from 'path';
 import { expect, test } from '@salesforce/command/lib/test';
 import { CreateUtil } from '../../src/lib/helpers/createUtil';
-import { FileWriter } from '../../src/lib/helpers/fileWriter';
-import { fs as coreFs } from '@salesforce/core';
-import * as fs from 'fs';
-import { promisify } from 'util';
-
-const child_process = require('child_process');
-const exec = promisify(child_process.exec);
 
 describe('CreateUtil', () => {
-
   describe('appendDirectorySuffix', () => {
     it('should append a suffix of __mdt if id does not already exist', async () => {
       const createUtil = new CreateUtil();
@@ -30,40 +25,180 @@ describe('CreateUtil', () => {
 
   describe('getFieldPrimitiveType', () => {
     test
-      .withOrg({
-        username: 'test@org.com'
-      }, true)
+      .withOrg(
+        {
+          username: 'test@org.com',
+        },
+        true
+      )
       .stdout()
       // .withProject()
       .command(['force:cmdt:create', '--typename', 'Field_Type_Test', '--outputdir', 'fieldTypeTest'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Check', '--fieldtype', 'Checkbox', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Date', '--fieldtype', 'Date', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Date_Time', '--fieldtype', 'DateTime', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Email', '--fieldtype', 'Email', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Number_Int', '--fieldtype', 'Number', '--decimalplaces', '0', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Number_Int_No_Flag', '--fieldtype', 'Number', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Number_Double', '--fieldtype', 'Number', '--decimalplaces', '4', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Percent_Int', '--fieldtype', 'Percent', '--decimalplaces', '0', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Percent_Int_No_Flag', '--fieldtype', 'Percent', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Percent_Double', '--fieldtype', 'Percent', '--decimalplaces', '2', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Phone', '--fieldtype', 'Phone', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Picklist', '--fieldtype', 'Picklist', '--picklistvalues', 'Foo', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Text', '--fieldtype', 'Text', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Textarea', '--fieldtype', 'TextArea', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Long_Textarea', '--fieldtype', 'LongTextArea', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Url', '--fieldtype', 'Url', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Check',
+        '--fieldtype',
+        'Checkbox',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Date',
+        '--fieldtype',
+        'Date',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Date_Time',
+        '--fieldtype',
+        'DateTime',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Email',
+        '--fieldtype',
+        'Email',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Number_Int',
+        '--fieldtype',
+        'Number',
+        '--decimalplaces',
+        '0',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Number_Int_No_Flag',
+        '--fieldtype',
+        'Number',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Number_Double',
+        '--fieldtype',
+        'Number',
+        '--decimalplaces',
+        '4',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Percent_Int',
+        '--fieldtype',
+        'Percent',
+        '--decimalplaces',
+        '0',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Percent_Int_No_Flag',
+        '--fieldtype',
+        'Percent',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Percent_Double',
+        '--fieldtype',
+        'Percent',
+        '--decimalplaces',
+        '2',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Phone',
+        '--fieldtype',
+        'Phone',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Picklist',
+        '--fieldtype',
+        'Picklist',
+        '--picklistvalues',
+        'Foo',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Text',
+        '--fieldtype',
+        'Text',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Textarea',
+        '--fieldtype',
+        'TextArea',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Long_Textarea',
+        '--fieldtype',
+        'LongTextArea',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Url',
+        '--fieldtype',
+        'Url',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
       .it('should return the field type needed to create a custom metadata type record', async () => {
         const createUtil = new CreateUtil();
-        const fileWriter = new FileWriter();
         const typename = 'Field_Type_Test';
         const recordname = 'Field_Type_Test_Record';
         const label = 'Field Type Test Label';
         const protectedFlag = true;
         const inputdir = 'fieldTypeTest';
-        const outputdir = 'fieldTypeTest/customMetadata';
+        const outputdir = path.join('fieldTypeTest', 'customMetadata');
         const dirName = createUtil.appendDirectorySuffix(typename);
-        const fieldDirPath = `${fileWriter.createDir(inputdir)}${dirName}/fields`;
-        const fileNames = await coreFs.readdir(fieldDirPath);
+        const fieldDirPath = path.join(inputdir, dirName, 'fields');
+        const fileNames = await fs.promises.readdir(fieldDirPath);
         const varargs = {
           Check__c: true,
           Date_Time__c: '2019-01-21T18:37:00.000Z',
@@ -78,10 +213,10 @@ describe('CreateUtil', () => {
           URL__c: 'https://salesforce.com/',
           Picklist__c: 'Foo',
           Double__c: 42.23,
-          Percent_Double__c: 78.91
+          Percent_Double__c: 78.91,
         };
 
-        await coreFs.mkdirp(outputdir);
+        await fs.promises.mkdir(outputdir, { recursive: true });
 
         const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
 
@@ -93,7 +228,7 @@ describe('CreateUtil', () => {
           outputdir,
           protected: protectedFlag,
           varargs,
-          fileData
+          fileData,
         });
 
         const field1 = createUtil.getFieldPrimitiveType(fileData, 'Check__c');
@@ -114,64 +249,204 @@ describe('CreateUtil', () => {
         const field16 = createUtil.getFieldPrimitiveType(fileData, 'Url__c');
         const fileTypeFallback = createUtil.getFieldPrimitiveType(fileData, 'Field_Does_Not_Exist__c');
 
-        expect(field1 === 'boolean').to.be.true;
-        expect(field2 === 'dateTime').to.be.true;
-        expect(field3 === 'date').to.be.true;
-        expect(field4 === 'string').to.be.true;
-        expect(field5 === 'int').to.be.true;
-        expect(field6 === 'int').to.be.true;
-        expect(field7 === 'double').to.be.true;
-        expect(field8 === 'int').to.be.true;
-        expect(field9 === 'int').to.be.true;
-        expect(field10 === 'double').to.be.true;
-        expect(field11 === 'string').to.be.true;
-        expect(field12 === 'string').to.be.true;
-        expect(field13 === 'string').to.be.true;
-        expect(field14 === 'string').to.be.true;
-        expect(field15 === 'string').to.be.true;
-        expect(field16 === 'string').to.be.true;
-        expect(fileTypeFallback === 'string').to.be.true;
+        expect(field1).to.equal('boolean');
+        expect(field2).to.equal('dateTime');
+        expect(field3).to.equal('date');
+        expect(field4).to.equal('string');
+        expect(field5).to.equal('int');
+        expect(field6).to.equal('int');
+        expect(field7).to.equal('double');
+        expect(field8).to.equal('int');
+        expect(field9).to.equal('int');
+        expect(field10).to.equal('double');
+        expect(field11).to.equal('string');
+        expect(field12).to.equal('string');
+        expect(field13).to.equal('string');
+        expect(field14).to.equal('string');
+        expect(field15).to.equal('string');
+        expect(field16).to.equal('string');
+        expect(fileTypeFallback).to.equal('string');
 
-        await exec(`rm -rf ${inputdir}`);
+        await fs.promises.rm(inputdir, { recursive: true });
       });
   });
 
   describe('getFieldDataType', () => {
     test
-      .withOrg({
-        username: 'test@org.com'
-      }, true)
+      .withOrg(
+        {
+          username: 'test@org.com',
+        },
+        true
+      )
       .stdout()
       // .withProject()
       .command(['force:cmdt:create', '--typename', 'Field_Type_Test', '--outputdir', 'fieldTypeTest'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Check', '--fieldtype', 'Checkbox', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Date', '--fieldtype', 'Date', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Date_Time', '--fieldtype', 'DateTime', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Email', '--fieldtype', 'Email', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Number_Int', '--fieldtype', 'Number', '--decimalplaces', '0', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Number_Int_No_Flag', '--fieldtype', 'Number', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Number_Double', '--fieldtype', 'Number', '--decimalplaces', '4', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Percent_Int', '--fieldtype', 'Percent', '--decimalplaces', '0', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Percent_Int_No_Flag', '--fieldtype', 'Percent', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Percent_Double', '--fieldtype', 'Percent', '--decimalplaces', '2', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Phone', '--fieldtype', 'Phone', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Picklist', '--fieldtype', 'Picklist', '--picklistvalues', 'Foo', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Text', '--fieldtype', 'Text', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Textarea', '--fieldtype', 'TextArea', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Long_Textarea', '--fieldtype', 'LongTextArea', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Url', '--fieldtype', 'Url', '--outputdir', 'fieldTypeTest/Field_Type_Test__mdt'])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Check',
+        '--fieldtype',
+        'Checkbox',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Date',
+        '--fieldtype',
+        'Date',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Date_Time',
+        '--fieldtype',
+        'DateTime',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Email',
+        '--fieldtype',
+        'Email',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Number_Int',
+        '--fieldtype',
+        'Number',
+        '--decimalplaces',
+        '0',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Number_Int_No_Flag',
+        '--fieldtype',
+        'Number',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Number_Double',
+        '--fieldtype',
+        'Number',
+        '--decimalplaces',
+        '4',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Percent_Int',
+        '--fieldtype',
+        'Percent',
+        '--decimalplaces',
+        '0',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Percent_Int_No_Flag',
+        '--fieldtype',
+        'Percent',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Percent_Double',
+        '--fieldtype',
+        'Percent',
+        '--decimalplaces',
+        '2',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Phone',
+        '--fieldtype',
+        'Phone',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Picklist',
+        '--fieldtype',
+        'Picklist',
+        '--picklistvalues',
+        'Foo',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Text',
+        '--fieldtype',
+        'Text',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Textarea',
+        '--fieldtype',
+        'TextArea',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Long_Textarea',
+        '--fieldtype',
+        'LongTextArea',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Url',
+        '--fieldtype',
+        'Url',
+        '--outputdir',
+        'fieldTypeTest/Field_Type_Test__mdt',
+      ])
       .it('should return the field type needed to create a custom metadata type record', async () => {
         const createUtil = new CreateUtil();
-        const fileWriter = new FileWriter();
         const typename = 'Field_Type_Test';
         const recordname = 'Field_Type_Test_Record';
         const label = 'Field Type Test Label';
         const protectedFlag = true;
         const inputdir = 'fieldTypeTest';
-        const outputdir = 'fieldTypeTest/customMetadata';
+        const outputdir = path.join('fieldTypeTest', 'customMetadata');
         const dirName = createUtil.appendDirectorySuffix(typename);
-        const fieldDirPath = `${fileWriter.createDir(inputdir)}${dirName}/fields`;
-        const fileNames = await coreFs.readdir(fieldDirPath);
+        const fieldDirPath = path.join(inputdir, dirName, 'fields');
+        const fileNames = await fs.promises.readdir(fieldDirPath);
         const varargs = {
           Check__c: true,
           Date_Time__c: '2019-01-21T18:37:00.000Z',
@@ -186,10 +461,10 @@ describe('CreateUtil', () => {
           URL__c: 'https://salesforce.com/',
           Picklist__c: 'Foo',
           Double__c: 42.23,
-          Percent_Double__c: 78.91
+          Percent_Double__c: 78.91,
         };
 
-        await coreFs.mkdirp(outputdir);
+        await fs.promises.mkdir(outputdir, { recursive: true });
 
         const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
 
@@ -201,7 +476,7 @@ describe('CreateUtil', () => {
           outputdir,
           protected: protectedFlag,
           varargs,
-          fileData
+          fileData,
         });
 
         const field1 = createUtil.getFieldDataType(fileData, 'Check__c');
@@ -219,71 +494,222 @@ describe('CreateUtil', () => {
         const field13 = createUtil.getFieldDataType(fileData, 'Text__c');
         const field14 = createUtil.getFieldDataType(fileData, 'Url__c');
 
-        expect(field1 === 'Checkbox').to.be.true;
-        expect(field2 === 'DateTime').to.be.true;
-        expect(field3 === 'Date').to.be.true;
-        expect(field4 === 'Email').to.be.true;
-        expect(field5 === 'Number').to.be.true;
-        expect(field6 === 'Number').to.be.true;
-        expect(field7 === 'Number').to.be.true;
-        expect(field8 === 'Percent').to.be.true;
-        expect(field9 === 'Percent').to.be.true;
-        expect(field10 === 'Percent').to.be.true;
-        expect(field11 === 'Phone').to.be.true;
-        expect(field12 === 'Picklist').to.be.true;
-        expect(field13 === 'Text').to.be.true;
-        expect(field14 === 'Url').to.be.true;
+        expect(field1).to.equal('Checkbox');
+        expect(field2).to.equal('DateTime');
+        expect(field3).to.equal('Date');
+        expect(field4).to.equal('Email');
+        expect(field5).to.equal('Number');
+        expect(field6).to.equal('Number');
+        expect(field7).to.equal('Number');
+        expect(field8).to.equal('Percent');
+        expect(field9).to.equal('Percent');
+        expect(field10).to.equal('Percent');
+        expect(field11).to.equal('Phone');
+        expect(field12).to.equal('Picklist');
+        expect(field13).to.equal('Text');
+        expect(field14).to.equal('Url');
 
-        await exec(`rm -rf ${inputdir}`);
+        await fs.promises.rm(inputdir, { recursive: true });
       });
   });
 
   describe('createDefaultType', () => {
     test
-      .withOrg({
-        username: 'test@org.com'
-      }, true)
+      .withOrg(
+        {
+          username: 'test@org.com',
+        },
+        true
+      )
       .stdout()
       // .withProject()
       .command(['force:cmdt:create', '--typename', 'Default_Type', '--outputdir', 'defaultTypes'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Check', '--fieldtype', 'Checkbox', '--outputdir', 'defaultTypes/Default_Type__mdt'])
-      .it('should handle an empty array return the field type needed to create a custom metadata type record', async () => {
-        const createUtil = new CreateUtil();
-        const inputdir = 'defaultTypes';
-        const field1 = createUtil.getFieldPrimitiveType();
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Check',
+        '--fieldtype',
+        'Checkbox',
+        '--outputdir',
+        'defaultTypes/Default_Type__mdt',
+      ])
+      .it(
+        'should handle an empty array return the field type needed to create a custom metadata type record',
+        async () => {
+          const createUtil = new CreateUtil();
+          const inputdir = 'defaultTypes';
+          const field1 = createUtil.getFieldPrimitiveType();
 
-        expect(field1 === 'string').to.be.true;
+          expect(field1 === 'string').to.be.true;
 
-        await exec(`rm -rf ${inputdir}`);
-      });
+          await fs.promises.rm(inputdir, { recursive: true });
+        }
+      );
   });
 
   describe('createRecord', () => {
     test
-      .withOrg({username: 'test@org.com'}, true)
+      .withOrg({ username: 'test@org.com' }, true)
       .stdout()
       // .withProject()
       .command(['force:cmdt:create', '--typename', 'Dir_File_Test', '--outputdir', 'dirFileTest'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Check', '--fieldtype', 'Checkbox', '--outputdir', 'dirFileTest/Dir_File_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Date', '--fieldtype', 'Date', '--outputdir', 'dirFileTest/Dir_File_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Date_Time', '--fieldtype', 'DateTime', '--outputdir', 'dirFileTest/Dir_File_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Email', '--fieldtype', 'Email', '--outputdir', 'dirFileTest/Dir_File_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Number_Int', '--fieldtype', 'Number', '--decimalplaces', '0', '--outputdir', 'dirFileTest/Dir_File_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Number_Int_No_Flag', '--fieldtype', 'Number', '--outputdir', 'dirFileTest/Dir_File_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Number_Double', '--fieldtype', 'Number', '--decimalplaces', '4', '--outputdir', 'dirFileTest/Dir_File_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Percent_Int', '--fieldtype', 'Percent', '--decimalplaces', '0', '--outputdir', 'dirFileTest/Dir_File_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Percent_Int_No_Flag', '--fieldtype', 'Percent', '--outputdir', 'dirFileTest/Dir_File_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Percent_Double', '--fieldtype', 'Percent', '--decimalplaces', '2', '--outputdir', 'dirFileTest/Dir_File_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Phone', '--fieldtype', 'Phone', '--outputdir', 'dirFileTest/Dir_File_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Picklist', '--fieldtype', 'Picklist', '--picklistvalues', 'Dir_File_Test', '--outputdir', 'dirFileTest/Dir_File_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Text', '--fieldtype', 'Text', '--outputdir', 'dirFileTest/Dir_File_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Textarea', '--fieldtype', 'TextArea', '--outputdir', 'dirFileTest/Dir_File_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Long_Textarea', '--fieldtype', 'LongTextArea', '--outputdir', 'dirFileTest/Dir_File_Test__mdt'])
-      .command(['force:cmdt:field:create', '--fieldname', 'Url', '--fieldtype', 'Url', '--outputdir', 'dirFileTest/Dir_File_Test__mdt'])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Check',
+        '--fieldtype',
+        'Checkbox',
+        '--outputdir',
+        'dirFileTest/Dir_File_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Date',
+        '--fieldtype',
+        'Date',
+        '--outputdir',
+        'dirFileTest/Dir_File_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Date_Time',
+        '--fieldtype',
+        'DateTime',
+        '--outputdir',
+        'dirFileTest/Dir_File_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Email',
+        '--fieldtype',
+        'Email',
+        '--outputdir',
+        'dirFileTest/Dir_File_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Number_Int',
+        '--fieldtype',
+        'Number',
+        '--decimalplaces',
+        '0',
+        '--outputdir',
+        'dirFileTest/Dir_File_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Number_Int_No_Flag',
+        '--fieldtype',
+        'Number',
+        '--outputdir',
+        'dirFileTest/Dir_File_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Number_Double',
+        '--fieldtype',
+        'Number',
+        '--decimalplaces',
+        '4',
+        '--outputdir',
+        'dirFileTest/Dir_File_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Percent_Int',
+        '--fieldtype',
+        'Percent',
+        '--decimalplaces',
+        '0',
+        '--outputdir',
+        'dirFileTest/Dir_File_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Percent_Int_No_Flag',
+        '--fieldtype',
+        'Percent',
+        '--outputdir',
+        'dirFileTest/Dir_File_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Percent_Double',
+        '--fieldtype',
+        'Percent',
+        '--decimalplaces',
+        '2',
+        '--outputdir',
+        'dirFileTest/Dir_File_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Phone',
+        '--fieldtype',
+        'Phone',
+        '--outputdir',
+        'dirFileTest/Dir_File_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Picklist',
+        '--fieldtype',
+        'Picklist',
+        '--picklistvalues',
+        'Dir_File_Test',
+        '--outputdir',
+        'dirFileTest/Dir_File_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Text',
+        '--fieldtype',
+        'Text',
+        '--outputdir',
+        'dirFileTest/Dir_File_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Textarea',
+        '--fieldtype',
+        'TextArea',
+        '--outputdir',
+        'dirFileTest/Dir_File_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Long_Textarea',
+        '--fieldtype',
+        'LongTextArea',
+        '--outputdir',
+        'dirFileTest/Dir_File_Test__mdt',
+      ])
+      .command([
+        'force:cmdt:field:create',
+        '--fieldname',
+        'Url',
+        '--fieldtype',
+        'Url',
+        '--outputdir',
+        'dirFileTest/Dir_File_Test__mdt',
+      ])
       .it('should create a customMetadata directory and a file for custom metadata type', async () => {
         // create input directory with cmdt object and fields
         const createUtil = new CreateUtil();
-        const fileWriter = new FileWriter();
         const typename = 'Dir_File_Test';
         const recordname = 'Dir_File_Test_Record';
         const label = 'Dir File Test Record Label';
@@ -291,8 +717,8 @@ describe('CreateUtil', () => {
         const inputdir = 'dirFileTest';
         const outputdir = 'dirFileTest/cmdtRecords';
         const dirName = createUtil.appendDirectorySuffix(typename);
-        const fieldDirPath = `${fileWriter.createDir(inputdir)}${dirName}/fields`;
-        const fileNames = await coreFs.readdir(fieldDirPath);
+        const fieldDirPath = path.join(inputdir, dirName, 'fields');
+        const fileNames = await fs.promises.readdir(fieldDirPath);
         const varargs = {
           Check__c: true,
           Date_Time__c: '2019-01-21T18:37:00.000Z',
@@ -307,10 +733,10 @@ describe('CreateUtil', () => {
           URL__c: 'https://salesforce.com/',
           Picklist__c: 'Foo',
           Double__c: 42.23,
-          Percent_Double__c: 78.91
+          Percent_Double__c: 78.91,
         };
 
-        await coreFs.mkdirp(outputdir);
+        await fs.promises.mkdir(outputdir, { recursive: true });
 
         const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
 
@@ -322,7 +748,7 @@ describe('CreateUtil', () => {
           outputdir,
           protected: protectedFlag,
           varargs,
-          fileData
+          fileData,
         });
 
         const filePath = `${outputdir}/${typename}.${recordname}.md-meta.xml`;
@@ -330,8 +756,7 @@ describe('CreateUtil', () => {
         expect(fs.existsSync(fieldDirPath)).to.be.true;
         expect(fs.existsSync(filePath)).to.be.true;
 
-        await exec(`rm -rf ${inputdir}`);
+        await fs.promises.rm(inputdir, { recursive: true });
       });
   });
-
 });
