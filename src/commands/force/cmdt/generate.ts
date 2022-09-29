@@ -232,9 +232,7 @@ export default class Generate extends SfdxCommand {
 
 const getSoqlQuery = (describeResult: CustomObject): string => {
   const fieldNames = describeResult.fields
-    .map((field) => {
-      return field.fullName;
-    })
+    .map((field) => field.fullName)
     .join(',');
   // Added Name hardcoded as Name field is not retrieved as part of object describe.
   return `SELECT Name, ${fieldNames} FROM ${describeResult.fullName}`;

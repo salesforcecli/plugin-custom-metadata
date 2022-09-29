@@ -44,9 +44,7 @@ export const validateMetadataTypeName = (typeName: string): string => {
   return trimmedValue;
 };
 
-export const isValidMetadataRecordName = (recordName: string): boolean => {
-  return recordName.length <= 40 && /^[a-zA-Z][a-zA-Z0-9]*(_[a-zA-Z0-9]+)*$/.test(recordName);
-};
+export const isValidMetadataRecordName = (recordName: string): boolean => recordName.length <= 40 && /^[a-zA-Z][a-zA-Z0-9]*(_[a-zA-Z0-9]+)*$/.test(recordName);
 /**
  * Returns true if the fieldname is a valid metadata record name
  *
