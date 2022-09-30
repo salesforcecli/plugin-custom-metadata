@@ -484,7 +484,7 @@ describe('sfdx force:cmdt:record:create', () => {
       '-d',
       path.join('shortFlagDir', 'customMetadata'),
     ])
-    .it('runs force:cmdt:record:create with short flags', (ctx) => {
+    .it('runs force:cmdt:record:create with short flags', () => {
       const fieldDirPath = 'shortFlagDir';
       const filePath = path.join(
         'shortFlagDir',
@@ -527,7 +527,7 @@ describe('sfdx force:cmdt:record:create', () => {
     ])
     .it(
       'runs force:cmdt:record:create and accepts a typename with a __mdt suffix, but removes that suffix during record creation',
-      (ctx) => {
+      () => {
         const fieldDirPath = 'suffixTestDir';
         const filePath = path.join('suffixTestDir', 'customMetadata', 'Suffix_Test.Suffix_Test_Record.md-meta.xml');
 

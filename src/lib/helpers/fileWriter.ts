@@ -22,6 +22,7 @@ export class FileWriter {
    * @param devname
    * @param objectXML
    */
+  // eslint-disable-next-line class-methods-use-this
   public async writeTypeFile(corefs = fs, dir: string, devName: string, objectXML: string): Promise<FileWriterResult> {
     let apiName = devName;
 
@@ -53,6 +54,7 @@ export class FileWriter {
    * @param fieldXML
    */
   // /fields/{fieldAPI}.field-meta.xml
+  // eslint-disable-next-line class-methods-use-this
   public async writeFieldFile(
     corefs = fs,
     dir: string,

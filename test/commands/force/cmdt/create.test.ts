@@ -20,7 +20,7 @@ describe('sfdx force:cmdt:create', () => {
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
     .command(['force:cmdt:create', '--typename', cmdtName, '--outputdir', 'sample'])
-    .it('runs force:cmdt:create --typename MyCMDT --outputdir sample', async (ctx) => {
+    .it('runs force:cmdt:create --typename MyCMDT --outputdir sample', async () => {
       const sampleFolder = path.join('sample', mdtFolder);
       const sampleObjectPath = path.join('sample', mdtObject);
       expect(fs.existsSync(sampleFolder)).to.be.true;
@@ -38,7 +38,7 @@ describe('sfdx force:cmdt:create', () => {
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
     .command(['force:cmdt:create', '--typename', cmdtName])
-    .it('runs force:cmdt:create --typename MyCMDT', (ctx) => {
+    .it('runs force:cmdt:create --typename MyCMDT', () => {
       expect(fs.existsSync(mdtFolder)).to.be.true;
       expect(fs.existsSync(mdtObject)).to.be.true;
     });
@@ -50,7 +50,7 @@ describe('sfdx force:cmdt:create', () => {
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
     .command(['force:cmdt:create', '--typename', cmdtName, '--visibility', 'PackageProtected'])
-    .it('runs force:cmdt:create --typename MyCMDT --visibility PackageProtected', (ctx) => {
+    .it('runs force:cmdt:create --typename MyCMDT --visibility PackageProtected', () => {
       expect(fs.existsSync(mdtFolder)).to.be.true;
       expect(fs.existsSync(mdtObject)).to.be.true;
     });

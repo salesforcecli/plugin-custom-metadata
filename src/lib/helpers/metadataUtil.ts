@@ -14,9 +14,7 @@ import { Record } from 'jsforce';
  * @param  fieldName API name of the field to query
  * @returns Promise - Promise - record in JSON format
  */
-export const describeField = (objDescribe: CustomObject, fieldName: string): CustomField => {
-  return describeObjFields(objDescribe).find((field) => field.fullName === fieldName);
-};
+export const describeField = (objDescribe: CustomObject, fieldName: string): CustomField => describeObjFields(objDescribe).find((field) => field.fullName === fieldName);
 
 /**
  * Returns true if the object name you specify is a list type custom setting
@@ -33,12 +31,9 @@ export const validCustomSettingType = (objDescribe: CustomObject): boolean =>
  * @param  objDescribe object describe JSON
  * @returns Promise - Promise - record in JSON format
  */
-export const describeObjFields = (objDescribe: CustomObject): CustomField[] => {
-  return objDescribe.fields;
-};
+export const describeObjFields = (objDescribe: CustomObject): CustomField[] => objDescribe.fields;
 
-export const cleanQueryResponse = (sObjectRecord: Record, objectDescribe: CustomObject): Record => {
-  return Object.fromEntries(
+export const cleanQueryResponse = (sObjectRecord: Record, objectDescribe: CustomObject): Record => Object.fromEntries(
     Object.entries(sObjectRecord)
       .filter(([fieldName]) => fieldName !== 'attributes' && fieldName !== 'Name')
       .flatMap(([fieldName, value]) => {
@@ -62,4 +57,3 @@ export const cleanQueryResponse = (sObjectRecord: Record, objectDescribe: Custom
         }
       })
   );
-};

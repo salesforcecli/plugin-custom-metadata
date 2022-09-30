@@ -21,7 +21,7 @@ describe('sfdx force:cmdt:field:create', () => {
     .withOrg({ username: 'test@org.com' }, true)
     .stdout()
     .command(['force:cmdt:field:create', '--fieldname', 'myField', '--fieldtype', 'Text'])
-    .it('runs force:cmdt:field:create --fieldname myField --fieldtype Text', async (ctx) => {
+    .it('runs force:cmdt:field:create --fieldname myField --fieldtype Text', async () => {
       const cmdtName = 'myField';
       const fieldLocation = path.join('fields', `${cmdtName}__c.field-meta.xml`);
       expect(fs.existsSync('fields')).to.be.true;
@@ -68,7 +68,7 @@ describe('sfdx force:cmdt:field:create', () => {
       '-d',
       'picklistField',
     ])
-    .it('runs force:cmdt:field:create --fieldname myField --fieldtype Picklist --picklistvalues a,b,c', (ctx) => {
+    .it('runs force:cmdt:field:create --fieldname myField --fieldtype Picklist --picklistvalues a,b,c', () => {
       const cmdtName = 'myField';
       expect(fs.existsSync(path.join('picklistField', 'fields'))).to.be.true;
       expect(fs.existsSync(path.join('picklistField', 'fields', `${cmdtName}__c.field-meta.xml`))).to.be.true;

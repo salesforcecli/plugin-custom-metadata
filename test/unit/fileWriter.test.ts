@@ -19,7 +19,7 @@ describe('FileWriter', () => {
       await fileWriter.writeTypeFile(fs, '', fileName, fileContent);
       expect(fs.existsSync(`${fileName}__mdt`)).to.be.true;
       expect(fs.existsSync(path.join(`${fileName}__mdt`, `${fileName}__mdt.object-meta.xml`))).to.be.true;
-      fs.readFile(`${fileName}__mdt/${fileName}__mdt.object-meta.xml`, { encoding: 'utf-8' }, function (err, data) {
+      fs.readFile(`${fileName}__mdt/${fileName}__mdt.object-meta.xml`, { encoding: 'utf-8' }, (err, data) => {
         expect(data === fileContent).to.be.true;
       });
       await fs.promises.rm(`${fileName}__mdt`, { recursive: true });
@@ -63,7 +63,7 @@ describe('FileWriter', () => {
       expect(fs.existsSync('fields')).to.be.true;
       const fieldPath = path.join('fields', `${fileName}__c.field-meta.xml`);
       expect(fs.existsSync(fieldPath)).to.be.true;
-      fs.readFile(fieldPath, { encoding: 'utf-8' }, function (err, data) {
+      fs.readFile(fieldPath, { encoding: 'utf-8' }, (err, data) => {
         expect(data === fileContent).to.be.true;
       });
       await fs.promises.rm('fields', { recursive: true });
