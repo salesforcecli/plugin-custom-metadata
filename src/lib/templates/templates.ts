@@ -5,6 +5,8 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
+/* eslint-disable class-methods-use-this */
+
 import { SfError, Messages } from '@salesforce/core';
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-custom-metadata', 'template', ['errorNotAValidType']);

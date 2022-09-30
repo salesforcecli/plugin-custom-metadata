@@ -118,7 +118,7 @@ describe('sfdx force:cmdt:generate', () => {
     .stub(Org.prototype, 'getConnection', () => ({ metadata, query }))
     .stub(Connection, 'create', () => ({ metadata, query }))
     .command(['force:cmdt:generate', '-n', 'MyCMDT', '-s', 'TriggerSettings__c', '-u', 'test@org.com'])
-    .it('runs force:cmdt:generate -n MyCMDT -s TriggerSettings__c -u test@org.com', (ctx) => {
+    .it('runs force:cmdt:generate -n MyCMDT -s TriggerSettings__c -u test@org.com', () => {
       const cmdtName = 'MyCMDT';
       expect(fs.existsSync(path.join(objectsFolder, `${cmdtName}__mdt`))).to.be.true;
       expect(

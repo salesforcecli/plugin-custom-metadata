@@ -45,7 +45,7 @@ export class CreateUtil {
       createConfig.outputdir,
       `${createConfig.typename}.${createConfig.recordname}.md-meta.xml`
     );
-    const newRecordContent = this.getRecordTemplate(
+    const newRecordContent = getRecordTemplate(
       createConfig.label,
       createConfig.protected,
       this.buildCustomFieldXml(createConfig.fileData, createConfig.varargs, createConfig.ignorefields)
@@ -60,6 +60,7 @@ export class CreateUtil {
    * @param fileNames filenames in that folder that should be read
    * @returns CustomField[]
    */
+  // eslint-disable-next-line class-methods-use-this
   public async getFileData(fieldDirPath: string, fileNames: string[]): Promise<CustomField[]> {
     const parser = new XMLParser();
     return Promise.all(
@@ -77,6 +78,7 @@ export class CreateUtil {
    *
    * @param  typename Name of file
    */
+  // eslint-disable-next-line class-methods-use-this
   public appendDirectorySuffix(typename: string): string {
     return typename.endsWith('__mdt') ? typename : `${typename}__mdt`;
   }
@@ -88,10 +90,11 @@ export class CreateUtil {
    * @param  fieldName Name of the field
    * @return {string} Type used by a custom metadata record
    */
+  // eslint-disable-next-line class-methods-use-this
   public getFieldPrimitiveType(fileData: CustomField[] = [], fieldName?: string): string {
     const matchingFile = fileData.find((file) => file.fullName === fieldName);
     return matchingFile && ['Number', 'Percent'].includes(matchingFile.type)
-      ? this.getNumberType(matchingFile.type, matchingFile.scale)
+      ? getNumberType(matchingFile.type, matchingFile.scale)
       : (fieldTypeMap[matchingFile?.type] as string) ?? 'string';
   }
 
@@ -102,6 +105,7 @@ export class CreateUtil {
    * @param  fieldName Name of the field
    * @return {string} Data Type of the field.
    */
+  // eslint-disable-next-line class-methods-use-this
   public getFieldDataType(fileData: CustomField[] = [], fieldName = ''): CustomField['type'] {
     return fileData.find((file) => file.fullName === fieldName)?.type;
   }
@@ -114,6 +118,7 @@ export class CreateUtil {
    * @param  nameField name of the column that is going to be used for the name of the metadata record
    * @return [] Array of field names
    */
+  // eslint-disable-next-line class-methods-use-this
   public getFieldNames(fileData: CustomField[], nameField: string): string[] {
     return [...fileData.map((file) => file.fullName), nameField];
   }
@@ -138,59 +143,57 @@ export class CreateUtil {
       const dataType = this.getFieldDataType(fileData, fieldName);
       // Added functionality to handle the igonre fields scenario.
       if (templates.canConvert(dataType) || !ignoreFields) {
-        ret += this.getFieldTemplate(fieldName, cliParams[fieldName], type);
+        ret += getFieldTemplate(fieldName, cliParams[fieldName], type);
       }
     }
 
     return ret;
   }
+}
 
-  /**
-   * Get the number type based on the scale.
-   * If the scale === 0, it is an int, otherwise it is a double.
-   *
-   * @param  type Number or Percent
-   * @param  scale 0 or another number
-   * @return {string} int or double
-   */
-  private getNumberType(type: string, scale: number): 'int' | 'double' {
-    return ['Number', 'Percent'].includes(type) && scale === 0 ? 'int' : 'double';
-  }
+/**
+ * Get the number type based on the scale.
+ * If the scale === 0, it is an int, otherwise it is a double.
+ *
+ * @param  type Number or Percent
+ * @param  scale 0 or another number
+ * @return {string} int or double
+ */
+const getNumberType = (type: string, scale: number): 'int' | 'double' =>
+  ['Number', 'Percent'].includes(type) && scale === 0 ? 'int' : 'double';
 
-  /**
-   * Template for a single customMetadata record value. This is used by helper.getRecordTemplate.
-   *
-   * @param  fieldName Field API Name (i.e, Foo__c)
-   * @param  val Value of the field
-   * @param  type Field type (i.e. boolean, dateTime, date, string, double)
-   * @return {string} String representation of XML
-   */
-  private getFieldTemplate(fieldName: string, val: string, type: string): string {
-    const cleanValue = String(val).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    const value =
-      val === null || val === '' ? '<value xsi:nil="true"/>' : `<value xsi:type="xsd:${type}">${cleanValue}</value>`;
+/**
+ * Template for a single customMetadata record value. This is used by helper.getRecordTemplate.
+ *
+ * @param  fieldName Field API Name (i.e, Foo__c)
+ * @param  val Value of the field
+ * @param  type Field type (i.e. boolean, dateTime, date, string, double)
+ * @return {string} String representation of XML
+ */
+const getFieldTemplate = (fieldName: string, val: string, type: string): string => {
+  const cleanValue = String(val).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const value =
+    val === null || val === '' ? '<value xsi:nil="true"/>' : `<value xsi:type="xsd:${type}">${cleanValue}</value>`;
 
-    return `
+  return `
     <values>
         <field>${fieldName}</field>
         ${value}
     </values>`;
-  }
+};
 
-  /**
-   * Template to compile entire customMetadata record
-   *
-   * @param  label Name of the record
-   * @param  protection Is the record protected?
-   * @param  values Template string representation of values
-   * @return {string} String representation of XML
-   */
-  private getRecordTemplate(label: string, protection: boolean, values: string): string {
-    return `
+/**
+ * Template to compile entire customMetadata record
+ *
+ * @param  label Name of the record
+ * @param  protection Is the record protected?
+ * @param  values Template string representation of values
+ * @return {string} String representation of XML
+ */
+const getRecordTemplate = (label: string, protection: boolean, values: string): string =>
+  `
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <label>${label}</label>
     <protected>${protection}</protected>${values}
 </CustomMetadata>`.trim();
-  }
-}
