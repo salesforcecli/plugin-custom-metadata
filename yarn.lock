@@ -1069,17 +1069,16 @@
     semver "^7.3.5"
     ts-retry-promise "^0.6.0"
 
-"@salesforce/core@^3.15.3", "@salesforce/core@^3.19.0":
-  version "3.19.0"
-  resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-3.19.0.tgz#e238b07190623dc4e1ca1888c1185f5bfa2d383e"
-  integrity sha512-64bz7cvfEkJz1JCMlf3W1CaWShoaINzfkrT6BQxtb5AdjZm5rs8Lmg3q6hie4hhWo3VVSvPOdnWEPpMJCdJ4/w==
+"@salesforce/core@^3.15.3", "@salesforce/core@^3.30.12":
+  version "3.30.12"
+  resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-3.30.12.tgz#9bd81770a8c7c909b01c7736283d6d3376915fa7"
+  integrity sha512-2p2EPGsjOdj9m2BzjDyFtSvvyDukyg/sZ07tdxsQC4NXNqE/NfvsbgpitxQRxFGVAwLaJvuaO3LVv7g4lA4PpA==
   dependencies:
     "@salesforce/bunyan" "^2.0.0"
-    "@salesforce/kit" "^1.5.41"
+    "@salesforce/kit" "^1.7.0"
     "@salesforce/schemas" "^1.1.0"
     "@salesforce/ts-types" "^1.5.20"
     "@types/graceful-fs" "^4.1.5"
-    "@types/mkdirp" "^1.0.2"
     "@types/semver" "^7.3.9"
     ajv "^8.11.0"
     archiver "^5.3.0"
@@ -1089,10 +1088,9 @@
     form-data "^4.0.0"
     graceful-fs "^4.2.9"
     js2xmlparser "^4.0.1"
-    jsforce "2.0.0-beta.10"
+    jsforce "^2.0.0-beta.19"
     jsonwebtoken "8.5.1"
-    mkdirp "1.0.4"
-    ts-retry-promise "^0.6.0"
+    ts-retry-promise "^0.7.0"
 
 "@salesforce/dev-config@^3.0.0", "@salesforce/dev-config@^3.0.1":
   version "3.0.1"
@@ -1138,12 +1136,12 @@
     typedoc-plugin-missing-exports "0.23.0"
     typescript "^4.1.3"
 
-"@salesforce/kit@^1.5.13", "@salesforce/kit@^1.5.17", "@salesforce/kit@^1.5.34", "@salesforce/kit@^1.5.41":
-  version "1.5.41"
-  resolved "https://registry.yarnpkg.com/@salesforce/kit/-/kit-1.5.41.tgz#3248d4d28fe24ed47827716cfe416c21a2a90651"
-  integrity sha512-nhi7jw3LNITl7rHSnCLnEDTaq6nvolSMFBg7poniG84Q7kJPezgTEj5OKAyQ9hJoRE4u59n5M5bUFvwRoXmJzQ==
+"@salesforce/kit@^1.5.13", "@salesforce/kit@^1.5.17", "@salesforce/kit@^1.5.34", "@salesforce/kit@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@salesforce/kit/-/kit-1.7.0.tgz#f14ef71662742edf0fb74ffb23c530fad5ccb4c9"
+  integrity sha512-AxJi7W9skYEVQrZMGyWtG3xOOLzdRu7638Hlea3gtPdMpMRc0aB1Nvpg7Ru+VLtULNhXnnQ3nXesDl0d2TA04w==
   dependencies:
-    "@salesforce/ts-types" "^1.5.20"
+    "@salesforce/ts-types" "^1.5.21"
     shx "^0.3.3"
     tslib "^2.2.0"
 
@@ -1346,7 +1344,7 @@
   resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.2.tgz#ee771e2ba4b3dc5b372935d549fd9617bf345b8c"
   integrity sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==
 
-"@types/mkdirp@^1.0.1", "@types/mkdirp@^1.0.2":
+"@types/mkdirp@^1.0.1":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@types/mkdirp/-/mkdirp-1.0.2.tgz#8d0bad7aa793abe551860be1f7ae7f3198c16666"
   integrity sha512-o0K1tSO0Dx5X6xlU5F1D6625FawhC3dU3iqr25lluNv/+/QIVH8RLNEiVokgIZo+mz+87w/3Mkg/VvQS+J51fQ==
@@ -4823,6 +4821,32 @@ jsforce@^1.11.0:
     request "^2.72.0"
     xml2js "^0.4.16"
 
+jsforce@^2.0.0-beta.19:
+  version "2.0.0-beta.19"
+  resolved "https://registry.yarnpkg.com/jsforce/-/jsforce-2.0.0-beta.19.tgz#4a136b88d6a9f6668714c4ccbb0acd55e46ea493"
+  integrity sha512-WdF6hs7kukXNGvp/VRhu2DngldgiBBorsc2WA5us08oJGbEIPwn/itqYJWKJ+rfPXepz5JbkWQd48XHGjqmPpw==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    "@babel/runtime-corejs3" "^7.12.5"
+    "@types/node" "^12.19.9"
+    abort-controller "^3.0.0"
+    base64url "^3.0.1"
+    commander "^4.0.1"
+    core-js "^3.6.4"
+    csv-parse "^4.8.2"
+    csv-stringify "^5.3.4"
+    faye "^1.4.0"
+    form-data "^4.0.0"
+    fs-extra "^8.1.0"
+    https-proxy-agent "^5.0.0"
+    inquirer "^7.0.0"
+    multistream "^3.1.0"
+    node-fetch "^2.6.1"
+    open "^7.0.0"
+    regenerator-runtime "^0.13.3"
+    strip-ansi "^6.0.0"
+    xml2js "^0.4.22"
+
 json-parse-better-errors@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/json-parse-better-errors/-/json-parse-better-errors-1.0.2.tgz#bb867cfb3450e69107c131d1c514bab3dc8bcaa9"
@@ -7498,6 +7522,11 @@ ts-retry-promise@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/ts-retry-promise/-/ts-retry-promise-0.6.0.tgz#95643500d5388eed25abc90aa2e99c8b6c5a7bc9"
   integrity sha512-8DF80uA7JPu6m8ouHxGkyBpPTIGQnsgIUgLDqcRaD7EEhVowjG72KqCX334gsa1P+AmzeTVdd/xEzVFCAuPCtg==
+
+ts-retry-promise@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/ts-retry-promise/-/ts-retry-promise-0.7.0.tgz#08f2dcbbf5d2981495841cb63389a268324e8147"
+  integrity sha512-x6yWZXC4BfXy4UyMweOFvbS1yJ/Y5biSz/mEPiILtJZLrqD3ZxIpzVOGGgifHHdaSe3WxzFRtsRbychI6zofOg==
 
 tsconfig-paths@^3.14.1:
   version "3.14.1"
