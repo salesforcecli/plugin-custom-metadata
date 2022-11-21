@@ -1,69 +1,45 @@
 [
-    {
-        "command": "force:cmdt:create",
-        "flags": [
-            "json",
-            "loglevel",
-            "typename",
-            "label",
-            "plurallabel",
-            "visibility",
-            "outputdir"
-        ]
-    },
-    {
-        "command": "force:cmdt:field:create",
-        "flags": [
-            "json",
-            "loglevel",
-            "fieldname",
-            "fieldtype",
-            "picklistvalues",
-            "decimalplaces",
-            "label",
-            "outputdir"
-        ]
-    },
-    {
-        "command": "force:cmdt:generate",
-        "flags": [
-            "json",
-            "loglevel",
-            "targetusername",
-            "apiversion",
-            "devname",
-            "label",
-            "plurallabel",
-            "visibility",
-            "sobjectname",
-            "ignoreunsupported",
-            "typeoutputdir",
-            "recordsoutputdir"
-        ]
-    },
-    {
-        "command": "force:cmdt:record:create",
-        "flags": [
-            "json",
-            "loglevel",
-            "typename",
-            "recordname",
-            "label",
-            "protected",
-            "inputdir",
-            "outputdir"
-        ]
-    },
-    {
-        "command": "force:cmdt:record:insert",
-        "flags": [
-            "json",
-            "loglevel",
-            "filepath",
-            "typename",
-            "inputdir",
-            "outputdir",
-            "namecolumn"
-        ]
-    }
+  {
+    "command": "force:cmdt:create",
+    "plugin": "@salesforce/plugin-custom-metadata",
+    "flags": ["json", "label", "loglevel", "outputdir", "plurallabel", "typename", "visibility"],
+    "alias": []
+  },
+  {
+    "command": "force:cmdt:field:create",
+    "plugin": "@salesforce/plugin-custom-metadata",
+    "flags": ["decimalplaces", "fieldname", "fieldtype", "json", "label", "loglevel", "outputdir", "picklistvalues"],
+    "alias": []
+  },
+  {
+    "command": "force:cmdt:generate",
+    "plugin": "@salesforce/plugin-custom-metadata",
+    "flags": [
+      "apiversion",
+      "devname",
+      "ignoreunsupported",
+      "json",
+      "label",
+      "loglevel",
+      "plurallabel",
+      "recordsoutputdir",
+      "sobjectname",
+      "targetusername",
+      "typeoutputdir",
+      "visibility"
+    ],
+    "alias": []
+  },
+  {
+    "command": "force:cmdt:record:create",
+    "plugin": "@salesforce/plugin-custom-metadata",
+    "flags": ["inputdir", "json", "label", "loglevel", "outputdir", "protected", "recordname", "typename"],
+    "alias": []
+  },
+  {
+    "command": "force:cmdt:record:insert",
+    "plugin": "@salesforce/plugin-custom-metadata",
+    "flags": ["filepath", "inputdir", "json", "loglevel", "namecolumn", "outputdir", "typename"],
+    "alias": []
+  }
 ]
