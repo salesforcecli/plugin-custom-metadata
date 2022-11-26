@@ -43,7 +43,7 @@
   "bugs": "https://github.com/salesforcecli/plugin-custom-metadata/issues",
   "dependencies": {
     "@oclif/core": "^1.16.4",
-    "@salesforce/command": "^5.1.2",
+    "@salesforce/command": "^5.2.27",
     "@salesforce/core": "^3.19.0",
     "@salesforce/ts-types": "^1.7.1",
     "fast-xml-parser": "^4.0.11",
