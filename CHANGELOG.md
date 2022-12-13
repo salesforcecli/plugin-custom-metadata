@@ -1,3 +1,12 @@
+## [2.0.7](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.0.6...2.0.7) (2022-12-13)
+
+
+### Bug Fixes
+
+* **deps:** bump qs from 6.5.2 to 6.5.3 ([29f8b1b](https://github.com/salesforcecli/plugin-custom-metadata/commit/29f8b1b68feef65731b5b807ce68ceba68af328c))
+
+
+
 ## [2.0.6](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.0.5...2.0.6) (2022-12-10)
 
 
