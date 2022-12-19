@@ -121,7 +121,7 @@ describe('metadataUtil', () => {
   describe('describeField', () => {
     it('should get field describe in response', () => {
       const fieldDescribe = describeField(readResponse, 'IsDisabled__c');
-      deepStrictEqual(fieldDescribe.fullName, 'IsDisabled__c');
+      deepStrictEqual(fieldDescribe?.fullName, 'IsDisabled__c');
     });
   });
 

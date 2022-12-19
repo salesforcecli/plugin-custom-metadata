@@ -6,21 +6,17 @@
  */
 import * as fs from 'fs';
 import * as path from 'path';
-import { Flags, parseVarArgs, SfCommand } from '@salesforce/sf-plugins-core';
+import { Flags, loglevel, parseVarArgs, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
 import { CustomField } from 'jsforce/api/metadata';
-import { CreateUtil } from '../../../../lib/helpers/createUtil';
+import { CreateUtil, appendDirectorySuffix } from '../../../../lib/helpers/createUtil';
 import {
   validateMetadataRecordName,
   validateMetadataTypeName,
   validateLessThanForty,
 } from '../../../../lib/helpers/validationUtil';
 
-// Initialize Messages with the current plugin directory
 Messages.importMessagesDirectory(__dirname);
-
-// Load the specific messages for this file. Messages from @salesforce/command, @salesforce/core,
-// or any library that is using the messages framework can also be loaded this way.
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'createRecord');
 
 interface CmdtRecordCreateResponse {
@@ -49,6 +45,7 @@ export default class Create extends SfCommand<CmdtRecordCreateResponse> {
   ];
 
   public static flags = {
+    loglevel,
     typename: Flags.string({
       char: 't',
       summary: messages.getMessage('typenameFlagDescription'),
@@ -95,46 +92,39 @@ export default class Create extends SfCommand<CmdtRecordCreateResponse> {
     const { flags, args, argv } = await this.parse(Create);
     const varargs = parseVarArgs(args, argv);
     const createUtil = new CreateUtil();
-    let typename = flags.typename;
-    const recordname = flags.recordname;
-    const label = flags.label ?? recordname;
+    const label = flags.label ?? flags.recordname;
     const protectedFlag = flags.protected === 'true';
-    const inputdir = flags.inputdir;
-    const outputdir = flags.outputdir;
-    const dirName = createUtil.appendDirectorySuffix(typename);
-    const fieldDirPath = path.join(inputdir, dirName, 'fields');
+    const dirName = appendDirectorySuffix(flags.typename);
+    const fieldDirPath = path.join(flags.inputdir, dirName, 'fields');
     const fileNames = await fs.promises.readdir(fieldDirPath);
 
-    // forgive them if they passed in type__mdt, and cut off the __mdt
-    if (typename.endsWith('__mdt')) {
-      typename = typename.substring(0, typename.indexOf('__mdt'));
-    }
-
     // if customMetadata folder does not exist, create it
-    await fs.promises.mkdir(outputdir, { recursive: true });
+    await fs.promises.mkdir(flags.outputdir, { recursive: true });
 
     const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
 
     await createUtil.createRecord({
-      typename,
-      recordname,
+      typename: flags.typename,
+      recordname: flags.recordname,
       label,
-      inputdir,
-      outputdir,
+      inputdir: flags.inputdir,
+      outputdir: flags.outputdir,
       protected: protectedFlag,
       varargs,
       fileData,
     });
 
-    this.log(messages.getMessage('successResponse', [typename, recordname, label, protectedFlag, outputdir]));
+    this.log(
+      messages.getMessage('successResponse', [flags.typename, flags.recordname, label, protectedFlag, flags.outputdir])
+    );
 
     // Return an object to be displayed with --json
     return {
-      typename,
-      recordname,
+      typename: flags.typename,
+      recordname: flags.recordname,
       label,
-      inputdir,
-      outputdir,
+      inputdir: flags.inputdir,
+      outputdir: flags.outputdir,
       protectedFlag,
       varargs,
       fileData,

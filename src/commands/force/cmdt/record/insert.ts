@@ -6,11 +6,11 @@
  */
 import * as fs from 'fs';
 import * as path from 'path';
-import { Flags, SfCommand } from '@salesforce/sf-plugins-core';
+import { Flags, loglevel, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages, SfError } from '@salesforce/core';
 import { Record } from 'jsforce';
 import * as csv from '../../../../../csvtojson';
-import { CreateUtil } from '../../../../lib/helpers/createUtil';
+import { CreateUtil, getFieldNames, appendDirectorySuffix } from '../../../../lib/helpers/createUtil';
 import { CreateConfig } from '../../../../lib/interfaces/createConfig';
 
 Messages.importMessagesDirectory(__dirname);
@@ -31,6 +31,7 @@ export default class Insert extends SfCommand<CreateConfig[]> {
   ];
 
   public static flags = {
+    loglevel,
     filepath: Flags.string({
       char: 'f',
       summary: messages.getMessage('filepathFlagDescription'),
@@ -70,7 +71,7 @@ export default class Insert extends SfCommand<CreateConfig[]> {
     let typename = flags.typename;
     const inputdir = flags.inputdir;
     const outputdir = flags.outputdir;
-    const dirName = createUtil.appendDirectorySuffix(typename);
+    const dirName = appendDirectorySuffix(typename);
     const fieldDirPath = path.join(inputdir, dirName, 'fields');
     const fileNames = await fs.promises.readdir(fieldDirPath);
     const nameField = flags.namecolumn;
@@ -86,7 +87,7 @@ export default class Insert extends SfCommand<CreateConfig[]> {
     const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
     const csvDataAry = (await csv().fromFile(flags.filepath)) as Record[];
 
-    const metadataTypeFields = createUtil.getFieldNames(fileData, nameField);
+    const metadataTypeFields = getFieldNames(fileData, nameField);
     if (csvDataAry.length > 0) {
       const record = csvDataAry[0];
       for (const key in record) {

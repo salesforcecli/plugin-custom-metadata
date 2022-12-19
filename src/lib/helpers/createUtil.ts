@@ -75,16 +75,6 @@ export class CreateUtil {
   }
 
   /**
-   * Filenames should have the suffix of '__mdt'. This will append that suffix if it does not exist.
-   *
-   * @param  typename Name of file
-   */
-  // eslint-disable-next-line class-methods-use-this
-  public appendDirectorySuffix(typename: string): string {
-    return typename.endsWith('__mdt') ? typename : `${typename}__mdt`;
-  }
-
-  /**
    * Get the field primitive type from the custom metadata type that has a matching field name.
    *
    * @param  fileData Array of objects based on metadata type xml
@@ -117,19 +107,6 @@ export class CreateUtil {
   }
 
   /**
-   * Goes through the file data that has been genreated and gets all of the field names and adds the
-   * name of the field that is used as the label for metadata record
-   *
-   * @param  fileData Array of objects based on metadata type xml
-   * @param  nameField name of the column that is going to be used for the name of the metadata record
-   * @return [] Array of field names
-   */
-  // eslint-disable-next-line class-methods-use-this
-  public getFieldNames(fileData: CustomField[], nameField: string): string[] {
-    return [...fileData.map((file) => file.fullName).filter(isString), nameField];
-  }
-
-  /**
    * Takes JSON representation of CLI varargs and converts them to xml with help
    * from helper.getFieldTemplate
    *
@@ -157,6 +134,27 @@ export class CreateUtil {
   }
 }
 
+/**
+ * Filenames should have the suffix of '__mdt'. This will append that suffix if it does not exist.
+ *
+ * @param  typename Name of file
+ */
+export const appendDirectorySuffix = (typename: string): string =>
+  typename.endsWith('__mdt') ? typename : `${typename}__mdt`;
+
+/**
+ * Goes through the file data that has been genreated and gets all of the field names and adds the
+ * name of the field that is used as the label for metadata record
+ *
+ * @param  fileData Array of objects based on metadata type xml
+ * @param  nameField name of the column that is going to be used for the name of the metadata record
+ * @return [] Array of field names
+ */
+// eslint-disable-next-line class-methods-use-this
+export const getFieldNames = (fileData: CustomField[], nameField: string): string[] => [
+  ...fileData.map((file) => file.fullName).filter(isString),
+  nameField,
+];
 /**
  * Get the number type based on the scale.
  * If the scale === 0, it is an int, otherwise it is a double.

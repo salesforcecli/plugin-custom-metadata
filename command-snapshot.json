@@ -15,7 +15,7 @@
     "command": "force:cmdt:generate",
     "plugin": "@salesforce/plugin-custom-metadata",
     "flags": [
-      "apiversion",
+      "api-version",
       "devname",
       "ignoreunsupported",
       "json",
@@ -24,7 +24,7 @@
       "plurallabel",
       "recordsoutputdir",
       "sobjectname",
-      "targetusername",
+      "target-org",
       "typeoutputdir",
       "visibility"
     ],

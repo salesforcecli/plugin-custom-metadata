@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { expect } from '@salesforce/command/lib/test';
+import { expect } from 'chai';
 import { SfError } from '@salesforce/core';
 import {
   validateAPIName,
@@ -37,7 +37,7 @@ describe('validationUtil', () => {
     });
     it('should not be more than 40 characters', () => {
       try {
-        validateAPIName('I_Have_More_Than_The_fourty_Characters_Allowed');
+        validateAPIName('I_Have_More_Than_The_forty_Characters_Allowed');
         throw new Error('did not throw');
       } catch (e) {
         expect(e instanceof SfError).to.be.true;
@@ -65,7 +65,7 @@ describe('validationUtil', () => {
     });
     it('should not be more than 40 characters', () => {
       try {
-        validateMetadataTypeName('I_Have_More_Than_The_fourty_Characters_Allowed');
+        validateMetadataTypeName('I_Have_More_Than_The_forty_Characters_Allowed');
         throw new Error('did not throw');
       } catch (e) {
         expect(e instanceof SfError).to.be.true;
@@ -87,7 +87,7 @@ describe('validationUtil', () => {
       expect(isValidMetadataRecordName('Torch__mdt')).to.be.false;
     });
     it('should not be more than 40 characters', () => {
-      expect(isValidMetadataRecordName('I_Have_More_Than_The_fourty_Characters_Allowed')).to.be.false;
+      expect(isValidMetadataRecordName('I_Have_More_Than_The_forty_Characters_Allowed')).to.be.false;
     });
   });
 });

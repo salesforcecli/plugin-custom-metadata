@@ -8,7 +8,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-import { expect } from '@salesforce/command/lib/test';
+import { strict as assert } from 'assert';
+import { expect } from 'chai';
 import { Templates } from '../../src/lib/templates/templates';
 
 describe('Templates', () => {
@@ -204,6 +205,7 @@ describe('Templates', () => {
       try {
         templates.createFieldXML(data, false);
       } catch (ex) {
+        assert(ex instanceof Error);
         expect(ex.message).to.contain("'Html' is not a valid field type.");
       }
     });
@@ -253,33 +255,33 @@ describe('Templates', () => {
   describe('createDefaultTypeStructure', () => {
     let struct: any;
     it('should return Checkbox structure', () => {
-      struct = templates.createDefaultTypeStructure('Checkbox', 'Checkbox', 'test', null);
+      struct = templates.createDefaultTypeStructure('Checkbox', 'Checkbox', 'test');
       expect(struct.fullName).to.equal('Checkbox');
       expect(struct.type).to.equal('Checkbox');
       expect(struct.label).to.equal('test');
       expect(struct.defaultValue).to.equal('false');
     });
     it('should return Date structure', () => {
-      struct = templates.createDefaultTypeStructure('Date', 'Date', 'test', null);
+      struct = templates.createDefaultTypeStructure('Date', 'Date', 'test');
       expect(struct.fullName).to.equal('Date');
       expect(struct.type).to.equal('Date');
       expect(struct.label).to.equal('test');
     });
     it('should return DateTime structure', () => {
-      struct = templates.createDefaultTypeStructure('DateTime', 'DateTime', 'test', null);
+      struct = templates.createDefaultTypeStructure('DateTime', 'DateTime', 'test');
       expect(struct.fullName).to.equal('DateTime');
       expect(struct.type).to.equal('DateTime');
       expect(struct.label).to.equal('test');
     });
     it('should return Email structure', () => {
-      struct = templates.createDefaultTypeStructure('Email', 'Email', 'test', null);
+      struct = templates.createDefaultTypeStructure('Email', 'Email', 'test');
       expect(struct.fullName).to.equal('Email');
       expect(struct.type).to.equal('Email');
       expect(struct.label).to.equal('test');
       expect(struct.unique).to.equal(false);
     });
     it('should return Number structure', () => {
-      struct = templates.createDefaultTypeStructure('Number', 'Number', 'test', null);
+      struct = templates.createDefaultTypeStructure('Number', 'Number', 'test');
       expect(struct.fullName).to.equal('Number');
       expect(struct.type).to.equal('Number');
       expect(struct.label).to.equal('test');
@@ -288,7 +290,7 @@ describe('Templates', () => {
       expect(struct.unique).to.equal(false);
     });
     it('should return Percent structure', () => {
-      struct = templates.createDefaultTypeStructure('Percent', 'Percent', 'test', null);
+      struct = templates.createDefaultTypeStructure('Percent', 'Percent', 'test');
       expect(struct.fullName).to.equal('Percent');
       expect(struct.type).to.equal('Percent');
       expect(struct.label).to.equal('test');
@@ -296,7 +298,7 @@ describe('Templates', () => {
       expect(struct.scale).to.equal(0);
     });
     it('should return Phone structure', () => {
-      struct = templates.createDefaultTypeStructure('Phone', 'Phone', 'test', null);
+      struct = templates.createDefaultTypeStructure('Phone', 'Phone', 'test');
       expect(struct.fullName).to.equal('Phone');
       expect(struct.type).to.equal('Phone');
       expect(struct.label).to.equal('test');
@@ -311,13 +313,13 @@ describe('Templates', () => {
       expect(struct.valueSet.valueSetDefinition.value[0].label).to.equal('value1');
     });
     it('should return Phone structure', () => {
-      struct = templates.createDefaultTypeStructure('Phone', 'Phone', 'test', null);
+      struct = templates.createDefaultTypeStructure('Phone', 'Phone', 'test');
       expect(struct.fullName).to.equal('Phone');
       expect(struct.type).to.equal('Phone');
       expect(struct.label).to.equal('test');
     });
     it('should return Text structure', () => {
-      struct = templates.createDefaultTypeStructure('Text', 'Text', 'test', null);
+      struct = templates.createDefaultTypeStructure('Text', 'Text', 'test');
       expect(struct.fullName).to.equal('Text');
       expect(struct.type).to.equal('Text');
       expect(struct.label).to.equal('test');
@@ -325,13 +327,13 @@ describe('Templates', () => {
       expect(struct.length).to.equal(100);
     });
     it('should return TextArea structure', () => {
-      struct = templates.createDefaultTypeStructure('TextArea', 'TextArea', 'test', null);
+      struct = templates.createDefaultTypeStructure('TextArea', 'TextArea', 'test');
       expect(struct.fullName).to.equal('TextArea');
       expect(struct.type).to.equal('TextArea');
       expect(struct.label).to.equal('test');
     });
     it('should return LongTextArea structure', () => {
-      struct = templates.createDefaultTypeStructure('LongTextArea', 'LongTextArea', 'test', null);
+      struct = templates.createDefaultTypeStructure('LongTextArea', 'LongTextArea', 'test');
       expect(struct.fullName).to.equal('LongTextArea');
       expect(struct.type).to.equal('LongTextArea');
       expect(struct.label).to.equal('test');
@@ -339,13 +341,13 @@ describe('Templates', () => {
       expect(struct.visibleLines).to.equal(3);
     });
     it('should return Url structure', () => {
-      struct = templates.createDefaultTypeStructure('Url', 'Url', 'test', null);
+      struct = templates.createDefaultTypeStructure('Url', 'Url', 'test');
       expect(struct.fullName).to.equal('Url');
       expect(struct.type).to.equal('Url');
       expect(struct.label).to.equal('test');
     });
     it('should return Default structure', () => {
-      struct = templates.createDefaultTypeStructure('DefaultA', 'DefaultB', 'DefaultC', null);
+      struct = templates.createDefaultTypeStructure('DefaultA', 'DefaultB', 'DefaultC');
       expect(struct.fullName).to.equal('DefaultA');
       expect(struct.type).to.equal('DefaultB');
       expect(struct.label).to.equal('DefaultC');

@@ -7,7 +7,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import { expect } from '@salesforce/command/lib/test';
+import { expect } from 'chai';
 import { FileWriter } from '../../src/lib/helpers/fileWriter';
 
 describe('FileWriter', () => {

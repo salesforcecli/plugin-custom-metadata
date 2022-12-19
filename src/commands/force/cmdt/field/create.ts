@@ -5,17 +5,13 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import * as fs from 'fs';
-import { arrayWithDeprecation, Flags, SfCommand } from '@salesforce/sf-plugins-core';
+import { arrayWithDeprecation, Flags, loglevel, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages, SfError } from '@salesforce/core';
 import { FileWriter } from '../../../../lib/helpers/fileWriter';
 import { validateAPIName } from '../../../../lib/helpers/validationUtil';
 import { Templates } from '../../../../lib/templates/templates';
 
-// Initialize Messages with the current plugin directory
 Messages.importMessagesDirectory(__dirname);
-
-// Load the specific messages for this file. Messages from @salesforce/command, @salesforce/core,
-// or any library that is using the messages framework can also be loaded this way.
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'createField');
 
 interface CmdtFieldCreateResponse {
@@ -40,6 +36,7 @@ export default class Create extends SfCommand<CmdtFieldCreateResponse> {
   public static readonly requiresProject = true;
 
   public static flags = {
+    loglevel,
     fieldname: Flags.string({
       char: 'n',
       required: true,
@@ -48,11 +45,11 @@ export default class Create extends SfCommand<CmdtFieldCreateResponse> {
       parse: async (input: string) =>
         Promise.resolve(validateAPIName(input, messages.getMessage('invalidCustomFieldError', [input]))),
     }),
-    fieldtype: Flags.enum({
+    fieldtype: Flags.string({
       char: 'f',
       required: true,
       summary: messages.getMessage('fieldTypeDescription'),
-      description: messages.getMessage('nameFlagLongDescription'),
+      description: messages.getMessage('fieldTypeLongDescription'),
       options: [
         'Checkbox',
         'Date',

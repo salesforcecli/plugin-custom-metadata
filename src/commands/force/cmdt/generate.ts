@@ -8,6 +8,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import {
   Flags,
+  loglevel,
   orgApiVersionFlagWithDeprecations,
   requiredOrgFlagWithDeprecations,
   SfCommand,
@@ -25,11 +26,7 @@ import {
 } from '../../../lib/helpers/validationUtil';
 import { Templates } from '../../../lib/templates/templates';
 
-// Initialize Messages with the current plugin directory
 Messages.importMessagesDirectory(__dirname);
-
-// Load the specific messages for this file. Messages from @salesforce/command, @salesforce/core,
-// or any library that is using the messages framework can also be loaded this way.
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'generate');
 
 interface CmdtGenerateResponse {
@@ -72,6 +69,7 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
     'api-version': orgApiVersionFlagWithDeprecations,
+    loglevel,
     // flag with a value (-n, --name=VALUE)
     devname: Flags.string({
       char: 'n',
@@ -90,7 +88,7 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
       summary: messages.getMessage('plurallabelFlagDescription'),
       description: messages.getMessage('plurallabelFlagLongDescription'),
     }),
-    visibility: Flags.enum({
+    visibility: Flags.string({
       char: 'v',
       summary: messages.getMessage('visibilityFlagDescription'),
       description: messages.getMessage('visibilityFlagLongDescription'),
