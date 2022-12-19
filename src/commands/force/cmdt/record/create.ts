@@ -6,8 +6,8 @@
  */
 import * as fs from 'fs';
 import * as path from 'path';
-import { flags, SfdxCommand } from '@salesforce/command';
-import { Messages, SfError } from '@salesforce/core';
+import { Flags, parseVarArgs, SfCommand } from '@salesforce/sf-plugins-core';
+import { Messages } from '@salesforce/core';
 import { CustomField } from 'jsforce/api/metadata';
 import { CreateUtil } from '../../../../lib/helpers/createUtil';
 import {
@@ -33,9 +33,10 @@ interface CmdtRecordCreateResponse {
   varargs: Record<string, unknown>;
   fileData: CustomField[];
 }
-export default class Create extends SfdxCommand {
-  public static description = messages.getMessage('commandDescription');
-  public static longDescription = messages.getMessage('commandLongDescription');
+export default class Create extends SfCommand<CmdtRecordCreateResponse> {
+  public static readonly summary = messages.getMessage('commandDescription');
+  public static readonly description = messages.getMessage('commandLongDescription');
+  public static readonly requiresProject = true;
 
   public static examples = [
     messages.getMessage('exampleCaption1'),
@@ -47,116 +48,96 @@ export default class Create extends SfdxCommand {
       '--protected true My_Custom_Field_1=Foo My_Custom_Field_2=Bar',
   ];
 
-  protected static flagsConfig = {
-    typename: flags.string({
+  public static flags = {
+    typename: Flags.string({
       char: 't',
-      description: messages.getMessage('typenameFlagDescription'),
-      longDescription: messages.getMessage('typenameFlagLongDescription'),
+      summary: messages.getMessage('typenameFlagDescription'),
+      description: messages.getMessage('typenameFlagLongDescription'),
       required: true,
       parse: async (input) => Promise.resolve(validateMetadataTypeName(input)),
     }),
-    recordname: flags.string({
+    recordname: Flags.string({
       char: 'n',
-      description: messages.getMessage('recordNameFlagDescription'),
-      longDescription: messages.getMessage('recordNameFlagLongDescription'),
+      summary: messages.getMessage('recordNameFlagDescription'),
+      description: messages.getMessage('recordNameFlagLongDescription'),
       required: true,
       parse: async (input) => Promise.resolve(validateMetadataRecordName(input)),
     }),
-    label: flags.string({
+    label: Flags.string({
       char: 'l',
-      description: messages.getMessage('labelFlagDescription'),
-      longDescription: messages.getMessage('labelFlagLongDescription'),
+      summary: messages.getMessage('labelFlagDescription'),
+      description: messages.getMessage('labelFlagLongDescription'),
       parse: async (input) =>
         Promise.resolve(validateLessThanForty(input, messages.getMessage('notAValidLabelNameError', [input]))),
     }),
-    protected: flags.string({
+    protected: Flags.string({
       char: 'p',
-      description: messages.getMessage('protectedFlagDescription'),
-      longDescription: messages.getMessage('protectedFlagLongDescription'),
+      summary: messages.getMessage('protectedFlagDescription'),
+      description: messages.getMessage('protectedFlagLongDescription'),
       options: ['true', 'false'],
       default: 'false',
     }),
-    inputdir: flags.directory({
+    inputdir: Flags.directory({
       char: 'i',
-      description: messages.getMessage('inputDirectoryFlagDescription'),
-      longDescription: messages.getMessage('inputDirectoryFlagLongDescription'),
+      summary: messages.getMessage('inputDirectoryFlagDescription'),
+      description: messages.getMessage('inputDirectoryFlagLongDescription'),
       default: path.join('force-app', 'main', 'default', 'objects'),
     }),
-    outputdir: flags.directory({
+    outputdir: Flags.directory({
       char: 'd',
-      description: messages.getMessage('outputDirectoryFlagDescription'),
-      longDescription: messages.getMessage('outputDirectoryFlagLongDescription'),
+      summary: messages.getMessage('outputDirectoryFlagDescription'),
+      description: messages.getMessage('outputDirectoryFlagLongDescription'),
       default: path.join('force-app', 'main', 'default', 'customMetadata'),
     }),
   };
 
-  protected static varargs = {
-    required: false,
-    validator: (name: string): void => {
-      // only custom fields allowed
-      if (!name.endsWith('__c')) {
-        const errMsg = `Invalid parameter [${name}] found`;
-        const errName = 'InvalidVarargName';
-        const errAction = messages.getMessage('errorInvalidCustomField');
-        throw new SfError(errMsg, errName, [errAction]);
-      }
-    },
-  };
-
-  protected static requiresProject = true;
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   public async run(): Promise<CmdtRecordCreateResponse> {
-    try {
-      const createUtil = new CreateUtil();
-      let typename = this.flags.typename as string;
-      const recordname = this.flags.recordname as string;
-      const label = (this.flags.label as string) ?? recordname;
-      const protectedFlag = (this.flags.protected as string) === 'true';
-      const inputdir = this.flags.inputdir as string;
-      const outputdir = this.flags.outputdir as string;
-      const dirName = createUtil.appendDirectorySuffix(typename);
-      const fieldDirPath = path.join(inputdir, dirName, 'fields');
-      const fileNames = await fs.promises.readdir(fieldDirPath);
+    const { flags, args, argv } = await this.parse(Create);
+    const varargs = parseVarArgs(args, argv);
+    const createUtil = new CreateUtil();
+    let typename = flags.typename;
+    const recordname = flags.recordname;
+    const label = flags.label ?? recordname;
+    const protectedFlag = flags.protected === 'true';
+    const inputdir = flags.inputdir;
+    const outputdir = flags.outputdir;
+    const dirName = createUtil.appendDirectorySuffix(typename);
+    const fieldDirPath = path.join(inputdir, dirName, 'fields');
+    const fileNames = await fs.promises.readdir(fieldDirPath);
 
-      // forgive them if they passed in type__mdt, and cut off the __mdt
-      if (typename.endsWith('__mdt')) {
-        typename = typename.substring(0, typename.indexOf('__mdt'));
-      }
-
-      // if customMetadata folder does not exist, create it
-      await fs.promises.mkdir(outputdir, { recursive: true });
-
-      const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
-
-      await createUtil.createRecord({
-        typename,
-        recordname,
-        label,
-        inputdir,
-        outputdir,
-        protected: protectedFlag,
-        varargs: this.varargs,
-        fileData,
-      });
-
-      this.ux.log(messages.getMessage('successResponse', [typename, recordname, label, protectedFlag, outputdir]));
-
-      // Return an object to be displayed with --json
-      return {
-        typename,
-        recordname,
-        label,
-        inputdir,
-        outputdir,
-        protectedFlag,
-        varargs: this.varargs,
-        fileData,
-      };
-    } catch (err) {
-      if (err instanceof Error) {
-        this.ux.log(err.message);
-      }
+    // forgive them if they passed in type__mdt, and cut off the __mdt
+    if (typename.endsWith('__mdt')) {
+      typename = typename.substring(0, typename.indexOf('__mdt'));
     }
+
+    // if customMetadata folder does not exist, create it
+    await fs.promises.mkdir(outputdir, { recursive: true });
+
+    const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
+
+    await createUtil.createRecord({
+      typename,
+      recordname,
+      label,
+      inputdir,
+      outputdir,
+      protected: protectedFlag,
+      varargs,
+      fileData,
+    });
+
+    this.log(messages.getMessage('successResponse', [typename, recordname, label, protectedFlag, outputdir]));
+
+    // Return an object to be displayed with --json
+    return {
+      typename,
+      recordname,
+      label,
+      inputdir,
+      outputdir,
+      protectedFlag,
+      varargs,
+      fileData,
+    };
   }
 }

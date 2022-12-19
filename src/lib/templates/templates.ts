@@ -70,7 +70,7 @@ export class Templates {
     fullName: string,
     type: string,
     label: string,
-    picklistValues: string[],
+    picklistValues: string[] = [],
     decimalplaces = 0
   ): CustomField {
     const precision = 18 - decimalplaces;
@@ -112,7 +112,7 @@ export class Templates {
     }
   }
 
-  public canConvert(type: string): boolean {
+  public canConvert(type: string | undefined | null): boolean {
     const metadataFieldTypes = [
       'Checkbox',
       'Date',
@@ -127,7 +127,7 @@ export class Templates {
       'LongTextArea',
       'Url',
     ];
-    return metadataFieldTypes.includes(type);
+    return typeof type === 'string' && metadataFieldTypes.includes(type);
   }
 
   private getType(data: CustomField, defaultToMetadataType: boolean): string {
@@ -157,7 +157,7 @@ export class Templates {
   }
 
   private getFullName(data: CustomField): string {
-    const name = data.fullName.endsWith('__c') ? data.fullName : data.fullName + '__c';
+    const name = data.fullName?.endsWith('__c') ? data.fullName : `${data.fullName}__c`;
     return `\t<fullName>${name}</fullName>\n`;
   }
 
@@ -170,7 +170,7 @@ export class Templates {
   }
 
   private getFieldManageability(data: CustomField): string {
-    return `\t<fieldManageability>${data.fieldManageability || 'DeveloperControlled'}</fieldManageability>\n`;
+    return `\t<fieldManageability>${data.fieldManageability ?? 'DeveloperControlled'}</fieldManageability>\n`;
   }
 
   private getInlineHelpText(data: CustomField): string {
@@ -228,10 +228,10 @@ export class Templates {
     let fieldValue = '';
     if (data.valueSet) {
       fieldValue += '\t<valueSet>\n';
-      fieldValue += `\t\t<restricted>${data.valueSet.restricted || false}</restricted>\n`;
+      fieldValue += `\t\t<restricted>${data.valueSet.restricted ?? false}</restricted>\n`;
       fieldValue += '\t\t<valueSetDefinition>\n';
-      fieldValue += `\t\t\t<sorted>${data.valueSet.valueSetDefinition.sorted || false}</sorted>\n`;
-      data.valueSet.valueSetDefinition.value.forEach((value) => {
+      fieldValue += `\t\t\t<sorted>${data.valueSet.valueSetDefinition?.sorted ?? false}</sorted>\n`;
+      data.valueSet.valueSetDefinition?.value.forEach((value) => {
         fieldValue += '\t\t\t<value>\n';
         fieldValue += `\t\t\t\t<fullName>${value.fullName}</fullName>\n`;
         fieldValue += `\t\t\t\t<default>${value.default || false}</default>\n`;

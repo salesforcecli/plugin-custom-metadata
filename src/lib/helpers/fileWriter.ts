@@ -58,11 +58,11 @@ export class FileWriter {
   public async writeFieldFile(
     corefs = fs,
     dir: string,
-    fieldName: string,
+    fieldName: string | undefined | null,
     fieldXML: string
   ): Promise<FileWriterResult> {
     // appending __c if its not already there
-    if (fieldName.endsWith('__c') === false) {
+    if (fieldName?.endsWith('__c') === false) {
       fieldName += '__c';
     }
     const outputFilePath = path.join(removeTrailingSlash(dir), 'fields');

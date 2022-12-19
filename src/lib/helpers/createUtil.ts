@@ -8,6 +8,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { CustomField } from 'jsforce/api/metadata';
 import { XMLParser } from 'fast-xml-parser';
+import { isString } from '@salesforce/ts-types';
 import { CreateConfig } from '../interfaces/createConfig';
 import { Templates } from '../templates/templates';
 
@@ -15,18 +16,18 @@ interface CustomFieldFile {
   CustomField: CustomField;
 }
 
-const fieldTypeMap = {
-  Checkbox: 'boolean',
-  Date: 'date',
-  DateTime: 'dateTime',
-  Email: 'string',
-  Phone: 'string',
-  Picklist: 'string',
-  Text: 'string',
-  TextArea: 'string',
-  LongTextArea: 'string',
-  Url: 'string',
-};
+const fieldTypeMap = new Map<string, string>([
+  ['Checkbox', 'boolean'],
+  ['Date', 'date'],
+  ['DateTime', 'dateTime'],
+  ['Email', 'string'],
+  ['Phone', 'string'],
+  ['Picklist', 'string'],
+  ['Text', 'string'],
+  ['TextArea', 'string'],
+  ['LongTextArea', 'string'],
+  ['Url', 'string'],
+]);
 // NOTE: the template string indentation is important to output well-formatted XML. Altering that whitespace will change the whitespace of the output.
 export class CreateUtil {
   /**
@@ -93,9 +94,14 @@ export class CreateUtil {
   // eslint-disable-next-line class-methods-use-this
   public getFieldPrimitiveType(fileData: CustomField[] = [], fieldName?: string): string {
     const matchingFile = fileData.find((file) => file.fullName === fieldName);
-    return matchingFile && ['Number', 'Percent'].includes(matchingFile.type)
-      ? getNumberType(matchingFile.type, matchingFile.scale)
-      : (fieldTypeMap[matchingFile?.type] as string) ?? 'string';
+
+    if (matchingFile && typeof matchingFile.type === 'string' && ['Number', 'Percent'].includes(matchingFile.type)) {
+      return getNumberType(matchingFile.type, matchingFile.scale);
+    }
+    if (matchingFile && typeof matchingFile.type === 'string') {
+      return fieldTypeMap.get(matchingFile.type) ?? 'string';
+    }
+    return 'string';
   }
 
   /**
@@ -120,7 +126,7 @@ export class CreateUtil {
    */
   // eslint-disable-next-line class-methods-use-this
   public getFieldNames(fileData: CustomField[], nameField: string): string[] {
-    return [...fileData.map((file) => file.fullName), nameField];
+    return [...fileData.map((file) => file.fullName).filter(isString), nameField];
   }
 
   /**
@@ -132,9 +138,9 @@ export class CreateUtil {
    * @return {string} String representation of XML
    */
   private buildCustomFieldXml(
-    fileData: CustomField[],
-    cliParams: Record<string, string>,
-    ignoreFields: boolean
+    fileData: CustomField[] = [],
+    cliParams: Record<string, string> = {},
+    ignoreFields = false
   ): string {
     let ret = '';
     const templates = new Templates();
@@ -159,7 +165,7 @@ export class CreateUtil {
  * @param  scale 0 or another number
  * @return {string} int or double
  */
-const getNumberType = (type: string, scale: number): 'int' | 'double' =>
+const getNumberType = (type: string, scale: number | null | undefined): 'int' | 'double' =>
   ['Number', 'Percent'].includes(type) && scale === 0 ? 'int' : 'double';
 
 /**
@@ -190,7 +196,7 @@ const getFieldTemplate = (fieldName: string, val: string, type: string): string 
  * @param  values Template string representation of values
  * @return {string} String representation of XML
  */
-const getRecordTemplate = (label: string, protection: boolean, values: string): string =>
+const getRecordTemplate = (label: string, protection = false, values: string): string =>
   `
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">

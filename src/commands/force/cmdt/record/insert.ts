@@ -6,7 +6,7 @@
  */
 import * as fs from 'fs';
 import * as path from 'path';
-import { flags, SfdxCommand } from '@salesforce/command';
+import { Flags, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages, SfError } from '@salesforce/core';
 import { Record } from 'jsforce';
 import * as csv from '../../../../../csvtojson';
@@ -16,9 +16,10 @@ import { CreateConfig } from '../../../../lib/interfaces/createConfig';
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'insertRecord');
 
-export default class Insert extends SfdxCommand {
-  public static description = messages.getMessage('commandDescription');
-  public static longDescription = messages.getMessage('commandLongDescription');
+export default class Insert extends SfCommand<CreateConfig[]> {
+  public static readonly summary = messages.getMessage('commandDescription');
+  public static readonly description = messages.getMessage('commandLongDescription');
+  public static readonly requiresProject = true;
 
   public static examples = [
     messages.getMessage('exampleCaption1'),
@@ -29,52 +30,50 @@ export default class Insert extends SfdxCommand {
       '" --namecolumn "PrimaryKey"',
   ];
 
-  protected static flagsConfig = {
-    filepath: flags.string({
+  public static flags = {
+    filepath: Flags.string({
       char: 'f',
-      description: messages.getMessage('filepathFlagDescription'),
-      longDescription: messages.getMessage('filepathFlagLongDescription'),
+      summary: messages.getMessage('filepathFlagDescription'),
+      description: messages.getMessage('filepathFlagLongDescription'),
       required: true,
     }),
-    typename: flags.string({
+    typename: Flags.string({
       char: 't',
-      description: messages.getMessage('typenameFlagDescription'),
-      longDescription: messages.getMessage('typenameFlagLongDescription'),
+      summary: messages.getMessage('typenameFlagDescription'),
+      description: messages.getMessage('typenameFlagLongDescription'),
       required: true,
     }),
-    inputdir: flags.directory({
+    inputdir: Flags.directory({
       char: 'i',
-      description: messages.getMessage('inputDirectoryFlagDescription'),
-      longDescription: messages.getMessage('inputDirectoryFlagLongDescription'),
+      summary: messages.getMessage('inputDirectoryFlagDescription'),
+      description: messages.getMessage('inputDirectoryFlagLongDescription'),
       default: path.join('force-app', 'main', 'default', 'objects'),
     }),
-    outputdir: flags.directory({
+    outputdir: Flags.directory({
       char: 'd',
-      description: messages.getMessage('outputDirectoryFlagDescription'),
-      longDescription: messages.getMessage('outputDirectoryFlagLongDescription'),
+      summary: messages.getMessage('outputDirectoryFlagDescription'),
+      description: messages.getMessage('outputDirectoryFlagLongDescription'),
       default: path.join('force-app', 'main', 'default', 'customMetadata'),
     }),
-    namecolumn: flags.string({
+    namecolumn: Flags.string({
       char: 'n',
-      description: messages.getMessage('namecolumnFlagDescription'),
-      longDescription: messages.getMessage('namecolumnFlagLongDescription'),
+      summary: messages.getMessage('namecolumnFlagDescription'),
+      description: messages.getMessage('namecolumnFlagLongDescription'),
       default: 'Name',
     }),
   };
 
-  protected static requiresProject = true;
-
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public async run(): Promise<CreateConfig[]> {
+    const { flags } = await this.parse(Insert);
     const createUtil = new CreateUtil();
-    const filepath = this.flags.filepath as string;
-    let typename = this.flags.typename as string;
-    const inputdir = this.flags.inputdir as string;
-    const outputdir = this.flags.outputdir as string;
+    let typename = flags.typename;
+    const inputdir = flags.inputdir;
+    const outputdir = flags.outputdir;
     const dirName = createUtil.appendDirectorySuffix(typename);
     const fieldDirPath = path.join(inputdir, dirName, 'fields');
     const fileNames = await fs.promises.readdir(fieldDirPath);
-    const nameField = this.flags.namecolumn as string;
+    const nameField = flags.namecolumn;
 
     // forgive them if they passed in type__mdt, and cut off the __mdt
     if (typename.endsWith('__mdt')) {
@@ -85,7 +84,7 @@ export default class Insert extends SfdxCommand {
     await fs.promises.mkdir(outputdir, { recursive: true });
 
     const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
-    const csvDataAry = (await csv().fromFile(filepath)) as Record[];
+    const csvDataAry = (await csv().fromFile(flags.filepath)) as Record[];
 
     const metadataTypeFields = createUtil.getFieldNames(fileData, nameField);
     if (csvDataAry.length > 0) {
@@ -111,14 +110,20 @@ export default class Insert extends SfdxCommand {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         varargs: Object.fromEntries(
           // TODO: throw an error if any of the fields in the csvDataAry do not exist in the fileData
-          fileData.map((file) => (record[file.fullName] ? [file.fullName, record[file.fullName]] : []))
+          fileData.map((file) => {
+            if (file.fullName) {
+              return record[file.fullName] ? [file.fullName, record[file.fullName]] : [];
+            } else {
+              throw new SfError('No fullName found in fileData');
+            }
+          })
         ),
         fileData,
       })
     );
     await Promise.all(recordConfigs.map((r) => createUtil.createRecord(r)));
 
-    this.ux.log(messages.getMessage('successResponse', [filepath, outputdir]));
+    this.log(messages.getMessage('successResponse', [flags.filepath, outputdir]));
 
     return recordConfigs;
   }

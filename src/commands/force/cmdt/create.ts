@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import * as fs from 'fs';
-import { flags, SfdxCommand } from '@salesforce/command';
+import { Flags, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
 import { FileWriter } from '../../../lib/helpers/fileWriter';
 import { validateMetadataTypeName, validateLessThanForty } from '../../../lib/helpers/validationUtil';
@@ -24,9 +24,9 @@ interface CmdtCreateResponse {
   pluralLabel: string;
   visibility: string;
 }
-export default class Create extends SfdxCommand {
-  public static description = messages.getMessage('commandDescription');
-  public static longDescription = messages.getMessage('commandLongDescription');
+export default class Create extends SfCommand<CmdtCreateResponse> {
+  public static readonly summary = messages.getMessage('commandDescription');
+  public static readonly description = messages.getMessage('commandLongDescription');
 
   public static examples = [
     messages.getMessage('exampleCaption1'),
@@ -41,60 +41,60 @@ export default class Create extends SfdxCommand {
   ];
 
   public static args = [{ name: 'file' }];
+  public static requiresProject = true;
 
-  protected static flagsConfig = {
-    typename: flags.string({
+  public static flags = {
+    typename: Flags.string({
       char: 'n',
-      description: messages.getMessage('nameFlagDescription'),
-      longDescription: messages.getMessage('nameFlagLongDescription'),
+      summary: messages.getMessage('nameFlagDescription'),
+      description: messages.getMessage('nameFlagLongDescription'),
       required: true,
       parse: async (input: string) => Promise.resolve(validateMetadataTypeName(input)),
     }),
-    label: flags.string({
+    label: Flags.string({
       char: 'l',
-      description: messages.getMessage('labelFlagDescription'),
-      longDescription: messages.getMessage('labelFlagLongDescription'),
+      summary: messages.getMessage('labelFlagDescription'),
+      description: messages.getMessage('labelFlagLongDescription'),
       parse: async (input) =>
         Promise.resolve(validateLessThanForty(input, messages.getMessage('errorNotValidLabelName', [input]))),
     }),
-    plurallabel: flags.string({
+    plurallabel: Flags.string({
       char: 'p',
-      description: messages.getMessage('plurallabelFlagDescription'),
-      longDescription: messages.getMessage('plurallabelFlagLongDescription'),
+      summary: messages.getMessage('plurallabelFlagDescription'),
+      description: messages.getMessage('plurallabelFlagLongDescription'),
       parse: async (input) =>
         Promise.resolve(validateLessThanForty(input, messages.getMessage('errorNotValidPluralLabelName', [input]))),
     }),
-    visibility: flags.enum({
+    visibility: Flags.enum({
       char: 'v',
-      description: messages.getMessage('visibilityFlagDescription'),
-      longDescription: messages.getMessage('visibilityFlagLongDescription'),
+      summary: messages.getMessage('visibilityFlagDescription'),
+      description: messages.getMessage('visibilityFlagLongDescription'),
       options: ['PackageProtected', 'Protected', 'Public'],
       default: 'Public',
     }),
-    outputdir: flags.directory({
+    outputdir: Flags.directory({
       char: 'd',
-      description: messages.getMessage('outputDirectoryFlagDescription'),
-      longDescription: messages.getMessage('outputDirectoryFlagLongDescription'),
+      summary: messages.getMessage('outputDirectoryFlagDescription'),
+      description: messages.getMessage('outputDirectoryFlagLongDescription'),
       default: '',
     }),
   };
 
-  protected static requiresProject = true;
-
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public async run(): Promise<CmdtCreateResponse> {
-    const typename = this.flags.typename as string; // this should become the new file name
-    const label = (this.flags.label as string) ?? typename.replace('__mdt', ''); // If a label is not provided default using the dev name. trim __mdt out
-    const visibility = this.flags.visibility as string;
-    const pluralLabel = (this.flags.plurallabel as string) ?? label;
+    const { flags } = await this.parse(Create);
+    const typename = flags.typename; // this should become the new file name
+    const label = (flags.label as string) ?? typename.replace('__mdt', ''); // If a label is not provided default using the dev name. trim __mdt out
+    const visibility = flags.visibility;
+    const pluralLabel = (flags.plurallabel as string) ?? label;
     const templates = new Templates();
     const fileWriter = new FileWriter();
 
     const objectXML = templates.createObjectXML({ label, pluralLabel }, visibility);
-    const saveResults = await fileWriter.writeTypeFile(fs, this.flags.outputdir as string, typename, objectXML);
+    const saveResults = await fileWriter.writeTypeFile(fs, flags.outputdir, typename, objectXML);
 
-    this.ux.log(messages.getMessage('targetDirectory', [saveResults.dir]));
-    this.ux.log(messages.getMessage(saveResults.updated ? 'fileUpdate' : 'fileCreated', [saveResults.fileName]));
+    this.log(messages.getMessage('targetDirectory', [saveResults.dir]));
+    this.log(messages.getMessage(saveResults.updated ? 'fileUpdate' : 'fileCreated', [saveResults.fileName]));
 
     return {
       typename,

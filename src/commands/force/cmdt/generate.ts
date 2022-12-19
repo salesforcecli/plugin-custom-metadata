@@ -6,7 +6,12 @@
  */
 import * as fs from 'fs';
 import * as path from 'path';
-import { flags, SfdxCommand } from '@salesforce/command';
+import {
+  Flags,
+  orgApiVersionFlagWithDeprecations,
+  requiredOrgFlagWithDeprecations,
+  SfCommand,
+} from '@salesforce/sf-plugins-core';
 import { SfError, Messages } from '@salesforce/core';
 import { isEmpty } from '@salesforce/kit';
 import { CustomField, CustomObject } from 'jsforce/api/metadata';
@@ -31,9 +36,10 @@ interface CmdtGenerateResponse {
   outputDir: string;
   recordsOutputDir: string;
 }
-export default class Generate extends SfdxCommand {
-  public static description = messages.getMessage('commandDescription');
-  public static longDescription = messages.getMessage('commandLongDescription');
+export default class Generate extends SfCommand<CmdtGenerateResponse> {
+  public static readonly summary = messages.getMessage('commandDescription');
+  public static readonly description = messages.getMessage('commandLongDescription');
+  public static readonly requiresProject = true;
 
   public static examples = [
     messages.getMessage('exampleCaption1'),
@@ -63,100 +69,99 @@ export default class Generate extends SfdxCommand {
 
   public static args = [{ name: 'file' }];
 
-  protected static flagsConfig = {
+  public static readonly flags = {
+    'target-org': requiredOrgFlagWithDeprecations,
+    'api-version': orgApiVersionFlagWithDeprecations,
     // flag with a value (-n, --name=VALUE)
-    devname: flags.string({
+    devname: Flags.string({
       char: 'n',
       required: true,
-      description: messages.getMessage('devnameFlagDescription'),
-      longDescription: messages.getMessage('devnameFlagLongDescription'),
+      summary: messages.getMessage('devnameFlagDescription'),
+      description: messages.getMessage('devnameFlagLongDescription'),
       parse: async (input: string) => Promise.resolve(validateMetadataTypeName(input)),
     }),
-    label: flags.string({
+    label: Flags.string({
       char: 'l',
-      description: messages.getMessage('labelFlagDescription'),
-      longDescription: messages.getMessage('labelFlagLongDescription'),
+      summary: messages.getMessage('labelFlagDescription'),
+      description: messages.getMessage('labelFlagLongDescription'),
     }),
-    plurallabel: flags.string({
+    plurallabel: Flags.string({
       char: 'p',
-      description: messages.getMessage('plurallabelFlagDescription'),
-      longDescription: messages.getMessage('plurallabelFlagLongDescription'),
+      summary: messages.getMessage('plurallabelFlagDescription'),
+      description: messages.getMessage('plurallabelFlagLongDescription'),
     }),
-    visibility: flags.enum({
+    visibility: Flags.enum({
       char: 'v',
-      description: messages.getMessage('visibilityFlagDescription'),
-      longDescription: messages.getMessage('visibilityFlagLongDescription'),
+      summary: messages.getMessage('visibilityFlagDescription'),
+      description: messages.getMessage('visibilityFlagLongDescription'),
       options: ['PackageProtected', 'Protected', 'Public'],
       default: 'Public',
     }),
-    sobjectname: flags.string({
+    sobjectname: Flags.string({
       char: 's',
       required: true,
-      description: messages.getMessage('sobjectnameFlagDescription'),
-      longDescription: messages.getMessage('sobjectnameFlagLongDescription'),
+      summary: messages.getMessage('sobjectnameFlagDescription'),
+      description: messages.getMessage('sobjectnameFlagLongDescription'),
       parse: async (sobjectname: string) => Promise.resolve(validateAPIName(sobjectname)),
     }),
-    ignoreunsupported: flags.boolean({
+    ignoreunsupported: Flags.boolean({
       char: 'i',
-      description: messages.getMessage('ignoreUnsupportedFlagDescription'),
-      longDescription: messages.getMessage('ignoreUnsupportedFlagLongDescription'),
+      summary: messages.getMessage('ignoreUnsupportedFlagDescription'),
+      description: messages.getMessage('ignoreUnsupportedFlagLongDescription'),
     }),
-    typeoutputdir: flags.directory({
+    typeoutputdir: Flags.directory({
       char: 'd',
-      description: messages.getMessage('typeoutputdirFlagDescription'),
-      longDescription: messages.getMessage('typeoutputdirFlagLongDescription'),
+      summary: messages.getMessage('typeoutputdirFlagDescription'),
+      description: messages.getMessage('typeoutputdirFlagLongDescription'),
       default: path.join('force-app', 'main', 'default', 'objects'),
     }),
-    recordsoutputdir: flags.directory({
+    recordsoutputdir: Flags.directory({
       char: 'r',
-      description: messages.getMessage('recordsoutputdirFlagDescription'),
-      longDescription: messages.getMessage('recordsoutputdirFlagLongDescription'),
+      summary: messages.getMessage('recordsoutputdirFlagDescription'),
+      description: messages.getMessage('recordsoutputdirFlagLongDescription'),
       default: path.join('force-app', 'main', 'default', 'customMetadata'),
     }),
   };
 
-  protected static requiresUsername = true;
-  protected static requiresProject = true;
-
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public async run(): Promise<CmdtGenerateResponse> {
-    const conn = this.org.getConnection();
-    const objname = this.flags.sobjectname as string;
-    const devName = this.flags.devname as string;
-    const ignoreFields = this.flags.ignoreunsupported as boolean;
+    const { flags } = await this.parse(Generate);
+    const conn = flags['target-org'].getConnection(flags['api-version']);
+    const devName = flags.devname;
+    const ignoreFields = flags.ignoreunsupported;
 
     // use default target org connection to get object describe if no source is provided.
-    const describeObj = await conn.metadata.read('CustomObject', objname);
+    const describeObj = await conn.metadata.read('CustomObject', flags.sobjectname);
 
     // throw error if the object doesnot exist(empty json as response from the describe call.)
     if (isEmpty(describeObj.fields)) {
-      const errMsg = messages.getMessage('sobjectnameNoResultError', [objname]);
+      const errMsg = messages.getMessage('sobjectnameNoResultError', [flags.sobjectname]);
       throw new SfError(errMsg, 'sobjectnameNoResultError');
     }
     // check for custom setting
     if (describeObj.customSettingsType) {
-      // if custom setting check for type and visbility
+      // if custom setting check for type and visibility
       if (!validCustomSettingType(describeObj)) {
-        const errMsg = messages.getMessage('customSettingTypeError', [objname]);
+        const errMsg = messages.getMessage('customSettingTypeError', [flags.sobjectname]);
         throw new SfError(errMsg, 'customSettingTypeError');
       }
     }
 
-    const visibility = this.flags.visibility as string;
-    const label = (this.flags.label as string) ?? devName;
-    const pluralLabel = (this.flags.plurallabel as string) ?? label;
-    const outputDir = this.flags.typeoutputdir as string;
-    const recordsOutputDir = this.flags.recordsoutputdir as string;
+    const visibility = flags.visibility;
+    const label = (flags.label as string) ?? devName;
+    const pluralLabel = (flags.plurallabel as string) ?? label;
+    const outputDir = flags.typeoutputdir;
+    const recordsOutputDir = flags.recordsoutputdir;
 
     try {
-      this.ux.startSpinner('creating the CMDT object');
+      this.spinner.start('creating the CMDT object');
       // create custom metadata type
       const templates = new Templates();
       const objectXML = templates.createObjectXML({ label, pluralLabel }, visibility);
       const fileWriter = new FileWriter();
       await fileWriter.writeTypeFile(fs, outputDir, devName, objectXML);
 
-      this.ux.setSpinnerStatus('creating the CMDT fields');
+      this.spinner.status = 'creating the CMDT fields';
 
       // get all the field details before creating field metadata
       const fields = describeObjFields(describeObj)
@@ -178,7 +183,7 @@ export default class Generate extends SfdxCommand {
         )
       );
 
-      this.ux.setSpinnerStatus('creating the CMDT records');
+      this.spinner.status = 'creating the CMDT records';
       const createUtil = new CreateUtil();
       // if customMetadata folder does not exist, create it
       await fs.promises.mkdir(recordsOutputDir, { recursive: true });
@@ -207,8 +212,8 @@ export default class Generate extends SfdxCommand {
         })
       );
 
-      this.ux.stopSpinner('custom metadata type and records creation in completed');
-      this.ux.log(`Congrats! Created a ${devName} custom metadata type with ${sObjectRecords.records.length} records!`);
+      this.spinner.stop('custom metadata type and records creation in completed');
+      this.log(`Congrats! Created a ${devName} custom metadata type with ${sObjectRecords.records.length} records!`);
     } catch (e) {
       const targetDir = `${outputDir}${devName}__mdt`;
       // dir might not exist if we never got to the creation step
@@ -221,7 +226,7 @@ export default class Generate extends SfdxCommand {
           .map((f) => fs.promises.unlink(path.join(recordsOutputDir, f)))
       );
 
-      this.ux.stopSpinner('generate command failed to run');
+      this.spinner.stop('generate command failed to run');
       const errMsg = messages.getMessage('generateError', [e instanceof Error ? e.message : 'unknown error']);
       throw new SfError(errMsg, 'generateError');
     }
@@ -231,9 +236,7 @@ export default class Generate extends SfdxCommand {
 }
 
 const getSoqlQuery = (describeResult: CustomObject): string => {
-  const fieldNames = describeResult.fields
-    .map((field) => field.fullName)
-    .join(',');
+  const fieldNames = describeResult.fields.map((field) => field.fullName).join(',');
   // Added Name hardcoded as Name field is not retrieved as part of object describe.
   return `SELECT Name, ${fieldNames} FROM ${describeResult.fullName}`;
 };
