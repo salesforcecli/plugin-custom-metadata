@@ -24,7 +24,7 @@ import {
   validateMetadataTypeName,
   isValidMetadataRecordName,
 } from '../../../lib/helpers/validationUtil';
-import { Templates } from '../../../lib/templates/templates';
+import { canConvert, createObjectXML, createFieldXML } from '../../../lib/templates/templates';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'complete');
@@ -130,8 +130,7 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
     try {
       this.spinner.start('creating the CMDT object');
       // create custom metadata type
-      const templates = new Templates();
-      const objectXML = templates.createObjectXML({ label, pluralLabel }, flags.visibility);
+      const objectXML = createObjectXML({ label, pluralLabel }, flags.visibility);
       const fileWriter = new FileWriter();
       await fileWriter.writeTypeFile(fs, outputDir, flags['dev-name'], objectXML);
 
@@ -140,7 +139,7 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
       // get all the field details before creating field metadata
       const fields = describeObjFields(describeObj)
         // added type check here to skip the creation of un supported fields
-        .filter((f) => !flags['ignore-unsupported'] || templates.canConvert(f['type']))
+        .filter((f) => !flags['ignore-unsupported'] || canConvert(f['type']))
         .flatMap((f) =>
           // check for Geo Location fields before hand and create two different fields for longitude and latitude.
           f.type !== 'Location' ? [f] : convertLocationFieldToText(f)
@@ -152,7 +151,7 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
             fs,
             path.join(outputDir, `${flags['dev-name']}__mdt`),
             f.fullName,
-            templates.createFieldXML(f, !flags['ignore-unsupported'])
+            createFieldXML(f, !flags['ignore-unsupported'])
           )
         )
       );

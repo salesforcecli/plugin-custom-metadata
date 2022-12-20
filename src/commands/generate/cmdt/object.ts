@@ -9,7 +9,7 @@ import { Flags, loglevel, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
 import { FileWriter } from '../../../lib/helpers/fileWriter';
 import { validateMetadataTypeName, validateLessThanForty } from '../../../lib/helpers/validationUtil';
-import { Templates } from '../../../lib/templates/templates';
+import { createObjectXML } from '../../../lib/templates/templates';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'object');
@@ -74,10 +74,9 @@ export default class Create extends SfCommand<CmdtCreateResponse> {
     const { flags } = await this.parse(Create);
     const label = flags.label ?? flags['type-name'].replace('__mdt', ''); // If a label is not provided default using the dev name. trim __mdt out
     const pluralLabel = flags['plural-label'] ?? label;
-    const templates = new Templates();
     const fileWriter = new FileWriter();
 
-    const objectXML = templates.createObjectXML({ label, pluralLabel }, flags.visibility);
+    const objectXML = createObjectXML({ label, pluralLabel }, flags.visibility);
     const saveResults = await fileWriter.writeTypeFile(fs, flags['output-directory'], flags['type-name'], objectXML);
 
     this.log(messages.getMessage('targetDirectory', [saveResults.dir]));

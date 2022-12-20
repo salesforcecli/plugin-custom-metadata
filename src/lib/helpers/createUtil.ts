@@ -10,7 +10,7 @@ import { CustomField } from 'jsforce/api/metadata';
 import { XMLParser } from 'fast-xml-parser';
 import { isString } from '@salesforce/ts-types';
 import { CreateConfig } from '../interfaces/createConfig';
-import { Templates } from '../templates/templates';
+import { canConvert } from '../templates/templates';
 
 interface CustomFieldFile {
   CustomField: CustomField;
@@ -136,12 +136,11 @@ const buildCustomFieldXml = (
   ignoreFields = false
 ): string => {
   let ret = '';
-  const templates = new Templates();
   for (const fieldName of Object.keys(cliParams)) {
     const type = getFieldPrimitiveType(fileData, fieldName);
     const dataType = getFieldDataType(fileData, fieldName);
     // Added functionality to handle the igonre fields scenario.
-    if (templates.canConvert(dataType) || !ignoreFields) {
+    if (canConvert(dataType) || !ignoreFields) {
       ret += getFieldTemplate(fieldName, cliParams[fieldName], type);
     }
   }

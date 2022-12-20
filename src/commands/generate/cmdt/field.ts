@@ -9,10 +9,10 @@ import { arrayWithDeprecation, Flags, loglevel, SfCommand } from '@salesforce/sf
 import { Messages, SfError } from '@salesforce/core';
 import { FileWriter } from '../../../lib/helpers/fileWriter';
 import { validateAPIName } from '../../../lib/helpers/validationUtil';
-import { Templates } from '../../../lib/templates/templates';
+import { createDefaultTypeStructure, createFieldXML } from '../../../lib/templates/templates';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'createField');
+const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'field');
 
 export interface CmdtFieldCreateResponse {
   fieldName: string;
@@ -93,15 +93,14 @@ export default class Create extends SfCommand<CmdtFieldCreateResponse> {
     if (flags.type === 'Picklist' && picklistvalues?.length === 0) {
       throw new SfError(messages.getMessage('picklistValuesNotSuppliedError'));
     }
-    const templates = new Templates();
-    const data = templates.createDefaultTypeStructure(
+    const data = createDefaultTypeStructure(
       flags.name,
       flags.type,
       flags.label ?? flags.name,
       picklistvalues,
       flags['decimal-places']
     );
-    const fieldXML = templates.createFieldXML(data, false);
+    const fieldXML = createFieldXML(data, false);
     const writer = new FileWriter();
     const saveResults = await writer.writeFieldFile(fs, flags['output-directory'], flags.name, fieldXML);
 
