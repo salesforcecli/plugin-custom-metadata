@@ -9,12 +9,12 @@ import * as path from 'path';
 import { Flags, loglevel, parseVarArgs, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
 import { CustomField } from 'jsforce/api/metadata';
-import { appendDirectorySuffix, createRecord, getFileData } from '../../../../lib/helpers/createUtil';
+import { appendDirectorySuffix, createRecord, getFileData } from '../../../lib/helpers/createUtil';
 import {
   validateMetadataRecordName,
   validateMetadataTypeName,
   validateLessThanForty,
-} from '../../../../lib/helpers/validationUtil';
+} from '../../../lib/helpers/validationUtil';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'createRecord');
@@ -33,7 +33,7 @@ export default class Create extends SfCommand<CmdtRecordCreateResponse> {
   public static readonly summary = messages.getMessage('commandDescription');
   public static readonly description = messages.getMessage('commandLongDescription');
   public static readonly requiresProject = true;
-
+  public static aliases = ['force:cmdt:record:create', 'cmdt:record:create'];
   public static readonly examples = messages.getMessages('examples');
 
   public static readonly flags = {

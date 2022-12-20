@@ -7,9 +7,9 @@
 import * as fs from 'fs';
 import { arrayWithDeprecation, Flags, loglevel, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages, SfError } from '@salesforce/core';
-import { FileWriter } from '../../../../lib/helpers/fileWriter';
-import { validateAPIName } from '../../../../lib/helpers/validationUtil';
-import { Templates } from '../../../../lib/templates/templates';
+import { FileWriter } from '../../../lib/helpers/fileWriter';
+import { validateAPIName } from '../../../lib/helpers/validationUtil';
+import { Templates } from '../../../lib/templates/templates';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'createField');
@@ -25,8 +25,8 @@ export default class Create extends SfCommand<CmdtFieldCreateResponse> {
   public static readonly examples = messages.getMessages('examples');
   public static readonly requiresProject = true;
   public static args = [{ name: 'file' }];
-
-  public static flags = {
+  public static readonly aliases = ['force:cmdt:field:create', 'cmdt:field:create'];
+  public static readonly flags = {
     loglevel,
     name: Flags.string({
       char: 'n',

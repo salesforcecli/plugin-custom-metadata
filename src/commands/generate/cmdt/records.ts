@@ -9,9 +9,9 @@ import * as path from 'path';
 import { Flags, loglevel, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages, SfError } from '@salesforce/core';
 import { Record } from 'jsforce';
-import * as csv from '../../../../../csvtojson';
-import { getFieldNames, appendDirectorySuffix, createRecord, getFileData } from '../../../../lib/helpers/createUtil';
-import { CreateConfig } from '../../../../lib/interfaces/createConfig';
+import * as csv from '../../../../csvtojson';
+import { getFieldNames, appendDirectorySuffix, createRecord, getFileData } from '../../../lib/helpers/createUtil';
+import { CreateConfig } from '../../../lib/interfaces/createConfig';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'insertRecord');
@@ -20,6 +20,7 @@ export default class Insert extends SfCommand<CreateConfig[]> {
   public static readonly summary = messages.getMessage('commandDescription');
   public static readonly description = messages.getMessage('commandLongDescription');
   public static readonly requiresProject = true;
+  public static readonly aliases = ['force:cmdt:record:insert', 'cmdt:record:insert'];
   public static readonly examples = messages.getMessages('examples');
   public static readonly flags = {
     loglevel,

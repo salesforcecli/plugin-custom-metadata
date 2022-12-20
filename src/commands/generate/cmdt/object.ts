@@ -23,8 +23,8 @@ export interface CmdtCreateResponse {
 export default class Create extends SfCommand<CmdtCreateResponse> {
   public static readonly summary = messages.getMessage('commandDescription');
   public static readonly description = messages.getMessage('commandLongDescription');
-
   public static readonly examples = messages.getMessages('examples');
+  public static readonly aliases = ['force:cmdt:create', 'cmdt:create'];
 
   public static args = [{ name: 'file' }];
   public static readonly requiresProject = true;

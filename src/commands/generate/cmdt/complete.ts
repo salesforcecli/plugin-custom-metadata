@@ -38,7 +38,7 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
   public static readonly description = messages.getMessage('commandLongDescription');
   public static readonly examples = messages.getMessages('examples');
   public static readonly requiresProject = true;
-
+  public static readonly aliases = ['force:cmdt:generate', 'cmdt:generate'];
   public static args = [{ name: 'file' }];
 
   public static readonly flags = {
@@ -111,14 +111,14 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
 
     // throw error if the object doesnot exist(empty json as response from the describe call.)
     if (isEmpty(describeObj.fields)) {
-      const errMsg = messages.getMessage('sobjectnameNoResultError', [flags.sobjectname]);
+      const errMsg = messages.getMessage('sobjectnameNoResultError', [flags.sobject]);
       throw new SfError(errMsg, 'sobjectnameNoResultError');
     }
     // check for custom setting
     if (describeObj.customSettingsType) {
       // if custom setting check for type and visibility
       if (!validCustomSettingType(describeObj)) {
-        const errMsg = messages.getMessage('customSettingTypeError', [flags.sobjectname]);
+        const errMsg = messages.getMessage('customSettingTypeError', [flags.sobject]);
         throw new SfError(errMsg, 'customSettingTypeError');
       }
     }
