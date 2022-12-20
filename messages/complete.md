@@ -10,27 +10,27 @@ Generates a custom metadata type and all its records for the provided sObject.
 
 - Generate a custom metadata type from an sObject in the default target org:
 
-  <%= config.bin %> <%= command.id %> --devname MyCMDT --sobjectname MySourceObject\_\_c
+  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject MySourceObject\_\_c
 
 - Generate a custom metadata type from an sObject in the specified target org; ignore unsupported field types instead of converting them to text:
 
-  <%= config.bin %> <%= command.id %> --devname MyCMDT --sobjectname MySourceObject\_\_c --ignoreunsupported --targetusername me@some.org
+  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject MySourceObject\_\_c --ignore-unsupported --target-org me@some.org
 
 - Generate a protected custom metadata type from an sObject in the default target org:
 
-  <%= config.bin %> <%= command.id %> --devname MyCMDT --sobjectname SourceCustomObject\_\_c --visibility Protected
+  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject SourceCustomObject\_\_c --visibility Protected
 
 - Generate a protected custom metadata type with a specific label from an sObject in the default target org:
 
-  <%= config.bin %> <%= command.id %> --devname MyCMDT --label My CMDT --plurallabel My CMDTs --sobjectname SourceCustomSetting\_\_c --visibility Protected
+  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --label My CMDT --plural-label My CMDTs --sobject SourceCustomSetting\_\_c --visibility Protected
 
 - Generate a custom metadata type from an sObject in the default target org; put the resulting type metadata file in the specified directory:
 
-  <%= config.bin %> <%= command.id %> --devname MyCMDT --sobjectname SourceCustomSetting\_\_c --typeoutputdir path/to/my/cmdt/directory
+  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject SourceCustomSetting\_\_c --type-output-directory path/to/my/cmdt/directory
 
 - Generate a custom metadata type from an sObject in the default target org; put the resulting record metadata file(s) in the specified directory:
 
-  <%= config.bin %> <%= command.id %> --devname MyCMDT --sobjectname SourceCustomSetting\_\_c --recordsoutputdir path/to/my/cmdt/record/directory
+  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject SourceCustomSetting\_\_c --records-output-dir path/to/my/cmdt/record/directory
 
 # visibilityFlagDescription
 

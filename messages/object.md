@@ -10,11 +10,11 @@ Creates a new custom metadata type in the current project.
 
 - Create a custom metadata type with developer name 'MyCustomType'; this name will also be used as the label:
 
-  <%= config.bin %> <%= command.id %> --typename MyCustomType
+  <%= config.bin %> <%= command.id %> --type-name MyCustomType
 
 - Create a protected custom metadata type with a specific label:
 
-  <%= config.bin %> <%= command.id %> --typename MyCustomType --label Custom Type --plurallabel Custom Types --visibility Protected
+  <%= config.bin %> <%= command.id %> --type-name MyCustomType --label Custom Type --plural-label Custom Types --visibility Protected
 
 # nameFlagDescription
 

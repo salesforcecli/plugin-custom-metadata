@@ -14,7 +14,7 @@ import { getFieldNames, appendDirectorySuffix, createRecord, getFileData } from 
 import { CreateConfig } from '../../../lib/interfaces/createConfig';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'insertRecord');
+const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'records');
 
 export default class Insert extends SfCommand<CreateConfig[]> {
   public static readonly summary = messages.getMessage('commandDescription');

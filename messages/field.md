@@ -10,15 +10,15 @@ Generate a custom metadata field based on the field type provided.
 
 - Create a metadata file for a custom checkbox field:
 
-  <%= config.bin %> <%= command.id %> --fieldname MyField --fieldtype Checkbox
+  <%= config.bin %> <%= command.id %> --name MyField --type Checkbox
 
 - Create a metadata file for a custom picklist field:
 
-  <%= config.bin %> <%= command.id %> --fieldname MyField --fieldtype Picklist --picklistvalues "A,B,C"
+  <%= config.bin %> <%= command.id %> --name MyField --type Picklist --picklist-values A --picklist-values B --picklist-values C
 
 - Create a metadata file for a custom number field:
 
-  <%= config.bin %> <%= command.id %> --fieldname MyField --fieldtype Number --decimalplaces 2
+  <%= config.bin %> <%= command.id %> --name MyField --type Number --decimal-places 2
 
 # nameFlagDescription
 
@@ -38,11 +38,11 @@ The type of field.
 
 # picklistValuesFlagDescription
 
-comma-separated list of picklist values; required for Picklist fields
+picklist values; required for Picklist fields
 
 # picklistValuesFlagLongDescription
 
-A comma-separated list of picklist values. These values are required when creating a Picklist field.
+A list of picklist values. These values are required when creating a Picklist field.
 
 # decimalplacesFlagDescription
 

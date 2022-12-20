@@ -12,7 +12,7 @@ import { TestSession, execCmd } from '@salesforce/cli-plugins-testkit';
 import { Messages } from '@salesforce/core';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'createField');
+const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'field');
 
 let session: TestSession;
 let projDir: string;

@@ -12,7 +12,7 @@ import { validateMetadataTypeName, validateLessThanForty } from '../../../lib/he
 import { Templates } from '../../../lib/templates/templates';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'createType');
+const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'object');
 
 export interface CmdtCreateResponse {
   typename: string;

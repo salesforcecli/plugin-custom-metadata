@@ -10,11 +10,11 @@ Create a new record for a given custom metadata type in the current project.
 
 - Create a record metadata file for custom metadata type 'MyCMT' with values specified for two custom fields:
 
-  <%= config.bin %> <%= command.id %> --typename MyCMT\_\_mdt --recordname MyRecord My_Custom_Field_1=Foo My_Custom_Field_2=Bar
+  <%= config.bin %> <%= command.id %> --type-name MyCMT\_\_mdt --record-name MyRecord My_Custom_Field_1=Foo My_Custom_Field_2=Bar
 
 - Create a protected record metadata file for custom metadata type 'MyCMT' with a specific label and values specified for two custom fields:
 
-  <%= config.bin %> <%= command.id %> --typename MyCMT\_\_mdt --recordname MyRecord --label "My Record" --protected true My_Custom_Field_1=Foo My_Custom_Field_2=Bar
+  <%= config.bin %> <%= command.id %> --type-name MyCMT\_\_mdt --record-name MyRecord --label "My Record" --protected true My_Custom_Field_1=Foo My_Custom_Field_2=Bar
 
 # typenameFlagDescription
 

@@ -27,7 +27,7 @@ import {
 import { Templates } from '../../../lib/templates/templates';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'generate');
+const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'complete');
 
 export interface CmdtGenerateResponse {
   outputDir: string;

@@ -17,7 +17,7 @@ import {
 } from '../../../lib/helpers/validationUtil';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'createRecord');
+const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'record');
 
 export interface CmdtRecordCreateResponse {
   typename: string;
