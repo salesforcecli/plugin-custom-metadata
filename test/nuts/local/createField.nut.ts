@@ -79,7 +79,7 @@ describe('sfdx force:cmdt:field:create', () => {
         ensureExitCode: 1,
       });
       expect(result.shellOutput.stderr).to.contain(
-        'Expected --fieldtype=Currency to be one of: Checkbox, Date, DateTime, Email, Number, Percent, Phone, Picklist, Text, TextArea, LongTextArea, Url'
+        'Expected --type=Currency to be one of: Checkbox, Date, DateTime, Email, Number, Percent, Phone, Picklist, Text, TextArea, LongTextArea, Url'
       );
     });
   });

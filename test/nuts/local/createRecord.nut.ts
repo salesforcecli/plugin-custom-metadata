@@ -10,7 +10,7 @@ import * as path from 'path';
 import { expect, config } from 'chai';
 import { TestSession, execCmd } from '@salesforce/cli-plugins-testkit';
 import { Messages } from '@salesforce/core';
-import { createOneOfEveryField } from '../../../../helpers/fieldCreation';
+import { createOneOfEveryField } from '../../helpers/fieldCreation';
 
 Messages.importMessagesDirectory(__dirname);
 const validationMessages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'validation');
