@@ -10,7 +10,7 @@ import { Flags, loglevel, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages, SfError } from '@salesforce/core';
 import { Record } from 'jsforce';
 import * as csv from '../../../../../csvtojson';
-import { CreateUtil, getFieldNames, appendDirectorySuffix } from '../../../../lib/helpers/createUtil';
+import { getFieldNames, appendDirectorySuffix, createRecord, getFileData } from '../../../../lib/helpers/createUtil';
 import { CreateConfig } from '../../../../lib/interfaces/createConfig';
 
 Messages.importMessagesDirectory(__dirname);
@@ -64,7 +64,6 @@ export default class Insert extends SfCommand<CreateConfig[]> {
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public async run(): Promise<CreateConfig[]> {
     const { flags } = await this.parse(Insert);
-    const createUtil = new CreateUtil();
     const dirName = appendDirectorySuffix(flags['type-name']);
     const fieldDirPath = path.join(flags['input-directory'], dirName, 'fields');
     const fileNames = await fs.promises.readdir(fieldDirPath);
@@ -72,7 +71,7 @@ export default class Insert extends SfCommand<CreateConfig[]> {
     // if customMetadata folder does not exist, create it
     await fs.promises.mkdir(flags['output-directory'], { recursive: true });
 
-    const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
+    const fileData = await getFileData(fieldDirPath, fileNames);
     const csvDataAry = (await csv().fromFile(flags.csv)) as Record[];
 
     const metadataTypeFields = getFieldNames(fileData, flags['name-column']);
@@ -110,7 +109,7 @@ export default class Insert extends SfCommand<CreateConfig[]> {
         fileData,
       })
     );
-    await Promise.all(recordConfigs.map((r) => createUtil.createRecord(r)));
+    await Promise.all(recordConfigs.map((r) => createRecord(r)));
 
     this.log(messages.getMessage('successResponse', [flags.filepath, flags['output-directory']]));
 

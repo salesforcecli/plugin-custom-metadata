@@ -9,7 +9,7 @@ import * as path from 'path';
 import { Flags, loglevel, parseVarArgs, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
 import { CustomField } from 'jsforce/api/metadata';
-import { CreateUtil, appendDirectorySuffix } from '../../../../lib/helpers/createUtil';
+import { appendDirectorySuffix, createRecord, getFileData } from '../../../../lib/helpers/createUtil';
 import {
   validateMetadataRecordName,
   validateMetadataTypeName,
@@ -89,7 +89,6 @@ export default class Create extends SfCommand<CmdtRecordCreateResponse> {
   public async run(): Promise<CmdtRecordCreateResponse> {
     const { flags, args, argv } = await this.parse(Create);
     const varargs = parseVarArgs(args, argv);
-    const createUtil = new CreateUtil();
     const label = flags.label ?? flags['record-name'];
     const protectedFlag = flags.protected === 'true';
     const dirName = appendDirectorySuffix(flags['type-name']);
@@ -99,9 +98,9 @@ export default class Create extends SfCommand<CmdtRecordCreateResponse> {
     // if customMetadata folder does not exist, create it
     await fs.promises.mkdir(flags['output-directory'], { recursive: true });
 
-    const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
+    const fileData = await getFileData(fieldDirPath, fileNames);
 
-    await createUtil.createRecord({
+    await createRecord({
       typename: flags['type-name'],
       recordname: flags['record-name'],
       label,

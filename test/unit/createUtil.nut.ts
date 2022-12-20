@@ -11,13 +11,18 @@ import * as path from 'path';
 import { expect, config } from 'chai';
 import { TestSession, execCmd } from '@salesforce/cli-plugins-testkit';
 import { CustomField } from 'jsforce/lib/api/metadata';
-import { CreateUtil, appendDirectorySuffix } from '../../src/lib/helpers/createUtil';
+import {
+  appendDirectorySuffix,
+  getFieldPrimitiveType,
+  createRecord,
+  getFieldDataType,
+  getFileData,
+} from '../../src/lib/helpers/createUtil';
 import { createOneOfEveryField } from '../helpers/fieldCreation';
 
 let session: TestSession;
 let projDir: string;
 config.truncateThreshold = 0;
-let createUtil: CreateUtil;
 let fileData: CustomField[];
 
 describe('CreateUtil', () => {
@@ -37,7 +42,6 @@ describe('CreateUtil', () => {
     const inputdir = 'fieldTypeTest';
     execCmd(`force:cmdt:create --typename Field_Type_Test --outputdir ${inputdir}`);
     createOneOfEveryField(path.join(inputdir, 'Field_Type_Test__mdt'));
-    createUtil = new CreateUtil();
     typename = 'Field_Type_Test';
     recordname = 'Field_Type_Test_Record';
     const label = 'Field Type Test Label';
@@ -65,9 +69,9 @@ describe('CreateUtil', () => {
 
     await fs.promises.mkdir(outputDir, { recursive: true });
 
-    fileData = await createUtil.getFileData(fieldDirPath, fileNames);
+    fileData = await getFileData(fieldDirPath, fileNames);
 
-    await createUtil.createRecord({
+    await createRecord({
       typename,
       recordname,
       label,
@@ -85,39 +89,39 @@ describe('CreateUtil', () => {
   });
 
   it('getFieldPrimitiveType should return the field type needed to create a custom metadata type record', () => {
-    expect(createUtil.getFieldPrimitiveType(fileData, 'Check__c')).to.equal('boolean');
-    expect(createUtil.getFieldPrimitiveType(fileData, 'Date_Time__c')).to.equal('dateTime');
-    expect(createUtil.getFieldPrimitiveType(fileData, 'Date__c')).to.equal('date');
-    expect(createUtil.getFieldPrimitiveType(fileData, 'Email__c')).to.equal('string');
-    expect(createUtil.getFieldPrimitiveType(fileData, 'Number_Int__c')).to.equal('int');
-    expect(createUtil.getFieldPrimitiveType(fileData, 'Number_Int_No_Flag__c')).to.equal('int');
-    expect(createUtil.getFieldPrimitiveType(fileData, 'Number_Double__c')).to.equal('double');
-    expect(createUtil.getFieldPrimitiveType(fileData, 'Percent_Int__c')).to.equal('int');
-    expect(createUtil.getFieldPrimitiveType(fileData, 'Percent_Int_No_Flag__c')).to.equal('int');
-    expect(createUtil.getFieldPrimitiveType(fileData, 'Percent_Double__c')).to.equal('double');
-    expect(createUtil.getFieldPrimitiveType(fileData, 'Phone__c')).to.equal('string');
-    expect(createUtil.getFieldPrimitiveType(fileData, 'Picklist__c')).to.equal('string');
-    expect(createUtil.getFieldPrimitiveType(fileData, 'Text__c')).to.equal('string');
-    expect(createUtil.getFieldPrimitiveType(fileData, 'TextArea__c')).to.equal('string');
-    expect(createUtil.getFieldPrimitiveType(fileData, 'LongTextArea__c')).to.equal('string');
-    expect(createUtil.getFieldPrimitiveType(fileData, 'Url__c')).to.equal('string');
-    expect(createUtil.getFieldPrimitiveType(fileData, 'Field_Does_Not_Exist__c')).to.equal('string');
+    expect(getFieldPrimitiveType(fileData, 'Check__c')).to.equal('boolean');
+    expect(getFieldPrimitiveType(fileData, 'Date_Time__c')).to.equal('dateTime');
+    expect(getFieldPrimitiveType(fileData, 'Date__c')).to.equal('date');
+    expect(getFieldPrimitiveType(fileData, 'Email__c')).to.equal('string');
+    expect(getFieldPrimitiveType(fileData, 'Number_Int__c')).to.equal('int');
+    expect(getFieldPrimitiveType(fileData, 'Number_Int_No_Flag__c')).to.equal('int');
+    expect(getFieldPrimitiveType(fileData, 'Number_Double__c')).to.equal('double');
+    expect(getFieldPrimitiveType(fileData, 'Percent_Int__c')).to.equal('int');
+    expect(getFieldPrimitiveType(fileData, 'Percent_Int_No_Flag__c')).to.equal('int');
+    expect(getFieldPrimitiveType(fileData, 'Percent_Double__c')).to.equal('double');
+    expect(getFieldPrimitiveType(fileData, 'Phone__c')).to.equal('string');
+    expect(getFieldPrimitiveType(fileData, 'Picklist__c')).to.equal('string');
+    expect(getFieldPrimitiveType(fileData, 'Text__c')).to.equal('string');
+    expect(getFieldPrimitiveType(fileData, 'TextArea__c')).to.equal('string');
+    expect(getFieldPrimitiveType(fileData, 'LongTextArea__c')).to.equal('string');
+    expect(getFieldPrimitiveType(fileData, 'Url__c')).to.equal('string');
+    expect(getFieldPrimitiveType(fileData, 'Field_Does_Not_Exist__c')).to.equal('string');
   });
   it('getFieldDataType should return the field type needed to create a custom metadata type record', () => {
-    expect(createUtil.getFieldDataType(fileData, 'Check__c')).to.equal('Checkbox');
-    expect(createUtil.getFieldDataType(fileData, 'Date_Time__c')).to.equal('DateTime');
-    expect(createUtil.getFieldDataType(fileData, 'Date__c')).to.equal('Date');
-    expect(createUtil.getFieldDataType(fileData, 'Email__c')).to.equal('Email');
-    expect(createUtil.getFieldDataType(fileData, 'Number_Int__c')).to.equal('Number');
-    expect(createUtil.getFieldDataType(fileData, 'Number_Int_No_Flag__c')).to.equal('Number');
-    expect(createUtil.getFieldDataType(fileData, 'Number_Double__c')).to.equal('Number');
-    expect(createUtil.getFieldDataType(fileData, 'Percent_Int__c')).to.equal('Percent');
-    expect(createUtil.getFieldDataType(fileData, 'Percent_Int_No_Flag__c')).to.equal('Percent');
-    expect(createUtil.getFieldDataType(fileData, 'Percent_Double__c')).to.equal('Percent');
-    expect(createUtil.getFieldDataType(fileData, 'Phone__c')).to.equal('Phone');
-    expect(createUtil.getFieldDataType(fileData, 'Picklist__c')).to.equal('Picklist');
-    expect(createUtil.getFieldDataType(fileData, 'Text__c')).to.equal('Text');
-    expect(createUtil.getFieldDataType(fileData, 'Url__c')).to.equal('Url');
+    expect(getFieldDataType(fileData, 'Check__c')).to.equal('Checkbox');
+    expect(getFieldDataType(fileData, 'Date_Time__c')).to.equal('DateTime');
+    expect(getFieldDataType(fileData, 'Date__c')).to.equal('Date');
+    expect(getFieldDataType(fileData, 'Email__c')).to.equal('Email');
+    expect(getFieldDataType(fileData, 'Number_Int__c')).to.equal('Number');
+    expect(getFieldDataType(fileData, 'Number_Int_No_Flag__c')).to.equal('Number');
+    expect(getFieldDataType(fileData, 'Number_Double__c')).to.equal('Number');
+    expect(getFieldDataType(fileData, 'Percent_Int__c')).to.equal('Percent');
+    expect(getFieldDataType(fileData, 'Percent_Int_No_Flag__c')).to.equal('Percent');
+    expect(getFieldDataType(fileData, 'Percent_Double__c')).to.equal('Percent');
+    expect(getFieldDataType(fileData, 'Phone__c')).to.equal('Phone');
+    expect(getFieldDataType(fileData, 'Picklist__c')).to.equal('Picklist');
+    expect(getFieldDataType(fileData, 'Text__c')).to.equal('Text');
+    expect(getFieldDataType(fileData, 'Url__c')).to.equal('Url');
   });
 
   it('should create a customMetadata directory and a file for custom metadata type', () => {
@@ -136,8 +140,7 @@ describe('CreateUtil', () => {
       );
     });
     it('should handle an empty array return the field type needed to create a custom metadata type record', () => {
-      const createUtilDefault = new CreateUtil();
-      const field1 = createUtilDefault.getFieldPrimitiveType();
+      const field1 = getFieldPrimitiveType();
       expect(field1 === 'string').to.be.true;
     });
   });

@@ -16,7 +16,7 @@ import {
 import { SfError, Messages } from '@salesforce/core';
 import { isEmpty } from '@salesforce/kit';
 import { CustomField, CustomObject } from 'jsforce/api/metadata';
-import { CreateUtil } from '../../../lib/helpers/createUtil';
+import { createRecord, getFileData } from '../../../lib/helpers/createUtil';
 import { FileWriter } from '../../../lib/helpers/fileWriter';
 import { describeObjFields, cleanQueryResponse, validCustomSettingType } from '../../../lib/helpers/metadataUtil';
 import {
@@ -159,12 +159,11 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
       );
 
       this.spinner.status = 'creating the CMDT records';
-      const createUtil = new CreateUtil();
       // if customMetadata folder does not exist, create it
       await fs.promises.mkdir(recordsOutputDir, { recursive: true });
       const fieldDirPath = path.join(outputDir, `${flags['dev-name']}__mdt`, 'fields');
       const fileNames = await fs.promises.readdir(fieldDirPath);
-      const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
+      const fileData = await getFileData(fieldDirPath, fileNames);
 
       // query records from source
       const sObjectRecords = await conn.query(getSoqlQuery(describeObj));
@@ -173,7 +172,7 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
           const record = cleanQueryResponse(rec, describeObj);
           const lblName = rec['Name'] as string;
           const recordName = isValidMetadataRecordName(lblName) ? lblName : lblName.replace(/ +/g, '_');
-          return createUtil.createRecord({
+          return createRecord({
             typename: flags['dev-name'],
             recordname: recordName,
             label: lblName,

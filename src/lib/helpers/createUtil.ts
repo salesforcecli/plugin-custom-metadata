@@ -29,110 +29,77 @@ const fieldTypeMap = new Map<string, string>([
   ['Url', 'string'],
 ]);
 // NOTE: the template string indentation is important to output well-formatted XML. Altering that whitespace will change the whitespace of the output.
-export class CreateUtil {
-  /**
-   * Number and Percent types will be int or double depending on their respective scale values.
-   * If the scale === 0, it is an int, otherwise it is a double
-   */
+/**
+ * Number and Percent types will be int or double depending on their respective scale values.
+ * If the scale === 0, it is an int, otherwise it is a double
+ */
 
-  /**
-   * Creates the Custom Metadata Record
-   *
-   * @param  createConfig Properties include typename, recname, label, protection, varargs, and fileData
-   * @return void
-   */
-  public async createRecord(createConfig: CreateConfig): Promise<void> {
-    const outputFilePath = path.join(
-      createConfig.outputdir,
-      `${createConfig.typename}.${createConfig.recordname}.md-meta.xml`
-    );
-    const newRecordContent = getRecordTemplate(
-      createConfig.label,
-      createConfig.protected,
-      this.buildCustomFieldXml(createConfig.fileData, createConfig.varargs, createConfig.ignorefields)
-    );
+/**
+ *
+ * @param fieldDirPath path to a /fields folder that contains all the fields to read
+ * @param fileNames filenames in that folder that should be read
+ * @returns CustomField[]
+ */
+export const getFileData = async (fieldDirPath: string, fileNames: string[]): Promise<CustomField[]> => {
+  const parser = new XMLParser();
+  return Promise.all(
+    fileNames
+      .map((file) => path.join(fieldDirPath, file))
+      .map(async (filePath) => {
+        const fileData = await fs.promises.readFile(filePath, 'utf8');
+        return (parser.parse(fileData) as CustomFieldFile).CustomField;
+      })
+  );
+};
 
-    return fs.promises.writeFile(outputFilePath, newRecordContent);
+/**
+ * Get the field type from the custom metadata type that has a matching field name.
+ *
+ * @param  fileData Array of objects based on metadata type xml
+ * @param  fieldName Name of the field
+ * @return {string} Data Type of the field.
+ */
+export const getFieldDataType = (fileData: CustomField[] = [], fieldName = ''): CustomField['type'] =>
+  fileData.find((file) => file.fullName === fieldName)?.type;
+
+/**
+ * Creates the Custom Metadata Record
+ *
+ * @param  createConfig Properties include typename, recname, label, protection, varargs, and fileData
+ * @return void
+ */
+export const createRecord = async (createConfig: CreateConfig): Promise<void> => {
+  const outputFilePath = path.join(
+    createConfig.outputdir,
+    `${createConfig.typename}.${createConfig.recordname}.md-meta.xml`
+  );
+  const newRecordContent = getRecordTemplate(
+    createConfig.label,
+    createConfig.protected,
+    buildCustomFieldXml(createConfig.fileData, createConfig.varargs, createConfig.ignorefields)
+  );
+
+  return fs.promises.writeFile(outputFilePath, newRecordContent);
+};
+
+/**
+ * Get the field primitive type from the custom metadata type that has a matching field name.
+ *
+ * @param  fileData Array of objects based on metadata type xml
+ * @param  fieldName Name of the field
+ * @return {string} Type used by a custom metadata record
+ */
+export const getFieldPrimitiveType = (fileData: CustomField[] = [], fieldName?: string): string => {
+  const matchingFile = fileData.find((file) => file.fullName === fieldName);
+
+  if (matchingFile && typeof matchingFile.type === 'string' && ['Number', 'Percent'].includes(matchingFile.type)) {
+    return getNumberType(matchingFile.type, matchingFile.scale);
   }
-
-  /**
-   *
-   * @param fieldDirPath path to a /fields folder that contains all the fields to read
-   * @param fileNames filenames in that folder that should be read
-   * @returns CustomField[]
-   */
-  // eslint-disable-next-line class-methods-use-this
-  public async getFileData(fieldDirPath: string, fileNames: string[]): Promise<CustomField[]> {
-    const parser = new XMLParser();
-    return Promise.all(
-      fileNames
-        .map((file) => path.join(fieldDirPath, file))
-        .map(async (filePath) => {
-          const fileData = await fs.promises.readFile(filePath, 'utf8');
-          return (parser.parse(fileData) as CustomFieldFile).CustomField;
-        })
-    );
+  if (matchingFile && typeof matchingFile.type === 'string') {
+    return fieldTypeMap.get(matchingFile.type) ?? 'string';
   }
-
-  /**
-   * Get the field primitive type from the custom metadata type that has a matching field name.
-   *
-   * @param  fileData Array of objects based on metadata type xml
-   * @param  fieldName Name of the field
-   * @return {string} Type used by a custom metadata record
-   */
-  // eslint-disable-next-line class-methods-use-this
-  public getFieldPrimitiveType(fileData: CustomField[] = [], fieldName?: string): string {
-    const matchingFile = fileData.find((file) => file.fullName === fieldName);
-
-    if (matchingFile && typeof matchingFile.type === 'string' && ['Number', 'Percent'].includes(matchingFile.type)) {
-      return getNumberType(matchingFile.type, matchingFile.scale);
-    }
-    if (matchingFile && typeof matchingFile.type === 'string') {
-      return fieldTypeMap.get(matchingFile.type) ?? 'string';
-    }
-    return 'string';
-  }
-
-  /**
-   * Get the field type from the custom metadata type that has a matching field name.
-   *
-   * @param  fileData Array of objects based on metadata type xml
-   * @param  fieldName Name of the field
-   * @return {string} Data Type of the field.
-   */
-  // eslint-disable-next-line class-methods-use-this
-  public getFieldDataType(fileData: CustomField[] = [], fieldName = ''): CustomField['type'] {
-    return fileData.find((file) => file.fullName === fieldName)?.type;
-  }
-
-  /**
-   * Takes JSON representation of CLI varargs and converts them to xml with help
-   * from helper.getFieldTemplate
-   *
-   * @param  cliParams Object that holds key:value pairs from CLI input
-   * @param  fileData Array of objects that contain field data
-   * @return {string} String representation of XML
-   */
-  private buildCustomFieldXml(
-    fileData: CustomField[] = [],
-    cliParams: Record<string, string> = {},
-    ignoreFields = false
-  ): string {
-    let ret = '';
-    const templates = new Templates();
-    for (const fieldName of Object.keys(cliParams)) {
-      const type = this.getFieldPrimitiveType(fileData, fieldName);
-      const dataType = this.getFieldDataType(fileData, fieldName);
-      // Added functionality to handle the igonre fields scenario.
-      if (templates.canConvert(dataType) || !ignoreFields) {
-        ret += getFieldTemplate(fieldName, cliParams[fieldName], type);
-      }
-    }
-
-    return ret;
-  }
-}
+  return 'string';
+};
 
 /**
  * Filenames should have the suffix of '__mdt'. This will append that suffix if it does not exist.
@@ -150,11 +117,38 @@ export const appendDirectorySuffix = (typename: string): string =>
  * @param  nameField name of the column that is going to be used for the name of the metadata record
  * @return [] Array of field names
  */
-// eslint-disable-next-line class-methods-use-this
 export const getFieldNames = (fileData: CustomField[], nameField: string): string[] => [
   ...fileData.map((file) => file.fullName).filter(isString),
   nameField,
 ];
+
+/**
+ * Takes JSON representation of CLI varargs and converts them to xml with help
+ * from helper.getFieldTemplate
+ *
+ * @param  cliParams Object that holds key:value pairs from CLI input
+ * @param  fileData Array of objects that contain field data
+ * @return {string} String representation of XML
+ */
+const buildCustomFieldXml = (
+  fileData: CustomField[] = [],
+  cliParams: Record<string, string> = {},
+  ignoreFields = false
+): string => {
+  let ret = '';
+  const templates = new Templates();
+  for (const fieldName of Object.keys(cliParams)) {
+    const type = getFieldPrimitiveType(fileData, fieldName);
+    const dataType = getFieldDataType(fileData, fieldName);
+    // Added functionality to handle the igonre fields scenario.
+    if (templates.canConvert(dataType) || !ignoreFields) {
+      ret += getFieldTemplate(fieldName, cliParams[fieldName], type);
+    }
+  }
+
+  return ret;
+};
+
 /**
  * Get the number type based on the scale.
  * If the scale === 0, it is an int, otherwise it is a double.
