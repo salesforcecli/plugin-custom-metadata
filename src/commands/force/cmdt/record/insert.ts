@@ -20,17 +20,8 @@ export default class Insert extends SfCommand<CreateConfig[]> {
   public static readonly summary = messages.getMessage('commandDescription');
   public static readonly description = messages.getMessage('commandLongDescription');
   public static readonly requiresProject = true;
-
-  public static examples = [
-    messages.getMessage('exampleCaption1'),
-    '    $ sfdx force:cmdt:record:insert --filepath path/to/my.csv --typename My_CMDT_Name',
-    messages.getMessage('exampleCaption2'),
-    '    $ sfdx force:cmdt:record:insert --filepath path/to/my.csv --typename My_CMDT_Name --inputdir "' +
-      messages.getMessage('inputDirectoryFlagExample') +
-      '" --namecolumn "PrimaryKey"',
-  ];
-
-  public static flags = {
+  public static readonly examples = messages.getMessages('examples');
+  public static readonly flags = {
     loglevel,
     csv: Flags.string({
       char: 'f',
@@ -52,6 +43,7 @@ export default class Insert extends SfCommand<CreateConfig[]> {
       description: messages.getMessage('inputDirectoryFlagLongDescription'),
       default: path.join('force-app', 'main', 'default', 'objects'),
       aliases: ['inputdir', 'inputdirectory'],
+      exists: true,
     }),
     'output-directory': Flags.directory({
       char: 'd',

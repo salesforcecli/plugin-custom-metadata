@@ -6,29 +6,31 @@ generates a custom metadata type and all its records for the provided sObject
 
 Generates a custom metadata type and all its records for the provided sObject.
 
-# exampleCaption1
+# examples
 
-Generate a custom metadata type from an sObject in the default target org:
+- Generate a custom metadata type from an sObject in the default target org:
 
-# exampleCaption2
+  <%= config.bin %> <%= command.id %> --devname MyCMDT --sobjectname MySourceObject\_\_c
 
-Generate a custom metadata type from an sObject in the specified target org; ignore unsupported field types instead of converting them to text:
+- Generate a custom metadata type from an sObject in the specified target org; ignore unsupported field types instead of converting them to text:
 
-# exampleCaption3
+  <%= config.bin %> <%= command.id %> --devname MyCMDT --sobjectname MySourceObject\_\_c --ignoreunsupported --targetusername me@some.org
 
-Generate a protected custom metadata type from an sObject in the default target org:
+- Generate a protected custom metadata type from an sObject in the default target org:
 
-# exampleCaption4
+  <%= config.bin %> <%= command.id %> --devname MyCMDT --sobjectname SourceCustomObject\_\_c --visibility Protected
 
-Generate a protected custom metadata type with a specific label from an sObject in the default target org:
+- Generate a protected custom metadata type with a specific label from an sObject in the default target org:
 
-# exampleCaption5
+  <%= config.bin %> <%= command.id %> --devname MyCMDT --label My CMDT --plurallabel My CMDTs --sobjectname SourceCustomSetting\_\_c --visibility Protected
 
-Generate a custom metadata type from an sObject in the default target org; put the resulting type metadata file in the specified directory:
+- Generate a custom metadata type from an sObject in the default target org; put the resulting type metadata file in the specified directory:
 
-# exampleCaption6
+  <%= config.bin %> <%= command.id %> --devname MyCMDT --sobjectname SourceCustomSetting\_\_c --typeoutputdir path/to/my/cmdt/directory
 
-Generate a custom metadata type from an sObject in the default target org; put the resulting record metadata file(s) in the specified directory:
+- Generate a custom metadata type from an sObject in the default target org; put the resulting record metadata file(s) in the specified directory:
+
+  <%= config.bin %> <%= command.id %> --devname MyCMDT --sobjectname SourceCustomSetting\_\_c --recordsoutputdir path/to/my/cmdt/record/directory
 
 # visibilityFlagDescription
 
@@ -54,10 +56,6 @@ label for the custom metadata type
 
 The label for the custom metadata type.
 
-# labelFlagExample
-
-My CMDT
-
 # plurallabelFlagDescription
 
 plural version of the label value; if blank, uses label
@@ -65,10 +63,6 @@ plural version of the label value; if blank, uses label
 # plurallabelFlagLongDescription
 
 The plural version of the label value. If this flag is missing or blank, the singular label is used as the plural label.
-
-# plurallabelFlagExample
-
-My CMDTs
 
 # sobjectnameFlagDescription
 
@@ -98,10 +92,6 @@ directory to store newly-created custom metadata type files
 
 The directory to store newly-created custom metadata type files.
 
-# typeoutputdirFlagExample
-
-path/to/my/cmdt/directory
-
 # recordsoutputdirFlagDescription
 
 directory to store newly-created custom metadata record files
@@ -109,10 +99,6 @@ directory to store newly-created custom metadata record files
 # recordsoutputdirFlagLongDescription
 
 The directory to store newly-created custom metadata record files.
-
-# recordsoutputdirFlagExample
-
-path/to/my/cmdt/record/directory
 
 # loglevelFlagDescription
 

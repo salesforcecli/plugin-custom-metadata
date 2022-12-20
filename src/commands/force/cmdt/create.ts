@@ -24,22 +24,12 @@ export default class Create extends SfCommand<CmdtCreateResponse> {
   public static readonly summary = messages.getMessage('commandDescription');
   public static readonly description = messages.getMessage('commandLongDescription');
 
-  public static examples = [
-    messages.getMessage('exampleCaption1'),
-    '    $ sfdx force:cmdt:create --typename MyCustomType',
-    messages.getMessage('exampleCaption2'),
-    '    $ sfdx force:cmdt:create --typename MyCustomType --label "' +
-      messages.getMessage('labelFlagExample') +
-      '" ' +
-      '--plurallabel "' +
-      messages.getMessage('plurallabelFlagExample') +
-      '" --visibility Protected',
-  ];
+  public static readonly examples = messages.getMessages('examples');
 
   public static args = [{ name: 'file' }];
-  public static requiresProject = true;
+  public static readonly requiresProject = true;
 
-  public static flags = {
+  public static readonly flags = {
     loglevel,
     'type-name': Flags.string({
       char: 'n',

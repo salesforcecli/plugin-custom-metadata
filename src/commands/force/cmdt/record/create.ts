@@ -34,17 +34,9 @@ export default class Create extends SfCommand<CmdtRecordCreateResponse> {
   public static readonly description = messages.getMessage('commandLongDescription');
   public static readonly requiresProject = true;
 
-  public static examples = [
-    messages.getMessage('exampleCaption1'),
-    '    $ sfdx force:cmdt:record:create --typename MyCMT__mdt --recordname MyRecord My_Custom_Field_1=Foo My_Custom_Field_2=Bar',
-    messages.getMessage('exampleCaption2'),
-    '    $ sfdx force:cmdt:record:create --typename MyCMT__mdt --recordname MyRecord --label "' +
-      messages.getMessage('labelFlagExample') +
-      '" ' +
-      '--protected true My_Custom_Field_1=Foo My_Custom_Field_2=Bar',
-  ];
+  public static readonly examples = messages.getMessages('examples');
 
-  public static flags = {
+  public static readonly flags = {
     loglevel,
     'type-name': Flags.string({
       char: 't',
@@ -83,6 +75,7 @@ export default class Create extends SfCommand<CmdtRecordCreateResponse> {
       description: messages.getMessage('inputDirectoryFlagLongDescription'),
       default: path.join('force-app', 'main', 'default', 'objects'),
       aliases: ['inputdir', 'inputdirectory'],
+      exists: true,
     }),
     'output-directory': Flags.directory({
       char: 'd',

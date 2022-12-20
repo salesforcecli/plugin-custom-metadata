@@ -6,13 +6,15 @@ create new custom metadata type records from a CSV file
 
 Create new custom metadata type records from a CSV file.
 
-# exampleCaption1
+# examples
 
-Create record metadata files for type 'My_CMDT_Name' (from your local project) based on values in a CSV file, using 'Name' as the column that specifies the record name:
+- Create record metadata files for type 'My_CMDT_Name' (from your local project) based on values in a CSV file, using 'Name' as the column that specifies the record name:
 
-# exampleCaption2
+  <%= config.bin %> <%= command.id %> --filepath path/to/my.csv --typename My_CMDT_Name
 
-Create record metadata files for type 'My_CMDT_Name' (from the specified directory) based on values in a CSV file, using 'PrimaryKey' as the column that specifies the record name:
+- Create record metadata files for type 'My_CMDT_Name' (from the specified directory) based on values in a CSV file, using 'PrimaryKey' as the column that specifies the record name:
+
+  <%= config.bin %> <%= command.id %> --filepath path/to/my.csv --typename My_CMDT_Name --inputdir path/to/my/cmdt/directory --namecolumn "PrimaryKey"
 
 # filepathFlagDescription
 
@@ -29,10 +31,6 @@ directory to pull the custom metadata type definition from
 # inputDirectoryFlagLongDescription
 
 The directory to pull the custom metadata type definition from.
-
-# inputDirectoryFlagExample
-
-path/to/my/cmdt/directory
 
 # outputDirectoryFlagDescription
 

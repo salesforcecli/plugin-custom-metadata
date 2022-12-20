@@ -6,13 +6,15 @@ creates a new custom metadata type in the current project
 
 Creates a new custom metadata type in the current project.
 
-# exampleCaption1
+# examples
 
-Create a custom metadata type with developer name 'MyCustomType'; this name will also be used as the label:
+- Create a custom metadata type with developer name 'MyCustomType'; this name will also be used as the label:
 
-# exampleCaption2
+  <%= config.bin %> <%= command.id %> --typename MyCustomType
 
-Create a protected custom metadata type with a specific label:
+- Create a protected custom metadata type with a specific label:
+
+  <%= config.bin %> <%= command.id %> --typename MyCustomType --label Custom Type --plurallabel Custom Types --visibility Protected
 
 # nameFlagDescription
 
@@ -30,10 +32,6 @@ label for the custom metadata type
 
 A label for the custom metadata type.
 
-# labelFlagExample
-
-Custom Type
-
 # plurallabelFlagDescription
 
 plural version of the label value; if blank, uses label
@@ -41,10 +39,6 @@ plural version of the label value; if blank, uses label
 # plurallabelFlagLongDescription
 
 The plural version of the label value. If this flag is missing or blank, the singular label is used as the plural label.
-
-# plurallabelFlagExample
-
-Custom Types
 
 # visibilityFlagDescription
 

@@ -36,33 +36,8 @@ interface CmdtGenerateResponse {
 export default class Generate extends SfCommand<CmdtGenerateResponse> {
   public static readonly summary = messages.getMessage('commandDescription');
   public static readonly description = messages.getMessage('commandLongDescription');
+  public static readonly examples = messages.getMessages('examples');
   public static readonly requiresProject = true;
-
-  public static examples = [
-    messages.getMessage('exampleCaption1'),
-    '    $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c',
-    messages.getMessage('exampleCaption2'),
-    "    $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname MySourceObject__c  --ignoreunsupported --targetusername '" +
-      messages.getMessage('targetusernameFlagExample') +
-      "'",
-    messages.getMessage('exampleCaption3'),
-    '    $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomObject__c  --visibility Protected',
-    messages.getMessage('exampleCaption4'),
-    '    $ sfdx force:cmdt:generate --devname MyCMDT --label "' +
-      messages.getMessage('labelFlagExample') +
-      '" ' +
-      '--plurallabel "' +
-      messages.getMessage('plurallabelFlagExample') +
-      '" --sobjectname SourceCustomSetting__c  --visibility Protected',
-    messages.getMessage('exampleCaption5'),
-    "    $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c --typeoutputdir '" +
-      messages.getMessage('typeoutputdirFlagExample') +
-      "'",
-    messages.getMessage('exampleCaption6'),
-    "    $ sfdx force:cmdt:generate --devname MyCMDT --sobjectname SourceCustomSetting__c --recordsoutputdir '" +
-      messages.getMessage('recordsoutputdirFlagExample') +
-      "'",
-  ];
 
   public static args = [{ name: 'file' }];
 
@@ -149,17 +124,15 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
       }
     }
 
-    const visibility = flags.visibility;
     const label = flags.label ?? flags['dev-name'];
     const pluralLabel = flags['plural-label'] ?? label;
-    const outputDir = flags['type-output-directory'];
-    const recordsOutputDir = flags['records-output-dir'];
+    const { 'type-output-directory': outputDir, 'records-output-dir': recordsOutputDir } = flags;
 
     try {
       this.spinner.start('creating the CMDT object');
       // create custom metadata type
       const templates = new Templates();
-      const objectXML = templates.createObjectXML({ label, pluralLabel }, visibility);
+      const objectXML = templates.createObjectXML({ label, pluralLabel }, flags.visibility);
       const fileWriter = new FileWriter();
       await fileWriter.writeTypeFile(fs, outputDir, flags['dev-name'], objectXML);
 
@@ -206,7 +179,7 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
             label: lblName,
             inputdir: outputDir,
             outputdir: recordsOutputDir,
-            protected: visibility !== 'Public',
+            protected: flags.visibility !== 'Public',
             varargs: record,
             fileData,
             ignorefields: flags['ignore-unsupported'],

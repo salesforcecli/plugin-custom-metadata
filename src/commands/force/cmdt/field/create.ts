@@ -21,19 +21,10 @@ interface CmdtFieldCreateResponse {
 }
 export default class Create extends SfCommand<CmdtFieldCreateResponse> {
   public static readonly summary = messages.getMessage('commandDescription');
-  public static description = messages.getMessage('commandLongDescription');
-
-  public static examples = [
-    messages.getMessage('exampleCaption1'),
-    '    $ sfdx force:cmdt:field:create --fieldname MyField --fieldtype Checkbox',
-    messages.getMessage('exampleCaption2'),
-    '    $ sfdx force:cmdt:field:create --fieldname MyField --fieldtype Picklist --picklistvalues "A,B,C"',
-    messages.getMessage('exampleCaption3'),
-    '    $ sfdx force:cmdt:field:create --fieldname MyField --fieldtype Number --decimalplaces 2',
-  ];
-
-  public static args = [{ name: 'file' }];
+  public static readonly description = messages.getMessage('commandLongDescription');
+  public static readonly examples = messages.getMessages('examples');
   public static readonly requiresProject = true;
+  public static args = [{ name: 'file' }];
 
   public static flags = {
     loglevel,

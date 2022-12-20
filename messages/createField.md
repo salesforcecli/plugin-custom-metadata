@@ -6,17 +6,19 @@ generate a custom metadata field based on the field type provided
 
 Generate a custom metadata field based on the field type provided.
 
-# exampleCaption1
+# examples
 
-Create a metadata file for a custom checkbox field:
+- Create a metadata file for a custom checkbox field:
 
-# exampleCaption2
+  <%= config.bin %> <%= command.id %> --fieldname MyField --fieldtype Checkbox
 
-Create a metadata file for a custom picklist field:
+- Create a metadata file for a custom picklist field:
 
-# exampleCaption3
+  <%= config.bin %> <%= command.id %> --fieldname MyField --fieldtype Picklist --picklistvalues "A,B,C"
 
-Create a metadata file for a custom number field:
+- Create a metadata file for a custom number field:
+
+  <%= config.bin %> <%= command.id %> --fieldname MyField --fieldtype Number --decimalplaces 2
 
 # nameFlagDescription
 
