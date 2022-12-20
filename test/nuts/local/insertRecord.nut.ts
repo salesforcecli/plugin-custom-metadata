@@ -41,7 +41,7 @@ describe('sfdx force:cmdt:record:insert', () => {
         fs.mkdirSync(fileDir);
       }
       fs.writeFileSync(
-        path.join(projDir, 'csv-upload', 'countries.csv'),
+        path.join(fileDir, 'countries.csv'),
         'Name,CountryCode__c,CountryName__c\nAustralia,AU,Australia\n'
       );
     });
@@ -53,7 +53,6 @@ describe('sfdx force:cmdt:record:insert', () => {
       execCmd(`force:cmdt:field:create --fieldname CountryCode --fieldtype Text --outputdir ${outputDir}`, {
         ensureExitCode: 0,
       });
-
       execCmd(`force:cmdt:field:create --fieldname CountryName --fieldtype Text --outputdir ${outputDir}`, {
         ensureExitCode: 0,
       });
@@ -70,8 +69,8 @@ describe('sfdx force:cmdt:record:insert', () => {
         path.join('csv-upload', 'countries.csv'),
         path.join('csv-upload', 'metadata'),
       ]);
-      expect(fs.existsSync(fieldDirPath)).to.be.true;
-      expect(fs.existsSync(filePath)).to.be.true;
+      expect(fs.existsSync(fieldDirPath), fieldDirPath).to.be.true;
+      expect(fs.existsSync(filePath), filePath).to.be.true;
       expect(result.shellOutput.stdout).to.contain(uxMessage);
     });
   });

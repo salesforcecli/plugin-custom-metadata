@@ -21,7 +21,7 @@ describe('sfdx force:cmdt:field:create', () => {
   before(async () => {
     session = await TestSession.create({
       project: {
-        gitClone: 'https://github.com/trailheadapps/dreamhouse-lwc',
+        name: 'cmdtCreateField',
       },
       devhubAuthStrategy: 'NONE',
     });

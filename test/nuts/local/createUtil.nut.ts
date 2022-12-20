@@ -17,8 +17,8 @@ import {
   createRecord,
   getFieldDataType,
   getFileData,
-} from '../../src/lib/helpers/createUtil';
-import { createOneOfEveryField } from '../helpers/fieldCreation';
+} from '../../../src/lib/helpers/createUtil';
+import { createOneOfEveryField } from '../../helpers/fieldCreation';
 
 let session: TestSession;
 let projDir: string;
@@ -34,7 +34,7 @@ describe('CreateUtil', () => {
   before(async () => {
     session = await TestSession.create({
       project: {
-        name: 'cmdtRecordCreate',
+        name: 'cmdtCreateUtilities',
       },
       devhubAuthStrategy: 'NONE',
     });
