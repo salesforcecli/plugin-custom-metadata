@@ -41,12 +41,13 @@ export default class Create extends SfCommand<CmdtCreateResponse> {
 
   public static flags = {
     loglevel,
-    typename: Flags.string({
+    'type-name': Flags.string({
       char: 'n',
       summary: messages.getMessage('nameFlagDescription'),
       description: messages.getMessage('nameFlagLongDescription'),
       required: true,
       parse: async (input: string) => Promise.resolve(validateMetadataTypeName(input)),
+      aliases: ['typename'],
     }),
     label: Flags.string({
       char: 'l',
@@ -55,12 +56,13 @@ export default class Create extends SfCommand<CmdtCreateResponse> {
       parse: async (input) =>
         Promise.resolve(validateLessThanForty(input, messages.getMessage('errorNotValidLabelName', [input]))),
     }),
-    plurallabel: Flags.string({
+    'plural-label': Flags.string({
       char: 'p',
       summary: messages.getMessage('plurallabelFlagDescription'),
       description: messages.getMessage('plurallabelFlagLongDescription'),
       parse: async (input) =>
         Promise.resolve(validateLessThanForty(input, messages.getMessage('errorNotValidPluralLabelName', [input]))),
+      aliases: ['plurallabel'],
     }),
     visibility: Flags.string({
       char: 'v',
@@ -69,35 +71,34 @@ export default class Create extends SfCommand<CmdtCreateResponse> {
       options: ['PackageProtected', 'Protected', 'Public'],
       default: 'Public',
     }),
-    outputdir: Flags.directory({
+    'output-directory': Flags.directory({
       char: 'd',
       summary: messages.getMessage('outputDirectoryFlagDescription'),
       description: messages.getMessage('outputDirectoryFlagLongDescription'),
       default: '',
+      aliases: ['outputdir', 'outputdirectory'],
     }),
   };
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public async run(): Promise<CmdtCreateResponse> {
     const { flags } = await this.parse(Create);
-    const typename = flags.typename; // this should become the new file name
-    const label = (flags.label as string) ?? typename.replace('__mdt', ''); // If a label is not provided default using the dev name. trim __mdt out
-    const visibility = flags.visibility;
-    const pluralLabel = (flags.plurallabel as string) ?? label;
+    const label = flags.label ?? flags['type-name'].replace('__mdt', ''); // If a label is not provided default using the dev name. trim __mdt out
+    const pluralLabel = flags['plural-label'] ?? label;
     const templates = new Templates();
     const fileWriter = new FileWriter();
 
-    const objectXML = templates.createObjectXML({ label, pluralLabel }, visibility);
-    const saveResults = await fileWriter.writeTypeFile(fs, flags.outputdir, typename, objectXML);
+    const objectXML = templates.createObjectXML({ label, pluralLabel }, flags.visibility);
+    const saveResults = await fileWriter.writeTypeFile(fs, flags['output-directory'], flags['type-name'], objectXML);
 
     this.log(messages.getMessage('targetDirectory', [saveResults.dir]));
     this.log(messages.getMessage(saveResults.updated ? 'fileUpdate' : 'fileCreated', [saveResults.fileName]));
 
     return {
-      typename,
+      typename: flags['type-name'],
       label,
       pluralLabel,
-      visibility,
+      visibility: flags.visibility,
     };
   }
 }

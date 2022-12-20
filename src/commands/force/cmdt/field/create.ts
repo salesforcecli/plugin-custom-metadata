@@ -37,15 +37,16 @@ export default class Create extends SfCommand<CmdtFieldCreateResponse> {
 
   public static flags = {
     loglevel,
-    fieldname: Flags.string({
+    name: Flags.string({
       char: 'n',
       required: true,
       summary: messages.getMessage('nameFlagDescription'),
       description: messages.getMessage('nameFlagLongDescription'),
       parse: async (input: string) =>
         Promise.resolve(validateAPIName(input, messages.getMessage('invalidCustomFieldError', [input]))),
+      aliases: ['fieldname'],
     }),
-    fieldtype: Flags.string({
+    type: Flags.string({
       char: 'f',
       required: true,
       summary: messages.getMessage('fieldTypeDescription'),
@@ -64,56 +65,62 @@ export default class Create extends SfCommand<CmdtFieldCreateResponse> {
         'LongTextArea',
         'Url',
       ],
+      aliases: ['fieldtype'],
     }),
-    picklistvalues: arrayWithDeprecation({
+    'picklist-values': arrayWithDeprecation({
       char: 'p',
       summary: messages.getMessage('picklistValuesFlagDescription'),
       description: messages.getMessage('picklistValuesFlagLongDescription'),
+      aliases: ['picklistvalues'],
     }),
-    decimalplaces: Flags.integer({
+    'decimal-places': Flags.integer({
       char: 's',
       summary: messages.getMessage('decimalplacesFlagDescription'),
       description: messages.getMessage('decimalplacesFlagLongDescription'),
       default: 0,
       min: 0,
+      aliases: ['decimalplaces'],
     }),
     label: Flags.string({
       char: 'l',
       summary: messages.getMessage('labelFlagDescription'),
       description: messages.getMessage('labelFlagLongDescription'),
     }),
-    outputdir: Flags.directory({
+    'output-directory': Flags.directory({
       char: 'd',
       summary: messages.getMessage('outputDirectoryFlagDescription'),
       description: messages.getMessage('outputDirectoryFlagLongDescription'),
       default: '',
+      aliases: ['outputdir', 'outputdirectory'],
     }),
   };
 
   public async run(): Promise<CmdtFieldCreateResponse> {
     const { flags } = await this.parse(Create);
-    const fieldName = flags.fieldname; // this should become the new file name
-    const label = flags.label ?? fieldName;
-    const fieldtype = flags.fieldtype;
-    const picklistvalues = flags.picklistvalues ?? [];
-    const decimalplaces = flags.decimalplaces;
+    const picklistvalues = flags['picklist-values'] ?? [];
 
-    if (fieldtype === 'Picklist' && picklistvalues?.length === 0) {
+    if (flags.type === 'Picklist' && picklistvalues?.length === 0) {
       throw new SfError(messages.getMessage('picklistValuesNotSuppliedError'));
     }
     const templates = new Templates();
-    const data = templates.createDefaultTypeStructure(fieldName, fieldtype, label, picklistvalues, decimalplaces);
+    const data = templates.createDefaultTypeStructure(
+      flags.name,
+      flags.type,
+      flags.label ?? flags.name,
+      picklistvalues,
+      flags['decimal-places']
+    );
     const fieldXML = templates.createFieldXML(data, false);
     const writer = new FileWriter();
-    const saveResults = await writer.writeFieldFile(fs, flags.outputdir, fieldName, fieldXML);
+    const saveResults = await writer.writeFieldFile(fs, flags['output-directory'], flags.name, fieldXML);
 
     this.log(messages.getMessage('targetDirectory', [saveResults.dir]));
     this.log(messages.getMessage(saveResults.updated ? 'fileUpdate' : 'fileCreated', [saveResults.fileName]));
 
     return {
-      fieldName,
-      label,
-      fieldtype,
+      fieldName: flags.name,
+      label: flags.label ?? flags.name,
+      fieldtype: flags.type,
     };
   }
 }

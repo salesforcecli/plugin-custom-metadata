@@ -46,19 +46,21 @@ export default class Create extends SfCommand<CmdtRecordCreateResponse> {
 
   public static flags = {
     loglevel,
-    typename: Flags.string({
+    'type-name': Flags.string({
       char: 't',
       summary: messages.getMessage('typenameFlagDescription'),
       description: messages.getMessage('typenameFlagLongDescription'),
       required: true,
       parse: async (input) => Promise.resolve(validateMetadataTypeName(input)),
+      aliases: ['typename'],
     }),
-    recordname: Flags.string({
+    'record-name': Flags.string({
       char: 'n',
       summary: messages.getMessage('recordNameFlagDescription'),
       description: messages.getMessage('recordNameFlagLongDescription'),
       required: true,
       parse: async (input) => Promise.resolve(validateMetadataRecordName(input)),
+      aliases: ['recordname'],
     }),
     label: Flags.string({
       char: 'l',
@@ -67,6 +69,7 @@ export default class Create extends SfCommand<CmdtRecordCreateResponse> {
       parse: async (input) =>
         Promise.resolve(validateLessThanForty(input, messages.getMessage('notAValidLabelNameError', [input]))),
     }),
+    // I hate this flag so much, but have to preserve it
     protected: Flags.string({
       char: 'p',
       summary: messages.getMessage('protectedFlagDescription'),
@@ -74,17 +77,19 @@ export default class Create extends SfCommand<CmdtRecordCreateResponse> {
       options: ['true', 'false'],
       default: 'false',
     }),
-    inputdir: Flags.directory({
+    'input-directory': Flags.directory({
       char: 'i',
       summary: messages.getMessage('inputDirectoryFlagDescription'),
       description: messages.getMessage('inputDirectoryFlagLongDescription'),
       default: path.join('force-app', 'main', 'default', 'objects'),
+      aliases: ['inputdir', 'inputdirectory'],
     }),
-    outputdir: Flags.directory({
+    'output-directory': Flags.directory({
       char: 'd',
       summary: messages.getMessage('outputDirectoryFlagDescription'),
       description: messages.getMessage('outputDirectoryFlagLongDescription'),
       default: path.join('force-app', 'main', 'default', 'customMetadata'),
+      aliases: ['outputdir', 'outputdirectory'],
     }),
   };
 
@@ -92,39 +97,45 @@ export default class Create extends SfCommand<CmdtRecordCreateResponse> {
     const { flags, args, argv } = await this.parse(Create);
     const varargs = parseVarArgs(args, argv);
     const createUtil = new CreateUtil();
-    const label = flags.label ?? flags.recordname;
+    const label = flags.label ?? flags['record-name'];
     const protectedFlag = flags.protected === 'true';
-    const dirName = appendDirectorySuffix(flags.typename);
-    const fieldDirPath = path.join(flags.inputdir, dirName, 'fields');
+    const dirName = appendDirectorySuffix(flags['type-name']);
+    const fieldDirPath = path.join(flags['input-directory'], dirName, 'fields');
     const fileNames = await fs.promises.readdir(fieldDirPath);
 
     // if customMetadata folder does not exist, create it
-    await fs.promises.mkdir(flags.outputdir, { recursive: true });
+    await fs.promises.mkdir(flags['output-directory'], { recursive: true });
 
     const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
 
     await createUtil.createRecord({
-      typename: flags.typename,
-      recordname: flags.recordname,
+      typename: flags['type-name'],
+      recordname: flags['record-name'],
       label,
-      inputdir: flags.inputdir,
-      outputdir: flags.outputdir,
+      inputdir: flags['input-directory'],
+      outputdir: flags['output-directory'],
       protected: protectedFlag,
       varargs,
       fileData,
     });
 
     this.log(
-      messages.getMessage('successResponse', [flags.typename, flags.recordname, label, protectedFlag, flags.outputdir])
+      messages.getMessage('successResponse', [
+        flags['type-name'],
+        flags['record-name'],
+        label,
+        protectedFlag,
+        flags['output-directory'],
+      ])
     );
 
     // Return an object to be displayed with --json
     return {
-      typename: flags.typename,
-      recordname: flags.recordname,
+      typename: flags['type-name'],
+      recordname: flags['record-name'],
       label,
-      inputdir: flags.inputdir,
-      outputdir: flags.outputdir,
+      inputdir: flags['input-directory'],
+      outputdir: flags['output-directory'],
       protectedFlag,
       varargs,
       fileData,

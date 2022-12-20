@@ -71,22 +71,24 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
     'api-version': orgApiVersionFlagWithDeprecations,
     loglevel,
     // flag with a value (-n, --name=VALUE)
-    devname: Flags.string({
+    'dev-name': Flags.string({
       char: 'n',
       required: true,
       summary: messages.getMessage('devnameFlagDescription'),
       description: messages.getMessage('devnameFlagLongDescription'),
       parse: async (input: string) => Promise.resolve(validateMetadataTypeName(input)),
+      aliases: ['devname'],
     }),
     label: Flags.string({
       char: 'l',
       summary: messages.getMessage('labelFlagDescription'),
       description: messages.getMessage('labelFlagLongDescription'),
     }),
-    plurallabel: Flags.string({
+    'plural-label': Flags.string({
       char: 'p',
       summary: messages.getMessage('plurallabelFlagDescription'),
       description: messages.getMessage('plurallabelFlagLongDescription'),
+      aliases: ['plurallabel'],
     }),
     visibility: Flags.string({
       char: 'v',
@@ -95,29 +97,33 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
       options: ['PackageProtected', 'Protected', 'Public'],
       default: 'Public',
     }),
-    sobjectname: Flags.string({
+    sobject: Flags.string({
       char: 's',
       required: true,
       summary: messages.getMessage('sobjectnameFlagDescription'),
       description: messages.getMessage('sobjectnameFlagLongDescription'),
       parse: async (sobjectname: string) => Promise.resolve(validateAPIName(sobjectname)),
+      aliases: ['sobjectname'],
     }),
-    ignoreunsupported: Flags.boolean({
+    'ignore-unsupported': Flags.boolean({
       char: 'i',
       summary: messages.getMessage('ignoreUnsupportedFlagDescription'),
       description: messages.getMessage('ignoreUnsupportedFlagLongDescription'),
+      aliases: ['ignoreunsupported'],
     }),
-    typeoutputdir: Flags.directory({
+    'type-output-directory': Flags.directory({
       char: 'd',
       summary: messages.getMessage('typeoutputdirFlagDescription'),
       description: messages.getMessage('typeoutputdirFlagLongDescription'),
       default: path.join('force-app', 'main', 'default', 'objects'),
+      aliases: ['typeoutputdir'],
     }),
-    recordsoutputdir: Flags.directory({
+    'records-output-dir': Flags.directory({
       char: 'r',
       summary: messages.getMessage('recordsoutputdirFlagDescription'),
       description: messages.getMessage('recordsoutputdirFlagLongDescription'),
       default: path.join('force-app', 'main', 'default', 'customMetadata'),
+      aliases: ['recordsoutputdir'],
     }),
   };
 
@@ -125,11 +131,9 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
   public async run(): Promise<CmdtGenerateResponse> {
     const { flags } = await this.parse(Generate);
     const conn = flags['target-org'].getConnection(flags['api-version']);
-    const devName = flags.devname;
-    const ignoreFields = flags.ignoreunsupported;
 
     // use default target org connection to get object describe if no source is provided.
-    const describeObj = await conn.metadata.read('CustomObject', flags.sobjectname);
+    const describeObj = await conn.metadata.read('CustomObject', flags.sobject);
 
     // throw error if the object doesnot exist(empty json as response from the describe call.)
     if (isEmpty(describeObj.fields)) {
@@ -146,10 +150,10 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
     }
 
     const visibility = flags.visibility;
-    const label = (flags.label as string) ?? devName;
-    const pluralLabel = (flags.plurallabel as string) ?? label;
-    const outputDir = flags.typeoutputdir;
-    const recordsOutputDir = flags.recordsoutputdir;
+    const label = flags.label ?? flags['dev-name'];
+    const pluralLabel = flags['plural-label'] ?? label;
+    const outputDir = flags['type-output-directory'];
+    const recordsOutputDir = flags['records-output-dir'];
 
     try {
       this.spinner.start('creating the CMDT object');
@@ -157,14 +161,14 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
       const templates = new Templates();
       const objectXML = templates.createObjectXML({ label, pluralLabel }, visibility);
       const fileWriter = new FileWriter();
-      await fileWriter.writeTypeFile(fs, outputDir, devName, objectXML);
+      await fileWriter.writeTypeFile(fs, outputDir, flags['dev-name'], objectXML);
 
       this.spinner.status = 'creating the CMDT fields';
 
       // get all the field details before creating field metadata
       const fields = describeObjFields(describeObj)
         // added type check here to skip the creation of un supported fields
-        .filter((f) => !ignoreFields || templates.canConvert(f['type']))
+        .filter((f) => !flags['ignore-unsupported'] || templates.canConvert(f['type']))
         .flatMap((f) =>
           // check for Geo Location fields before hand and create two different fields for longitude and latitude.
           f.type !== 'Location' ? [f] : convertLocationFieldToText(f)
@@ -174,9 +178,9 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
         fields.map((f) =>
           fileWriter.writeFieldFile(
             fs,
-            path.join(outputDir, `${devName}__mdt`),
+            path.join(outputDir, `${flags['dev-name']}__mdt`),
             f.fullName,
-            templates.createFieldXML(f, !ignoreFields)
+            templates.createFieldXML(f, !flags['ignore-unsupported'])
           )
         )
       );
@@ -185,7 +189,7 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
       const createUtil = new CreateUtil();
       // if customMetadata folder does not exist, create it
       await fs.promises.mkdir(recordsOutputDir, { recursive: true });
-      const fieldDirPath = path.join(outputDir, `${devName}__mdt`, 'fields');
+      const fieldDirPath = path.join(outputDir, `${flags['dev-name']}__mdt`, 'fields');
       const fileNames = await fs.promises.readdir(fieldDirPath);
       const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
 
@@ -197,7 +201,7 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
           const lblName = rec['Name'] as string;
           const recordName = isValidMetadataRecordName(lblName) ? lblName : lblName.replace(/ +/g, '_');
           return createUtil.createRecord({
-            typename: devName,
+            typename: flags['dev-name'],
             recordname: recordName,
             label: lblName,
             inputdir: outputDir,
@@ -205,22 +209,24 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
             protected: visibility !== 'Public',
             varargs: record,
             fileData,
-            ignorefields: ignoreFields,
+            ignorefields: flags['ignore-unsupported'],
           });
         })
       );
 
       this.spinner.stop('custom metadata type and records creation in completed');
-      this.log(`Congrats! Created a ${devName} custom metadata type with ${sObjectRecords.records.length} records!`);
+      this.log(
+        `Congrats! Created a ${flags['dev-name']} custom metadata type with ${sObjectRecords.records.length} records!`
+      );
     } catch (e) {
-      const targetDir = `${outputDir}${devName}__mdt`;
+      const targetDir = `${outputDir}${flags['dev-name']}__mdt`;
       // dir might not exist if we never got to the creation step
       if (fs.existsSync(targetDir)) {
         await fs.promises.rm(targetDir, { recursive: true });
       }
       await Promise.all(
         (await fs.promises.readdir(recordsOutputDir))
-          .filter((f) => f.startsWith(devName))
+          .filter((f) => f.startsWith(flags['dev-name']))
           .map((f) => fs.promises.unlink(path.join(recordsOutputDir, f)))
       );
 

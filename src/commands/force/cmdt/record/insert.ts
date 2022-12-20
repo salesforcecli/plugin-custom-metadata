@@ -32,35 +32,40 @@ export default class Insert extends SfCommand<CreateConfig[]> {
 
   public static flags = {
     loglevel,
-    filepath: Flags.string({
+    csv: Flags.string({
       char: 'f',
       summary: messages.getMessage('filepathFlagDescription'),
       description: messages.getMessage('filepathFlagLongDescription'),
       required: true,
+      aliases: ['filepath'],
     }),
-    typename: Flags.string({
+    'type-name': Flags.string({
       char: 't',
       summary: messages.getMessage('typenameFlagDescription'),
       description: messages.getMessage('typenameFlagLongDescription'),
       required: true,
+      aliases: ['typename'],
     }),
-    inputdir: Flags.directory({
+    'input-directory': Flags.directory({
       char: 'i',
       summary: messages.getMessage('inputDirectoryFlagDescription'),
       description: messages.getMessage('inputDirectoryFlagLongDescription'),
       default: path.join('force-app', 'main', 'default', 'objects'),
+      aliases: ['inputdir', 'inputdirectory'],
     }),
-    outputdir: Flags.directory({
+    'output-directory': Flags.directory({
       char: 'd',
       summary: messages.getMessage('outputDirectoryFlagDescription'),
       description: messages.getMessage('outputDirectoryFlagLongDescription'),
       default: path.join('force-app', 'main', 'default', 'customMetadata'),
+      aliases: ['outputdir', 'outputdirectory'],
     }),
-    namecolumn: Flags.string({
+    'name-column': Flags.string({
       char: 'n',
       summary: messages.getMessage('namecolumnFlagDescription'),
       description: messages.getMessage('namecolumnFlagLongDescription'),
       default: 'Name',
+      aliases: ['namecolumn'],
     }),
   };
 
@@ -68,31 +73,22 @@ export default class Insert extends SfCommand<CreateConfig[]> {
   public async run(): Promise<CreateConfig[]> {
     const { flags } = await this.parse(Insert);
     const createUtil = new CreateUtil();
-    let typename = flags.typename;
-    const inputdir = flags.inputdir;
-    const outputdir = flags.outputdir;
-    const dirName = appendDirectorySuffix(typename);
-    const fieldDirPath = path.join(inputdir, dirName, 'fields');
+    const dirName = appendDirectorySuffix(flags['type-name']);
+    const fieldDirPath = path.join(flags['input-directory'], dirName, 'fields');
     const fileNames = await fs.promises.readdir(fieldDirPath);
-    const nameField = flags.namecolumn;
-
-    // forgive them if they passed in type__mdt, and cut off the __mdt
-    if (typename.endsWith('__mdt')) {
-      typename = typename.substring(0, typename.indexOf('__mdt'));
-    }
 
     // if customMetadata folder does not exist, create it
-    await fs.promises.mkdir(outputdir, { recursive: true });
+    await fs.promises.mkdir(flags['output-directory'], { recursive: true });
 
     const fileData = await createUtil.getFileData(fieldDirPath, fileNames);
-    const csvDataAry = (await csv().fromFile(flags.filepath)) as Record[];
+    const csvDataAry = (await csv().fromFile(flags.csv)) as Record[];
 
-    const metadataTypeFields = getFieldNames(fileData, nameField);
+    const metadataTypeFields = getFieldNames(fileData, flags['name-column']);
     if (csvDataAry.length > 0) {
       const record = csvDataAry[0];
       for (const key in record) {
         if (!metadataTypeFields.includes(key)) {
-          throw new SfError(messages.getMessage('fieldNotFoundError', [key, typename]));
+          throw new SfError(messages.getMessage('fieldNotFoundError', [key, flags['type-name']]));
         }
       }
     }
@@ -102,11 +98,11 @@ export default class Insert extends SfCommand<CreateConfig[]> {
 
     const recordConfigs = csvDataAry.map(
       (record): CreateConfig => ({
-        typename,
-        recordname: (record[nameField] as string).replace(' ', '_'),
-        label: record[nameField] as string,
-        inputdir,
-        outputdir,
+        typename: flags['type-name'],
+        recordname: (record[flags['name-column']] as string).replace(' ', '_'),
+        label: record[flags['name-column']] as string,
+        inputdir: flags['input-directory'],
+        outputdir: flags['output-directory'],
         protected: false,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         varargs: Object.fromEntries(
@@ -124,7 +120,7 @@ export default class Insert extends SfCommand<CreateConfig[]> {
     );
     await Promise.all(recordConfigs.map((r) => createUtil.createRecord(r)));
 
-    this.log(messages.getMessage('successResponse', [flags.filepath, outputdir]));
+    this.log(messages.getMessage('successResponse', [flags.filepath, flags['output-directory']]));
 
     return recordConfigs;
   }
