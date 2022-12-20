@@ -2,13 +2,13 @@
   {
     "command": "force:cmdt:create",
     "plugin": "@salesforce/plugin-custom-metadata",
-    "flags": ["json", "label", "loglevel", "outputdir", "plurallabel", "typename", "visibility"],
+    "flags": ["json", "label", "loglevel", "output-directory", "plural-label", "type-name", "visibility"],
     "alias": []
   },
   {
     "command": "force:cmdt:field:create",
     "plugin": "@salesforce/plugin-custom-metadata",
-    "flags": ["decimalplaces", "fieldname", "fieldtype", "json", "label", "loglevel", "outputdir", "picklistvalues"],
+    "flags": ["decimal-places", "json", "label", "loglevel", "name", "output-directory", "picklist-values", "type"],
     "alias": []
   },
   {
@@ -16,16 +16,16 @@
     "plugin": "@salesforce/plugin-custom-metadata",
     "flags": [
       "api-version",
-      "devname",
-      "ignoreunsupported",
+      "dev-name",
+      "ignore-unsupported",
       "json",
       "label",
       "loglevel",
-      "plurallabel",
-      "recordsoutputdir",
-      "sobjectname",
+      "plural-label",
+      "records-output-dir",
+      "sobject",
       "target-org",
-      "typeoutputdir",
+      "type-output-directory",
       "visibility"
     ],
     "alias": []
@@ -33,13 +33,22 @@
   {
     "command": "force:cmdt:record:create",
     "plugin": "@salesforce/plugin-custom-metadata",
-    "flags": ["inputdir", "json", "label", "loglevel", "outputdir", "protected", "recordname", "typename"],
+    "flags": [
+      "input-directory",
+      "json",
+      "label",
+      "loglevel",
+      "output-directory",
+      "protected",
+      "record-name",
+      "type-name"
+    ],
     "alias": []
   },
   {
     "command": "force:cmdt:record:insert",
     "plugin": "@salesforce/plugin-custom-metadata",
-    "flags": ["filepath", "inputdir", "json", "loglevel", "namecolumn", "outputdir", "typename"],
+    "flags": ["csv", "input-directory", "json", "loglevel", "name-column", "output-directory", "type-name"],
     "alias": []
   }
 ]
