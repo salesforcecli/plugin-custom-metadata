@@ -14,7 +14,7 @@ import { Templates } from '../../../../lib/templates/templates';
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'createField');
 
-interface CmdtFieldCreateResponse {
+export interface CmdtFieldCreateResponse {
   fieldName: string;
   label: string;
   fieldtype: string;

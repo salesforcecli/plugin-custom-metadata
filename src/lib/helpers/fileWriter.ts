@@ -75,4 +75,4 @@ export class FileWriter {
   }
 }
 
-export const removeTrailingSlash = (dir: string): string => dir.replace(/\/+$/, '');
+const removeTrailingSlash = (dir: string): string => dir.replace(/\/+$/, '');

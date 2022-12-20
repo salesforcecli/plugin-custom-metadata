@@ -14,7 +14,7 @@ import { Templates } from '../../../lib/templates/templates';
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'createType');
 
-interface CmdtCreateResponse {
+export interface CmdtCreateResponse {
   typename: string;
   label: string;
   pluralLabel: string;
@@ -70,7 +70,6 @@ export default class Create extends SfCommand<CmdtCreateResponse> {
     }),
   };
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   public async run(): Promise<CmdtCreateResponse> {
     const { flags } = await this.parse(Create);
     const label = flags.label ?? flags['type-name'].replace('__mdt', ''); // If a label is not provided default using the dev name. trim __mdt out

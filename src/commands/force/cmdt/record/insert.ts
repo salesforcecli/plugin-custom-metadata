@@ -35,6 +35,7 @@ export default class Insert extends SfCommand<CreateConfig[]> {
       summary: messages.getMessage('typenameFlagDescription'),
       description: messages.getMessage('typenameFlagLongDescription'),
       required: true,
+      parse: (input) => Promise.resolve(input.endsWith('__mdt') ? input.replace('__mdt', '') : input),
       aliases: ['typename'],
     }),
     'input-directory': Flags.directory({
@@ -61,7 +62,6 @@ export default class Insert extends SfCommand<CreateConfig[]> {
     }),
   };
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   public async run(): Promise<CreateConfig[]> {
     const { flags } = await this.parse(Insert);
     const dirName = appendDirectorySuffix(flags['type-name']);
@@ -111,7 +111,7 @@ export default class Insert extends SfCommand<CreateConfig[]> {
     );
     await Promise.all(recordConfigs.map((r) => createRecord(r)));
 
-    this.log(messages.getMessage('successResponse', [flags.filepath, flags['output-directory']]));
+    this.log(messages.getMessage('successResponse', [flags.csv, flags['output-directory']]));
 
     return recordConfigs;
   }

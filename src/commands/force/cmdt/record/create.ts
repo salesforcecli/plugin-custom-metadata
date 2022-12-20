@@ -19,7 +19,7 @@ import {
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'createRecord');
 
-interface CmdtRecordCreateResponse {
+export interface CmdtRecordCreateResponse {
   typename: string;
   recordname: string;
   label: string;

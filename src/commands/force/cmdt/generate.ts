@@ -29,7 +29,7 @@ import { Templates } from '../../../lib/templates/templates';
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'generate');
 
-interface CmdtGenerateResponse {
+export interface CmdtGenerateResponse {
   outputDir: string;
   recordsOutputDir: string;
 }
@@ -102,7 +102,6 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
     }),
   };
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
   public async run(): Promise<CmdtGenerateResponse> {
     const { flags } = await this.parse(Generate);
     const conn = flags['target-org'].getConnection(flags['api-version']);
