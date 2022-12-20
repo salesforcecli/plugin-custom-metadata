@@ -60,14 +60,6 @@ The directory to store the newly-created custom metadata type files. The locatio
 
 Created custom metadata type with object name '%s', label '%s', plural label '%s', and visibility '%s' at '%s'.
 
-# errorNoOrgResults
-
-No results found for the organization '%s'.
-
-# errorNotValidAPIName
-
-'%s' is not a valid API name for a custom metadata type. Metadata names can contain only underscores and alphanumeric characters, must begin with a letter, cannot end with an underscore, and cannot contain two consecutive underscore characters.
-
 # errorNotValidLabelName
 
 '%s' is too long to be a label. The maximum length of the label is 40 characters.

@@ -72,10 +72,6 @@ API name of the sObject source for custom metadata generation
 
 The API name of the sObject source for custom metadata generation.
 
-# targetusernameFlagExample
-
-alias or user email of the org containing the source type
-
 # ignoreUnsupportedFlagDescription
 
 ignore unsupported field types
@@ -100,29 +96,9 @@ directory to store newly-created custom metadata record files
 
 The directory to store newly-created custom metadata record files.
 
-# loglevelFlagDescription
-
-logging level for this command invocation
-
-# loglevelFlagLongDescription
-
-The logging level for this command invocation.
-
-# typenameFlagError
-
-Not a valid custom metadata type name
-
 # sobjectnameNoResultError
 
 No sObject with name %s found in the org.
-
-# sourceusernameError
-
-No user found with the provided username or alias
-
-# sourceuserAuthenticationError
-
-Issue with authenticating to source org with targetusername provided: %s More info: %s.
 
 # generateError
 
@@ -131,7 +107,3 @@ Failed to generate custom metadata. Reason: %s.
 # customSettingTypeError
 
 Cannot generate custom metadata for the custom setting %s. Check type and visibility.
-
-# queryError
-
-Cannot query records on %s. Failed with following error: %s.

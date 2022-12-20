@@ -64,21 +64,9 @@ directory to store newly-created custom metadata record files
 
 The directory to store newly-created custom metadata record files.
 
-# errorInvalidCustomField
-
-Custom fields must end in \_\_c.
-
 # successResponse
 
 Created custom metadata record of the type '%s' with record name '%s', label '%s', and protected '%s' at '%s'.
-
-# notValidAPINameError
-
-'%s' is not a valid API name for a custom metadata type.
-
-# notAValidRecordNameError
-
-'%s' is not a valid record name for a custom metadata record. Record names can only contain alphanumeric characters, must begin with a letter, cannot end with an underscore, and cannot contain two consecutive underscore characters.
 
 # notAValidLabelNameError
 
