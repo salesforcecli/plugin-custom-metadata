@@ -13,7 +13,7 @@ import { TestSession, execCmd } from '@salesforce/cli-plugins-testkit';
 import { Messages } from '@salesforce/core';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.load('@salesforce/plugin-custom-metadata', 'generate', ['sobjectnameNoResultError']);
+const messages = Messages.load('@salesforce/plugin-custom-metadata', 'complete', ['sobjectnameNoResultError']);
 
 const validationMessages = Messages.load('@salesforce/plugin-custom-metadata', 'validation', [
   'sobjectnameFlagError',
