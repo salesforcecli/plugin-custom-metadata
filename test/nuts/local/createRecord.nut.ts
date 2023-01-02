@@ -14,7 +14,7 @@ import { createOneOfEveryField } from '../../helpers/fieldCreation';
 
 Messages.importMessagesDirectory(__dirname);
 const validationMessages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'validation');
-const commandMessages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'createRecord');
+const commandMessages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'record');
 
 let session: TestSession;
 let projDir: string;

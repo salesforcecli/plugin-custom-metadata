@@ -12,7 +12,7 @@ import { expect, config } from 'chai';
 import { TestSession, execCmd } from '@salesforce/cli-plugins-testkit';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'insertRecord');
+const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'records');
 
 config.truncateThreshold = 0;
 let session: TestSession;
