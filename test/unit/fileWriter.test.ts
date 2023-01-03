@@ -39,6 +39,15 @@ describe('FileWriter', () => {
       expect(fs.existsSync(`${fileName}__mdt/${fileName}__mdt.object-meta.xml`)).to.be.true;
       await fs.promises.rm(`${fileName}__mdt`, { recursive: true });
     });
+    it('use a directory', async () => {
+      const fileName = 'Lantern';
+      const apiName = `${fileName}__c`;
+      const fileContent = 'oil';
+      await writeTypeFile(fs, 'sampledir', apiName, fileContent);
+      expect(fs.existsSync(path.join('sampledir', `${fileName}__mdt`))).to.be.true;
+      expect(fs.existsSync(path.join('sampledir', `${fileName}__mdt`, `${fileName}__mdt.object-meta.xml`))).to.be.true;
+      await fs.promises.rm('sampledir', { recursive: true });
+    });
     it('should handle a os-specific trailing slash', async () => {
       const fileName = 'Lantern';
       const apiName = `${fileName}__c`;
