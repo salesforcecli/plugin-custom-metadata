@@ -7,7 +7,7 @@
 import * as fs from 'fs';
 import { Flags, loglevel, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
-import { FileWriter } from '../../../lib/helpers/fileWriter';
+import { writeTypeFile } from '../../../lib/helpers/fileWriter';
 import { validateMetadataTypeName, validateLessThanForty } from '../../../lib/helpers/validationUtil';
 import { createObjectXML } from '../../../lib/templates/templates';
 
@@ -74,10 +74,9 @@ export default class Create extends SfCommand<CmdtCreateResponse> {
     const { flags } = await this.parse(Create);
     const label = flags.label ?? flags['type-name'].replace('__mdt', ''); // If a label is not provided default using the dev name. trim __mdt out
     const pluralLabel = flags['plural-label'] ?? label;
-    const fileWriter = new FileWriter();
 
     const objectXML = createObjectXML({ label, pluralLabel }, flags.visibility);
-    const saveResults = await fileWriter.writeTypeFile(fs, flags['output-directory'], flags['type-name'], objectXML);
+    const saveResults = await writeTypeFile(fs, flags['output-directory'], flags['type-name'], objectXML);
 
     this.log(messages.getMessage('targetDirectory', [saveResults.dir]));
     this.log(messages.getMessage(saveResults.updated ? 'fileUpdate' : 'fileCreated', [saveResults.fileName]));

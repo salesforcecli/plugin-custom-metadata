@@ -7,7 +7,7 @@
 import * as fs from 'fs';
 import { arrayWithDeprecation, Flags, loglevel, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages, SfError } from '@salesforce/core';
-import { FileWriter } from '../../../lib/helpers/fileWriter';
+import { writeFieldFile } from '../../../lib/helpers/fileWriter';
 import { validateAPIName } from '../../../lib/helpers/validationUtil';
 import { createDefaultTypeStructure, createFieldXML } from '../../../lib/templates/templates';
 
@@ -101,8 +101,7 @@ export default class Create extends SfCommand<CmdtFieldCreateResponse> {
       flags['decimal-places']
     );
     const fieldXML = createFieldXML(data, false);
-    const writer = new FileWriter();
-    const saveResults = await writer.writeFieldFile(fs, flags['output-directory'], flags.name, fieldXML);
+    const saveResults = await writeFieldFile(fs, flags['output-directory'], flags.name, fieldXML);
 
     this.log(messages.getMessage('targetDirectory', [saveResults.dir]));
     this.log(messages.getMessage(saveResults.updated ? 'fileUpdate' : 'fileCreated', [saveResults.fileName]));

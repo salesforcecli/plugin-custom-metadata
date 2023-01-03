@@ -17,7 +17,7 @@ import { SfError, Messages } from '@salesforce/core';
 import { isEmpty } from '@salesforce/kit';
 import { CustomField, CustomObject } from 'jsforce/api/metadata';
 import { createRecord, getFileData } from '../../../lib/helpers/createUtil';
-import { FileWriter } from '../../../lib/helpers/fileWriter';
+import { writeTypeFile, writeFieldFile } from '../../../lib/helpers/fileWriter';
 import { describeObjFields, cleanQueryResponse, validCustomSettingType } from '../../../lib/helpers/metadataUtil';
 import {
   validateAPIName,
@@ -131,8 +131,7 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
       this.spinner.start('creating the CMDT object');
       // create custom metadata type
       const objectXML = createObjectXML({ label, pluralLabel }, flags.visibility);
-      const fileWriter = new FileWriter();
-      await fileWriter.writeTypeFile(fs, outputDir, flags['dev-name'], objectXML);
+      await writeTypeFile(fs, outputDir, flags['dev-name'], objectXML);
 
       this.spinner.status = 'creating the CMDT fields';
 
@@ -147,7 +146,7 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
       // create custom metdata fields
       await Promise.all(
         fields.map((f) =>
-          fileWriter.writeFieldFile(
+          writeFieldFile(
             fs,
             path.join(outputDir, `${flags['dev-name']}__mdt`),
             f.fullName,
