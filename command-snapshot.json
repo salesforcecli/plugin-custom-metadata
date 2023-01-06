@@ -1,6 +1,12 @@
 [
   {
-    "command": "generate:cmdt:complete",
+    "command": "generate:cmdt:field",
+    "plugin": "@salesforce/plugin-custom-metadata",
+    "flags": ["decimal-places", "json", "label", "loglevel", "name", "output-directory", "picklist-values", "type"],
+    "alias": ["force:cmdt:field:create", "cmdt:field:create"]
+  },
+  {
+    "command": "generate:cmdt:fromorg",
     "plugin": "@salesforce/plugin-custom-metadata",
     "flags": [
       "api-version",
@@ -17,12 +23,6 @@
       "visibility"
     ],
     "alias": ["force:cmdt:generate", "cmdt:generate"]
-  },
-  {
-    "command": "generate:cmdt:field",
-    "plugin": "@salesforce/plugin-custom-metadata",
-    "flags": ["decimal-places", "json", "label", "loglevel", "name", "output-directory", "picklist-values", "type"],
-    "alias": ["force:cmdt:field:create", "cmdt:field:create"]
   },
   {
     "command": "generate:cmdt:object",

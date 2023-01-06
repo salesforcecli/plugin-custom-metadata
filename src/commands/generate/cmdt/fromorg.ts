@@ -27,7 +27,7 @@ import {
 import { canConvert, createObjectXML, createFieldXML } from '../../../lib/templates/templates';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'complete');
+const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'fromorg');
 
 export interface CmdtGenerateResponse {
   outputDir: string;
