@@ -11,12 +11,12 @@ import { Messages, SfError } from '@salesforce/core';
 import { Record } from 'jsforce';
 import * as csv from '../../../../csvtojson';
 import { getFieldNames, appendDirectorySuffix, createRecord, getFileData } from '../../../lib/helpers/createUtil';
-import { CreateConfig } from '../../../lib/interfaces/createConfig';
+import { CreateConfig, CreateConfigs } from '../../../lib/interfaces/createConfig';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'records');
 
-export default class Insert extends SfCommand<CreateConfig[]> {
+export default class Insert extends SfCommand<CreateConfigs> {
   public static readonly summary = messages.getMessage('commandDescription');
   public static readonly description = messages.getMessage('commandLongDescription');
   public static readonly requiresProject = true;
@@ -63,7 +63,7 @@ export default class Insert extends SfCommand<CreateConfig[]> {
     }),
   };
 
-  public async run(): Promise<CreateConfig[]> {
+  public async run(): Promise<CreateConfigs> {
     const { flags } = await this.parse(Insert);
     const dirName = appendDirectorySuffix(flags['type-name']);
     const fieldDirPath = path.join(flags['input-directory'], dirName, 'fields');
