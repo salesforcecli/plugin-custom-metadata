@@ -1,3 +1,12 @@
+## [2.0.9](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.0.8...2.0.9) (2023-01-08)
+
+
+### Bug Fixes
+
+* **deps:** bump json5 from 1.0.1 to 1.0.2 ([1d667a8](https://github.com/salesforcecli/plugin-custom-metadata/commit/1d667a85a0db982c21098578cdaff877ff8a7ae7))
+
+
+
 ## [2.0.8](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.0.7...2.0.8) (2022-12-13)
 
 
