@@ -110,10 +110,10 @@
         "external": true,
         "subtopics": {
           "cmdt": {
-            "description": "create and update custom metadata types and their records",
+            "description": "Generate custom metadata types and their records.",
             "subtopics": {
               "record": {
-                "description": "create and update custom metadata type records"
+                "description": "Generate custom metadata type records."
               }
             }
           }
