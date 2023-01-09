@@ -21,8 +21,8 @@ export interface CmdtCreateResponse {
   visibility: string;
 }
 export default class Create extends SfCommand<CmdtCreateResponse> {
-  public static readonly summary = messages.getMessage('commandDescription');
-  public static readonly description = messages.getMessage('commandLongDescription');
+  public static readonly summary = messages.getMessage('summary');
+  public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
   public static readonly aliases = ['force:cmdt:create', 'cmdt:create'];
 
@@ -33,38 +33,36 @@ export default class Create extends SfCommand<CmdtCreateResponse> {
     loglevel,
     'type-name': Flags.string({
       char: 'n',
-      summary: messages.getMessage('nameFlagDescription'),
-      description: messages.getMessage('nameFlagLongDescription'),
+      summary: messages.getMessage('flags.type-name.summary'),
+      description: messages.getMessage('flags.type-name.description'),
       required: true,
       parse: async (input: string) => Promise.resolve(validateMetadataTypeName(input)),
       aliases: ['typename'],
     }),
     label: Flags.string({
       char: 'l',
-      summary: messages.getMessage('labelFlagDescription'),
-      description: messages.getMessage('labelFlagLongDescription'),
+      summary: messages.getMessage('flags.label.summary'),
       parse: async (input) =>
         Promise.resolve(validateLessThanForty(input, messages.getMessage('errorNotValidLabelName', [input]))),
     }),
     'plural-label': Flags.string({
       char: 'p',
-      summary: messages.getMessage('plurallabelFlagDescription'),
-      description: messages.getMessage('plurallabelFlagLongDescription'),
+      summary: messages.getMessage('flags.plural-label.summary'),
       parse: async (input) =>
         Promise.resolve(validateLessThanForty(input, messages.getMessage('errorNotValidPluralLabelName', [input]))),
       aliases: ['plurallabel'],
     }),
     visibility: Flags.string({
       char: 'v',
-      summary: messages.getMessage('visibilityFlagDescription'),
-      description: messages.getMessage('visibilityFlagLongDescription'),
+      summary: messages.getMessage('flags.visibility.summary'),
+      description: messages.getMessage('flags.visibility.description'),
       options: ['PackageProtected', 'Protected', 'Public'],
       default: 'Public',
     }),
     'output-directory': Flags.directory({
       char: 'd',
-      summary: messages.getMessage('outputDirectoryFlagDescription'),
-      description: messages.getMessage('outputDirectoryFlagLongDescription'),
+      summary: messages.getMessage('flags.output-directory.summary'),
+      description: messages.getMessage('flags.output-directory.description'),
       default: '',
       aliases: ['outputdir', 'outputdirectory'],
     }),

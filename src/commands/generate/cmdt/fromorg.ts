@@ -34,8 +34,8 @@ export interface CmdtGenerateResponse {
   recordsOutputDir: string;
 }
 export default class Generate extends SfCommand<CmdtGenerateResponse> {
-  public static readonly summary = messages.getMessage('commandDescription');
-  public static readonly description = messages.getMessage('commandLongDescription');
+  public static readonly summary = messages.getMessage('summary');
+  public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
   public static readonly requiresProject = true;
   public static readonly aliases = ['force:cmdt:generate', 'cmdt:generate'];
@@ -49,54 +49,48 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
     'dev-name': Flags.string({
       char: 'n',
       required: true,
-      summary: messages.getMessage('devnameFlagDescription'),
-      description: messages.getMessage('devnameFlagLongDescription'),
+      summary: messages.getMessage('flags.dev-name.summary'),
       parse: async (input: string) => Promise.resolve(validateMetadataTypeName(input)),
       aliases: ['devname'],
     }),
     label: Flags.string({
       char: 'l',
-      summary: messages.getMessage('labelFlagDescription'),
-      description: messages.getMessage('labelFlagLongDescription'),
+      summary: messages.getMessage('flags.label.summary'),
     }),
     'plural-label': Flags.string({
       char: 'p',
-      summary: messages.getMessage('plurallabelFlagDescription'),
-      description: messages.getMessage('plurallabelFlagLongDescription'),
+      summary: messages.getMessage('flags.plural-label.summary'),
       aliases: ['plurallabel'],
     }),
     visibility: Flags.string({
       char: 'v',
-      summary: messages.getMessage('visibilityFlagDescription'),
-      description: messages.getMessage('visibilityFlagLongDescription'),
+      summary: messages.getMessage('flags.visibility.summary'),
+      description: messages.getMessage('flags.visibility.description'),
       options: ['PackageProtected', 'Protected', 'Public'],
       default: 'Public',
     }),
     sobject: Flags.string({
       char: 's',
       required: true,
-      summary: messages.getMessage('sobjectnameFlagDescription'),
-      description: messages.getMessage('sobjectnameFlagLongDescription'),
+      summary: messages.getMessage('flags.sobject.summary'),
       parse: async (sobjectname: string) => Promise.resolve(validateAPIName(sobjectname)),
       aliases: ['sobjectname'],
     }),
     'ignore-unsupported': Flags.boolean({
       char: 'i',
-      summary: messages.getMessage('ignoreUnsupportedFlagDescription'),
-      description: messages.getMessage('ignoreUnsupportedFlagLongDescription'),
+      summary: messages.getMessage('flags.ignore-unsupported.summary'),
+      description: messages.getMessage('flags.ignore-unsupported.description'),
       aliases: ['ignoreunsupported'],
     }),
     'type-output-directory': Flags.directory({
       char: 'd',
-      summary: messages.getMessage('typeoutputdirFlagDescription'),
-      description: messages.getMessage('typeoutputdirFlagLongDescription'),
+      summary: messages.getMessage('flags.type-output-directory.summary'),
       default: path.join('force-app', 'main', 'default', 'objects'),
       aliases: ['typeoutputdir'],
     }),
     'records-output-dir': Flags.directory({
       char: 'r',
-      summary: messages.getMessage('recordsoutputdirFlagDescription'),
-      description: messages.getMessage('recordsoutputdirFlagLongDescription'),
+      summary: messages.getMessage('flags.records-output-dir.summary'),
       default: path.join('force-app', 'main', 'default', 'customMetadata'),
       aliases: ['recordsoutputdir'],
     }),

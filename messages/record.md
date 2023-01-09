@@ -1,14 +1,14 @@
-# commandDescription
+# summary
 
-create a new record for a given custom metadata type in the current project
+Generate a new record for a given custom metadata type in the current project.
 
-# commandLongDescription
+# description
 
-Create a new record for a given custom metadata type in the current project.
+The custom metadata type must already exist in your project. You must specify a name for the new record. Use name=value pairs to specify the values for the fields, such as MyTextField="some text here" or MyNumberField=32.
 
 # examples
 
-- Create a record metadata file for custom metadata type 'MyCMT' with values specified for two custom fields:
+- Create a record metadata file for custom metadata type 'MyCMT' with specified values for two custom fields:
 
   <%= config.bin %> <%= command.id %> --type-name MyCMT\_\_mdt --record-name MyRecord My_Custom_Field_1=Foo My_Custom_Field_2=Bar
 
@@ -16,53 +16,33 @@ Create a new record for a given custom metadata type in the current project.
 
   <%= config.bin %> <%= command.id %> --type-name MyCMT\_\_mdt --record-name MyRecord --label "My Record" --protected true My_Custom_Field_1=Foo My_Custom_Field_2=Bar
 
-# typenameFlagDescription
+# flags.type-name.summary
 
-API name of the custom metadata type to create a record for
+API name of the custom metadata type to create a record for; must end in "\_\_mdt".
 
-# typenameFlagLongDescription
+# flags.record-name.summary
 
-The API name of the custom metadata type to create a record for.
+Name of the new record.
 
-# recordNameFlagDescription
+# flags.label.summary
 
-name for the new record
+Label for the new record.
 
-# recordNameFlagLongDescription
+# flags.protected.summary
 
-The name for the new record.
+Protect the record when it's in a managed package.
 
-# labelFlagDescription
+# flags.protected.description
 
-label for the new record
+Protected records can only be accessed by code in the same managed package namespace.
 
-# labelFlagLongDescription
+# flags.input-directory.summary
 
-The label for the new record.
+Directory from which to get the custom metadata type definition from.
 
-# protectedFlagDescription
+# flags.output-directory.summary
 
-protect the record when it is in a managed package
-
-# protectedFlagLongDescription
-
-Protect the record when it is in a managed package. Protected records can only be accessed by code in the same managed package namespace.
-
-# inputDirectoryFlagDescription
-
-directory to pull the custom metadata type definition from
-
-# inputDirectoryFlagLongDescription
-
-The directory to pull the custom metadata type definition from.
-
-# outputDirectoryFlagDescription
-
-directory to store newly-created custom metadata record files
-
-# outputDirectoryFlagLongDescription
-
-The directory to store newly-created custom metadata record files.
+Directory to store newly-created custom metadata record files.
 
 # successResponse
 

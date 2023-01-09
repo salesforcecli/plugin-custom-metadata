@@ -1,80 +1,70 @@
-# commandDescription
+# summary
 
-generate a custom metadata field based on the field type provided
+Generate a field for a custom metadata type based on the provided field type.
 
-# commandLongDescription
+# description
 
-Generate a custom metadata field based on the field type provided.
+Similar to a custom object, a custom metadata type has a list of custom fields that represent aspects of the metadata.
+
+This command creates a metadata file that describes the new custom metadata type field. By default, the file is created in a "fields" directory in the current directory. Use the --output-directory to generate the file in the directory that contains the custom metadata type metdata files, such as "force-app/main/default/objects/MyCmdt\_\_mdt" for the custom metadata type called MyCmdt.
 
 # examples
 
-- Create a metadata file for a custom checkbox field:
+- Generate a metadata file for a custom checkbox field and add the file to the MyCmdt\_\_mdt/fields directory:
 
-  <%= config.bin %> <%= command.id %> --name MyField --type Checkbox
+  <%= config.bin %> <%= command.id %> --name MyCheckboxField --type Checkbox --output-directory force-app/main/default/objects/MyCmdt\_\_mdt
 
-- Create a metadata file for a custom picklist field:
+- Generate a metadata file for a custom picklist field and add a few values:
 
-  <%= config.bin %> <%= command.id %> --name MyField --type Picklist --picklist-values A --picklist-values B --picklist-values C
+  <%= config.bin %> <%= command.id %> --name MyPicklistField --type Picklist --picklist-values A --picklist-values B --picklist-values C --output-directory force-app/main/default/objects/MyCmdt\_\_mdt
 
-- Create a metadata file for a custom number field:
+- Generate a metadata file for a custom number field and specify 2 decimal places:
 
-  <%= config.bin %> <%= command.id %> --name MyField --type Number --decimal-places 2
+  <%= config.bin %> <%= command.id %> --name MyNumberField --type Number --decimal-places 2 --output-directory force-app/main/default/objects/MyCmdt\_\_mdt
 
-# nameFlagDescription
+# flags.name.summary
 
-unique name for the field
+Unique name for the field.
 
-# nameFlagLongDescription
+# flags.type.summary
 
-The unique name for the field.
+Type of the field.
 
-# fieldTypeDescription
+# flags.type.description
 
-type of field
+You can't use this command to create a custom metadata type field of type "Metadata Relationship". Use the Salesforce Setup UI instead.
 
-# fieldTypeLongDescription
+# flags.picklist-values.summary
 
-The type of field.
+Picklist values; required for picklist fields.
 
-# picklistValuesFlagDescription
+# flags.decimal-places.summary
 
-picklist values; required for Picklist fields
+Number of decimal places to use for number or percent fields.
 
-# picklistValuesFlagLongDescription
+# flags.decimal-places.description
 
-A list of picklist values. These values are required when creating a Picklist field.
+The value must be greater than or equal to zero. Default value is 0.
 
-# decimalplacesFlagDescription
+# flags.label.summary
 
-number of decimal places to use for Number or Percent fields
+Label for the field.
 
-# decimalplacesFlagLongDescription
+# flags.output-directory.summary
 
-The number of decimal places to use for Number or Percent fields. The value must be greater than or equal to zero.
+Directory to store newly-created field definition files.
 
-# labelFlagDescription
+# flags.output-directory.description
 
-label for the field
-
-# labelFlagLongDescription
-
-The label for the field.
-
-# outputDirectoryFlagDescription
-
-directory to store newly-created field definition files
-
-# outputDirectoryFlagLongDescription
-
-The directory to store the newly-created field definition files. The location can be an absolute path or relative to the current working directory. The default is the current directory.
+New files are automatically created in the "fields" directory. The location can be an absolute path or relative to the current working directory. The default is the current directory.
 
 # invalidCustomFieldError
 
-'%s' is an invalid field. Custom fields can only contain alphanumeric characters, must begin with a letter, cannot end with an underscore, and cannot contain two consecutive underscore characters.
+'%s' is an invalid field. Custom fields must contain only alphanumeric characters, must begin with a letter, can't end with an underscore, and can't contain two consecutive underscore characters.
 
 # picklistValuesNotSuppliedError
 
-Picklist values are required when field type is Picklist.
+You must specify at least one picklist value when the field type is picklist.
 
 # targetDirectory
 

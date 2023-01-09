@@ -17,8 +17,8 @@ Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'records');
 
 export default class Insert extends SfCommand<CreateConfigs> {
-  public static readonly summary = messages.getMessage('commandDescription');
-  public static readonly description = messages.getMessage('commandLongDescription');
+  public static readonly summary = messages.getMessage('summary');
+  public static readonly description = messages.getMessage('description');
   public static readonly requiresProject = true;
   public static readonly aliases = ['force:cmdt:record:insert', 'cmdt:record:insert'];
   public static readonly examples = messages.getMessages('examples');
@@ -26,38 +26,34 @@ export default class Insert extends SfCommand<CreateConfigs> {
     loglevel,
     csv: Flags.string({
       char: 'f',
-      summary: messages.getMessage('filepathFlagDescription'),
-      description: messages.getMessage('filepathFlagLongDescription'),
+      summary: messages.getMessage('flags.csv.summary'),
       required: true,
       aliases: ['filepath'],
     }),
     'type-name': Flags.string({
       char: 't',
-      summary: messages.getMessage('typenameFlagDescription'),
-      description: messages.getMessage('typenameFlagLongDescription'),
+      summary: messages.getMessage('flags.type-name.summary'),
+      description: messages.getMessage('flags.type-name.description'),
       required: true,
       parse: (input) => Promise.resolve(input.endsWith('__mdt') ? input.replace('__mdt', '') : input),
       aliases: ['typename'],
     }),
     'input-directory': Flags.directory({
       char: 'i',
-      summary: messages.getMessage('inputDirectoryFlagDescription'),
-      description: messages.getMessage('inputDirectoryFlagLongDescription'),
+      summary: messages.getMessage('flags.input-directory.summary'),
       default: path.join('force-app', 'main', 'default', 'objects'),
       aliases: ['inputdir', 'inputdirectory'],
       exists: true,
     }),
     'output-directory': Flags.directory({
       char: 'd',
-      summary: messages.getMessage('outputDirectoryFlagDescription'),
-      description: messages.getMessage('outputDirectoryFlagLongDescription'),
+      summary: messages.getMessage('flags.output-directory.summary'),
       default: path.join('force-app', 'main', 'default', 'customMetadata'),
       aliases: ['outputdir', 'outputdirectory'],
     }),
     'name-column': Flags.string({
       char: 'n',
-      summary: messages.getMessage('namecolumnFlagDescription'),
-      description: messages.getMessage('namecolumnFlagLongDescription'),
+      summary: messages.getMessage('flags.name-column.summary'),
       default: 'Name',
       aliases: ['namecolumn'],
     }),

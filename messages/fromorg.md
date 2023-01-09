@@ -1,100 +1,78 @@
-# commandDescription
+# summary
 
-generates a custom metadata type and all its records for the provided sObject
+Generate a custom metadata type and all its records from a Salesforce object.
 
-# commandLongDescription
+# description
 
-Generates a custom metadata type and all its records for the provided sObject.
+Use this command to migrate existing custom objects or custom settings in an org to custom metadata types. If a field of the Salesforce object is of an unsupported type, the field type is automatically converted to text. Run "<%= config.bin %> cmdt field create --help" to see the list of supported cmdt field types, listed in the --type flag summary. Use the --ignore-unsupported to ignore these fields.
+
+This command creates the metadata files that describe the new custom metadata type and its fields in the "force-app/main/default/objects/TypeName\_\_mdt" directory by default, where "TypeName" is the value of the required --dev-name flag. Use --type-output-directory to create them in a different directory.
 
 # examples
 
-- Generate a custom metadata type from an sObject in the default target org:
+- Generate a custom metadata type from a custom object called MySourceObject\_\_c in your default org:
 
   <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject MySourceObject\_\_c
 
-- Generate a custom metadata type from an sObject in the specified target org; ignore unsupported field types instead of converting them to text:
+- Generate a custom metadata type from a custom object in an org with alias my-scratch-org; ignore unsupported field types instead of converting them to text:
 
-  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject MySourceObject\_\_c --ignore-unsupported --target-org me@some.org
+  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject MySourceObject\_\_c --ignore-unsupported --target-org my-scratch-org
 
-- Generate a protected custom metadata type from an sObject in the default target org:
+- Generate a protected custom metadata type from a custom object:
 
-  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject SourceCustomObject\_\_c --visibility Protected
+  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject MySourceObject\_\_c --visibility Protected
 
-- Generate a protected custom metadata type with a specific label from an sObject in the default target org:
+- Generate a protected custom metadata type from a custom setting with a specific singular and plural label:
 
-  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --label My CMDT --plural-label My CMDTs --sobject SourceCustomSetting\_\_c --visibility Protected
+  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --label "My CMDT" --plural-label "My CMDTs" --sobject MySourceSetting\_\_c --visibility Protected
 
-- Generate a custom metadata type from an sObject in the default target org; put the resulting type metadata file in the specified directory:
+- Generate a custom metadata type and put the resulting metadata files in the specified directory:
 
-  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject SourceCustomSetting\_\_c --type-output-directory path/to/my/cmdt/directory
+  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject MySourceObject\_\_c --type-output-directory path/to/my/cmdt/directory
 
-- Generate a custom metadata type from an sObject in the default target org; put the resulting record metadata file(s) in the specified directory:
+- Generate a custom metadata type and put the resulting record metadata file(s) in the specified directory:
 
-  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject SourceCustomSetting\_\_c --records-output-dir path/to/my/cmdt/record/directory
+  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject MySourceObject\_\_c --records-output-dir path/to/my/cmdt/record/directory
 
-# visibilityFlagDescription
+# flags.visibility.summary
 
-visibility of the custom metadata type
+Who can see the custom metadata type.
 
-# visibilityFlagLongDescription
+# flags.visibility.description
 
-The visibility of the custom metadata type.
+For more information on what each option means, see this topic in Salesforce Help: https://help.salesforce.com/s/articleView?id=sf.custommetadatatypes_ui_create.htm&type=5.
 
-# devnameFlagDescription
+# flags.dev-name.summary
 
-name of the custom metadata type
+Name of the custom metadata type.
 
-# devnameFlagLongDescription
+# flags.label.summary
 
-The name of the custom metadata type.
+Label for the custom metadata type.
 
-# labelFlagDescription
+# flags.plural-label.summary
 
-label for the custom metadata type
+Plural version of the label value; if blank, uses label.
 
-# labelFlagLongDescription
+# flags.sobject.summary
 
-The label for the custom metadata type.
+API name of the source Salesforce object used to generate the custom metadata type.
 
-# plurallabelFlagDescription
+# flags.ignore-unsupported.summary
 
-plural version of the label value; if blank, uses label
+Ignore unsupported field types.
 
-# plurallabelFlagLongDescription
+# flags.ignore-unsupported.description
 
-The plural version of the label value. If this flag is missing or blank, the singular label is used as the plural label.
+In this context, "ignore" means that the fields aren't created. The default behavior is to create fields of type text and convert the field values to text.
 
-# sobjectnameFlagDescription
+# flags.type-output-directory.summary
 
-API name of the sObject source for custom metadata generation
+Directory to store newly-created custom metadata type files.
 
-# sobjectnameFlagLongDescription
+# flags.records-output-dir.summary
 
-The API name of the sObject source for custom metadata generation.
-
-# ignoreUnsupportedFlagDescription
-
-ignore unsupported field types
-
-# ignoreUnsupportedFlagLongDescription
-
-Ignore unsupported field types (these fields will not be created). The default is to create Text fields and convert the source value to text.
-
-# typeoutputdirFlagDescription
-
-directory to store newly-created custom metadata type files
-
-# typeoutputdirFlagLongDescription
-
-The directory to store newly-created custom metadata type files.
-
-# recordsoutputdirFlagDescription
-
-directory to store newly-created custom metadata record files
-
-# recordsoutputdirFlagLongDescription
-
-The directory to store newly-created custom metadata record files.
+Directory to store newly-created custom metadata record files.
 
 # sobjectnameNoResultError
 
