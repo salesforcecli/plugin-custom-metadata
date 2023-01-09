@@ -1,60 +1,44 @@
-# commandDescription
+# summary
 
-create new custom metadata type records from a CSV file
+Generate new custom metadata type records from a CSV file.
 
-# commandLongDescription
+# description
 
-Create new custom metadata type records from a CSV file.
+The custom metadata type must already exist in your project. By default, the Name column is used to determine the record name; use the --name-column flag to specify a different column.
 
 # examples
 
-- Create record metadata files for type 'My_CMDT_Name' (from your local project) based on values in a CSV file, using 'Name' as the column that specifies the record name:
+- Generate record metadata files from values in a CSV file for the custom metadata type MyCmdt. Use 'Name' as the column that specifies the record name:
 
-  <%= config.bin %> <%= command.id %> --csv path/to/my.csv --type-name My_CMDT_Name
+  <%= config.bin %> <%= command.id %> --csv path/to/my.csv --type-name MyCmdt
 
-- Create record metadata files for type 'My_CMDT_Name' (from the specified directory) based on values in a CSV file, using 'PrimaryKey' as the column that specifies the record name:
+- Generate record metadata files from a CSV file in the directory different from the default, and use 'PrimaryKey' as the column that specifies the record name:
 
-  <%= config.bin %> <%= command.id %> --csv path/to/my.csv --type-name My_CMDT_Name --input-directory path/to/my/cmdt/directory --name-column "PrimaryKey"
+  <%= config.bin %> <%= command.id %> --csv path/to/my.csv --type-name MyCmdt --input-directory path/to/my/cmdt/directory --name-column "PrimaryKey"
 
-# filepathFlagDescription
+# flags.csv.summary
 
-path to the CSV file
+Pathname of the CSV file.
 
-# filepathFlagLongDescription
+# flags.input-directory.summary
 
-The path to the CSV file.
+Directory from which to get the custom metadata type definition from.
 
-# inputDirectoryFlagDescription
+# flags.output-directory.summary
 
-directory to pull the custom metadata type definition from
+Directory to store newly-created custom metadata record files.
 
-# inputDirectoryFlagLongDescription
+# flags.type-name.summary
 
-The directory to pull the custom metadata type definition from.
+API name of the custom metadata type to create a record for.
 
-# outputDirectoryFlagDescription
+# flags.type-name.description
 
-directory to store newly-created custom metadata record files
+The '\_\_mdt' suffix is appended to the end of the name if it's omitted.
 
-# outputDirectoryFlagLongDescription
+# flags.name-column.summary
 
-The directory to store newly-created custom metadata record files.
-
-# typenameFlagDescription
-
-API name of the custom metadata type
-
-# typenameFlagLongDescription
-
-The API Name of the custom metadata type. The '\_\_mdt' suffix will be appended to the end of the name if it is omitted.
-
-# namecolumnFlagDescription
-
-column that is used to determine the name of the record
-
-# namecolumnFlagLongDescription
-
-The column that is used to determine the name of the record.
+Column used to determine the name of the record.
 
 # successResponse
 

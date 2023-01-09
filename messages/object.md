@@ -1,60 +1,52 @@
-# commandDescription
+# summary
 
-creates a new custom metadata type in the current project
+Generate a new custom metadata type in the current project.
 
-# commandLongDescription
+# description
 
-Creates a new custom metadata type in the current project.
+This command creates a metadata file that describes the new custom metadata type. By default, the file is created in the MyCustomType\_\_mdt directory in the current directory, where MyCustomType is the value of the required --type-name flag. Use the --output-directory to generate the file in a package directory with other custom metadata types, such as "force-app/main/default/objects".
 
 # examples
 
-- Create a custom metadata type with developer name 'MyCustomType'; this name will also be used as the label:
+- Generate a custom metadata type with developer name 'MyCustomType'; this name is also used as the label:
 
   <%= config.bin %> <%= command.id %> --type-name MyCustomType
 
-- Create a protected custom metadata type with a specific label:
+- Generate a protected custom metadata type with a specific label:
 
-  <%= config.bin %> <%= command.id %> --type-name MyCustomType --label Custom Type --plural-label Custom Types --visibility Protected
+  <%= config.bin %> <%= command.id %> --type-name MyCustomType --label "Custom Type" --plural-label "Custom Types" --visibility Protected
 
-# nameFlagDescription
+# flags.type-name.summary
 
-unique object name for the custom metadata type
+Unique object name for the custom metadata type.
 
-# nameFlagLongDescription
+# flags.type-name.description
 
-The unique name of the object in the API. This name can contain only underscores and alphanumeric characters, and must be unique in your org. It must begin with a letter, not include spaces, not end with an underscore, and not contain two consecutive underscores.
+The name can contain only underscores and alphanumeric characters, and must be unique in your org. It must begin with a letter, not include spaces, not end with an underscore, and not contain two consecutive underscores.
 
-# labelFlagDescription
+# flags.label.summary
 
-label for the custom metadata type
+Label for the custom metadata type.
 
-# labelFlagLongDescription
+# flags.plural-label.summary
 
-A label for the custom metadata type.
+Plural version of the label value; if blank, uses label.
 
-# plurallabelFlagDescription
+# flags.visibility.summary
 
-plural version of the label value; if blank, uses label
+Who can see the custom metadata type.
 
-# plurallabelFlagLongDescription
+# flags.visibility.description
 
-The plural version of the label value. If this flag is missing or blank, the singular label is used as the plural label.
+For more information on what each option means, see this topic in Salesforce Help: https://help.salesforce.com/s/articleView?id=sf.custommetadatatypes_ui_create.htm&type=5.
 
-# visibilityFlagDescription
+# flags.output-directory.summary
 
-visibility of the custom metadata type
+Directory to store the newly-created custom metadata type files
 
-# visibilityFlagLongDescription
+# flags.output-directory.description
 
-The visibility of the custom metadata type.
-
-# outputDirectoryFlagDescription
-
-directory to store the newly-created custom metadata type files
-
-# outputDirectoryFlagLongDescription
-
-The directory to store the newly-created custom metadata type files. The location can be an absolute path or relative to the current working directory. The default is the current directory.
+The location can be an absolute path or relative to the current working directory. The default is the current directory.
 
 # successResponse
 

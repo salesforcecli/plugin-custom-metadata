@@ -20,8 +20,8 @@ export interface CmdtFieldCreateResponse {
   fieldtype: string;
 }
 export default class Create extends SfCommand<CmdtFieldCreateResponse> {
-  public static readonly summary = messages.getMessage('commandDescription');
-  public static readonly description = messages.getMessage('commandLongDescription');
+  public static readonly summary = messages.getMessage('summary');
+  public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
   public static readonly requiresProject = true;
   public static args = [{ name: 'file' }];
@@ -31,8 +31,7 @@ export default class Create extends SfCommand<CmdtFieldCreateResponse> {
     name: Flags.string({
       char: 'n',
       required: true,
-      summary: messages.getMessage('nameFlagDescription'),
-      description: messages.getMessage('nameFlagLongDescription'),
+      summary: messages.getMessage('flags.name.summary'),
       parse: async (input: string) =>
         Promise.resolve(validateAPIName(input, messages.getMessage('invalidCustomFieldError', [input]))),
       aliases: ['fieldname'],
@@ -40,8 +39,8 @@ export default class Create extends SfCommand<CmdtFieldCreateResponse> {
     type: Flags.string({
       char: 'f',
       required: true,
-      summary: messages.getMessage('fieldTypeDescription'),
-      description: messages.getMessage('fieldTypeLongDescription'),
+      summary: messages.getMessage('flags.type.summary'),
+      description: messages.getMessage('flags.type.description'),
       options: [
         'Checkbox',
         'Date',
@@ -60,27 +59,25 @@ export default class Create extends SfCommand<CmdtFieldCreateResponse> {
     }),
     'picklist-values': arrayWithDeprecation({
       char: 'p',
-      summary: messages.getMessage('picklistValuesFlagDescription'),
-      description: messages.getMessage('picklistValuesFlagLongDescription'),
+      summary: messages.getMessage('flags.picklist-values.summary'),
       aliases: ['picklistvalues'],
     }),
     'decimal-places': Flags.integer({
       char: 's',
-      summary: messages.getMessage('decimalplacesFlagDescription'),
-      description: messages.getMessage('decimalplacesFlagLongDescription'),
+      summary: messages.getMessage('flags.decimal-places.summary'),
+      description: messages.getMessage('flags.decimal-places.description'),
       default: 0,
       min: 0,
       aliases: ['decimalplaces'],
     }),
     label: Flags.string({
       char: 'l',
-      summary: messages.getMessage('labelFlagDescription'),
-      description: messages.getMessage('labelFlagLongDescription'),
+      summary: messages.getMessage('flags.label.summary'),
     }),
     'output-directory': Flags.directory({
       char: 'd',
-      summary: messages.getMessage('outputDirectoryFlagDescription'),
-      description: messages.getMessage('outputDirectoryFlagLongDescription'),
+      summary: messages.getMessage('flags.output-directory.summary'),
+      description: messages.getMessage('flags.output-directory.description'),
       default: '',
       aliases: ['outputdir', 'outputdirectory'],
     }),

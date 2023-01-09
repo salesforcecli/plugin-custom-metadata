@@ -30,8 +30,8 @@ export interface CmdtRecordCreateResponse {
   fileData: CustomField[];
 }
 export default class Create extends SfCommand<CmdtRecordCreateResponse> {
-  public static readonly summary = messages.getMessage('commandDescription');
-  public static readonly description = messages.getMessage('commandLongDescription');
+  public static readonly summary = messages.getMessage('summary');
+  public static readonly description = messages.getMessage('description');
   public static readonly requiresProject = true;
   public static aliases = ['force:cmdt:record:create', 'cmdt:record:create'];
   public static readonly examples = messages.getMessages('examples');
@@ -40,47 +40,42 @@ export default class Create extends SfCommand<CmdtRecordCreateResponse> {
     loglevel,
     'type-name': Flags.string({
       char: 't',
-      summary: messages.getMessage('typenameFlagDescription'),
-      description: messages.getMessage('typenameFlagLongDescription'),
+      summary: messages.getMessage('flags.type-name.summary'),
       required: true,
       parse: async (input) => Promise.resolve(validateMetadataTypeName(input)),
       aliases: ['typename'],
     }),
     'record-name': Flags.string({
       char: 'n',
-      summary: messages.getMessage('recordNameFlagDescription'),
-      description: messages.getMessage('recordNameFlagLongDescription'),
+      summary: messages.getMessage('flags.record-name.summary'),
       required: true,
       parse: async (input) => Promise.resolve(validateMetadataRecordName(input)),
       aliases: ['recordname'],
     }),
     label: Flags.string({
       char: 'l',
-      summary: messages.getMessage('labelFlagDescription'),
-      description: messages.getMessage('labelFlagLongDescription'),
+      summary: messages.getMessage('flags.label.summary'),
       parse: async (input) =>
         Promise.resolve(validateLessThanForty(input, messages.getMessage('notAValidLabelNameError', [input]))),
     }),
     // I hate this flag so much, but have to preserve it
     protected: Flags.string({
       char: 'p',
-      summary: messages.getMessage('protectedFlagDescription'),
-      description: messages.getMessage('protectedFlagLongDescription'),
+      summary: messages.getMessage('flags.protected.summary'),
+      description: messages.getMessage('flags.protected.description'),
       options: ['true', 'false'],
       default: 'false',
     }),
     'input-directory': Flags.directory({
       char: 'i',
-      summary: messages.getMessage('inputDirectoryFlagDescription'),
-      description: messages.getMessage('inputDirectoryFlagLongDescription'),
+      summary: messages.getMessage('flags.input-directory.summary'),
       default: path.join('force-app', 'main', 'default', 'objects'),
       aliases: ['inputdir', 'inputdirectory'],
       exists: true,
     }),
     'output-directory': Flags.directory({
       char: 'd',
-      summary: messages.getMessage('outputDirectoryFlagDescription'),
-      description: messages.getMessage('outputDirectoryFlagLongDescription'),
+      summary: messages.getMessage('flags.output-directory.summary'),
       default: path.join('force-app', 'main', 'default', 'customMetadata'),
       aliases: ['outputdir', 'outputdirectory'],
     }),
