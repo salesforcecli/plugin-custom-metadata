@@ -10,15 +10,15 @@ This command creates a metadata file that describes the new custom metadata type
 
 # examples
 
-- Create a metadata file for a custom checkbox field and add the file to the MyCmdt\_\_mdt/fields directory:
+- Generate a metadata file for a custom checkbox field and add the file to the MyCmdt\_\_mdt/fields directory:
 
   <%= config.bin %> <%= command.id %> --name MyCheckboxField --type Checkbox --output-directory force-app/main/default/objects/MyCmdt\_\_mdt
 
-- Create a metadata file for a custom picklist field and add a few values:
+- Generate a metadata file for a custom picklist field and add a few values:
 
   <%= config.bin %> <%= command.id %> --name MyPicklistField --type Picklist --picklist-values A --picklist-values B --picklist-values C --output-directory force-app/main/default/objects/MyCmdt\_\_mdt
 
-- Create a metadata file for a custom number field and specify 2 decimal places:
+- Generate a metadata file for a custom number field and specify 2 decimal places:
 
   <%= config.bin %> <%= command.id %> --name MyNumberField --type Number --decimal-places 2 --output-directory force-app/main/default/objects/MyCmdt\_\_mdt
 

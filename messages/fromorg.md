@@ -24,7 +24,7 @@ This command creates the metadata files that describe the new custom metadata ty
 
 - Generate a protected custom metadata type from a custom setting with a specific singular and plural label:
 
-  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --label My CMDT --plural-label My CMDTs --sobject MySourceSetting\_\_c --visibility Protected
+  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --label "My CMDT" --plural-label "My CMDTs" --sobject MySourceSetting\_\_c --visibility Protected
 
 - Generate a custom metadata type and put the resulting metadata files in the specified directory:
 
