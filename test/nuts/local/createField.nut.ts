@@ -71,7 +71,7 @@ describe('sfdx force:cmdt:field:create', () => {
       const result = execCmd('force:cmdt:field:create --fieldname myField --fieldtype Picklist', {
         ensureExitCode: 1,
       });
-      expect(result.shellOutput.stderr).to.contain('Picklist values are required when field type is Picklist');
+      expect(result.shellOutput.stderr).to.contain(messages.getMessage('picklistValuesNotSuppliedError'));
     });
 
     it('fails running force:cmdt:field:create --fieldname money --fieldtype Currency', () => {
