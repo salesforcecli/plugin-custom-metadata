@@ -8,148 +8,145 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { CustomField } from 'jsforce/api/metadata';
 import { XMLParser } from 'fast-xml-parser';
+import { isString } from '@salesforce/ts-types';
 import { CreateConfig } from '../interfaces/createConfig';
-import { Templates } from '../templates/templates';
+import { canConvert } from '../templates/templates';
 
 interface CustomFieldFile {
   CustomField: CustomField;
 }
 
-const fieldTypeMap = {
-  Checkbox: 'boolean',
-  Date: 'date',
-  DateTime: 'dateTime',
-  Email: 'string',
-  Phone: 'string',
-  Picklist: 'string',
-  Text: 'string',
-  TextArea: 'string',
-  LongTextArea: 'string',
-  Url: 'string',
-};
+const fieldTypeMap = new Map<string, string>([
+  ['Checkbox', 'boolean'],
+  ['Date', 'date'],
+  ['DateTime', 'dateTime'],
+  ['Email', 'string'],
+  ['Phone', 'string'],
+  ['Picklist', 'string'],
+  ['Text', 'string'],
+  ['TextArea', 'string'],
+  ['LongTextArea', 'string'],
+  ['Url', 'string'],
+]);
 // NOTE: the template string indentation is important to output well-formatted XML. Altering that whitespace will change the whitespace of the output.
-export class CreateUtil {
-  /**
-   * Number and Percent types will be int or double depending on their respective scale values.
-   * If the scale === 0, it is an int, otherwise it is a double
-   */
+/**
+ * Number and Percent types will be int or double depending on their respective scale values.
+ * If the scale === 0, it is an int, otherwise it is a double
+ */
 
-  /**
-   * Creates the Custom Metadata Record
-   *
-   * @param  createConfig Properties include typename, recname, label, protection, varargs, and fileData
-   * @return void
-   */
-  public async createRecord(createConfig: CreateConfig): Promise<void> {
-    const outputFilePath = path.join(
-      createConfig.outputdir,
-      `${createConfig.typename}.${createConfig.recordname}.md-meta.xml`
-    );
-    const newRecordContent = getRecordTemplate(
-      createConfig.label,
-      createConfig.protected,
-      this.buildCustomFieldXml(createConfig.fileData, createConfig.varargs, createConfig.ignorefields)
-    );
+/**
+ *
+ * @param fieldDirPath path to a /fields folder that contains all the fields to read
+ * @param fileNames filenames in that folder that should be read
+ * @returns CustomField[]
+ */
+export const getFileData = async (fieldDirPath: string, fileNames: string[]): Promise<CustomField[]> => {
+  const parser = new XMLParser();
+  return Promise.all(
+    fileNames
+      .map((file) => path.join(fieldDirPath, file))
+      .map(async (filePath) => {
+        const fileData = await fs.promises.readFile(filePath, 'utf8');
+        return (parser.parse(fileData) as CustomFieldFile).CustomField;
+      })
+  );
+};
 
-    return fs.promises.writeFile(outputFilePath, newRecordContent);
+/**
+ * Get the field type from the custom metadata type that has a matching field name.
+ *
+ * @param  fileData Array of objects based on metadata type xml
+ * @param  fieldName Name of the field
+ * @return {string} Data Type of the field.
+ */
+export const getFieldDataType = (fileData: CustomField[] = [], fieldName = ''): CustomField['type'] =>
+  fileData.find((file) => file.fullName === fieldName)?.type;
+
+/**
+ * Creates the Custom Metadata Record
+ *
+ * @param  createConfig Properties include typename, recname, label, protection, varargs, and fileData
+ * @return void
+ */
+export const createRecord = async (createConfig: CreateConfig): Promise<void> => {
+  const outputFilePath = path.join(
+    createConfig.outputdir,
+    `${createConfig.typename}.${createConfig.recordname}.md-meta.xml`
+  );
+  const newRecordContent = getRecordTemplate(
+    createConfig.label,
+    createConfig.protected,
+    buildCustomFieldXml(createConfig.fileData, createConfig.varargs, createConfig.ignorefields)
+  );
+
+  return fs.promises.writeFile(outputFilePath, newRecordContent);
+};
+
+/**
+ * Get the field primitive type from the custom metadata type that has a matching field name.
+ *
+ * @param  fileData Array of objects based on metadata type xml
+ * @param  fieldName Name of the field
+ * @return {string} Type used by a custom metadata record
+ */
+export const getFieldPrimitiveType = (fileData: CustomField[] = [], fieldName?: string): string => {
+  const matchingFile = fileData.find((file) => file.fullName === fieldName);
+
+  if (matchingFile && typeof matchingFile.type === 'string' && ['Number', 'Percent'].includes(matchingFile.type)) {
+    return getNumberType(matchingFile.type, matchingFile.scale);
   }
-
-  /**
-   *
-   * @param fieldDirPath path to a /fields folder that contains all the fields to read
-   * @param fileNames filenames in that folder that should be read
-   * @returns CustomField[]
-   */
-  // eslint-disable-next-line class-methods-use-this
-  public async getFileData(fieldDirPath: string, fileNames: string[]): Promise<CustomField[]> {
-    const parser = new XMLParser();
-    return Promise.all(
-      fileNames
-        .map((file) => path.join(fieldDirPath, file))
-        .map(async (filePath) => {
-          const fileData = await fs.promises.readFile(filePath, 'utf8');
-          return (parser.parse(fileData) as CustomFieldFile).CustomField;
-        })
-    );
+  if (matchingFile && typeof matchingFile.type === 'string') {
+    return fieldTypeMap.get(matchingFile.type) ?? 'string';
   }
+  return 'string';
+};
 
-  /**
-   * Filenames should have the suffix of '__mdt'. This will append that suffix if it does not exist.
-   *
-   * @param  typename Name of file
-   */
-  // eslint-disable-next-line class-methods-use-this
-  public appendDirectorySuffix(typename: string): string {
-    return typename.endsWith('__mdt') ? typename : `${typename}__mdt`;
-  }
+/**
+ * Filenames should have the suffix of '__mdt'. This will append that suffix if it does not exist.
+ *
+ * @param  typename Name of file
+ */
+export const appendDirectorySuffix = (typename: string): string =>
+  typename.endsWith('__mdt') ? typename : `${typename}__mdt`;
 
-  /**
-   * Get the field primitive type from the custom metadata type that has a matching field name.
-   *
-   * @param  fileData Array of objects based on metadata type xml
-   * @param  fieldName Name of the field
-   * @return {string} Type used by a custom metadata record
-   */
-  // eslint-disable-next-line class-methods-use-this
-  public getFieldPrimitiveType(fileData: CustomField[] = [], fieldName?: string): string {
-    const matchingFile = fileData.find((file) => file.fullName === fieldName);
-    return matchingFile && ['Number', 'Percent'].includes(matchingFile.type)
-      ? getNumberType(matchingFile.type, matchingFile.scale)
-      : (fieldTypeMap[matchingFile?.type] as string) ?? 'string';
-  }
+/**
+ * Goes through the file data that has been genreated and gets all of the field names and adds the
+ * name of the field that is used as the label for metadata record
+ *
+ * @param  fileData Array of objects based on metadata type xml
+ * @param  nameField name of the column that is going to be used for the name of the metadata record
+ * @return [] Array of field names
+ */
+export const getFieldNames = (fileData: CustomField[], nameField: string): string[] => [
+  ...fileData.map((file) => file.fullName).filter(isString),
+  nameField,
+];
 
-  /**
-   * Get the field type from the custom metadata type that has a matching field name.
-   *
-   * @param  fileData Array of objects based on metadata type xml
-   * @param  fieldName Name of the field
-   * @return {string} Data Type of the field.
-   */
-  // eslint-disable-next-line class-methods-use-this
-  public getFieldDataType(fileData: CustomField[] = [], fieldName = ''): CustomField['type'] {
-    return fileData.find((file) => file.fullName === fieldName)?.type;
-  }
-
-  /**
-   * Goes through the file data that has been genreated and gets all of the field names and adds the
-   * name of the field that is used as the label for metadata record
-   *
-   * @param  fileData Array of objects based on metadata type xml
-   * @param  nameField name of the column that is going to be used for the name of the metadata record
-   * @return [] Array of field names
-   */
-  // eslint-disable-next-line class-methods-use-this
-  public getFieldNames(fileData: CustomField[], nameField: string): string[] {
-    return [...fileData.map((file) => file.fullName), nameField];
-  }
-
-  /**
-   * Takes JSON representation of CLI varargs and converts them to xml with help
-   * from helper.getFieldTemplate
-   *
-   * @param  cliParams Object that holds key:value pairs from CLI input
-   * @param  fileData Array of objects that contain field data
-   * @return {string} String representation of XML
-   */
-  private buildCustomFieldXml(
-    fileData: CustomField[],
-    cliParams: Record<string, string>,
-    ignoreFields: boolean
-  ): string {
-    let ret = '';
-    const templates = new Templates();
-    for (const fieldName of Object.keys(cliParams)) {
-      const type = this.getFieldPrimitiveType(fileData, fieldName);
-      const dataType = this.getFieldDataType(fileData, fieldName);
-      // Added functionality to handle the igonre fields scenario.
-      if (templates.canConvert(dataType) || !ignoreFields) {
-        ret += getFieldTemplate(fieldName, cliParams[fieldName], type);
-      }
+/**
+ * Takes JSON representation of CLI varargs and converts them to xml with help
+ * from helper.getFieldTemplate
+ *
+ * @param  cliParams Object that holds key:value pairs from CLI input
+ * @param  fileData Array of objects that contain field data
+ * @return {string} String representation of XML
+ */
+const buildCustomFieldXml = (
+  fileData: CustomField[] = [],
+  cliParams: Record<string, string> = {},
+  ignoreFields = false
+): string => {
+  let ret = '';
+  for (const fieldName of Object.keys(cliParams)) {
+    const type = getFieldPrimitiveType(fileData, fieldName);
+    const dataType = getFieldDataType(fileData, fieldName);
+    // Added functionality to handle the igonre fields scenario.
+    if (canConvert(dataType) || !ignoreFields) {
+      ret += getFieldTemplate(fieldName, cliParams[fieldName], type);
     }
-
-    return ret;
   }
-}
+
+  return ret;
+};
 
 /**
  * Get the number type based on the scale.
@@ -159,7 +156,7 @@ export class CreateUtil {
  * @param  scale 0 or another number
  * @return {string} int or double
  */
-const getNumberType = (type: string, scale: number): 'int' | 'double' =>
+const getNumberType = (type: string, scale: number | null | undefined): 'int' | 'double' =>
   ['Number', 'Percent'].includes(type) && scale === 0 ? 'int' : 'double';
 
 /**
@@ -190,7 +187,7 @@ const getFieldTemplate = (fieldName: string, val: string, type: string): string 
  * @param  values Template string representation of values
  * @return {string} String representation of XML
  */
-const getRecordTemplate = (label: string, protection: boolean, values: string): string =>
+const getRecordTemplate = (label: string, protection = false, values: string): string =>
   `
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">

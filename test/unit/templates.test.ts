@@ -8,17 +8,22 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-import { expect } from '@salesforce/command/lib/test';
-import { Templates } from '../../src/lib/templates/templates';
+import { strict as assert } from 'assert';
+import { expect } from 'chai';
+import {
+  createFieldXML,
+  createObjectXML,
+  canConvert,
+  createDefaultTypeStructure,
+} from '../../src/lib/templates/templates';
 
 describe('Templates', () => {
-  const templates = new Templates();
   describe('createObjectXML', () => {
     const testData = {
       label: 'Sample',
       pluralLabel: 'Samples',
     };
-    const xml: string = templates.createObjectXML(testData, 'Public');
+    const xml: string = createObjectXML(testData, 'Public');
     expect(xml).to.include('<label>Sample</label>');
     expect(xml).to.include('<pluralLabel>Samples</pluralLabel>');
     expect(xml).to.include('<visibility>Public</visibility>');
@@ -27,28 +32,28 @@ describe('Templates', () => {
   describe('createFieldXML', () => {
     it('Checkbox field created', () => {
       const data: any = { fullName: 'Checkbox', defaultValue: 'false', type: 'Checkbox', label: 'test' };
-      const xml: string = templates.createFieldXML(data, false);
+      const xml: string = createFieldXML(data, false);
       expect(xml).to.include('<fullName>Checkbox__c</fullName>');
       expect(xml).to.include('<type>Checkbox</type>');
       expect(xml).to.include('<label>test</label>');
     });
     it('Date field created', () => {
       const data: any = { fullName: 'Date', type: 'Date', label: 'test' };
-      const xml: string = templates.createFieldXML(data, false);
+      const xml: string = createFieldXML(data, false);
       expect(xml).to.include('<fullName>Date__c</fullName>');
       expect(xml).to.include('<type>Date</type>');
       expect(xml).to.include('<label>test</label>');
     });
     it('DateTime field created', () => {
       const data: any = { fullName: 'DateTime', type: 'DateTime', label: 'test' };
-      const xml: string = templates.createFieldXML(data, false);
+      const xml: string = createFieldXML(data, false);
       expect(xml).to.include('<fullName>DateTime__c</fullName>');
       expect(xml).to.include('<type>DateTime</type>');
       expect(xml).to.include('<label>test</label>');
     });
     it('Email field created', () => {
       const data: any = { fullName: 'Email', type: 'Email', label: 'test', unique: false };
-      const xml: string = templates.createFieldXML(data, false);
+      const xml: string = createFieldXML(data, false);
       expect(xml).to.include('<fullName>Email__c</fullName>');
       expect(xml).to.include('<type>Email</type>');
       expect(xml).to.include('<label>test</label>');
@@ -64,7 +69,7 @@ describe('Templates', () => {
         scale: '0',
         unique: false,
       };
-      const xml: string = templates.createFieldXML(data, false);
+      const xml: string = createFieldXML(data, false);
       expect(xml).to.include('<fullName>Number__c</fullName>');
       expect(xml).to.include('<type>Number</type>');
       expect(xml).to.include('<label>test</label>');
@@ -75,7 +80,7 @@ describe('Templates', () => {
     });
     it('Percent field created', () => {
       const data: any = { fullName: 'Percent', type: 'Percent', label: 'test', precision: '18', scale: '0' };
-      const xml: string = templates.createFieldXML(data, false);
+      const xml: string = createFieldXML(data, false);
       expect(xml).to.include('<fullName>Percent__c</fullName>');
       expect(xml).to.include('<type>Percent</type>');
       expect(xml).to.include('<label>test</label>');
@@ -84,7 +89,7 @@ describe('Templates', () => {
     });
     it('Phone field created', () => {
       const data: any = { fullName: 'Phone', type: 'Phone', label: 'test' };
-      const xml: string = templates.createFieldXML(data, false);
+      const xml: string = createFieldXML(data, false);
       expect(xml).to.include('<fullName>Phone__c</fullName>');
       expect(xml).to.include('<type>Phone</type>');
       expect(xml).to.include('<label>test</label>');
@@ -105,7 +110,7 @@ describe('Templates', () => {
           },
         },
       };
-      const xml: string = templates.createFieldXML(data, false);
+      const xml: string = createFieldXML(data, false);
       expect(xml).to.include('<fullName>Picklist__c</fullName>');
       expect(xml).to.include('<type>Picklist</type>');
       expect(xml).to.include('<label>test</label>');
@@ -130,7 +135,7 @@ describe('Templates', () => {
           },
         },
       };
-      const xml = templates.createFieldXML(data, true);
+      const xml = createFieldXML(data, true);
       expect(xml).to.include('<fullName>Picklist__c</fullName>');
       expect(xml).to.include('<type>LongTextArea</type>');
       expect(xml).to.include('<label>test</label>');
@@ -141,7 +146,7 @@ describe('Templates', () => {
     });
     it('Text field created', () => {
       const data: any = { fullName: 'Text', type: 'Text', label: 'test', unique: false, length: '100' };
-      const xml = templates.createFieldXML(data, false);
+      const xml = createFieldXML(data, false);
       expect(xml);
       expect(xml).to.include('<fullName>Text__c</fullName>');
       expect(xml).to.include('<type>Text</type>');
@@ -151,7 +156,7 @@ describe('Templates', () => {
     });
     it('default to Text field', () => {
       const data: any = { fullName: 'Text', type: 'Lookup', label: 'test', unique: false, length: '100' };
-      const xml = templates.createFieldXML(data, true);
+      const xml = createFieldXML(data, true);
       expect(xml).to.include('<fullName>Text__c</fullName>');
       expect(xml).to.include('<type>Text</type>');
       expect(xml).to.include('<label>test</label>');
@@ -160,7 +165,7 @@ describe('Templates', () => {
     });
     it('TextArea field created', () => {
       const data: any = { fullName: 'TextArea', type: 'TextArea', label: 'test', unique: false, length: '100' };
-      const xml = templates.createFieldXML(data, false);
+      const xml = createFieldXML(data, false);
       expect(xml).to.include('<fullName>TextArea__c</fullName>');
       expect(xml).to.include('<type>TextArea</type>');
       expect(xml).to.include('<label>test</label>');
@@ -175,7 +180,7 @@ describe('Templates', () => {
         length: '32768',
         visibleLines: 3,
       };
-      const xml: string = templates.createFieldXML(data, false);
+      const xml: string = createFieldXML(data, false);
       expect(xml).to.include('<fullName>LongTextArea__c</fullName>');
       expect(xml).to.include('<type>LongTextArea</type>');
       expect(xml).to.include('<label>test</label>');
@@ -184,7 +189,7 @@ describe('Templates', () => {
     });
     it('default to LongTextArea field', () => {
       const data: any = { fullName: 'LongTextArea', type: 'Html', label: 'test', length: '32768', visibleLines: 3 };
-      const xml = templates.createFieldXML(data, true);
+      const xml = createFieldXML(data, true);
       expect(xml).to.include('<fullName>LongTextArea__c</fullName>');
       expect(xml).to.include('<type>LongTextArea</type>');
       expect(xml).to.include('<label>test</label>');
@@ -194,7 +199,7 @@ describe('Templates', () => {
 
     it('Url field created', () => {
       const data: any = { fullName: 'Url', type: 'Url', label: 'test' };
-      const xml = templates.createFieldXML(data, false);
+      const xml = createFieldXML(data, false);
       expect(xml).to.include('<fullName>Url__c</fullName>');
       expect(xml).to.include('<type>Url</type>');
       expect(xml).to.include('<label>test</label>');
@@ -202,8 +207,9 @@ describe('Templates', () => {
     it('default to LongTextArea field', () => {
       const data: any = { fullName: 'LongTextArea', type: 'Html', label: 'test', length: '32768', visibleLines: 3 };
       try {
-        templates.createFieldXML(data, false);
+        createFieldXML(data, false);
       } catch (ex) {
+        assert(ex instanceof Error);
         expect(ex.message).to.contain("'Html' is not a valid field type.");
       }
     });
@@ -217,7 +223,7 @@ describe('Templates', () => {
         unique: false,
         defaultValue: '1000',
       };
-      const xml: string = templates.createFieldXML(data, true);
+      const xml: string = createFieldXML(data, true);
       expect(xml).to.include('<fullName>Currency__c</fullName>');
       expect(xml).to.include('<type>Text</type>');
       expect(xml).to.include('<label>test</label>');
@@ -234,7 +240,7 @@ describe('Templates', () => {
         unique: false,
         inlineHelpText: 'Formula text field',
       };
-      const xml: string = templates.createFieldXML(data, true);
+      const xml: string = createFieldXML(data, true);
       expect(xml).to.include('<fullName>FormulaText__c</fullName>');
       expect(xml).to.include('<type>LongTextArea</type>');
       expect(xml).to.include('<label>test</label>');
@@ -242,7 +248,7 @@ describe('Templates', () => {
     });
     it('Formula Checkbox field created', () => {
       const data: any = { fullName: 'FormulaCheckbox', type: 'Checkbox', label: 'test' };
-      const xml: string = templates.createFieldXML(data, false);
+      const xml: string = createFieldXML(data, false);
       expect(xml).to.include('<fullName>FormulaCheckbox__c</fullName>');
       expect(xml).to.include('<type>Checkbox</type>');
       expect(xml).to.include('<label>test</label>');
@@ -253,33 +259,33 @@ describe('Templates', () => {
   describe('createDefaultTypeStructure', () => {
     let struct: any;
     it('should return Checkbox structure', () => {
-      struct = templates.createDefaultTypeStructure('Checkbox', 'Checkbox', 'test', null);
+      struct = createDefaultTypeStructure('Checkbox', 'Checkbox', 'test');
       expect(struct.fullName).to.equal('Checkbox');
       expect(struct.type).to.equal('Checkbox');
       expect(struct.label).to.equal('test');
       expect(struct.defaultValue).to.equal('false');
     });
     it('should return Date structure', () => {
-      struct = templates.createDefaultTypeStructure('Date', 'Date', 'test', null);
+      struct = createDefaultTypeStructure('Date', 'Date', 'test');
       expect(struct.fullName).to.equal('Date');
       expect(struct.type).to.equal('Date');
       expect(struct.label).to.equal('test');
     });
     it('should return DateTime structure', () => {
-      struct = templates.createDefaultTypeStructure('DateTime', 'DateTime', 'test', null);
+      struct = createDefaultTypeStructure('DateTime', 'DateTime', 'test');
       expect(struct.fullName).to.equal('DateTime');
       expect(struct.type).to.equal('DateTime');
       expect(struct.label).to.equal('test');
     });
     it('should return Email structure', () => {
-      struct = templates.createDefaultTypeStructure('Email', 'Email', 'test', null);
+      struct = createDefaultTypeStructure('Email', 'Email', 'test');
       expect(struct.fullName).to.equal('Email');
       expect(struct.type).to.equal('Email');
       expect(struct.label).to.equal('test');
       expect(struct.unique).to.equal(false);
     });
     it('should return Number structure', () => {
-      struct = templates.createDefaultTypeStructure('Number', 'Number', 'test', null);
+      struct = createDefaultTypeStructure('Number', 'Number', 'test');
       expect(struct.fullName).to.equal('Number');
       expect(struct.type).to.equal('Number');
       expect(struct.label).to.equal('test');
@@ -288,7 +294,7 @@ describe('Templates', () => {
       expect(struct.unique).to.equal(false);
     });
     it('should return Percent structure', () => {
-      struct = templates.createDefaultTypeStructure('Percent', 'Percent', 'test', null);
+      struct = createDefaultTypeStructure('Percent', 'Percent', 'test');
       expect(struct.fullName).to.equal('Percent');
       expect(struct.type).to.equal('Percent');
       expect(struct.label).to.equal('test');
@@ -296,13 +302,13 @@ describe('Templates', () => {
       expect(struct.scale).to.equal(0);
     });
     it('should return Phone structure', () => {
-      struct = templates.createDefaultTypeStructure('Phone', 'Phone', 'test', null);
+      struct = createDefaultTypeStructure('Phone', 'Phone', 'test');
       expect(struct.fullName).to.equal('Phone');
       expect(struct.type).to.equal('Phone');
       expect(struct.label).to.equal('test');
     });
     it('should return Picklist structure', () => {
-      struct = templates.createDefaultTypeStructure('Picklist', 'Picklist', 'test', ['value1', 'value2']);
+      struct = createDefaultTypeStructure('Picklist', 'Picklist', 'test', ['value1', 'value2']);
       expect(struct.fullName).to.equal('Picklist');
       expect(struct.type).to.equal('Picklist');
       expect(struct.label).to.equal('test');
@@ -311,13 +317,13 @@ describe('Templates', () => {
       expect(struct.valueSet.valueSetDefinition.value[0].label).to.equal('value1');
     });
     it('should return Phone structure', () => {
-      struct = templates.createDefaultTypeStructure('Phone', 'Phone', 'test', null);
+      struct = createDefaultTypeStructure('Phone', 'Phone', 'test');
       expect(struct.fullName).to.equal('Phone');
       expect(struct.type).to.equal('Phone');
       expect(struct.label).to.equal('test');
     });
     it('should return Text structure', () => {
-      struct = templates.createDefaultTypeStructure('Text', 'Text', 'test', null);
+      struct = createDefaultTypeStructure('Text', 'Text', 'test');
       expect(struct.fullName).to.equal('Text');
       expect(struct.type).to.equal('Text');
       expect(struct.label).to.equal('test');
@@ -325,13 +331,13 @@ describe('Templates', () => {
       expect(struct.length).to.equal(100);
     });
     it('should return TextArea structure', () => {
-      struct = templates.createDefaultTypeStructure('TextArea', 'TextArea', 'test', null);
+      struct = createDefaultTypeStructure('TextArea', 'TextArea', 'test');
       expect(struct.fullName).to.equal('TextArea');
       expect(struct.type).to.equal('TextArea');
       expect(struct.label).to.equal('test');
     });
     it('should return LongTextArea structure', () => {
-      struct = templates.createDefaultTypeStructure('LongTextArea', 'LongTextArea', 'test', null);
+      struct = createDefaultTypeStructure('LongTextArea', 'LongTextArea', 'test');
       expect(struct.fullName).to.equal('LongTextArea');
       expect(struct.type).to.equal('LongTextArea');
       expect(struct.label).to.equal('test');
@@ -339,13 +345,13 @@ describe('Templates', () => {
       expect(struct.visibleLines).to.equal(3);
     });
     it('should return Url structure', () => {
-      struct = templates.createDefaultTypeStructure('Url', 'Url', 'test', null);
+      struct = createDefaultTypeStructure('Url', 'Url', 'test');
       expect(struct.fullName).to.equal('Url');
       expect(struct.type).to.equal('Url');
       expect(struct.label).to.equal('test');
     });
     it('should return Default structure', () => {
-      struct = templates.createDefaultTypeStructure('DefaultA', 'DefaultB', 'DefaultC', null);
+      struct = createDefaultTypeStructure('DefaultA', 'DefaultB', 'DefaultC');
       expect(struct.fullName).to.equal('DefaultA');
       expect(struct.type).to.equal('DefaultB');
       expect(struct.label).to.equal('DefaultC');
@@ -367,11 +373,11 @@ describe('Templates', () => {
         'LongTextArea',
         'Url',
       ].forEach((type) => {
-        expect(templates.canConvert(type)).to.be.true;
+        expect(canConvert(type)).to.be.true;
       });
     });
     it('type should not convert', () => {
-      expect(templates.canConvert('test')).to.be.false;
+      expect(canConvert('test')).to.be.false;
     });
   });
 });

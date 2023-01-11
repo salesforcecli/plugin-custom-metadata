@@ -14,7 +14,8 @@ import { Record } from 'jsforce';
  * @param  fieldName API name of the field to query
  * @returns Promise - Promise - record in JSON format
  */
-export const describeField = (objDescribe: CustomObject, fieldName: string): CustomField => describeObjFields(objDescribe).find((field) => field.fullName === fieldName);
+export const describeField = (objDescribe: CustomObject, fieldName: string): CustomField | undefined =>
+  describeObjFields(objDescribe).find((field) => field.fullName === fieldName);
 
 /**
  * Returns true if the object name you specify is a list type custom setting
@@ -33,13 +34,14 @@ export const validCustomSettingType = (objDescribe: CustomObject): boolean =>
  */
 export const describeObjFields = (objDescribe: CustomObject): CustomField[] => objDescribe.fields;
 
-export const cleanQueryResponse = (sObjectRecord: Record, objectDescribe: CustomObject): Record => Object.fromEntries(
+export const cleanQueryResponse = (sObjectRecord: Record, objectDescribe: CustomObject): Record =>
+  Object.fromEntries(
     Object.entries(sObjectRecord)
       .filter(([fieldName]) => fieldName !== 'attributes' && fieldName !== 'Name')
       .flatMap(([fieldName, value]) => {
         const fieldDescribe = describeField(objectDescribe, fieldName);
         // everything but location returns as is
-        if (fieldDescribe.type !== 'Location') {
+        if (fieldDescribe?.type !== 'Location') {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-return
           return [[fieldName, value]];
         }

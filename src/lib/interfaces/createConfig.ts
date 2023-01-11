@@ -7,7 +7,7 @@
 
 import { Record } from 'jsforce';
 import { CustomField } from 'jsforce/api/metadata';
-export interface CreateConfig {
+export type CreateConfig = {
   typename: string;
   recordname: string;
   label: string;
@@ -17,4 +17,6 @@ export interface CreateConfig {
   varargs?: Record;
   fileData?: CustomField[];
   ignorefields?: boolean;
-}
+};
+
+export type CreateConfigs = CreateConfig[];
