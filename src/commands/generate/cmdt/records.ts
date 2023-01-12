@@ -10,8 +10,8 @@ import { Flags, loglevel, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages, SfError } from '@salesforce/core';
 import { Record } from 'jsforce';
 import * as csv from '../../../../csvtojson';
-import { getFieldNames, appendDirectorySuffix, createRecord, getFileData } from '../../../lib/helpers/createUtil';
-import { CreateConfig, CreateConfigs } from '../../../lib/interfaces/createConfig';
+import { getFieldNames, appendDirectorySuffix, createRecord, getFileData } from '../../../shared/helpers/createUtil';
+import { CreateConfig, CreateConfigs } from '../../../shared/interfaces/createConfig';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'records');

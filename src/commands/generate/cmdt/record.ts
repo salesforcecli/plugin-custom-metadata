@@ -9,12 +9,12 @@ import * as path from 'path';
 import { Flags, loglevel, parseVarArgs, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
 import { CustomField } from 'jsforce/api/metadata';
-import { appendDirectorySuffix, createRecord, getFileData } from '../../../lib/helpers/createUtil';
+import { appendDirectorySuffix, createRecord, getFileData } from '../../../shared/helpers/createUtil';
 import {
   validateMetadataRecordName,
   validateMetadataTypeName,
   validateLessThanForty,
-} from '../../../lib/helpers/validationUtil';
+} from '../../../shared/helpers/validationUtil';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'record');

@@ -16,15 +16,15 @@ import {
 import { SfError, Messages } from '@salesforce/core';
 import { isEmpty } from '@salesforce/kit';
 import { CustomField, CustomObject } from 'jsforce/api/metadata';
-import { createRecord, getFileData } from '../../../lib/helpers/createUtil';
-import { writeTypeFile, writeFieldFile } from '../../../lib/helpers/fileWriter';
-import { describeObjFields, cleanQueryResponse, validCustomSettingType } from '../../../lib/helpers/metadataUtil';
+import { createRecord, getFileData } from '../../../shared/helpers/createUtil';
+import { writeTypeFile, writeFieldFile } from '../../../shared/helpers/fileWriter';
+import { describeObjFields, cleanQueryResponse, validCustomSettingType } from '../../../shared/helpers/metadataUtil';
 import {
   validateAPIName,
   validateMetadataTypeName,
   isValidMetadataRecordName,
-} from '../../../lib/helpers/validationUtil';
-import { canConvert, createObjectXML, createFieldXML } from '../../../lib/templates/templates';
+} from '../../../shared/helpers/validationUtil';
+import { canConvert, createObjectXML, createFieldXML } from '../../../shared/templates/templates';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'fromorg');

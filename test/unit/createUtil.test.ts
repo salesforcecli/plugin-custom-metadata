@@ -6,7 +6,7 @@
  */
 
 import { expect } from 'chai';
-import { appendDirectorySuffix } from '../../src/lib/helpers/createUtil';
+import { appendDirectorySuffix } from '../../src/shared/helpers/createUtil';
 
 describe('CreateUtil', () => {
   describe('appendDirectorySuffix', () => {
