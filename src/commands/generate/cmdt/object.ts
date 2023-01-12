@@ -7,9 +7,9 @@
 import * as fs from 'fs';
 import { Flags, loglevel, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
-import { writeTypeFile } from '../../../lib/helpers/fileWriter';
-import { validateMetadataTypeName, validateLessThanForty } from '../../../lib/helpers/validationUtil';
-import { createObjectXML } from '../../../lib/templates/templates';
+import { writeTypeFile } from '../../../shared/helpers/fileWriter';
+import { validateMetadataTypeName, validateLessThanForty } from '../../../shared/helpers/validationUtil';
+import { createObjectXML } from '../../../shared/templates/templates';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'object');

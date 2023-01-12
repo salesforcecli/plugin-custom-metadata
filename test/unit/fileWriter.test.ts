@@ -7,7 +7,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { expect } from 'chai';
-import { writeTypeFile, writeFieldFile } from '../../src/lib/helpers/fileWriter';
+import { writeTypeFile, writeFieldFile } from '../../src/shared/helpers/fileWriter';
 
 describe('FileWriter', () => {
   describe('writeTypeFile', () => {

@@ -13,7 +13,7 @@ import {
   describeField,
   validCustomSettingType,
   describeObjFields,
-} from '../../src/lib/helpers/metadataUtil';
+} from '../../src/shared/helpers/metadataUtil';
 
 describe('metadataUtil', () => {
   const readResponse: CustomObject = {

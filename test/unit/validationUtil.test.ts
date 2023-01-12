@@ -11,7 +11,7 @@ import {
   validateAPIName,
   validateMetadataTypeName,
   isValidMetadataRecordName,
-} from '../../src/lib/helpers/validationUtil';
+} from '../../src/shared/helpers/validationUtil';
 
 describe('validationUtil', () => {
   describe('validateAPIName', () => {

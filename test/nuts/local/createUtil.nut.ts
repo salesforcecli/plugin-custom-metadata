@@ -17,7 +17,7 @@ import {
   createRecord,
   getFieldDataType,
   getFileData,
-} from '../../../src/lib/helpers/createUtil';
+} from '../../../src/shared/helpers/createUtil';
 import { createOneOfEveryField } from '../../helpers/fieldCreation';
 
 let session: TestSession;
