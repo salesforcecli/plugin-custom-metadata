@@ -1,0 +1,150 @@
+{
+  "name": "@salesforce/plugin-custom-metadata",
+  "description": "Tools for working with custom metadata types and their records.",
+  "version": "2.0.9",
+  "contributors": [
+    {
+      "name": "Carolyn Grabill",
+      "url": "https://www.salesforce.com/"
+    },
+    {
+      "name": "Bryan Friend",
+      "url": "https://www.codescience.com/"
+    },
+    {
+      "name": "Abhishek Tangudu",
+      "url": "https://www.codescience.com/"
+    },
+    {
+      "name": "Matt Turnure",
+      "url": "https://www.codescience.com/"
+    },
+    {
+      "name": "Mohith Shrivastava",
+      "url": "https://www.codescience.com/"
+    },
+    {
+      "name": "Brian Runyan",
+      "url": "https://www.codescience.com/"
+    },
+    {
+      "name": "Brian Buffington",
+      "url": "https://www.codescience.com/"
+    },
+    {
+      "name": "Catherine Schell",
+      "url": "https://www.salesforce.com/"
+    },
+    {
+      "name": "Seth Leger",
+      "url": "https://www.salesforce.com/"
+    }
+  ],
+  "bugs": "https://github.com/salesforcecli/plugin-custom-metadata/issues",
+  "dependencies": {
+    "@oclif/core": "^1.22.0",
+    "@salesforce/core": "^3.32.11",
+    "@salesforce/sf-plugins-core": "^1.21.3",
+    "@salesforce/ts-types": "^1.7.1",
+    "fast-xml-parser": "^4.0.12",
+    "tslib": "^2"
+  },
+  "devDependencies": {
+    "@oclif/plugin-command-snapshot": "^3.2.11",
+    "@salesforce/cli-plugins-testkit": "^3.2.14",
+    "@salesforce/dev-config": "^3.0.1",
+    "@salesforce/dev-scripts": "^3.1.0",
+    "@salesforce/plugin-command-reference": "^2.2.8",
+    "@salesforce/prettier-config": "^0.0.2",
+    "@salesforce/ts-sinon": "^1.4.2",
+    "@swc/core": "^1.3.25",
+    "@typescript-eslint/eslint-plugin": "^5.48.1",
+    "@typescript-eslint/parser": "^5.47.0",
+    "bluebird": "3.7.2",
+    "chai": "^4.3.7",
+    "eslint": "^8.30.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-salesforce": "^1.1.0",
+    "eslint-config-salesforce-license": "^0.1.6",
+    "eslint-config-salesforce-typescript": "^1.1.1",
+    "eslint-plugin-header": "^3.1.1",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsdoc": "^39.6.4",
+    "eslint-plugin-sf-plugin": "^1.2.3",
+    "husky": "^7.0.4",
+    "jsforce": "^2.0.0-beta.19",
+    "mocha": "^9.1.3",
+    "nyc": "^15.1.0",
+    "oclif": "^3.4.3",
+    "prettier": "^2.8.1",
+    "pretty-quick": "^3.1.0",
+    "shx": "0.2.2",
+    "sinon": "10.0.0",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.9.4"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "files": [
+    "/csvtojson",
+    "/lib",
+    "/messages",
+    "/oclif.manifest.json"
+  ],
+  "homepage": "https://github.com/salesforcecli/plugin-custom-metadata",
+  "keywords": [
+    "sfdx-plugin"
+  ],
+  "license": "BSD-3-Clause",
+  "oclif": {
+    "commands": "./lib/commands",
+    "bin": "sfdx",
+    "devPlugins": [
+      "@oclif/plugin-help",
+      "@oclif/plugin-command-snapshot",
+      "@salesforce/plugin-command-reference"
+    ],
+    "topics": {
+      "force": {
+        "external": true,
+        "subtopics": {
+          "cmdt": {
+            "description": "Generate custom metadata types and their records.",
+            "subtopics": {
+              "record": {
+                "description": "Generate custom metadata type records."
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "repository": "github:salesforcecli/plugin-custom-metadata",
+  "scripts": {
+    "build": "sf-build",
+    "clean": "sf-clean",
+    "clean-all": "sf-clean all",
+    "clean:lib": "shx rm -rf lib && shx rm -rf coverage && shx rm -rf .nyc_output && shx rm -f oclif.manifest.json",
+    "compile": "sf-compile",
+    "docs": "sf-docs",
+    "format": "sf-format",
+    "lint": "sf-lint",
+    "postpack": "shx rm -f oclif.manifest.json",
+    "posttest": "yarn lint && yarn test:deprecation-policy && yarn test:json-schema",
+    "prepack": "sf-prepack",
+    "prepare": "sf-install",
+    "pretest": "sf-compile-test",
+    "test": "sf-test",
+    "test:command-reference": "./bin/dev commandreference:generate --erroronwarnings",
+    "test:deprecation-policy": "./bin/dev snapshot:compare",
+    "test:json-schema": "./bin/dev schema:compare",
+    "test:nuts": "nyc mocha \"**/*.nut.ts\" --slow 4500 --timeout 600000 --parallel",
+    "test:nuts:local": "nyc mocha \"**/local/*.nut.ts\" --slow 4500 --timeout 600000 --parallel",
+    "version": "oclif readme"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
