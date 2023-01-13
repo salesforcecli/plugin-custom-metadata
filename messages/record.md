@@ -10,15 +10,15 @@ The custom metadata type must already exist in your project. You must specify a 
 
 - Create a record metadata file for custom metadata type 'MyCMT' with specified values for two custom fields:
 
-  <%= config.bin %> <%= command.id %> --type-name MyCMT\_\_mdt --record-name MyRecord My_Custom_Field_1=Foo My_Custom_Field_2=Bar
+  <%= config.bin %> <%= command.id %> --type-name MyCMT__mdt --record-name MyRecord My_Custom_Field_1=Foo My_Custom_Field_2=Bar
 
 - Create a protected record metadata file for custom metadata type 'MyCMT' with a specific label and values specified for two custom fields:
 
-  <%= config.bin %> <%= command.id %> --type-name MyCMT\_\_mdt --record-name MyRecord --label "My Record" --protected true My_Custom_Field_1=Foo My_Custom_Field_2=Bar
+  <%= config.bin %> <%= command.id %> --type-name MyCMT__mdt --record-name MyRecord --label "My Record" --protected true My_Custom_Field_1=Foo My_Custom_Field_2=Bar
 
 # flags.type-name.summary
 
-API name of the custom metadata type to create a record for; must end in "\_\_mdt".
+API name of the custom metadata type to create a record for; must end in "__mdt".
 
 # flags.record-name.summary
 
