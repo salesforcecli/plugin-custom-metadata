@@ -6,21 +6,21 @@ Generate a field for a custom metadata type based on the provided field type.
 
 Similar to a custom object, a custom metadata type has a list of custom fields that represent aspects of the metadata.
 
-This command creates a metadata file that describes the new custom metadata type field. By default, the file is created in a "fields" directory in the current directory. Use the --output-directory to generate the file in the directory that contains the custom metadata type metdata files, such as "force-app/main/default/objects/MyCmdt\_\_mdt" for the custom metadata type called MyCmdt.
+This command creates a metadata file that describes the new custom metadata type field. By default, the file is created in a "fields" directory in the current directory. Use the --output-directory to generate the file in the directory that contains the custom metadata type metdata files, such as "force-app/main/default/objects/MyCmdt__mdt" for the custom metadata type called MyCmdt.
 
 # examples
 
-- Generate a metadata file for a custom checkbox field and add the file to the MyCmdt\_\_mdt/fields directory:
+- Generate a metadata file for a custom checkbox field and add the file to the MyCmdt__mdt/fields directory:
 
-  <%= config.bin %> <%= command.id %> --name MyCheckboxField --type Checkbox --output-directory force-app/main/default/objects/MyCmdt\_\_mdt
+  <%= config.bin %> <%= command.id %> --name MyCheckboxField --type Checkbox --output-directory force-app/main/default/objects/MyCmdt__mdt
 
 - Generate a metadata file for a custom picklist field and add a few values:
 
-  <%= config.bin %> <%= command.id %> --name MyPicklistField --type Picklist --picklist-values A --picklist-values B --picklist-values C --output-directory force-app/main/default/objects/MyCmdt\_\_mdt
+  <%= config.bin %> <%= command.id %> --name MyPicklistField --type Picklist --picklist-values A --picklist-values B --picklist-values C --output-directory force-app/main/default/objects/MyCmdt__mdt
 
 - Generate a metadata file for a custom number field and specify 2 decimal places:
 
-  <%= config.bin %> <%= command.id %> --name MyNumberField --type Number --decimal-places 2 --output-directory force-app/main/default/objects/MyCmdt\_\_mdt
+  <%= config.bin %> <%= command.id %> --name MyNumberField --type Number --decimal-places 2 --output-directory force-app/main/default/objects/MyCmdt__mdt
 
 # flags.name.summary
 

@@ -4,7 +4,7 @@ Generate a new custom metadata type in the current project.
 
 # description
 
-This command creates a metadata file that describes the new custom metadata type. By default, the file is created in the MyCustomType\_\_mdt directory in the current directory, where MyCustomType is the value of the required --type-name flag. Use the --output-directory to generate the file in a package directory with other custom metadata types, such as "force-app/main/default/objects".
+This command creates a metadata file that describes the new custom metadata type. By default, the file is created in the MyCustomType__mdt directory in the current directory, where MyCustomType is the value of the required --type-name flag. Use the --output-directory to generate the file in a package directory with other custom metadata types, such as "force-app/main/default/objects".
 
 # examples
 
