@@ -34,7 +34,7 @@ API name of the custom metadata type to create a record for.
 
 # flags.type-name.description
 
-The '\_\_mdt' suffix is appended to the end of the name if it's omitted.
+The '__mdt' suffix is appended to the end of the name if it's omitted.
 
 # flags.name-column.summary
 
