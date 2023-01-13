@@ -112,12 +112,7 @@
         "description": "Commands to generate a project, create a function, and more.",
         "subtopics": {
           "cmdt": {
-            "description": "Commands to generate custom metadata types and their records.",
-            "subtopics": {
-              "record": {
-                "description": "Generate custom metadata type records."
-              }
-            }
+            "description": "Commands to generate custom metadata types and their records."
           }
         }
       }
