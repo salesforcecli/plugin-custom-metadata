@@ -38,7 +38,7 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
   public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
   public static readonly requiresProject = true;
-  public static readonly aliases = ['force:cmdt:generate', 'cmdt:generate'];
+  public static readonly aliases = ['force:cmdt:generate'];
 
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,

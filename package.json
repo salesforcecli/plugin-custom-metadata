@@ -90,7 +90,8 @@
     "/csvtojson",
     "/lib",
     "/messages",
-    "/oclif.manifest.json"
+    "/oclif.manifest.json",
+    "/schemas"
   ],
   "homepage": "https://github.com/salesforcecli/plugin-custom-metadata",
   "keywords": [
@@ -106,11 +107,12 @@
       "@salesforce/plugin-command-reference"
     ],
     "topics": {
-      "force": {
+      "generate": {
         "external": true,
+        "description": "Commands to generate a project, create a function, and more.",
         "subtopics": {
           "cmdt": {
-            "description": "Generate custom metadata types and their records.",
+            "description": "Commands to generate custom metadata types and their records.",
             "subtopics": {
               "record": {
                 "description": "Generate custom metadata type records."
