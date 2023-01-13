@@ -1,3 +1,12 @@
+## [2.0.13](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.0.12...2.0.13) (2023-01-13)
+
+
+### Bug Fixes
+
+* remove extraneous backslashes in help ([50f0c35](https://github.com/salesforcecli/plugin-custom-metadata/commit/50f0c3567c325e9fbaf13b38173035a42799a0ae))
+
+
+
 ## [2.0.12](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.0.11...2.0.12) (2023-01-13)
 
 
