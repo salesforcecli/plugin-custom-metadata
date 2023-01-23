@@ -202,5 +202,41 @@ describe('cmdt record create', () => {
       expect(xml.includes('<type>Checkbox</type>')).to.be.true;
       expect(xml.includes('<defaultValue>false</defaultValue>')).to.be.true;
     });
+    it('should create records without optional flags and field values', async () => {
+      const testDir = 'outputTestDir';
+      const fieldDirPath = path.join(testDir, 'Output_Test__mdt', 'fields');
+      const filePath = path.join(projDir, fieldDirPath, 'Check__c.field-meta.xml');
+      const recordFilePath = path.join(
+        projDir,
+        testDir,
+        'customMetadata',
+        'Output_Test.Output_Test_Record.md-meta.xml'
+      );
+      const outputDir = path.join(testDir, 'Output_Test__mdt');
+      execCmd(`force:cmdt:create --typename Output_Test --outputdir ${testDir}`, { ensureExitCode: 0 });
+      execCmd(`force:cmdt:field:create --fieldname Check --fieldtype Checkbox --outputdir ${outputDir}`, {
+        ensureExitCode: 0,
+      });
+      execCmd(
+        `force:cmdt:record:create -t Output_Test -n Output_Test_Record -i ${testDir} -d ${path.join(
+          testDir,
+          'customMetadata'
+        )} Check__c=true`,
+        { ensureExitCode: 0 }
+      );
+      expect(fs.existsSync(path.join(projDir, fieldDirPath))).to.be.true;
+      expect(fs.existsSync(filePath)).to.be.true;
+
+      const xml = await fs.promises.readFile(filePath, { encoding: 'utf-8' });
+      expect(xml.includes('<fullName>Check__c</fullName>')).to.be.true;
+      expect(xml.includes('<fieldManageability>DeveloperControlled</fieldManageability>')).to.be.true;
+      expect(xml.includes('<label>Check</label>')).to.be.true;
+      expect(xml.includes('<type>Checkbox</type>')).to.be.true;
+      expect(xml.includes('<defaultValue>false</defaultValue>')).to.be.true;
+      const recordXml = await fs.promises.readFile(recordFilePath, { encoding: 'utf-8' });
+      expect(recordXml.includes('<label>Output_Test_Record</label>')).to.be.true;
+      expect(recordXml.includes('<field>Check__c</field>')).to.be.true;
+      expect(/<value.*?>true<\/value>/.test(recordXml)).to.be.true;
+    });
   });
 });
