@@ -1,3 +1,12 @@
+## [2.0.15](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.0.14...2.0.15) (2023-01-23)
+
+
+### Bug Fixes
+
+* allow varargs in the command ([#380](https://github.com/salesforcecli/plugin-custom-metadata/issues/380)) ([82680a2](https://github.com/salesforcecli/plugin-custom-metadata/commit/82680a210b0264d31e9e05434a799eb251db0877))
+
+
+
 ## [2.0.14](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.0.13...2.0.14) (2023-01-21)
 
 
