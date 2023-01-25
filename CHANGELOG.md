@@ -1,3 +1,12 @@
+## [2.0.16](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.0.15...2.0.16) (2023-01-25)
+
+
+### Bug Fixes
+
+* naming convention - noun first ([15893ea](https://github.com/salesforcecli/plugin-custom-metadata/commit/15893ea1d94c2e2982d7e5d3b20487430ee72261))
+
+
+
 ## [2.0.15](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.0.14...2.0.15) (2023-01-23)
 
 
