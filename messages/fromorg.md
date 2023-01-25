@@ -28,7 +28,7 @@ This command creates the metadata files that describe the new custom metadata ty
 
 - Generate a custom metadata type and put the resulting metadata files in the specified directory:
 
-  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject MySourceObject\_\_c --type-output-directory path/to/my/cmdt/directory
+  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject MySourceObject__c --type-output-directory path/to/my/cmdt/directory
 
 - Generate a custom metadata type and put the resulting record metadata file(s) in the specified directory:
 
