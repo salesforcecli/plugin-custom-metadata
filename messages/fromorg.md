@@ -6,7 +6,7 @@ Generate a custom metadata type and all its records from a Salesforce object.
 
 Use this command to migrate existing custom objects or custom settings in an org to custom metadata types. If a field of the Salesforce object is of an unsupported type, the field type is automatically converted to text. Run "<%= config.bin %> cmdt generate field --help" to see the list of supported cmdt field types, listed in the --type flag summary. Use the --ignore-unsupported to ignore these fields.
 
-This command creates the metadata files that describe the new custom metadata type and its fields in the "force-app/main/default/objects/TypeName\_\_mdt" directory by default, where "TypeName" is the value of the required --dev-name flag. Use --type-output-directory to create them in a different directory.
+This command creates the metadata files that describe the new custom metadata type and its fields in the "force-app/main/default/objects/TypeName__mdt" directory by default, where "TypeName" is the value of the required --dev-name flag. Use --type-output-directory to create them in a different directory.
 
 # examples
 
