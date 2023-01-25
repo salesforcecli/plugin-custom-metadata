@@ -30,6 +30,7 @@ export interface CmdtRecordCreateResponse {
   fileData: CustomField[];
 }
 export default class Create extends SfCommand<CmdtRecordCreateResponse> {
+  public static readonly strict = false;
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
   public static readonly requiresProject = true;
