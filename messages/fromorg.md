@@ -16,7 +16,7 @@ This command creates the metadata files that describe the new custom metadata ty
 
 - Generate a custom metadata type from a custom object in an org with alias my-scratch-org; ignore unsupported field types instead of converting them to text:
 
-  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject MySourceObject\_\_c --ignore-unsupported --target-org my-scratch-org
+  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject MySourceObject__c --ignore-unsupported --target-org my-scratch-org
 
 - Generate a protected custom metadata type from a custom object:
 
