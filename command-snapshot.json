@@ -1,12 +1,12 @@
 [
   {
-    "command": "generate:cmdt:field",
+    "command": "cmdt:generate:field",
     "plugin": "@salesforce/plugin-custom-metadata",
     "flags": ["decimal-places", "json", "label", "loglevel", "name", "output-directory", "picklist-values", "type"],
     "alias": ["force:cmdt:field:create", "cmdt:field:create"]
   },
   {
-    "command": "generate:cmdt:fromorg",
+    "command": "cmdt:generate:fromorg",
     "plugin": "@salesforce/plugin-custom-metadata",
     "flags": [
       "api-version",
@@ -25,13 +25,13 @@
     "alias": ["force:cmdt:generate"]
   },
   {
-    "command": "generate:cmdt:object",
+    "command": "cmdt:generate:object",
     "plugin": "@salesforce/plugin-custom-metadata",
     "flags": ["json", "label", "loglevel", "output-directory", "plural-label", "type-name", "visibility"],
     "alias": ["force:cmdt:create", "cmdt:create"]
   },
   {
-    "command": "generate:cmdt:record",
+    "command": "cmdt:generate:record",
     "plugin": "@salesforce/plugin-custom-metadata",
     "flags": [
       "input-directory",
@@ -46,7 +46,7 @@
     "alias": ["force:cmdt:record:create", "cmdt:record:create"]
   },
   {
-    "command": "generate:cmdt:records",
+    "command": "cmdt:generate:records",
     "plugin": "@salesforce/plugin-custom-metadata",
     "flags": ["csv", "input-directory", "json", "loglevel", "name-column", "output-directory", "type-name"],
     "alias": ["force:cmdt:record:insert", "cmdt:record:insert"]

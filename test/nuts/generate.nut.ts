@@ -50,7 +50,7 @@ describe('sfdx force:cmdt:generate', () => {
       cli: 'sfdx',
     });
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    mainFolder = path.join(session.project!.dir, 'force-app', 'main', 'default');
+    mainFolder = path.join(session.project.dir, 'force-app', 'main', 'default');
     objectsFolder = path.join(mainFolder, 'objects');
     metadataFolder = path.join(mainFolder, 'customMetadata');
   });
