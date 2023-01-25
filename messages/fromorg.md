@@ -12,7 +12,7 @@ This command creates the metadata files that describe the new custom metadata ty
 
 - Generate a custom metadata type from a custom object called MySourceObject__c in your default org:
 
-  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject MySourceObject\_\_c
+  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject MySourceObject__c
 
 - Generate a custom metadata type from a custom object in an org with alias my-scratch-org; ignore unsupported field types instead of converting them to text:
 
