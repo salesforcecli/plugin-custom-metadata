@@ -32,7 +32,7 @@ This command creates the metadata files that describe the new custom metadata ty
 
 - Generate a custom metadata type and put the resulting record metadata file(s) in the specified directory:
 
-  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject MySourceObject\_\_c --records-output-dir path/to/my/cmdt/record/directory
+  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject MySourceObject__c --records-output-dir path/to/my/cmdt/record/directory
 
 # flags.visibility.summary
 
