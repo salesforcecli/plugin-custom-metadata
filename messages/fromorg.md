@@ -10,7 +10,7 @@ This command creates the metadata files that describe the new custom metadata ty
 
 # examples
 
-- Generate a custom metadata type from a custom object called MySourceObject\_\_c in your default org:
+- Generate a custom metadata type from a custom object called MySourceObject__c in your default org:
 
   <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject MySourceObject\_\_c
 
