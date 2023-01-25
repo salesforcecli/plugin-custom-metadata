@@ -20,7 +20,7 @@ This command creates the metadata files that describe the new custom metadata ty
 
 - Generate a protected custom metadata type from a custom object:
 
-  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject MySourceObject\_\_c --visibility Protected
+  <%= config.bin %> <%= command.id %> --dev-name MyCMDT --sobject MySourceObject__c --visibility Protected
 
 - Generate a protected custom metadata type from a custom setting with a specific singular and plural label:
 
