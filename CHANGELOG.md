@@ -1,3 +1,12 @@
+# [2.1.0](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.0.16...2.1.0) (2023-01-31)
+
+
+### Features
+
+* use latest sf-plugins-core and oclif/core ([5216548](https://github.com/salesforcecli/plugin-custom-metadata/commit/5216548a005d17f22ddd84e71a52b5b7ed8f8f97))
+
+
+
 ## [2.0.16](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.0.15...2.0.16) (2023-01-25)
 
 
