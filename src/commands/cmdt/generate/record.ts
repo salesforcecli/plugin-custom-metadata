@@ -84,7 +84,7 @@ export default class Create extends SfCommand<CmdtRecordCreateResponse> {
 
   public async run(): Promise<CmdtRecordCreateResponse> {
     const { flags, args, argv } = await this.parse(Create);
-    const varargs = parseVarArgs(args, argv);
+    const varargs = parseVarArgs(args, argv as string[]);
     const label = flags.label ?? flags['record-name'];
     const protectedFlag = flags.protected === 'true';
     const dirName = appendDirectorySuffix(flags['type-name']);

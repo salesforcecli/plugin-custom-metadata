@@ -42,9 +42,9 @@
   ],
   "bugs": "https://github.com/salesforcecli/plugin-custom-metadata/issues",
   "dependencies": {
-    "@oclif/core": "^1.22.0",
-    "@salesforce/core": "^3.33.0",
-    "@salesforce/sf-plugins-core": "^1.21.3",
+    "@oclif/core": "^2.0.7",
+    "@salesforce/core": "^3.33.1",
+    "@salesforce/sf-plugins-core": "^2.0.1",
     "@salesforce/ts-types": "^1.7.1",
     "fast-xml-parser": "^4.0.12",
     "tslib": "^2"
