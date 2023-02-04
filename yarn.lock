@@ -7523,10 +7523,10 @@ widest-line@^3.1.0:
   dependencies:
     string-width "^4.0.0"
 
-wireit@^0.9.3:
-  version "0.9.3"
-  resolved "https://registry.yarnpkg.com/wireit/-/wireit-0.9.3.tgz#2508f77418d73a632d0653a0dd3275c1808f3f98"
-  integrity sha512-o31NkFrr+AjGNgarZB094Tw6xWcmNn1uts672B1qKzSo2XMFBt5abjtg/SBUNlBcQPtPryEXJkIUQ6i9p+1Y9w==
+wireit@^0.9.3, wireit@^0.9.4:
+  version "0.9.4"
+  resolved "https://registry.yarnpkg.com/wireit/-/wireit-0.9.4.tgz#ed29962b13a36e3a1548ce5b7497c78e09c5e1a0"
+  integrity sha512-QGDxePp956+tBXFAKt/1+cBwfUdCQ23+AcGnjmdTN/9GfkNqiHwfq6n7HyoYEx08tmN6K/faEozkLcMIllhVVg==
   dependencies:
     braces "^3.0.2"
     chokidar "^3.5.3"
