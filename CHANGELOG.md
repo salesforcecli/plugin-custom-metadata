@@ -1,3 +1,12 @@
+## [2.1.1](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.0...2.1.1) (2023-02-04)
+
+
+### Bug Fixes
+
+* **deps:** bump http-cache-semantics from 4.1.0 to 4.1.1 ([707d67c](https://github.com/salesforcecli/plugin-custom-metadata/commit/707d67c5d0751d11d2e4e0dc1286c75db6733f2c))
+
+
+
 # [2.1.0](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.0.16...2.1.0) (2023-01-31)
 
 
