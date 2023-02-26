@@ -1,3 +1,12 @@
+## [2.1.4](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.3...2.1.4) (2023-02-26)
+
+
+### Bug Fixes
+
+* **deps:** bump @oclif/core from 2.1.7 to 2.3.1 ([1778734](https://github.com/salesforcecli/plugin-custom-metadata/commit/1778734c31ae233a25b89c4fcc3e699114936104))
+
+
+
 ## [2.1.3](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.2...2.1.3) (2023-02-19)
 
 
