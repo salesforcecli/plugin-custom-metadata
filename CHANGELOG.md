@@ -1,3 +1,12 @@
+## [2.1.6](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.5...2.1.6) (2023-03-03)
+
+
+### Bug Fixes
+
+* bump testkit to fix NUT tests ([#415](https://github.com/salesforcecli/plugin-custom-metadata/issues/415)) ([635505b](https://github.com/salesforcecli/plugin-custom-metadata/commit/635505b93da0191b8632fc42c4ff1f1ae145cb31))
+
+
+
 ## [2.1.5](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.4...2.1.5) (2023-02-26)
 
 
