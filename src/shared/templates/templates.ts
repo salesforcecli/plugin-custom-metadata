@@ -9,7 +9,7 @@
 
 import { SfError, Messages } from '@salesforce/core';
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.load('@salesforce/plugin-custom-metadata', 'template', ['errorNotAValidType']);
+const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'template');
 import { CustomValue, CustomField } from 'jsforce/api/metadata';
 
 /**
