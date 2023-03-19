@@ -6,11 +6,7 @@
  */
 import { SfError, Messages } from '@salesforce/core';
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.load('@salesforce/plugin-custom-metadata', 'validation', [
-  'sobjectnameFlagError',
-  'invalidCMDTApiName',
-  'notAValidRecordNameError',
-]);
+const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'validation');
 
 /**
  * Returns true if the name is a valid api name for an sobject/field

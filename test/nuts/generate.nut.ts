@@ -13,12 +13,9 @@ import { TestSession, execCmd } from '@salesforce/cli-plugins-testkit';
 import { Messages } from '@salesforce/core';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.load('@salesforce/plugin-custom-metadata', 'fromorg', ['sobjectnameNoResultError']);
+const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'fromorg');
 
-const validationMessages = Messages.load('@salesforce/plugin-custom-metadata', 'validation', [
-  'sobjectnameFlagError',
-  'invalidCMDTApiName',
-]);
+const validationMessages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'validation');
 
 let mainFolder: string;
 let objectsFolder: string;
