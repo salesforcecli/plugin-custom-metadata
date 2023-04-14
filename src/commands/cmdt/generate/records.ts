@@ -9,7 +9,7 @@ import * as path from 'path';
 import { Flags, loglevel, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages, SfError } from '@salesforce/core';
 import { Record } from 'jsforce';
-import * as csv from '../../../../csvtojson';
+import { parse } from 'csv-parse/sync';
 import { getFieldNames, appendDirectorySuffix, createRecord, getFileData } from '../../../shared/helpers/createUtil';
 import { CreateConfig, CreateConfigs } from '../../../shared/interfaces/createConfig';
 
@@ -69,43 +69,35 @@ export default class Insert extends SfCommand<CreateConfigs> {
     await fs.promises.mkdir(flags['output-directory'], { recursive: true });
 
     const fileData = await getFileData(fieldDirPath, fileNames);
-    const csvDataAry = (await csv().fromFile(flags.csv)) as Record[];
-
     const metadataTypeFields = getFieldNames(fileData, flags['name-column']);
-    if (csvDataAry.length > 0) {
-      const record = csvDataAry[0];
-      for (const key in record) {
-        if (!metadataTypeFields.includes(key)) {
-          throw new SfError(messages.getMessage('fieldNotFoundError', [key, flags['type-name']]));
-        }
-      }
-    }
+
+    const parsedRecords = parse(await fs.promises.readFile(flags.csv), {
+      columns: (header: string[]) => columnValidation(metadataTypeFields, header, flags['type-name']),
+    }) as Record[];
+
+    const recordConfigs: CreateConfig[] = parsedRecords.map((record) => ({
+      typename: flags['type-name'],
+      recordname: (record[flags['name-column']] as string).replace(' ', '_'),
+      label: record[flags['name-column']] as string,
+      inputdir: flags['input-directory'],
+      outputdir: flags['output-directory'],
+      protected: false,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      varargs: Object.fromEntries(
+        // TODO: throw an error if any of the fields in the csvDataAry do not exist in the fileData
+        fileData.map((file) => {
+          if (file.fullName) {
+            return record[file.fullName] ? [file.fullName, record[file.fullName]] : [];
+          } else {
+            throw new SfError('No fullName found in fileData');
+          }
+        })
+      ),
+      fileData,
+    }));
 
     // find the cmdt in the inputdir.
     // loop through files and create records that match fields
-
-    const recordConfigs = csvDataAry.map(
-      (record): CreateConfig => ({
-        typename: flags['type-name'],
-        recordname: (record[flags['name-column']] as string).replace(' ', '_'),
-        label: record[flags['name-column']] as string,
-        inputdir: flags['input-directory'],
-        outputdir: flags['output-directory'],
-        protected: false,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        varargs: Object.fromEntries(
-          // TODO: throw an error if any of the fields in the csvDataAry do not exist in the fileData
-          fileData.map((file) => {
-            if (file.fullName) {
-              return record[file.fullName] ? [file.fullName, record[file.fullName]] : [];
-            } else {
-              throw new SfError('No fullName found in fileData');
-            }
-          })
-        ),
-        fileData,
-      })
-    );
     await Promise.all(recordConfigs.map((r) => createRecord(r)));
 
     this.log(messages.getMessage('successResponse', [flags.csv, flags['output-directory']]));
@@ -113,3 +105,13 @@ export default class Insert extends SfCommand<CreateConfigs> {
     return recordConfigs;
   }
 }
+
+/** Validate that every column in the CSV has known metadata */
+const columnValidation = (requiredFields: string[], columnList: string[], typeNameFlag: string): string[] => {
+  columnList.forEach((column) => {
+    if (!requiredFields.includes(column)) {
+      throw new SfError(messages.getMessage('fieldNotFoundError', [column, typeNameFlag]));
+    }
+  });
+  return columnList;
+};

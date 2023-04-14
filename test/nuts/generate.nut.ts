@@ -23,7 +23,7 @@ let metadataFolder: string;
 
 let session: TestSession;
 
-describe('sfdx force:cmdt:generate', () => {
+describe('force:cmdt:generate', () => {
   before(async () => {
     session = await TestSession.create({
       project: {
@@ -31,9 +31,7 @@ describe('sfdx force:cmdt:generate', () => {
       },
       scratchOrgs: [
         {
-          executable: 'sfdx',
           config: path.join('config', 'project-scratch-def.json'),
-          duration: 1,
           setDefault: true,
         },
       ],
