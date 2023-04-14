@@ -13,7 +13,7 @@ import { TestSession, execCmd } from '@salesforce/cli-plugins-testkit';
 let session: TestSession;
 let projDir: string;
 
-describe('force:cmdt:create', () => {
+describe('sfdx force:cmdt:create', () => {
   before(async () => {
     session = await TestSession.create({
       project: {

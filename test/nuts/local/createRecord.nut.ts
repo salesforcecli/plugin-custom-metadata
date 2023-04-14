@@ -36,7 +36,7 @@ describe('cmdt record create', () => {
     await session.clean();
   });
 
-  describe('force:cmdt:record:create error handling', () => {
+  describe('sfdx force:cmdt:record:create error handling', () => {
     it('runs force:cmdt:record:create and throws an error if the API name is invalid', () => {
       execCmd('force:cmdt:create --typename Bad_Dev_Name --outputdir badDevNameDir', { ensureExitCode: 0 });
       const badType = 'pbwbFgJM4GyDOaNZn60NjAy3Ciks791y_dKLsPmXS6';
@@ -99,7 +99,7 @@ describe('cmdt record create', () => {
     });
   });
 
-  describe('force:cmdt:record:create', () => {
+  describe('sfdx force:cmdt:record:create', () => {
     it('runs force:cmdt:record:create with long flags', () => {
       const fieldDirPath = 'createWithLongFlags';
       const outputDir = path.join(fieldDirPath, 'Long_Flags_Create_Test__mdt');
@@ -175,7 +175,7 @@ describe('cmdt record create', () => {
     });
   });
 
-  describe('force:cmdt:record:create test contents of record file created', () => {
+  describe('sfdx force:cmdt:record:create test contents of record file created', () => {
     it('should create records without optional flags', async () => {
       const testDir = 'outputTestDir';
       const fieldDirPath = path.join(testDir, 'Output_Test__mdt', 'fields');

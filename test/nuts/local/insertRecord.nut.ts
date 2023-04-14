@@ -18,7 +18,7 @@ config.truncateThreshold = 0;
 let session: TestSession;
 let projDir: string;
 
-describe('force:cmdt:record:insert', () => {
+describe('sfdx force:cmdt:record:insert', () => {
   before(async () => {
     session = await TestSession.create({
       project: {
