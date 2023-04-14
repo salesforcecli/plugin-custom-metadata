@@ -1,3 +1,17 @@
+## [2.1.13](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.12...2.1.13) (2023-04-14)
+
+
+### Bug Fixes
+
+* use csv parser via normal dependency ([2879aa5](https://github.com/salesforcecli/plugin-custom-metadata/commit/2879aa5a75caa0ba9a4469f69ab9a29279b7ba33))
+
+
+### Reverts
+
+* Revert "test: remove sfdx requirements" ([027596d](https://github.com/salesforcecli/plugin-custom-metadata/commit/027596dd72d37dfbcb6edf63d66be3ba4e6abf1d))
+
+
+
 ## [2.1.12](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.11...2.1.12) (2023-04-09)
 
 
