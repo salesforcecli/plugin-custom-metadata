@@ -17,7 +17,7 @@ const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'fi
 let session: TestSession;
 let projDir: string;
 
-describe('sfdx force:cmdt:field:create', () => {
+describe('force:cmdt:field:create', () => {
   before(async () => {
     session = await TestSession.create({
       project: {
