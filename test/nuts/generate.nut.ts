@@ -23,7 +23,7 @@ let metadataFolder: string;
 
 let session: TestSession;
 
-describe('sfdx force:cmdt:generate', () => {
+describe('force:cmdt:generate', () => {
   before(async () => {
     session = await TestSession.create({
       project: {

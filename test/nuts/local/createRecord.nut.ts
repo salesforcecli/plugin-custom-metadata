@@ -36,7 +36,7 @@ describe('cmdt record create', () => {
     await session.clean();
   });
 
-  describe('sfdx force:cmdt:record:create error handling', () => {
+  describe('force:cmdt:record:create error handling', () => {
     it('runs force:cmdt:record:create and throws an error if the API name is invalid', () => {
       execCmd('force:cmdt:create --typename Bad_Dev_Name --outputdir badDevNameDir', { ensureExitCode: 0 });
       const badType = 'pbwbFgJM4GyDOaNZn60NjAy3Ciks791y_dKLsPmXS6';
