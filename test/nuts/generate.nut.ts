@@ -31,9 +31,7 @@ describe('sfdx force:cmdt:generate', () => {
       },
       scratchOrgs: [
         {
-          executable: 'sfdx',
           config: path.join('config', 'project-scratch-def.json'),
-          duration: 1,
           setDefault: true,
         },
       ],
