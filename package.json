@@ -72,7 +72,7 @@
     "eslint-plugin-jsdoc": "^39.8.0",
     "eslint-plugin-sf-plugin": "^1.14.0",
     "husky": "^7.0.4",
-    "jsforce": "^2.0.0-beta.20",
+    "jsforce": "^2.0.0-beta.21",
     "mocha": "^9.1.3",
     "nyc": "^15.1.0",
     "oclif": "^3.7.2",
