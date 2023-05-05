@@ -999,7 +999,7 @@
     strip-ansi "6.0.1"
     ts-retry-promise "^0.7.0"
 
-"@salesforce/core@^3.32.12", "@salesforce/core@^3.34.1", "@salesforce/core@^3.34.6", "@salesforce/core@^3.36.0":
+"@salesforce/core@^3.32.12", "@salesforce/core@^3.34.1", "@salesforce/core@^3.34.6", "@salesforce/core@^3.34.9", "@salesforce/core@^3.36.0":
   version "3.36.0"
   resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-3.36.0.tgz#cbff147d888eee0b921e368c1fdc1a1a3c2eacab"
   integrity sha512-LOeSJgozf5B1S8C98/K3afewRsathfEm+HrXxaFXJjITFfIhxqcIDB5xC1cw0VikfRUlq7dQocmVsvezcK0Ghw==
@@ -1089,6 +1089,22 @@
     handlebars "^4.7.7"
     lodash.uniqby "^4.7.0"
     mkdirp "^1.0.4"
+    tslib "^2"
+
+"@salesforce/plugin-data@^2.3.14":
+  version "2.3.14"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-data/-/plugin-data-2.3.14.tgz#63bee8395282a2181364abce854e644e7290ad59"
+  integrity sha512-Mhp3PvD6AXMG5lWRafBKoGeDRfCNs6i8sQiR2jt5aZlrkOMSFYUNJm9SuAvObEfBzEKQmfC8NqgwOD6601dWGw==
+  dependencies:
+    "@oclif/core" "^2.8.2"
+    "@salesforce/core" "^3.34.9"
+    "@salesforce/kit" "^1.9.0"
+    "@salesforce/sf-plugins-core" "^2.4.0"
+    "@salesforce/ts-types" "^1.7.3"
+    chalk "^4.1.0"
+    csv-parse "^4.16.3"
+    csv-stringify "^6.3.0"
+    jsforce "2.0.0-beta.21"
     tslib "^2"
 
 "@salesforce/plugin-source@^2.10.7":
@@ -2778,7 +2794,7 @@ csprng@*:
   dependencies:
     sequin "*"
 
-csv-parse@^4.8.2:
+csv-parse@^4.16.3, csv-parse@^4.8.2:
   version "4.16.3"
   resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-4.16.3.tgz#7ca624d517212ebc520a36873c3478fa66efbaf7"
   integrity sha512-cO1I/zmz4w2dcKHVvpCr7JVRu8/FymG5OEpmvsZYlccYolPBLoVGKUHgNoc4ZGkFeFlWGEDmMyBM+TTqRdW/wg==
@@ -2792,6 +2808,11 @@ csv-stringify@^5.3.4:
   version "5.6.5"
   resolved "https://registry.yarnpkg.com/csv-stringify/-/csv-stringify-5.6.5.tgz#c6d74badda4b49a79bf4e72f91cce1e33b94de00"
   integrity sha512-PjiQ659aQ+fUTQqSrd1XEDnOr52jh30RBurfzkscaE2tPaFsDH5wOAHJiw8XAHphRknCwMUE9KRayc4K/NbO8A==
+
+csv-stringify@^6.3.0:
+  version "6.3.4"
+  resolved "https://registry.yarnpkg.com/csv-stringify/-/csv-stringify-6.3.4.tgz#1ed32ff95c2b0e489838c8fb5278eedf44545322"
+  integrity sha512-/VVkafziBS1WyiQWYQ/krnBW1lJbr0RbanP7mMrFwy9V/sG8Xk6bacMS9IjUN0x3Jpp2iowpz9Lofd/KJIZ1qA==
 
 dargs@^7.0.0:
   version "7.0.0"
@@ -4821,7 +4842,7 @@ jsesc@^2.5.1:
   resolved "https://registry.yarnpkg.com/jsesc/-/jsesc-2.5.2.tgz#80564d2e483dacf6e8ef209650a67df3f0c283a4"
   integrity sha512-OYu7XEzjkCQ3C5Ps3QIZsQfNpqoJyZZA99wd9aWd05NCtC5pWOkShK2mkL6HXQR6/Cy2lbNdPlZBpuQHXE63gA==
 
-jsforce@^2.0.0-beta.21:
+jsforce@2.0.0-beta.21, jsforce@^2.0.0-beta.21:
   version "2.0.0-beta.21"
   resolved "https://registry.yarnpkg.com/jsforce/-/jsforce-2.0.0-beta.21.tgz#04c94d762d2536bf1af3062d5cca206656f5b12b"
   integrity sha512-74GUF/96vYBNZo3SUccXtt4CmfvZ0iqTSc0Z3OB940Ec7oU6coOAGhlCZ+XprXaHOMMhXMXrZQ1PCd16yjIA7A==
