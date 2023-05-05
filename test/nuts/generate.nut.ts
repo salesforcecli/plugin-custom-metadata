@@ -38,11 +38,10 @@ describe('force:cmdt:generate', () => {
       devhubAuthStrategy: 'AUTO',
     });
     // we rely on their being some custom object and records
-    execCmd('force:source:push', { ensureExitCode: 0, cli: 'sfdx' });
-    execCmd('force:user:permset:assign -n dreamhouse', { ensureExitCode: 0, cli: 'sfdx' });
+    execCmd('force:source:push', { ensureExitCode: 0 });
+    execCmd('force:user:permset:assign -n dreamhouse', { ensureExitCode: 0 });
     execCmd(`force:data:tree:import -p ${path.join('data', 'sample-data-plan.json')}`, {
       ensureExitCode: 0,
-      cli: 'sfdx',
     });
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     mainFolder = path.join(session.project.dir, 'force-app', 'main', 'default');
