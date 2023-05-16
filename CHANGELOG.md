@@ -1,3 +1,12 @@
+## [2.1.22](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.21...2.1.22) (2023-05-16)
+
+
+### Bug Fixes
+
+* **deps:** bump vm2 from 3.9.17 to 3.9.18 ([21a338f](https://github.com/salesforcecli/plugin-custom-metadata/commit/21a338f3040aad8bdabb2b44a81abaf525e1a519))
+
+
+
 ## [2.1.21](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.20...2.1.21) (2023-05-14)
 
 
