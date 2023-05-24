@@ -75,9 +75,14 @@ export default class Insert extends SfCommand<CreateConfigs> {
       columns: (header: string[]) => columnValidation(metadataTypeFields, header, flags['type-name']),
     }) as Record[];
 
+    // Transforms on the recordname are to match the behavior of adding a new Custom Metadata Type record in the UI
     const recordConfigs: CreateConfig[] = parsedRecords.map((record) => ({
       typename: flags['type-name'],
-      recordname: (record[flags['name-column']] as string).replace(' ', '_'),
+      recordname: (record[flags['name-column']] as string)
+        .replace(/[^a-zA-Z0-9]/g, '_') // replace all non-alphanumeric characters with _
+        .replace(/^(\d)/, 'X$1') // prepend an X if the first character is a number
+        .replace(/_{2,}/g, '_') // replace multiple underscores with single underscore
+        .replace(/_$/, ''), // remove trailing underscore (if any)
       label: record[flags['name-column']] as string,
       inputdir: flags['input-directory'],
       outputdir: flags['output-directory'],
