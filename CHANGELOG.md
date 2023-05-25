@@ -1,3 +1,12 @@
+## [2.1.23](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.22...2.1.23) (2023-05-25)
+
+
+### Bug Fixes
+
+* correctly transform record name ([#481](https://github.com/salesforcecli/plugin-custom-metadata/issues/481)) ([0b4aa9a](https://github.com/salesforcecli/plugin-custom-metadata/commit/0b4aa9addb3b58ed290a988eae06efce02d75179))
+
+
+
 ## [2.1.22](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.21...2.1.22) (2023-05-16)
 
 
