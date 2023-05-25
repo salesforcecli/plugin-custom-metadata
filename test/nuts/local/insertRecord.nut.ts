@@ -34,6 +34,50 @@ describe('force:cmdt:record:insert', () => {
     await session.clean();
   });
 
+  // Transforms on the recordname are to match the behavior of adding a new Custom Metadata Type record in the UI
+  // - replace all non-alphanumeric characters with _
+  // - prepend an X if the first character is a number
+  // - replace multiple underscores with single underscore
+  // - remove trailing underscore (if any)
+  describe('record name transform', () => {
+    before(() => {
+      const fileDir = path.join(projDir, 'csv-upload');
+      if (!fs.existsSync(fileDir)) {
+        fs.mkdirSync(fileDir);
+      }
+      fs.writeFileSync(path.join(fileDir, 'name-transform.csv'), 'MainLabel\n7test(this) #cmdt-\n');
+    });
+
+    it('runs force:cmdt:record:insert', () => {
+      const fieldDirPath = path.join(projDir, 'csv-upload', 'metadata');
+      const outputDir = path.join('csv-upload', 'Test__mdt');
+      execCmd('force:cmdt:create --typename Test --outputdir csv-upload', { ensureExitCode: 0 });
+      execCmd(`force:cmdt:field:create --fieldname MainLabel --fieldtype Text --outputdir ${outputDir}`, {
+        ensureExitCode: 0,
+      });
+      const result = execCmd(
+        `force:cmdt:record:insert --filepath ${path.join(
+          'csv-upload',
+          'name-transform.csv'
+        )} --typename Test__mdt --namecolumn MainLabel --inputdir csv-upload --outputdir ${path.join(
+          'csv-upload',
+          'metadata'
+        )}`,
+        { ensureExitCode: 0 }
+      );
+
+      // Here is the new name after transform
+      const filePath = path.join(fieldDirPath, 'Test.X7test_this_cmdt.md-meta.xml');
+      const uxMessage = messages.getMessage('successResponse', [
+        path.join('csv-upload', 'name-transform.csv'),
+        path.join('csv-upload', 'metadata'),
+      ]);
+      expect(fs.existsSync(fieldDirPath), fieldDirPath).to.be.true;
+      expect(fs.existsSync(filePath), filePath).to.be.true;
+      expect(result.shellOutput.stdout).to.contain(uxMessage);
+    });
+  });
+
   describe('good csv', () => {
     before(() => {
       const fileDir = path.join(projDir, 'csv-upload');
