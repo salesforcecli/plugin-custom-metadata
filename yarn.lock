@@ -1058,16 +1058,16 @@
     proxy-agent "^6.2.1"
     tslib "^2"
 
-"@salesforce/plugin-user@^2.3.18":
-  version "2.3.18"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-user/-/plugin-user-2.3.18.tgz#7cf91bb1474e5b3832ec08f7816b437d5859f0ca"
-  integrity sha512-GwStRQzk2j/cb6i2HeumtZvW/qUwwHwW4IPVxf2Uuu3jF+Sq/V3PqUsNeLY6bc0Qcjkn6hSzKXrjRtpQ0rNZeA==
+"@salesforce/plugin-user@^2.3.19":
+  version "2.3.19"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-user/-/plugin-user-2.3.19.tgz#e91852163c47d6c7ed5ec4375e8a6fdf617e4d8c"
+  integrity sha512-QAUtt+5ihqLyQ3mkTgWPz1MOExAAyLypPuMas3acBa7dR9alZ0eAMTBH2bs/uuTIBDWQG2aGrNAoH+rt26r9bg==
   dependencies:
     "@oclif/core" "^2.8.2"
     "@salesforce/core" "^4.1.0"
     "@salesforce/kit" "^3.0.2"
     "@salesforce/sf-plugins-core" "^3.0.2"
-    "@salesforce/ts-types" "^2.0.2"
+    "@salesforce/ts-types" "^2.0.3"
     tslib "^2"
 
 "@salesforce/prettier-config@^0.0.3":
