@@ -1,3 +1,12 @@
+## [2.1.29](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.28...2.1.29) (2023-07-02)
+
+
+### Bug Fixes
+
+* **deps:** bump tslib from 2.5.3 to 2.6.0 ([53d9041](https://github.com/salesforcecli/plugin-custom-metadata/commit/53d9041eff5b89c3768cd119f08cd926308f889b))
+
+
+
 ## [2.1.28](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.27...2.1.28) (2023-06-25)
 
 
