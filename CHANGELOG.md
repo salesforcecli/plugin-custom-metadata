@@ -1,3 +1,12 @@
+## [2.1.32](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.31...2.1.32) (2023-07-09)
+
+
+### Bug Fixes
+
+* **deps:** bump @salesforce/core from 4.3.5 to 4.3.8 ([a1ebe3b](https://github.com/salesforcecli/plugin-custom-metadata/commit/a1ebe3b2ed3d5a98eb78cfe9e305a4963a02a49e))
+
+
+
 ## [2.1.31](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.30...2.1.31) (2023-07-09)
 
 
