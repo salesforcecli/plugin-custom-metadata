@@ -1,3 +1,12 @@
+## [2.1.31](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.30...2.1.31) (2023-07-09)
+
+
+### Bug Fixes
+
+* **deps:** bump tough-cookie from 4.1.2 to 4.1.3 ([278be1e](https://github.com/salesforcecli/plugin-custom-metadata/commit/278be1ef8d2d54973fa3faff86e5e0f187859a4e))
+
+
+
 ## [2.1.30](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.29...2.1.30) (2023-07-02)
 
 
