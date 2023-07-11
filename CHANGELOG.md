@@ -1,3 +1,12 @@
+## [2.1.33](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.32...2.1.33) (2023-07-11)
+
+
+### Bug Fixes
+
+* **deps:** bump semver from 5.7.1 to 5.7.2 ([b5c63b5](https://github.com/salesforcecli/plugin-custom-metadata/commit/b5c63b5c98028d0c7a87029384d61d395f637f80))
+
+
+
 ## [2.1.32](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.31...2.1.32) (2023-07-09)
 
 
