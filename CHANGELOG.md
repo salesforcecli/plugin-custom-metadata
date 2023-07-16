@@ -1,3 +1,12 @@
+## [2.1.34](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.33...2.1.34) (2023-07-16)
+
+
+### Bug Fixes
+
+* **deps:** bump @salesforce/ts-types from 2.0.4 to 2.0.5 ([523ab67](https://github.com/salesforcecli/plugin-custom-metadata/commit/523ab67b9c6d6003014b39bf874de65084c63df8))
+
+
+
 ## [2.1.33](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.32...2.1.33) (2023-07-11)
 
 
