@@ -1,3 +1,12 @@
+## [2.1.35](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.34...2.1.35) (2023-07-19)
+
+
+### Bug Fixes
+
+* **deps:** bump word-wrap from 1.2.3 to 1.2.4 ([23d9e16](https://github.com/salesforcecli/plugin-custom-metadata/commit/23d9e16da6cca5ecfa70f9e3f48de79c0e4cf023))
+
+
+
 ## [2.1.34](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.33...2.1.34) (2023-07-16)
 
 
