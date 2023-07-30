@@ -977,7 +977,7 @@
     typescript "^4.9.5"
     wireit "^0.9.5"
 
-"@salesforce/kit@^3.0.2", "@salesforce/kit@^3.0.3", "@salesforce/kit@^3.0.4", "@salesforce/kit@^3.0.5":
+"@salesforce/kit@^3.0.2", "@salesforce/kit@^3.0.3", "@salesforce/kit@^3.0.4", "@salesforce/kit@^3.0.5", "@salesforce/kit@^3.0.6":
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/@salesforce/kit/-/kit-3.0.6.tgz#8fcf95dae20dce62a6d490c64aeaec379b507696"
   integrity sha512-NtEU8dJn/zbGEWUjStSPRAlF8rq8lrOGAOAfaacsufLcpZikQZ8nZd6YUOk1A2siokPXDFCXyJbjT76F1rClpw==
@@ -999,14 +999,14 @@
     handlebars "^4.7.7"
     tslib "^2"
 
-"@salesforce/plugin-data@^2.5.0":
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-data/-/plugin-data-2.5.0.tgz#aa7234ca409d06267169d9b38f8629b051e186a9"
-  integrity sha512-FB2qMTFfW4fnVLyOoutxSp9c8mj93X/vrAm6qxuRr4zfEfxawEKDSKmfmhEWrhlvbZlgSGQOTrOmS3a8Y8SlfQ==
+"@salesforce/plugin-data@^2.5.3":
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-data/-/plugin-data-2.5.3.tgz#2235fd7384b43af79651ebf1a96a2a0b79be1927"
+  integrity sha512-dVo2ukMJJj75bLypuGEozwO4SDuFlzvq0T8RhjIE6WmgNveX7L1ijq3/tzGYlVQbVLwr9WDSV2SmBbvC8NuOnQ==
   dependencies:
     "@oclif/core" "^2.8.11"
     "@salesforce/core" "^4.3.5"
-    "@salesforce/kit" "^3.0.3"
+    "@salesforce/kit" "^3.0.6"
     "@salesforce/sf-plugins-core" "^3.1.3"
     "@salesforce/ts-types" "^2.0.3"
     chalk "^4.1.0"
