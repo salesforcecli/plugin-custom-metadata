@@ -47,7 +47,7 @@
     "@salesforce/sf-plugins-core": "^3.1.12",
     "@salesforce/ts-types": "^2.0.5",
     "csv-parse": "^5.4.0",
-    "fast-xml-parser": "^4.2.5",
+    "fast-xml-parser": "^4.2.7",
     "tslib": "^2"
   },
   "devDependencies": {
