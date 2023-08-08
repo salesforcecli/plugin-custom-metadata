@@ -1,5 +1,7 @@
 # Custom Metadata Plugin
 
+- foo
+
 Tools for working with custom metadata types and their records.
 
 [![Version](https://img.shields.io/npm/v/@salesforce/plugin-custom-metadata.svg)](https://www.npmjs.com/package/@salesforce/plugin-custom-metadata)
