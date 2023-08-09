@@ -1,3 +1,18 @@
+## [2.1.37](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.36...2.1.37) (2023-08-09)
+
+
+### Bug Fixes
+
+* **deps:** bump fast-xml-parser from 4.2.5 to 4.2.7 ([7a32eda](https://github.com/salesforcecli/plugin-custom-metadata/commit/7a32eda3ada767cf406afd49ec689a9fd293902f))
+* prerelease ([#561](https://github.com/salesforcecli/plugin-custom-metadata/issues/561)) ([763ccc8](https://github.com/salesforcecli/plugin-custom-metadata/commit/763ccc837d5e7f26415ae3496d1911db8eb629ee))
+
+
+### Reverts
+
+* Revert "fix: prerelease (#561)" (#562) ([adf7e14](https://github.com/salesforcecli/plugin-custom-metadata/commit/adf7e14b9a3e6bea39dd97f97dbb8d0ec48b92d9)), closes [#561](https://github.com/salesforcecli/plugin-custom-metadata/issues/561) [#562](https://github.com/salesforcecli/plugin-custom-metadata/issues/562)
+
+
+
 ## [2.1.36](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.35...2.1.36) (2023-07-30)
 
 
