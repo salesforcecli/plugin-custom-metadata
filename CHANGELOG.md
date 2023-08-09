@@ -1,3 +1,12 @@
+## [2.1.39](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.38...2.1.39) (2023-08-09)
+
+
+### Bug Fixes
+
+* **deps:** core 5 ([ace7ff0](https://github.com/salesforcecli/plugin-custom-metadata/commit/ace7ff00869f1fae84095ac6ea3499c599c326e1))
+
+
+
 ## [2.1.38](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.37...2.1.38) (2023-08-09)
 
 
