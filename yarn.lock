@@ -911,7 +911,7 @@
     strip-ansi "6.0.1"
     ts-retry-promise "^0.7.0"
 
-"@salesforce/core@^4.3.5", "@salesforce/core@^4.3.7":
+"@salesforce/core@^4.3.7":
   version "4.3.11"
   resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-4.3.11.tgz#3fde6affd77f56ee1915b4a2d594ea424ce84817"
   integrity sha512-rjrS0VoDlNaB4RYKLNZQ8+7QayWh5yTV79apCU9fYe0fR1D1p5tb+GAXe4B7AaOReQ8JOQhPBRMx1uzF3Lqn4A==
@@ -1022,16 +1022,16 @@
     handlebars "^4.7.8"
     tslib "^2"
 
-"@salesforce/plugin-data@^2.5.4":
-  version "2.5.4"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-data/-/plugin-data-2.5.4.tgz#aeea7fe2f5407e5c9f3a97dc7d4abdd5aa840cd9"
-  integrity sha512-7mPaBcFIRzkWJxK3LuVwuPnrlpP8EjQl/KhJdbSj/jQFfzkSXI4ImZso5Cbo+TnyyFeAn5Ct9VeSXmJUUiNwMA==
+"@salesforce/plugin-data@^2.5.6":
+  version "2.5.6"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-data/-/plugin-data-2.5.6.tgz#3e98619965a91907bb667909929ac0a72fe1cedf"
+  integrity sha512-6NsDBiQGMfHKpklangka86dvXiezB8YMKggBBIjkOwqGy0vR6TmBm6VCCq6ORlZBwVNsHhugMwgaSC+Mpk6Dqw==
   dependencies:
-    "@oclif/core" "^2.8.11"
-    "@salesforce/core" "^4.3.5"
-    "@salesforce/kit" "^3.0.6"
-    "@salesforce/sf-plugins-core" "^3.1.3"
-    "@salesforce/ts-types" "^2.0.3"
+    "@oclif/core" "^2.11.7"
+    "@salesforce/core" "^5.2.0"
+    "@salesforce/kit" "^3.0.9"
+    "@salesforce/sf-plugins-core" "^3.1.14"
+    "@salesforce/ts-types" "^2.0.6"
     chalk "^4.1.0"
     csv-parse "^4.16.3"
     csv-stringify "^6.4.0"
@@ -1077,7 +1077,7 @@
   resolved "https://registry.yarnpkg.com/@salesforce/schemas/-/schemas-1.6.0.tgz#14505ebad2fb2d4f7b14837545d662766d293561"
   integrity sha512-SwhDTLucj/GRbPpxlEoDZeqlX22o+G6fiebTXTu1cZKmd1oE0W2L7SlTTgJnWck8bhTeBIgQi9cpD8c2t5ISKA==
 
-"@salesforce/sf-plugins-core@^3.0.2", "@salesforce/sf-plugins-core@^3.1.14", "@salesforce/sf-plugins-core@^3.1.3":
+"@salesforce/sf-plugins-core@^3.0.2", "@salesforce/sf-plugins-core@^3.1.14":
   version "3.1.14"
   resolved "https://registry.yarnpkg.com/@salesforce/sf-plugins-core/-/sf-plugins-core-3.1.14.tgz#b2ca3bacfdfe338ccceafc2b92b968aa0780be4b"
   integrity sha512-8tVZoJdTrE77ZEqj3Nh2T0oXB8AEB5o22ffYraeSrUZtGh6lH8feZ8bxAVN1z6wIT9vXW3GhXrqR22UZYDl4ng==
