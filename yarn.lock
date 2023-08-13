@@ -691,7 +691,7 @@
     supports-color "^8.1.1"
     tslib "^2"
 
-"@oclif/core@^2.1.7", "@oclif/core@^2.11.1", "@oclif/core@^2.11.7", "@oclif/core@^2.11.8", "@oclif/core@^2.3.0", "@oclif/core@^2.3.1", "@oclif/core@^2.8.11", "@oclif/core@^2.8.4", "@oclif/core@^2.9.3":
+"@oclif/core@^2.1.7", "@oclif/core@^2.11.1", "@oclif/core@^2.11.7", "@oclif/core@^2.11.8", "@oclif/core@^2.3.0", "@oclif/core@^2.3.1", "@oclif/core@^2.8.11", "@oclif/core@^2.8.4":
   version "2.11.8"
   resolved "https://registry.yarnpkg.com/@oclif/core/-/core-2.11.8.tgz#780c4fdf53e8569cf754c2a8fefcc7ddeacf1747"
   integrity sha512-GILmztcHBzze45GvxRpUvqQI5nM26kSE/Q21Y+6DtMR+C8etM/hFW26D3uqIAbGlGtg5QEZZ6pjA/Fqgz+gl3A==
@@ -727,18 +727,18 @@
     wordwrap "^1.0.0"
     wrap-ansi "^7.0.0"
 
-"@oclif/plugin-command-snapshot@^4.0.9":
-  version "4.0.9"
-  resolved "https://registry.yarnpkg.com/@oclif/plugin-command-snapshot/-/plugin-command-snapshot-4.0.9.tgz#04b6cebdb1e601181c63f3c61dfd2e9c77066437"
-  integrity sha512-Pn0GJQxguGuQkN43EPlM+JZqLjT5FZ3HL/xXLoWC1Yla8PGv+HaR9ovGrnXp9YoteoPg5wlib5UwAWLQYFJ+Sw==
+"@oclif/plugin-command-snapshot@^4.0.11":
+  version "4.0.11"
+  resolved "https://registry.yarnpkg.com/@oclif/plugin-command-snapshot/-/plugin-command-snapshot-4.0.11.tgz#96bdefba4b881506b42dc4836300323c6a44e0a5"
+  integrity sha512-PLkhDqPVOdkye7FTOA0n698j0tsdDseeSfvMvT6WubaU0wzeHrdz/bhVF1e44nhN7omXOuVliNendM83gzEfTw==
   dependencies:
-    "@oclif/core" "^2.9.3"
+    "@oclif/core" "^2.11.1"
     chalk "^4.1.2"
     just-diff "^5.2.0"
     lodash "^4.17.21"
     semver "^7.5.4"
     ts-json-schema-generator "^1.2.0"
-    tslib "^2.6.0"
+    tslib "^2.6.1"
 
 "@oclif/plugin-help@^5.1.19":
   version "5.2.6"
