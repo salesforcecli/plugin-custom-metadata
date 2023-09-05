@@ -94,7 +94,8 @@
     "/lib",
     "/messages",
     "/oclif.manifest.json",
-    "/schemas"
+    "/schemas",
+    "/oclif.lock"
   ],
   "homepage": "https://github.com/salesforcecli/plugin-custom-metadata",
   "keywords": [
