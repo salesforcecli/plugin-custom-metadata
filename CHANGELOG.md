@@ -1,3 +1,12 @@
+# [2.2.0](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.41...2.2.0) (2023-09-06)
+
+
+### Features
+
+* use oclif.lock ([#587](https://github.com/salesforcecli/plugin-custom-metadata/issues/587)) ([0135be5](https://github.com/salesforcecli/plugin-custom-metadata/commit/0135be587d6b54b84af26286d1119ed167502fd4))
+
+
+
 ## [2.1.41](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.40...2.1.41) (2023-08-20)
 
 
