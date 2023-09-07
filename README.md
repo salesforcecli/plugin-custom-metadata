@@ -12,7 +12,7 @@ We always recommend using the latest version of these commands bundled with the 
 ## Install
 
 ```bash
-sfdx plugins:install custom-metadata@x.y.z
+sfdx plugins install custom-metadata@x.y.z
 ```
 
 ## Issues
