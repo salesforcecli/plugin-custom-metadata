@@ -1,3 +1,12 @@
+## [2.2.1](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.2.0...2.2.1) (2023-09-07)
+
+
+### Bug Fixes
+
+* remove colon ([#588](https://github.com/salesforcecli/plugin-custom-metadata/issues/588)) ([50778f0](https://github.com/salesforcecli/plugin-custom-metadata/commit/50778f0e117d79f5513b6cdc8f6f46471d64e85a))
+
+
+
 # [2.2.0](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.1.41...2.2.0) (2023-09-06)
 
 
