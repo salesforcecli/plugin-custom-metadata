@@ -1,3 +1,9 @@
+## [2.2.5](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.2.4...2.2.5) (2023-09-28)
+
+### Bug Fixes
+
+- **deps:** bump get-func-name from 2.0.0 to 2.0.2 ([c9a20e3](https://github.com/salesforcecli/plugin-custom-metadata/commit/c9a20e3f8e6ed963d5a706a4e2f9aab0b6aa140d))
+
 ## [2.2.4](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.2.3...2.2.4) (2023-09-24)
 
 ### Bug Fixes
