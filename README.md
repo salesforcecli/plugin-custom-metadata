@@ -148,7 +148,7 @@ FLAG DESCRIPTIONS
     The value must be greater than or equal to zero. Default value is 0.
 ```
 
-_See code: [src/commands/cmdt/generate/field.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/2.2.6/src/commands/cmdt/generate/field.ts)_
+_See code: [src/commands/cmdt/generate/field.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/2.2.7/src/commands/cmdt/generate/field.ts)_
 
 ## `sfdx cmdt:generate:fromorg`
 
@@ -235,7 +235,7 @@ FLAG DESCRIPTIONS
     https://help.salesforce.com/s/articleView?id=sf.custommetadatatypes_ui_create.htm&type=5.
 ```
 
-_See code: [src/commands/cmdt/generate/fromorg.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/2.2.6/src/commands/cmdt/generate/fromorg.ts)_
+_See code: [src/commands/cmdt/generate/fromorg.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/2.2.7/src/commands/cmdt/generate/fromorg.ts)_
 
 ## `sfdx cmdt:generate:object`
 
@@ -296,7 +296,7 @@ FLAG DESCRIPTIONS
     https://help.salesforce.com/s/articleView?id=sf.custommetadatatypes_ui_create.htm&type=5.
 ```
 
-_See code: [src/commands/cmdt/generate/object.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/2.2.6/src/commands/cmdt/generate/object.ts)_
+_See code: [src/commands/cmdt/generate/object.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/2.2.7/src/commands/cmdt/generate/object.ts)_
 
 ## `sfdx cmdt:generate:record`
 
@@ -349,7 +349,7 @@ FLAG DESCRIPTIONS
     Protected records can only be accessed by code in the same managed package namespace.
 ```
 
-_See code: [src/commands/cmdt/generate/record.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/2.2.6/src/commands/cmdt/generate/record.ts)_
+_See code: [src/commands/cmdt/generate/record.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/2.2.7/src/commands/cmdt/generate/record.ts)_
 
 ## `sfdx cmdt:generate:records`
 
@@ -399,7 +399,7 @@ FLAG DESCRIPTIONS
     The '__mdt' suffix is appended to the end of the name if it's omitted.
 ```
 
-_See code: [src/commands/cmdt/generate/records.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/2.2.6/src/commands/cmdt/generate/records.ts)_
+_See code: [src/commands/cmdt/generate/records.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/2.2.7/src/commands/cmdt/generate/records.ts)_
 
 <!-- commandsstop -->
 
