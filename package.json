@@ -57,7 +57,7 @@
     "@salesforce/dev-scripts": "^5.10.0",
     "@salesforce/plugin-command-reference": "^3.0.34",
     "@salesforce/plugin-data": "^2.5.8",
-    "@salesforce/plugin-source": "^2.10.32",
+    "@salesforce/plugin-source": "^2.10.40",
     "@salesforce/plugin-user": "^2.3.23",
     "@salesforce/prettier-config": "^0.0.3",
     "@salesforce/ts-sinon": "^1.4.16",
