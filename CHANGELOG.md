@@ -1,3 +1,9 @@
+## [2.2.8](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.2.7...2.2.8) (2023-10-17)
+
+### Bug Fixes
+
+- **deps:** bump @babel/traverse from 7.21.2 to 7.23.2 ([efd7beb](https://github.com/salesforcecli/plugin-custom-metadata/commit/efd7beb47364dcba01d9a44e5d272d007c7e3b7f))
+
 ## [2.2.7](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.2.6...2.2.7) (2023-10-07)
 
 ### Bug Fixes
