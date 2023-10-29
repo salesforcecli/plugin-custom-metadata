@@ -8,7 +8,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-import { strict as assert } from 'assert';
+import { strict as assert } from 'node:assert';
 import { expect } from 'chai';
 import {
   createFieldXML,

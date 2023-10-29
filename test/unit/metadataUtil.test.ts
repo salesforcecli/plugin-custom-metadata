@@ -6,7 +6,7 @@
  */
 /* eslint-disable camelcase */
 
-import { deepStrictEqual } from 'assert';
+import { deepStrictEqual } from 'node:assert';
 import { CustomObject } from 'jsforce/lib/api/metadata';
 import {
   cleanQueryResponse,

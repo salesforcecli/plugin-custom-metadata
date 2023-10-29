@@ -4,8 +4,8 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import { Flags, loglevel, parseVarArgs, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
 import { CustomField } from 'jsforce/api/metadata';
@@ -34,7 +34,7 @@ export default class Create extends SfCommand<CmdtRecordCreateResponse> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
   public static readonly requiresProject = true;
-  public static aliases = ['force:cmdt:record:create', 'cmdt:record:create'];
+  public static readonly aliases = ['force:cmdt:record:create', 'cmdt:record:create'];
   public static readonly examples = messages.getMessages('examples');
 
   public static readonly flags = {
