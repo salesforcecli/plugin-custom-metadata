@@ -4,13 +4,13 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import * as fs from 'node:fs';
-import * as path from 'node:path';
+import fs from 'node:fs';
+import path from 'node:path';
 import { CustomField } from 'jsforce/api/metadata';
 import { XMLParser } from 'fast-xml-parser';
 import { isString } from '@salesforce/ts-types';
-import { CreateConfig } from '../interfaces/createConfig';
-import { canConvert } from '../templates/templates';
+import { CreateConfig } from '../interfaces/createConfig.js';
+import { canConvert } from '../templates/templates.js';
 
 interface CustomFieldFile {
   CustomField: CustomField;

@@ -15,7 +15,7 @@ import {
   createObjectXML,
   canConvert,
   createDefaultTypeStructure,
-} from '../../src/shared/templates/templates';
+} from '../../src/shared/templates/templates.js';
 
 describe('Templates', () => {
   describe('createObjectXML', () => {
