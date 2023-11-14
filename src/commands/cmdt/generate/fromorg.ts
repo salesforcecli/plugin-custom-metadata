@@ -15,7 +15,6 @@ import {
   SfCommand,
 } from '@salesforce/sf-plugins-core';
 import { SfError, Messages } from '@salesforce/core';
-import { isEmpty } from '@salesforce/kit';
 import { CustomField, CustomObject } from 'jsforce/api/metadata';
 import { createRecord, getFileData } from '../../../shared/helpers/createUtil.js';
 import { writeTypeFile, writeFieldFile } from '../../../shared/helpers/fileWriter.js';
@@ -104,7 +103,7 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
     const describeObj = await conn.metadata.read('CustomObject', flags.sobject);
 
     // throw error if the object doesnot exist(empty json as response from the describe call.)
-    if (isEmpty(describeObj.fields)) {
+    if (describeObj.fields.length === 0) {
       const errMsg = messages.getMessage('sobjectnameNoResultError', [flags.sobject]);
       throw new SfError(errMsg, 'sobjectnameNoResultError');
     }
