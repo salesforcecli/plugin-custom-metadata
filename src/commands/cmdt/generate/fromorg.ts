@@ -4,8 +4,9 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import * as fs from 'node:fs';
-import * as path from 'node:path';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import {
   Flags,
   loglevel,
@@ -14,19 +15,18 @@ import {
   SfCommand,
 } from '@salesforce/sf-plugins-core';
 import { SfError, Messages } from '@salesforce/core';
-import { isEmpty } from '@salesforce/kit';
 import { CustomField, CustomObject } from 'jsforce/api/metadata';
-import { createRecord, getFileData } from '../../../shared/helpers/createUtil';
-import { writeTypeFile, writeFieldFile } from '../../../shared/helpers/fileWriter';
-import { describeObjFields, cleanQueryResponse, validCustomSettingType } from '../../../shared/helpers/metadataUtil';
+import { createRecord, getFileData } from '../../../shared/helpers/createUtil.js';
+import { writeTypeFile, writeFieldFile } from '../../../shared/helpers/fileWriter.js';
+import { describeObjFields, cleanQueryResponse, validCustomSettingType } from '../../../shared/helpers/metadataUtil.js';
 import {
   validateAPIName,
   validateMetadataTypeName,
   isValidMetadataRecordName,
-} from '../../../shared/helpers/validationUtil';
-import { canConvert, createObjectXML, createFieldXML } from '../../../shared/templates/templates';
+} from '../../../shared/helpers/validationUtil.js';
+import { canConvert, createObjectXML, createFieldXML } from '../../../shared/templates/templates.js';
 
-Messages.importMessagesDirectory(__dirname);
+Messages.importMessagesDirectory(path.dirname(fileURLToPath(import.meta.url)));
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'fromorg');
 
 export interface CmdtGenerateResponse {
@@ -103,7 +103,7 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
     const describeObj = await conn.metadata.read('CustomObject', flags.sobject);
 
     // throw error if the object doesnot exist(empty json as response from the describe call.)
-    if (isEmpty(describeObj.fields)) {
+    if (describeObj.fields.length === 0) {
       const errMsg = messages.getMessage('sobjectnameNoResultError', [flags.sobject]);
       throw new SfError(errMsg, 'sobjectnameNoResultError');
     }

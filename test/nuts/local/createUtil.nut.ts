@@ -6,19 +6,19 @@
  */
 /* eslint-disable camelcase */
 
-import * as fs from 'node:fs';
-import * as path from 'node:path';
+import fs from 'node:fs';
+import path from 'node:path';
 import { expect, config } from 'chai';
 import { TestSession, execCmd } from '@salesforce/cli-plugins-testkit';
-import { CustomField } from 'jsforce/lib/api/metadata';
+import { CustomField } from 'jsforce/lib/api/metadata.js';
 import {
   appendDirectorySuffix,
   getFieldPrimitiveType,
   createRecord,
   getFieldDataType,
   getFileData,
-} from '../../../src/shared/helpers/createUtil';
-import { createOneOfEveryField } from '../../helpers/fieldCreation';
+} from '../../../src/shared/helpers/createUtil.js';
+import { createOneOfEveryField } from '../../helpers/fieldCreation.js';
 
 let session: TestSession;
 let projDir: string;

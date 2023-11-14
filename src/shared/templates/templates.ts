@@ -7,8 +7,11 @@
 
 /* eslint-disable class-methods-use-this */
 
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { SfError, Messages } from '@salesforce/core';
-Messages.importMessagesDirectory(__dirname);
+
+Messages.importMessagesDirectory(dirname(fileURLToPath(import.meta.url)));
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'template');
 import { CustomValue, CustomField } from 'jsforce/api/metadata';
 
