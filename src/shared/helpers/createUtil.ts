@@ -8,7 +8,6 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { CustomField } from 'jsforce/api/metadata';
 import { XMLParser } from 'fast-xml-parser';
-import { isString } from '@salesforce/ts-types';
 import { CreateConfig } from '../interfaces/createConfig.js';
 import { canConvert } from '../templates/templates.js';
 
@@ -118,7 +117,7 @@ export const appendDirectorySuffix = (typename: string): string =>
  * @return [] Array of field names
  */
 export const getFieldNames = (fileData: CustomField[], nameField: string): string[] => [
-  ...fileData.map((file) => file.fullName).filter(isString),
+  ...fileData.map((file) => file.fullName).filter((f): f is string => typeof f === 'string'),
   nameField,
 ];
 
