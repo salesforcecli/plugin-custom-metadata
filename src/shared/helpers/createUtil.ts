@@ -109,7 +109,7 @@ export const appendDirectorySuffix = (typename: string): string =>
   typename.endsWith('__mdt') ? typename : `${typename}__mdt`;
 
 /**
- * Goes through the file data that has been genreated and gets all of the field names and adds the
+ * Goes through the file data that has been generated and gets all of the field names and adds the
  * name of the field that is used as the label for metadata record
  *
  * @param  fileData Array of objects based on metadata type xml
@@ -138,7 +138,7 @@ const buildCustomFieldXml = (
   for (const fieldName of Object.keys(cliParams)) {
     const type = getFieldPrimitiveType(fileData, fieldName);
     const dataType = getFieldDataType(fileData, fieldName);
-    // Added functionality to handle the igonre fields scenario.
+    // Added functionality to handle the ignore fields scenario.
     if (canConvert(dataType) || !ignoreFields) {
       ret += getFieldTemplate(fieldName, cliParams[fieldName], type);
     }
