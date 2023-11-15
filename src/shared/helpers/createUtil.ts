@@ -4,13 +4,12 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import * as fs from 'node:fs';
-import * as path from 'node:path';
+import fs from 'node:fs';
+import path from 'node:path';
 import { CustomField } from 'jsforce/api/metadata';
 import { XMLParser } from 'fast-xml-parser';
-import { isString } from '@salesforce/ts-types';
-import { CreateConfig } from '../interfaces/createConfig';
-import { canConvert } from '../templates/templates';
+import { CreateConfig } from '../interfaces/createConfig.js';
+import { canConvert } from '../templates/templates.js';
 
 interface CustomFieldFile {
   CustomField: CustomField;
@@ -110,7 +109,7 @@ export const appendDirectorySuffix = (typename: string): string =>
   typename.endsWith('__mdt') ? typename : `${typename}__mdt`;
 
 /**
- * Goes through the file data that has been genreated and gets all of the field names and adds the
+ * Goes through the file data that has been generated and gets all of the field names and adds the
  * name of the field that is used as the label for metadata record
  *
  * @param  fileData Array of objects based on metadata type xml
@@ -118,7 +117,7 @@ export const appendDirectorySuffix = (typename: string): string =>
  * @return [] Array of field names
  */
 export const getFieldNames = (fileData: CustomField[], nameField: string): string[] => [
-  ...fileData.map((file) => file.fullName).filter(isString),
+  ...fileData.map((file) => file.fullName).filter((f): f is string => typeof f === 'string'),
   nameField,
 ];
 
@@ -139,7 +138,7 @@ const buildCustomFieldXml = (
   for (const fieldName of Object.keys(cliParams)) {
     const type = getFieldPrimitiveType(fileData, fieldName);
     const dataType = getFieldDataType(fileData, fieldName);
-    // Added functionality to handle the igonre fields scenario.
+    // Added functionality to handle the ignore fields scenario.
     if (canConvert(dataType) || !ignoreFields) {
       ret += getFieldTemplate(fieldName, cliParams[fieldName], type);
     }

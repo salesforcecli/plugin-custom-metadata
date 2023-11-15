@@ -71,19 +71,19 @@ sfdx plugins
 
 <!-- commands -->
 
-- [`sfdx cmdt:generate:field`](#sfdx-cmdtgeneratefield)
-- [`sfdx cmdt:generate:fromorg`](#sfdx-cmdtgeneratefromorg)
-- [`sfdx cmdt:generate:object`](#sfdx-cmdtgenerateobject)
-- [`sfdx cmdt:generate:record`](#sfdx-cmdtgeneraterecord)
-- [`sfdx cmdt:generate:records`](#sfdx-cmdtgeneraterecords)
+- [`sf cmdt generate field`](#sf-cmdt-generate-field)
+- [`sf cmdt generate fromorg`](#sf-cmdt-generate-fromorg)
+- [`sf cmdt generate object`](#sf-cmdt-generate-object)
+- [`sf cmdt generate record`](#sf-cmdt-generate-record)
+- [`sf cmdt generate records`](#sf-cmdt-generate-records)
 
-## `sfdx cmdt:generate:field`
+## `sf cmdt generate field`
 
 Generate a field for a custom metadata type based on the provided field type.
 
 ```
 USAGE
-  $ sfdx cmdt:generate:field -n <value> -f
+  $ sf cmdt generate field -n <value> -f
     Checkbox|Date|DateTime|Email|Number|Percent|Phone|Picklist|Text|TextArea|LongTextArea|Url [--json] [-p <value>] [-s
     <value>] [-l <value>] [-d <value>]
 
@@ -111,23 +111,23 @@ DESCRIPTION
   for the custom metadata type called MyCmdt.
 
 ALIASES
-  $ sfdx force:cmdt:field:create
-  $ sfdx cmdt:field:create
+  $ sf force cmdt field create
+  $ sf cmdt field create
 
 EXAMPLES
   Generate a metadata file for a custom checkbox field and add the file to the MyCmdt__mdt/fields directory:
 
-    $ sfdx cmdt:generate:field --name MyCheckboxField --type Checkbox --output-directory \
+    $ sf cmdt generate field --name MyCheckboxField --type Checkbox --output-directory \
       force-app/main/default/objects/MyCmdt__mdt
 
   Generate a metadata file for a custom picklist field and add a few values:
 
-    $ sfdx cmdt:generate:field --name MyPicklistField --type Picklist --picklist-values A --picklist-values B \
+    $ sf cmdt generate field --name MyPicklistField --type Picklist --picklist-values A --picklist-values B \
       --picklist-values C --output-directory force-app/main/default/objects/MyCmdt__mdt
 
   Generate a metadata file for a custom number field and specify 2 decimal places:
 
-    $ sfdx cmdt:generate:field --name MyNumberField --type Number --decimal-places 2 --output-directory \
+    $ sf cmdt generate field --name MyNumberField --type Number --decimal-places 2 --output-directory \
       force-app/main/default/objects/MyCmdt__mdt
 
 FLAG DESCRIPTIONS
@@ -148,15 +148,15 @@ FLAG DESCRIPTIONS
     The value must be greater than or equal to zero. Default value is 0.
 ```
 
-_See code: [src/commands/cmdt/generate/field.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/2.2.13/src/commands/cmdt/generate/field.ts)_
+_See code: [src/commands/cmdt/generate/field.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/2.2.14/src/commands/cmdt/generate/field.ts)_
 
-## `sfdx cmdt:generate:fromorg`
+## `sf cmdt generate fromorg`
 
 Generate a custom metadata type and all its records from a Salesforce object.
 
 ```
 USAGE
-  $ sfdx cmdt:generate:fromorg -o <value> -n <value> -s <value> [--json] [--api-version <value>] [-l <value>] [-p <value>]
+  $ sf cmdt generate fromorg -o <value> -n <value> -s <value> [--json] [--api-version <value>] [-l <value>] [-p <value>]
     [-v PackageProtected|Protected|Public] [-i] [-d <value>] [-r <value>]
 
 FLAGS
@@ -173,7 +173,7 @@ FLAGS
                                        metadata type.
   -v, --visibility=<option>            [default: Public] Who can see the custom metadata type.
                                        <options: PackageProtected|Protected|Public>
-  --api-version=<value>                Override the api version used for api requests made by this command
+      --api-version=<value>            Override the api version used for api requests made by this command
 
 GLOBAL FLAGS
   --json  Format output as json.
@@ -182,7 +182,7 @@ DESCRIPTION
   Generate a custom metadata type and all its records from a Salesforce object.
 
   Use this command to migrate existing custom objects or custom settings in an org to custom metadata types. If a field
-  of the Salesforce object is of an unsupported type, the field type is automatically converted to text. Run "sfdx cmdt
+  of the Salesforce object is of an unsupported type, the field type is automatically converted to text. Run "sf cmdt
   generate field --help" to see the list of supported cmdt field types, listed in the --type flag summary. Use the
   --ignore-unsupported to ignore these fields.
 
@@ -191,36 +191,36 @@ DESCRIPTION
   --dev-name flag. Use --type-output-directory to create them in a different directory.
 
 ALIASES
-  $ sfdx force:cmdt:generate
+  $ sf force cmdt generate
 
 EXAMPLES
   Generate a custom metadata type from a custom object called MySourceObject__c in your default org:
 
-    $ sfdx cmdt:generate:fromorg --dev-name MyCMDT --sobject MySourceObject__c
+    $ sf cmdt generate fromorg --dev-name MyCMDT --sobject MySourceObject__c
 
   Generate a custom metadata type from a custom object in an org with alias my-scratch-org; ignore unsupported field
   types instead of converting them to text:
 
-    $ sfdx cmdt:generate:fromorg --dev-name MyCMDT --sobject MySourceObject__c --ignore-unsupported --target-org \
+    $ sf cmdt generate fromorg --dev-name MyCMDT --sobject MySourceObject__c --ignore-unsupported --target-org \
       my-scratch-org
 
   Generate a protected custom metadata type from a custom object:
 
-    $ sfdx cmdt:generate:fromorg --dev-name MyCMDT --sobject MySourceObject__c --visibility Protected
+    $ sf cmdt generate fromorg --dev-name MyCMDT --sobject MySourceObject__c --visibility Protected
 
   Generate a protected custom metadata type from a custom setting with a specific singular and plural label:
 
-    $ sfdx cmdt:generate:fromorg --dev-name MyCMDT --label "My CMDT" --plural-label "My CMDTs" --sobject \
+    $ sf cmdt generate fromorg --dev-name MyCMDT --label "My CMDT" --plural-label "My CMDTs" --sobject \
       MySourceSetting__c --visibility Protected
 
   Generate a custom metadata type and put the resulting metadata files in the specified directory:
 
-    $ sfdx cmdt:generate:fromorg --dev-name MyCMDT --sobject MySourceObject__c --type-output-directory \
+    $ sf cmdt generate fromorg --dev-name MyCMDT --sobject MySourceObject__c --type-output-directory \
       path/to/my/cmdt/directory
 
   Generate a custom metadata type and put the resulting record metadata file(s) in the specified directory:
 
-    $ sfdx cmdt:generate:fromorg --dev-name MyCMDT --sobject MySourceObject__c --records-output-dir \
+    $ sf cmdt generate fromorg --dev-name MyCMDT --sobject MySourceObject__c --records-output-dir \
       path/to/my/cmdt/record/directory
 
 FLAG DESCRIPTIONS
@@ -235,15 +235,15 @@ FLAG DESCRIPTIONS
     https://help.salesforce.com/s/articleView?id=sf.custommetadatatypes_ui_create.htm&type=5.
 ```
 
-_See code: [src/commands/cmdt/generate/fromorg.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/2.2.13/src/commands/cmdt/generate/fromorg.ts)_
+_See code: [src/commands/cmdt/generate/fromorg.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/2.2.14/src/commands/cmdt/generate/fromorg.ts)_
 
-## `sfdx cmdt:generate:object`
+## `sf cmdt generate object`
 
 Generate a new custom metadata type in the current project.
 
 ```
 USAGE
-  $ sfdx cmdt:generate:object -n <value> [--json] [-l <value>] [-p <value>] [-v PackageProtected|Protected|Public] [-d
+  $ sf cmdt generate object -n <value> [--json] [-l <value>] [-p <value>] [-v PackageProtected|Protected|Public] [-d
     <value>]
 
 FLAGS
@@ -266,17 +266,17 @@ DESCRIPTION
   "force-app/main/default/objects".
 
 ALIASES
-  $ sfdx force:cmdt:create
-  $ sfdx cmdt:create
+  $ sf force cmdt create
+  $ sf cmdt create
 
 EXAMPLES
   Generate a custom metadata type with developer name 'MyCustomType'; this name is also used as the label:
 
-    $ sfdx cmdt:generate:object --type-name MyCustomType
+    $ sf cmdt generate object --type-name MyCustomType
 
   Generate a protected custom metadata type with a specific label:
 
-    $ sfdx cmdt:generate:object --type-name MyCustomType --label "Custom Type" --plural-label "Custom Types" \
+    $ sf cmdt generate object --type-name MyCustomType --label "Custom Type" --plural-label "Custom Types" \
       --visibility Protected
 
 FLAG DESCRIPTIONS
@@ -296,15 +296,15 @@ FLAG DESCRIPTIONS
     https://help.salesforce.com/s/articleView?id=sf.custommetadatatypes_ui_create.htm&type=5.
 ```
 
-_See code: [src/commands/cmdt/generate/object.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/2.2.13/src/commands/cmdt/generate/object.ts)_
+_See code: [src/commands/cmdt/generate/object.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/2.2.14/src/commands/cmdt/generate/object.ts)_
 
-## `sfdx cmdt:generate:record`
+## `sf cmdt generate record`
 
 Generate a new record for a given custom metadata type in the current project.
 
 ```
 USAGE
-  $ sfdx cmdt:generate:record -t <value> -n <value> [--json] [-l <value>] [-p true|false] [-i <value>] [-d <value>]
+  $ sf cmdt generate record -t <value> -n <value> [--json] [-l <value>] [-p true|false] [-i <value>] [-d <value>]
 
 FLAGS
   -d, --output-directory=<value>  [default: force-app/main/default/customMetadata] Directory to store newly-created
@@ -328,19 +328,19 @@ DESCRIPTION
   name=value pairs to specify the values for the fields, such as MyTextField="some text here" or MyNumberField=32.
 
 ALIASES
-  $ sfdx force:cmdt:record:create
-  $ sfdx cmdt:record:create
+  $ sf force cmdt record create
+  $ sf cmdt record create
 
 EXAMPLES
   Create a record metadata file for custom metadata type 'MyCMT' with specified values for two custom fields:
 
-    $ sfdx cmdt:generate:record --type-name MyCMT__mdt --record-name MyRecord My_Custom_Field_1=Foo \
+    $ sf cmdt generate record --type-name MyCMT__mdt --record-name MyRecord My_Custom_Field_1=Foo \
       My_Custom_Field_2=Bar
 
   Create a protected record metadata file for custom metadata type 'MyCMT' with a specific label and values specified
   for two custom fields:
 
-    $ sfdx cmdt:generate:record --type-name MyCMT__mdt --record-name MyRecord --label "My Record" --protected true \
+    $ sf cmdt generate record --type-name MyCMT__mdt --record-name MyRecord --label "My Record" --protected true \
       My_Custom_Field_1=Foo My_Custom_Field_2=Bar
 
 FLAG DESCRIPTIONS
@@ -349,15 +349,15 @@ FLAG DESCRIPTIONS
     Protected records can only be accessed by code in the same managed package namespace.
 ```
 
-_See code: [src/commands/cmdt/generate/record.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/2.2.13/src/commands/cmdt/generate/record.ts)_
+_See code: [src/commands/cmdt/generate/record.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/2.2.14/src/commands/cmdt/generate/record.ts)_
 
-## `sfdx cmdt:generate:records`
+## `sf cmdt generate records`
 
 Generate new custom metadata type records from a CSV file.
 
 ```
 USAGE
-  $ sfdx cmdt:generate:records -f <value> -t <value> [--json] [-i <value>] [-d <value>] [-n <value>]
+  $ sf cmdt generate records -f <value> -t <value> [--json] [-i <value>] [-d <value>] [-n <value>]
 
 FLAGS
   -d, --output-directory=<value>  [default: force-app/main/default/customMetadata] Directory to store newly-created
@@ -378,19 +378,19 @@ DESCRIPTION
   record name; use the --name-column flag to specify a different column.
 
 ALIASES
-  $ sfdx force:cmdt:record:insert
-  $ sfdx cmdt:record:insert
+  $ sf force cmdt record insert
+  $ sf cmdt record insert
 
 EXAMPLES
   Generate record metadata files from values in a CSV file for the custom metadata type MyCmdt. Use 'Name' as the
   column that specifies the record name:
 
-    $ sfdx cmdt:generate:records --csv path/to/my.csv --type-name MyCmdt
+    $ sf cmdt generate records --csv path/to/my.csv --type-name MyCmdt
 
   Generate record metadata files from a CSV file in the directory different from the default, and use 'PrimaryKey' as
   the column that specifies the record name:
 
-    $ sfdx cmdt:generate:records --csv path/to/my.csv --type-name MyCmdt --input-directory path/to/my/cmdt/directory \
+    $ sf cmdt generate records --csv path/to/my.csv --type-name MyCmdt --input-directory path/to/my/cmdt/directory \
       --name-column "PrimaryKey"
 
 FLAG DESCRIPTIONS
@@ -399,7 +399,7 @@ FLAG DESCRIPTIONS
     The '__mdt' suffix is appended to the end of the name if it's omitted.
 ```
 
-_See code: [src/commands/cmdt/generate/records.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/2.2.13/src/commands/cmdt/generate/records.ts)_
+_See code: [src/commands/cmdt/generate/records.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/2.2.14/src/commands/cmdt/generate/records.ts)_
 
 <!-- commandsstop -->
 

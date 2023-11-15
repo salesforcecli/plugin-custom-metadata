@@ -1,3 +1,5 @@
+## [3.0.1](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.2.13...3.0.1) (2023-11-14)
+
 ## [2.2.13](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.2.12...2.2.13) (2023-11-11)
 
 ### Bug Fixes

@@ -7,13 +7,13 @@
 /* eslint-disable camelcase */
 
 import { deepStrictEqual } from 'node:assert';
-import { CustomObject } from 'jsforce/lib/api/metadata';
+import { CustomObject } from 'jsforce/lib/api/metadata.js';
 import {
   cleanQueryResponse,
   describeField,
   validCustomSettingType,
   describeObjFields,
-} from '../../src/shared/helpers/metadataUtil';
+} from '../../src/shared/helpers/metadataUtil.js';
 
 describe('metadataUtil', () => {
   const readResponse: CustomObject = {

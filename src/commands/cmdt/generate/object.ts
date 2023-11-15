@@ -4,14 +4,16 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import * as fs from 'node:fs';
+import fs from 'node:fs';
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { Flags, loglevel, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
-import { writeTypeFile } from '../../../shared/helpers/fileWriter';
-import { validateMetadataTypeName, validateLessThanForty } from '../../../shared/helpers/validationUtil';
-import { createObjectXML } from '../../../shared/templates/templates';
+import { writeTypeFile } from '../../../shared/helpers/fileWriter.js';
+import { validateMetadataTypeName, validateLessThanForty } from '../../../shared/helpers/validationUtil.js';
+import { createObjectXML } from '../../../shared/templates/templates.js';
 
-Messages.importMessagesDirectory(__dirname);
+Messages.importMessagesDirectory(dirname(fileURLToPath(import.meta.url)));
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'object');
 
 export interface CmdtCreateResponse {
