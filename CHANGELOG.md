@@ -1,3 +1,9 @@
+## [3.0.2](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.0.1...3.0.2) (2023-11-15)
+
+### Bug Fixes
+
+- updates from devScripts ([#653](https://github.com/salesforcecli/plugin-custom-metadata/issues/653)) and core v6 ([492ec24](https://github.com/salesforcecli/plugin-custom-metadata/commit/492ec2422f13d6ba1f5391ebb8d2bcd2b208c95e))
+
 ## [3.0.1](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.2.13...3.0.1) (2023-11-14)
 
 ## [2.2.13](https://github.com/salesforcecli/plugin-custom-metadata/compare/2.2.12...2.2.13) (2023-11-11)
