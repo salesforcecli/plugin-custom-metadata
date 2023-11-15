@@ -43,15 +43,15 @@
   "bugs": "https://github.com/salesforcecli/plugin-custom-metadata/issues",
   "dependencies": {
     "@oclif/core": "^3.11.0",
-    "@salesforce/core": "^5.3.20",
-    "@salesforce/sf-plugins-core": "^4.1.2",
+    "@salesforce/core": "^6.1.0",
+    "@salesforce/sf-plugins-core": "^5.0.1",
     "csv-parse": "^5.5.2",
     "fast-xml-parser": "^4.3.2"
   },
   "devDependencies": {
     "@oclif/plugin-command-snapshot": "^5.0.2",
     "@salesforce/cli-plugins-testkit": "^5.0.4",
-    "@salesforce/dev-scripts": "^6.0.4",
+    "@salesforce/dev-scripts": "^7.1.0",
     "@salesforce/plugin-command-reference": "^3.0.46",
     "eslint-plugin-sf-plugin": "^1.16.15",
     "jsforce": "^2.0.0-beta.28",
