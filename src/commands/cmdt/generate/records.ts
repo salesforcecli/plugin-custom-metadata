@@ -77,30 +77,32 @@ export default class Insert extends SfCommand<CreateConfigs> {
     }) as Record[];
 
     // Transforms on the recordname are to match the behavior of adding a new Custom Metadata Type record in the UI
-    const recordConfigs: CreateConfig[] = parsedRecords.map((record) => ({
-      typename: flags['type-name'],
-      recordname: (record[flags['name-column']] as string)
-        .replace(/[^a-zA-Z0-9]/g, '_') // replace all non-alphanumeric characters with _
-        .replace(/^(\d)/, 'X$1') // prepend an X if the first character is a number
-        .replace(/_{2,}/g, '_') // replace multiple underscores with single underscore
-        .replace(/_$/, ''), // remove trailing underscore (if any)
-      label: record[flags['name-column']] as string,
-      inputdir: flags['input-directory'],
-      outputdir: flags['output-directory'],
-      protected: false,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      varargs: Object.fromEntries(
-        // TODO: throw an error if any of the fields in the csvDataAry do not exist in the fileData
-        fileData.map((file) => {
-          if (file.fullName) {
-            return record[file.fullName] ? [file.fullName, record[file.fullName]] : [];
-          } else {
-            throw new SfError('No fullName found in fileData');
-          }
-        })
-      ),
-      fileData,
-    }));
+    const recordConfigs: CreateConfig[] = validateUniqueNames(
+      parsedRecords.map((record) => ({
+        typename: flags['type-name'],
+        recordname: (record[flags['name-column']] as string)
+          .replace(/[^a-zA-Z0-9]/g, '_') // replace all non-alphanumeric characters with _
+          .replace(/^(\d)/, 'X$1') // prepend an X if the first character is a number
+          .replace(/_{2,}/g, '_') // replace multiple underscores with single underscore
+          .replace(/_$/, ''), // remove trailing underscore (if any)
+        label: record[flags['name-column']] as string,
+        inputdir: flags['input-directory'],
+        outputdir: flags['output-directory'],
+        protected: false,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        varargs: Object.fromEntries(
+          // TODO: throw an error if any of the fields in the csvDataAry do not exist in the fileData
+          fileData.map((file) => {
+            if (file.fullName) {
+              return record[file.fullName] ? [file.fullName, record[file.fullName]] : [];
+            } else {
+              throw new SfError('No fullName found in fileData');
+            }
+          })
+        ),
+        fileData,
+      }))
+    );
 
     // find the cmdt in the inputdir.
     // loop through files and create records that match fields
@@ -111,6 +113,27 @@ export default class Insert extends SfCommand<CreateConfigs> {
     return recordConfigs;
   }
 }
+
+/** validate name fields are unique, otherwise they'll be trying to write to the same file */
+const validateUniqueNames = (recordConfigs: CreateConfig[]): CreateConfig[] => {
+  const recordNameSet = new Set<string>();
+  const dupes = recordConfigs
+    .map((rc) => {
+      if (recordNameSet.has(rc.recordname)) {
+        return rc.recordname;
+      } else {
+        recordNameSet.add(rc.recordname);
+        return undefined;
+      }
+    })
+    .filter((rc): rc is string => rc !== undefined);
+  if (dupes.length > 0) {
+    throw new SfError(
+      `Your CSV has duplicate values:  ${[...new Set(dupes)].join(', ')}.  CMDT require unique names in the name field.`
+    );
+  }
+  return recordConfigs;
+};
 
 /** Validate that every column in the CSV has known metadata */
 const columnValidation = (requiredFields: string[], columnList: string[], typeNameFlag: string): string[] => {
