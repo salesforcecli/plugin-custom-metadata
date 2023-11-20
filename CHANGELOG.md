@@ -1,3 +1,9 @@
+## [3.0.3](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.0.2...3.0.3) (2023-11-20)
+
+### Bug Fixes
+
+- throw when csv produces non-unique cmdt record names ([dcac80c](https://github.com/salesforcecli/plugin-custom-metadata/commit/dcac80cdfadfb9a42c4ce3cb574c3165160d667b))
+
 ## [3.0.2](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.0.1...3.0.2) (2023-11-15)
 
 ### Bug Fixes
