@@ -129,23 +129,18 @@ export const getFieldNames = (fileData: CustomField[], nameField: string): strin
  * @param  fileData Array of objects that contain field data
  * @return {string} String representation of XML
  */
-const buildCustomFieldXml = (
+export const buildCustomFieldXml = (
   fileData: CustomField[] = [],
   cliParams: Record<string, string> = {},
   ignoreFields = false
-): string => {
-  let ret = '';
-  for (const fieldName of Object.keys(cliParams)) {
-    const type = getFieldPrimitiveType(fileData, fieldName);
-    const dataType = getFieldDataType(fileData, fieldName);
-    // Added functionality to handle the ignore fields scenario.
-    if (canConvert(dataType) || !ignoreFields) {
-      ret += getFieldTemplate(fieldName, cliParams[fieldName], type);
-    }
-  }
-
-  return ret;
-};
+): string =>
+  Object.entries(cliParams)
+    .filter(
+      ([fieldName, value]) =>
+        value !== undefined && (canConvert(getFieldDataType(fileData, fieldName)) || !ignoreFields)
+    )
+    .map(([fieldName, value]) => getFieldTemplate(fieldName, value, getFieldPrimitiveType(fileData, fieldName)))
+    .join('');
 
 /**
  * Get the number type based on the scale.
