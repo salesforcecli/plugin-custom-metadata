@@ -1,3 +1,9 @@
+## [3.0.6](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.0.5...3.0.6) (2023-11-27)
+
+### Bug Fixes
+
+- don't write undefined fields ([cb41d78](https://github.com/salesforcecli/plugin-custom-metadata/commit/cb41d78bbf8c575e4753c55e84f4065ecc794273))
+
 ## [3.0.5](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.0.4...3.0.5) (2023-11-26)
 
 ### Bug Fixes
