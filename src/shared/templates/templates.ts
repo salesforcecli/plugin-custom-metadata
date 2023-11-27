@@ -55,7 +55,7 @@ export const createFieldXML = (data: CustomField, defaultToString: boolean): str
   returnValue += getLengthTag(data);
   returnValue += getVisibleLines(data);
 
-  // preventing standard objects that have fields that are being convered from passing in data
+  // preventing standard objects that have fields that are being converted from passing in data
   // that is no longer relevant
   // e.g. multiselectpicklist are being converted to long text area and long text area's do not support valuesets
   if (canConvert(data.type)) {
