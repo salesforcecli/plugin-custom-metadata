@@ -92,7 +92,7 @@ describe('force:cmdt:create', () => {
     });
 
     it('runs force:cmdt:create --typename MyC__MDT --visibility "Invalid"', () => {
-      const result = execCmd('force:cmdt:create --typename MyC --visibility Invalid', { ensureExitCode: 1 });
+      const result = execCmd('force:cmdt:create --typename MyC --visibility Invalid', { ensureExitCode: 'nonZero' });
       expect(result.shellOutput.stderr).to.contain(
         'Expected --visibility=Invalid to be one of: PackageProtected, Protected, Public'
       );

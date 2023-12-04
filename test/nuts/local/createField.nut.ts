@@ -64,20 +64,22 @@ describe('force:cmdt:field:create', () => {
 
   describe('failures', () => {
     it('fails running force:cmdt:field:create --fieldname myFi__eld --fieldtype Text', () => {
-      const result = execCmd('force:cmdt:field:create --fieldname myFi__eld --fieldtype Text', { ensureExitCode: 1 });
+      const result = execCmd('force:cmdt:field:create --fieldname myFi__eld --fieldtype Text', {
+        ensureExitCode: 'nonZero',
+      });
       expect(result.shellOutput.stderr).to.contain(messages.getMessage('invalidCustomFieldError', ['myFi__eld']));
     });
 
     it('fails running force:cmdt:field:create --fieldname myField --fieldtype Picklist', () => {
       const result = execCmd('force:cmdt:field:create --fieldname myField --fieldtype Picklist', {
-        ensureExitCode: 1,
+        ensureExitCode: 'nonZero',
       });
       expect(result.shellOutput.stderr).to.contain(messages.getMessage('picklistValuesNotSuppliedError'));
     });
 
     it('fails running force:cmdt:field:create --fieldname money --fieldtype Currency', () => {
       const result = execCmd('force:cmdt:field:create --fieldname money --fieldtype Currency', {
-        ensureExitCode: 1,
+        ensureExitCode: 'nonZero',
       });
       expect(result.shellOutput.stderr).to.contain(
         'Expected --type=Currency to be one of: Checkbox, Date, DateTime, Email, Number, Percent, Phone, Picklist, Text, TextArea, LongTextArea, Url'
