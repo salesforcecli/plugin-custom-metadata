@@ -15,7 +15,7 @@ import {
   SfCommand,
 } from '@salesforce/sf-plugins-core';
 import { SfError, Messages } from '@salesforce/core';
-import { CustomField, CustomObject } from 'jsforce/api/metadata';
+import type { CustomField, CustomObject } from 'jsforce/api/metadata';
 import { createRecord, getFileData } from '../../../shared/helpers/createUtil.js';
 import { writeTypeFile, writeFieldFile } from '../../../shared/helpers/fileWriter.js';
 import { describeObjFields, cleanQueryResponse, validCustomSettingType } from '../../../shared/helpers/metadataUtil.js';

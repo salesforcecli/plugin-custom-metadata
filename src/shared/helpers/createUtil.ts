@@ -6,7 +6,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import { CustomField } from 'jsforce/api/metadata';
+import type { CustomField } from 'jsforce/api/metadata';
 import { XMLParser } from 'fast-xml-parser';
 import { CreateConfig } from '../interfaces/createConfig.js';
 import { canConvert } from '../templates/templates.js';

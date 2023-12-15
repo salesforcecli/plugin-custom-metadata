@@ -6,7 +6,7 @@
  */
 
 import { CustomObject, CustomField } from 'jsforce/api/metadata';
-import { Record } from 'jsforce';
+import type { Record } from 'jsforce';
 /**
  * Returns describe object for the field API name from the Object API name you specify
  *

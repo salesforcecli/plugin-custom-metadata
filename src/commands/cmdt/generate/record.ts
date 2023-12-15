@@ -9,7 +9,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Flags, loglevel, parseVarArgs, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
-import { CustomField } from 'jsforce/api/metadata';
+import type { CustomField } from 'jsforce/api/metadata';
 import { appendDirectorySuffix, createRecord, getFileData } from '../../../shared/helpers/createUtil.js';
 import {
   validateMetadataRecordName,

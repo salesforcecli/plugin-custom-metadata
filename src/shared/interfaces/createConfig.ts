@@ -5,8 +5,8 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { Record } from 'jsforce';
-import { CustomField } from 'jsforce/api/metadata';
+import type { Record } from 'jsforce';
+import type { CustomField } from 'jsforce/api/metadata';
 export type CreateConfig = {
   typename: string;
   recordname: string;
