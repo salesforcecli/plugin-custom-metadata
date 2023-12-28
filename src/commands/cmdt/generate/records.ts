@@ -6,7 +6,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+
 import { Flags, loglevel, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages, SfError } from '@salesforce/core';
 import type { Record } from 'jsforce';
@@ -14,7 +14,7 @@ import { parse } from 'csv-parse/sync';
 import { getFieldNames, appendDirectorySuffix, createRecord, getFileData } from '../../../shared/helpers/createUtil.js';
 import { CreateConfig, CreateConfigs } from '../../../shared/interfaces/createConfig.js';
 
-Messages.importMessagesDirectory(path.dirname(fileURLToPath(import.meta.url)));
+Messages.importMessagesDirectoryFromMetaUrl(import.meta.url)
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'records');
 
 export default class Insert extends SfCommand<CreateConfigs> {

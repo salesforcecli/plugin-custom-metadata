@@ -6,7 +6,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+
 import { Flags, loglevel, parseVarArgs, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
 import type { CustomField } from 'jsforce/api/metadata';
@@ -17,7 +17,7 @@ import {
   validateLessThanForty,
 } from '../../../shared/helpers/validationUtil.js';
 
-Messages.importMessagesDirectory(path.dirname(fileURLToPath(import.meta.url)));
+Messages.importMessagesDirectoryFromMetaUrl(import.meta.url)
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'record');
 
 export interface CmdtRecordCreateResponse {
