@@ -7,13 +7,13 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+
 import { expect, config } from 'chai';
 import { TestSession, execCmd } from '@salesforce/cli-plugins-testkit';
 import { Messages } from '@salesforce/core';
 import { createOneOfEveryField } from '../../helpers/fieldCreation.js';
 
-Messages.importMessagesDirectory(path.dirname(fileURLToPath(import.meta.url)));
+Messages.importMessagesDirectoryFromMetaUrl(import.meta.url)
 const validationMessages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'validation');
 const commandMessages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'record');
 

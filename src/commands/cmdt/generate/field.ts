@@ -5,15 +5,15 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import fs from 'node:fs';
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+
+
 import { arrayWithDeprecation, Flags, loglevel, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages, SfError } from '@salesforce/core';
 import { writeFieldFile } from '../../../shared/helpers/fileWriter.js';
 import { validateAPIName } from '../../../shared/helpers/validationUtil.js';
 import { createDefaultTypeStructure, createFieldXML } from '../../../shared/templates/templates.js';
 
-Messages.importMessagesDirectory(dirname(fileURLToPath(import.meta.url)));
+Messages.importMessagesDirectoryFromMetaUrl(import.meta.url)
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'field');
 
 export interface CmdtFieldCreateResponse {

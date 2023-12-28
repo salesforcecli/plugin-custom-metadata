@@ -6,7 +6,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+
 import {
   Flags,
   loglevel,
@@ -26,7 +26,7 @@ import {
 } from '../../../shared/helpers/validationUtil.js';
 import { canConvert, createObjectXML, createFieldXML } from '../../../shared/templates/templates.js';
 
-Messages.importMessagesDirectory(path.dirname(fileURLToPath(import.meta.url)));
+Messages.importMessagesDirectoryFromMetaUrl(import.meta.url)
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'fromorg');
 
 export interface CmdtGenerateResponse {
