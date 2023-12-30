@@ -44,7 +44,7 @@
   "dependencies": {
     "@oclif/core": "^3.15.0",
     "@salesforce/core": "^6.4.2",
-    "@salesforce/sf-plugins-core": "^5.0.12",
+    "@salesforce/sf-plugins-core": "^5.0.13",
     "csv-parse": "^5.5.3",
     "fast-xml-parser": "^4.3.2"
   },
