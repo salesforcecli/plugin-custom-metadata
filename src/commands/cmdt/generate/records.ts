@@ -14,7 +14,7 @@ import { parse } from 'csv-parse/sync';
 import { getFieldNames, appendDirectorySuffix, createRecord, getFileData } from '../../../shared/helpers/createUtil.js';
 import { CreateConfig, CreateConfigs } from '../../../shared/interfaces/createConfig.js';
 
-Messages.importMessagesDirectoryFromMetaUrl(import.meta.url)
+Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'records');
 
 export default class Insert extends SfCommand<CreateConfigs> {
@@ -22,6 +22,7 @@ export default class Insert extends SfCommand<CreateConfigs> {
   public static readonly description = messages.getMessage('description');
   public static readonly requiresProject = true;
   public static readonly aliases = ['force:cmdt:record:insert', 'cmdt:record:insert'];
+  public static readonly deprecateAliases = true;
   public static readonly examples = messages.getMessages('examples');
   public static readonly flags = {
     loglevel,

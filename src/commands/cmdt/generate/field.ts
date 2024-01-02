@@ -6,14 +6,13 @@
  */
 import fs from 'node:fs';
 
-
 import { arrayWithDeprecation, Flags, loglevel, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages, SfError } from '@salesforce/core';
 import { writeFieldFile } from '../../../shared/helpers/fileWriter.js';
 import { validateAPIName } from '../../../shared/helpers/validationUtil.js';
 import { createDefaultTypeStructure, createFieldXML } from '../../../shared/templates/templates.js';
 
-Messages.importMessagesDirectoryFromMetaUrl(import.meta.url)
+Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'field');
 
 export interface CmdtFieldCreateResponse {
@@ -27,6 +26,7 @@ export default class Create extends SfCommand<CmdtFieldCreateResponse> {
   public static readonly examples = messages.getMessages('examples');
   public static readonly requiresProject = true;
   public static readonly aliases = ['force:cmdt:field:create', 'cmdt:field:create'];
+  public static readonly deprecateAliases = true;
   public static readonly flags = {
     loglevel,
     name: Flags.string({

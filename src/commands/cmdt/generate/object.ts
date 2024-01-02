@@ -6,14 +6,13 @@
  */
 import fs from 'node:fs';
 
-
 import { Flags, loglevel, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
 import { writeTypeFile } from '../../../shared/helpers/fileWriter.js';
 import { validateMetadataTypeName, validateLessThanForty } from '../../../shared/helpers/validationUtil.js';
 import { createObjectXML } from '../../../shared/templates/templates.js';
 
-Messages.importMessagesDirectoryFromMetaUrl(import.meta.url)
+Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'object');
 
 export interface CmdtCreateResponse {
@@ -27,6 +26,7 @@ export default class Create extends SfCommand<CmdtCreateResponse> {
   public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
   public static readonly aliases = ['force:cmdt:create', 'cmdt:create'];
+  public static readonly deprecateAliases = true;
   public static readonly requiresProject = true;
 
   public static readonly flags = {
