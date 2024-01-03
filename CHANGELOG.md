@@ -1,3 +1,9 @@
+## [3.1.1](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.1.0...3.1.1) (2024-01-03)
+
+### Bug Fixes
+
+- nonzero test exit codes ([#695](https://github.com/salesforcecli/plugin-custom-metadata/issues/695)) ([398ba2d](https://github.com/salesforcecli/plugin-custom-metadata/commit/398ba2d185e5414243d771c898dc55063bc51d63))
+
 # [3.1.0](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.0.12...3.1.0) (2024-01-03)
 
 ### Features
