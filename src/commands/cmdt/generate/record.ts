@@ -17,7 +17,7 @@ import {
   validateLessThanForty,
 } from '../../../shared/helpers/validationUtil.js';
 
-Messages.importMessagesDirectoryFromMetaUrl(import.meta.url)
+Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'record');
 
 export interface CmdtRecordCreateResponse {
@@ -36,6 +36,7 @@ export default class Create extends SfCommand<CmdtRecordCreateResponse> {
   public static readonly description = messages.getMessage('description');
   public static readonly requiresProject = true;
   public static readonly aliases = ['force:cmdt:record:create', 'cmdt:record:create'];
+  public static readonly deprecateAliases = true;
   public static readonly examples = messages.getMessages('examples');
 
   public static readonly flags = {

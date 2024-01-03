@@ -26,7 +26,7 @@ import {
 } from '../../../shared/helpers/validationUtil.js';
 import { canConvert, createObjectXML, createFieldXML } from '../../../shared/templates/templates.js';
 
-Messages.importMessagesDirectoryFromMetaUrl(import.meta.url)
+Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'fromorg');
 
 export interface CmdtGenerateResponse {
@@ -39,6 +39,7 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
   public static readonly examples = messages.getMessages('examples');
   public static readonly requiresProject = true;
   public static readonly aliases = ['force:cmdt:generate'];
+  public static readonly deprecateAliases = true;
 
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
