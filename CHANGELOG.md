@@ -1,3 +1,9 @@
+# [3.1.0](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.0.12...3.1.0) (2024-01-03)
+
+### Features
+
+- deprecateAliases ([f694bba](https://github.com/salesforcecli/plugin-custom-metadata/commit/f694bbaf5571895e2289c10d07ab8189444c17a2))
+
 ## [3.0.12](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.0.11...3.0.12) (2023-12-30)
 
 ### Bug Fixes
