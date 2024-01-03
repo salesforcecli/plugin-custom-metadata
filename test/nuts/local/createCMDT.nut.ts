@@ -64,7 +64,7 @@ describe('force:cmdt:create', () => {
 
   describe('failures', () => {
     it('runs force:cmdt:create --typename MyC___MDT', () => {
-      const result = execCmd('force:cmdt:create --typename MyC___MDT', { ensureExitCode: 1 });
+      const result = execCmd('force:cmdt:create --typename MyC___MDT', { ensureExitCode: 'nonZero' });
       expect(result.shellOutput.stderr).to.contain(
         "'MyC___MDT' is not a valid API name for a custom metadata type. Metadata names can contain only underscores and alphanumeric characters, must begin with a letter, cannot end with an underscore, and cannot contain two consecutive underscore characters."
       );
@@ -73,7 +73,7 @@ describe('force:cmdt:create', () => {
     it('runs force:cmdt:create --typename MyC__MDT --label "Label is more than the 40 characters that are allowed"', () => {
       const result = execCmd(
         'force:cmdt:create --typename MyC__MDT --label "Label is more than the 40 characters that are allowed"',
-        { ensureExitCode: 1 }
+        { ensureExitCode: 'nonZero' }
       );
 
       expect(result.shellOutput.stderr).to.contain(
@@ -84,7 +84,7 @@ describe('force:cmdt:create', () => {
     it('runs force:cmdt:create --typename MyC__MDT --plurallabel "More Than 40 characters in this plural label name"', () => {
       const result = execCmd(
         'force:cmdt:create --typename MyC__MDT --plurallabel "More Than 40 characters in this plural label name"',
-        { ensureExitCode: 1 }
+        { ensureExitCode: 'nonZero' }
       );
       expect(result.shellOutput.stderr).to.contain(
         "'More Than 40 characters in this plural label name' is too long to be a plural label. The maximum length of the plural label is 40 characters."

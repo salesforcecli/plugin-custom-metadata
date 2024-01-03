@@ -13,7 +13,7 @@ import { TestSession, execCmd } from '@salesforce/cli-plugins-testkit';
 import { Messages } from '@salesforce/core';
 import { createOneOfEveryField } from '../../helpers/fieldCreation.js';
 
-Messages.importMessagesDirectoryFromMetaUrl(import.meta.url)
+Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const validationMessages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'validation');
 const commandMessages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'record');
 
@@ -46,7 +46,7 @@ describe('cmdt record create', () => {
           'badDevNameDir',
           'customMetadata'
         )}`,
-        { ensureExitCode: 1 }
+        { ensureExitCode: 'nonZero' }
       );
       expect(result.shellOutput.stderr).to.contain(validationMessages.getMessage('invalidCMDTApiName', [badType]));
     });
@@ -67,7 +67,7 @@ describe('cmdt record create', () => {
           'recordNameErrorDir',
           'customMetadata'
         )}`,
-        { ensureExitCode: 1 }
+        { ensureExitCode: 'nonZero' }
       );
       expect(result.shellOutput.stderr).to.contain(
         validationMessages.getMessage('notAValidRecordNameError', ['Bad Record Name'])
@@ -90,7 +90,7 @@ describe('cmdt record create', () => {
           'exceedCharDir',
           'customMetadata'
         )}`,
-        { ensureExitCode: 1 }
+        { ensureExitCode: 'nonZero' }
       );
       expect(result.shellOutput.stderr).to.contain(
         commandMessages.getMessage('notAValidLabelNameError', [
