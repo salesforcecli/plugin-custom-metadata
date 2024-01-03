@@ -13,7 +13,7 @@ import { expect } from 'chai';
 import { TestSession, execCmd } from '@salesforce/cli-plugins-testkit';
 import { Messages } from '@salesforce/core';
 
-Messages.importMessagesDirectoryFromMetaUrl(import.meta.url)
+Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'fromorg');
 
 const validationMessages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'validation');
@@ -93,7 +93,7 @@ describe('force:cmdt:generate', () => {
   it('errors on invalid object api name', () => {
     const cmdtName = 'badCMDT';
     const response = execCmd(`force:cmdt:generate -n ${cmdtName} -s Trigger__Settings__c --json`, {
-      ensureExitCode: 1,
+      ensureExitCode: 'nonZero',
     }).jsonOutput;
     expect(response?.message).to.contain(
       validationMessages.getMessage('sobjectnameFlagError', ['Trigger__Settings__c'])
@@ -104,7 +104,7 @@ describe('force:cmdt:generate', () => {
   it('errors on invalid cmdt name object', () => {
     const cmdtName = 'MyCM__DT';
     const response = execCmd(`force:cmdt:generate -n ${cmdtName} -s Broker__c --json`, {
-      ensureExitCode: 1,
+      ensureExitCode: 'nonZero',
     }).jsonOutput;
     expect(response?.message).to.contain(validationMessages.getMessage('invalidCMDTApiName', ['MyCM__DT']));
     expect(fs.existsSync(path.join(objectsFolder, `${cmdtName}__mdt`))).to.be.false;
