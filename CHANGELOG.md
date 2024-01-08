@@ -1,3 +1,9 @@
+## [3.1.2](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.1.1...3.1.2) (2024-01-08)
+
+### Bug Fixes
+
+- **deps:** plugins-core 7 ([#696](https://github.com/salesforcecli/plugin-custom-metadata/issues/696)) ([ee47f75](https://github.com/salesforcecli/plugin-custom-metadata/commit/ee47f75ff3f469c396965e5fefe98fa38fd6c7d2))
+
 ## [3.1.1](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.1.0...3.1.1) (2024-01-03)
 
 ### Bug Fixes
