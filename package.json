@@ -52,7 +52,7 @@
     "@oclif/plugin-command-snapshot": "^5.0.6",
     "@salesforce/cli-plugins-testkit": "^5.1.4",
     "@salesforce/dev-scripts": "^8.3.0",
-    "@salesforce/plugin-command-reference": "^3.0.60",
+    "@salesforce/plugin-command-reference": "^3.0.62",
     "eslint-plugin-sf-plugin": "^1.17.0",
     "jsforce": "^2.0.0-beta.29",
     "oclif": "^4.1.3",
