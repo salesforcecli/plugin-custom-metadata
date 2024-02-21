@@ -1,3 +1,9 @@
+## [3.1.12](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.1.11...3.1.12) (2024-02-21)
+
+### Bug Fixes
+
+- **deps:** bump ip from 2.0.0 to 2.0.1 ([06692e8](https://github.com/salesforcecli/plugin-custom-metadata/commit/06692e8baaee78aa0f9973c72d9bb8157f43a7fc))
+
 ## [3.1.11](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.1.10...3.1.11) (2024-02-18)
 
 ### Bug Fixes
