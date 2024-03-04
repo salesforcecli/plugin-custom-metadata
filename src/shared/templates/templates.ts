@@ -102,7 +102,7 @@ export const createDefaultTypeStructure = (
     case 'Text':
       return { ...baseObject, unique: false, length: 100 };
     case 'LongTextArea':
-      return { ...baseObject, length: 32768, visibleLines: 3 };
+      return { ...baseObject, length: 32_768, visibleLines: 3 };
     case 'Date':
     case 'DateTime':
     case 'Phone':
