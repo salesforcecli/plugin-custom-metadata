@@ -86,7 +86,7 @@ describe('metadataUtil', () => {
           {
             IsAfterDeleteDisabled__c: true,
             IsDisabled__c: false,
-            Test_Geo_location__c: { latitude: 12.34534534, longitude: 32.34534543 },
+            Test_Geo_location__c: { latitude: 12.345_345_34, longitude: 32.345_345_43 },
           },
           { IsAfterDeleteDisabled__c: true, IsDisabled__c: false, Test_Geo_location__c: null },
         ],
