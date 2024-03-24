@@ -1,3 +1,9 @@
+## [3.1.21](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.1.20...3.1.21) (2024-03-24)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/core from 6.7.1 to 6.7.3 ([f9e2cd5](https://github.com/salesforcecli/plugin-custom-metadata/commit/f9e2cd54dcce55f89dbf066bf9e9016343d20558))
+
 ## [3.1.20](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.1.19...3.1.20) (2024-03-24)
 
 ### Bug Fixes
