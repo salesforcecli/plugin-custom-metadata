@@ -7,12 +7,10 @@
 
 /* eslint-disable class-methods-use-this */
 
-
-
 import { SfError, Messages } from '@salesforce/core';
 import type { CustomValue, CustomField } from 'jsforce/api/metadata';
 
-Messages.importMessagesDirectoryFromMetaUrl(import.meta.url)
+Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'template');
 
 /**
