@@ -15,7 +15,7 @@ import { createObjectXML } from '../../../shared/templates/templates.js';
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'object');
 
-export interface CmdtCreateResponse {
+export type CmdtCreateResponse = {
   typename: string;
   label: string;
   pluralLabel: string;

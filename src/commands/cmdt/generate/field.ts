@@ -15,7 +15,7 @@ import { createDefaultTypeStructure, createFieldXML } from '../../../shared/temp
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'field');
 
-export interface CmdtFieldCreateResponse {
+export type CmdtFieldCreateResponse = {
   fieldName: string;
   label: string;
   fieldtype: string;

@@ -8,7 +8,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-interface FileWriterResult {
+type FileWriterResult = {
   dir: string;
   fileName: string;
   updated: boolean;
