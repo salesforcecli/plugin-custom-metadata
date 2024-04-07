@@ -11,7 +11,7 @@ import { XMLParser } from 'fast-xml-parser';
 import { CreateConfig } from '../interfaces/createConfig.js';
 import { canConvert } from '../templates/templates.js';
 
-interface CustomFieldFile {
+type CustomFieldFile = {
   CustomField: CustomField;
 }
 
