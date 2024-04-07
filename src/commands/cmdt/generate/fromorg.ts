@@ -29,7 +29,7 @@ import { canConvert, createObjectXML, createFieldXML } from '../../../shared/tem
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'fromorg');
 
-export interface CmdtGenerateResponse {
+export type CmdtGenerateResponse = {
   outputDir: string;
   recordsOutputDir: string;
 }

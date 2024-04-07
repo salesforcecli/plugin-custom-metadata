@@ -20,7 +20,7 @@ import {
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'record');
 
-export interface CmdtRecordCreateResponse {
+export type CmdtRecordCreateResponse = {
   typename: string;
   recordname: string;
   label: string;
