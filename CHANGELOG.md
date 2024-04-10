@@ -1,3 +1,9 @@
+# [3.3.0](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.2.3...3.3.0) (2024-04-10)
+
+### Features
+
+- core7, jsforce-node ([c67757c](https://github.com/salesforcecli/plugin-custom-metadata/commit/c67757cb53670da31b40edec18405d68cef2922c))
+
 ## [3.2.3](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.2.2...3.2.3) (2024-04-08)
 
 ### Bug Fixes
