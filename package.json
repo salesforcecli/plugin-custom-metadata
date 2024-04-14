@@ -55,7 +55,7 @@
     "@salesforce/plugin-command-reference": "^3.0.76",
     "eslint-plugin-sf-plugin": "^1.18.0",
     "jsforce": "^2.0.0-beta.29",
-    "oclif": "^4.7.3",
+    "oclif": "^4.8.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.4"
   },
