@@ -7,7 +7,7 @@
 /* eslint-disable camelcase */
 
 import { expect } from 'chai';
-import type { CustomField } from 'jsforce/lib/api/metadata.js';
+import type { CustomField } from '@jsforce/jsforce-node/lib/api/metadata.js';
 import { appendDirectorySuffix, buildCustomFieldXml } from '../../src/shared/helpers/createUtil.js';
 
 describe('CreateUtil', () => {
