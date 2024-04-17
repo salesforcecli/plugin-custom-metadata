@@ -9,7 +9,7 @@ import path from 'node:path';
 
 import { Flags, loglevel, parseVarArgs, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
-import type { CustomField } from 'jsforce/api/metadata';
+import type { CustomField } from '@jsforce/jsforce-node/lib/api/metadata.js';
 import { appendDirectorySuffix, createRecord, getFileData } from '../../../shared/helpers/createUtil.js';
 import {
   validateMetadataRecordName,
@@ -29,7 +29,7 @@ export type CmdtRecordCreateResponse = {
   protectedFlag: boolean;
   varargs: Record<string, unknown>;
   fileData: CustomField[];
-}
+};
 export default class Create extends SfCommand<CmdtRecordCreateResponse> {
   public static readonly strict = false;
   public static readonly summary = messages.getMessage('summary');

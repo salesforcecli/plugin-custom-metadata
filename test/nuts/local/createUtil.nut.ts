@@ -10,7 +10,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { expect, config } from 'chai';
 import { TestSession, execCmd } from '@salesforce/cli-plugins-testkit';
-import type { CustomField } from 'jsforce/lib/api/metadata.js';
+import type { CustomField } from '@jsforce/jsforce-node/lib/api/metadata.js';
 import {
   appendDirectorySuffix,
   getFieldPrimitiveType,

@@ -6,14 +6,14 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import type { CustomField } from 'jsforce/api/metadata';
+import type { CustomField } from '@jsforce/jsforce-node/lib/api/metadata.js';
 import { XMLParser } from 'fast-xml-parser';
 import { CreateConfig } from '../interfaces/createConfig.js';
 import { canConvert } from '../templates/templates.js';
 
 type CustomFieldFile = {
   CustomField: CustomField;
-}
+};
 
 const fieldTypeMap = new Map<string, string>([
   ['Checkbox', 'boolean'],

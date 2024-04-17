@@ -49,12 +49,12 @@
     "fast-xml-parser": "^4.3.6"
   },
   "devDependencies": {
+    "@jsforce/jsforce-node": "^3.1.0",
     "@oclif/plugin-command-snapshot": "^5.1.4",
     "@salesforce/cli-plugins-testkit": "^5.2.0",
     "@salesforce/dev-scripts": "^9.0.0",
     "@salesforce/plugin-command-reference": "^3.0.76",
     "eslint-plugin-sf-plugin": "^1.18.0",
-    "jsforce": "^2.0.0-beta.29",
     "oclif": "^4.8.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"

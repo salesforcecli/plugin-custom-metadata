@@ -15,7 +15,7 @@ import {
   SfCommand,
 } from '@salesforce/sf-plugins-core';
 import { SfError, Messages } from '@salesforce/core';
-import type { CustomField, CustomObject } from 'jsforce/api/metadata';
+import type { CustomField, CustomObject } from '@jsforce/jsforce-node/lib/api/metadata.js';
 import { createRecord, getFileData } from '../../../shared/helpers/createUtil.js';
 import { writeTypeFile, writeFieldFile } from '../../../shared/helpers/fileWriter.js';
 import { describeObjFields, cleanQueryResponse, validCustomSettingType } from '../../../shared/helpers/metadataUtil.js';
@@ -32,7 +32,7 @@ const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'fr
 export type CmdtGenerateResponse = {
   outputDir: string;
   recordsOutputDir: string;
-}
+};
 export default class Generate extends SfCommand<CmdtGenerateResponse> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
