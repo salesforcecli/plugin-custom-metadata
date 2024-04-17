@@ -1,3 +1,9 @@
+## [3.3.2](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.1...3.3.2) (2024-04-17)
+
+### Bug Fixes
+
+- **deps:** import stuff from jsforce-node ([#793](https://github.com/salesforcecli/plugin-custom-metadata/issues/793)) ([6e23783](https://github.com/salesforcecli/plugin-custom-metadata/commit/6e237835a369eb036a5434a3cf5569bbe3fd9e01))
+
 ## [3.3.1](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.0...3.3.1) (2024-04-13)
 
 ### Bug Fixes
