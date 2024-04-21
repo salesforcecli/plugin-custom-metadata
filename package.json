@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "@jsforce/jsforce-node": "^3.1.0",
-    "@oclif/plugin-command-snapshot": "^5.1.4",
+    "@oclif/plugin-command-snapshot": "^5.1.7",
     "@salesforce/cli-plugins-testkit": "^5.2.3",
     "@salesforce/dev-scripts": "^9.0.0",
     "@salesforce/plugin-command-reference": "^3.0.79",
