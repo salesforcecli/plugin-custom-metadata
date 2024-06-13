@@ -1,3 +1,9 @@
+## [3.3.12](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.11...3.3.12) (2024-06-13)
+
+### Bug Fixes
+
+- **deps:** bump braces from 3.0.2 to 3.0.3 ([f5e8512](https://github.com/salesforcecli/plugin-custom-metadata/commit/f5e85121883fbee2e942fab87e2e9d324643f50a))
+
 ## [3.3.11](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.10...3.3.11) (2024-06-02)
 
 ### Bug Fixes
