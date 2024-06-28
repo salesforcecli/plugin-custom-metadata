@@ -238,4 +238,4 @@ const getPrecisionTag = (data: CustomField): string =>
   data.precision ? `\t<precision>${data.precision}</precision>\n` : '';
 
 const getScaleTag = (data: CustomField): string =>
-  typeof data.scale !== 'undefined' && data.scale ? `\t<scale>${data.scale}</scale>\n` : '';
+  typeof data.scale === 'number' ? `\t<scale>${data.scale}</scale>\n` : '';
