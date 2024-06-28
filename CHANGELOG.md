@@ -1,3 +1,195 @@
+## [3.3.15](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.14...3.3.15) (2024-06-23)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 11.1.1 to 11.1.2 ([373ca9e](https://github.com/salesforcecli/plugin-custom-metadata/commit/373ca9ea7d73b2d359f84ee674d1a1af16428887))
+
+## [3.3.14](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.13...3.3.14) (2024-06-20)
+
+### Bug Fixes
+
+- updates from devScripts ([#860](https://github.com/salesforcecli/plugin-custom-metadata/issues/860)) ([56a5490](https://github.com/salesforcecli/plugin-custom-metadata/commit/56a5490ad03d637dcbb553dbaee3b219228deb87))
+
+## [3.3.13](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.12...3.3.13) (2024-06-16)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 10.0.0 to 10.0.1 ([8168728](https://github.com/salesforcecli/plugin-custom-metadata/commit/8168728c1676a599fe1528a751f0e67778d32cf7))
+
+## [3.3.12](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.11...3.3.12) (2024-06-13)
+
+### Bug Fixes
+
+- **deps:** bump braces from 3.0.2 to 3.0.3 ([f5e8512](https://github.com/salesforcecli/plugin-custom-metadata/commit/f5e85121883fbee2e942fab87e2e9d324643f50a))
+
+## [3.3.11](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.10...3.3.11) (2024-06-02)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 9.0.13 to 9.1.1 ([f182da6](https://github.com/salesforcecli/plugin-custom-metadata/commit/f182da6a778571385774e224017c79b982002134))
+
+## [3.3.10](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.9...3.3.10) (2024-05-26)
+
+### Bug Fixes
+
+- **deps:** bump fast-xml-parser from 4.3.6 to 4.4.0 ([a116348](https://github.com/salesforcecli/plugin-custom-metadata/commit/a116348a5a2c6ee054633ab7b7a65cd85fb532f0))
+
+## [3.3.9](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.8...3.3.9) (2024-05-26)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 9.0.11 to 9.0.13 ([372f856](https://github.com/salesforcecli/plugin-custom-metadata/commit/372f8569cadd9cd5f5af378935cde7d73c4e4a72))
+
+## [3.3.8](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.7...3.3.8) (2024-05-18)
+
+### Bug Fixes
+
+- **deps:** bump csv-parse from 5.5.5 to 5.5.6 ([b09ded8](https://github.com/salesforcecli/plugin-custom-metadata/commit/b09ded843ec6404c689971fe6f643dc9046a048f))
+
+## [3.3.7](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.6...3.3.7) (2024-05-11)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/core from 7.3.3 to 7.3.5 ([fb237aa](https://github.com/salesforcecli/plugin-custom-metadata/commit/fb237aaff6bc5199cdf5d47571dceaa5733f147f))
+
+## [3.3.6](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.5...3.3.6) (2024-05-05)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 9.0.5 to 9.0.7 ([3fe63dd](https://github.com/salesforcecli/plugin-custom-metadata/commit/3fe63dd6d3b8c109856f130251352bd64b0cbea3))
+
+## [3.3.5](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.4...3.3.5) (2024-05-04)
+
+### Bug Fixes
+
+- **deps:** bump @oclif/core from 3.26.4 to 3.26.5 ([da4226c](https://github.com/salesforcecli/plugin-custom-metadata/commit/da4226c48b3db32aa5d70fa0d20808c525ec9cf9))
+
+## [3.3.4](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.3...3.3.4) (2024-04-21)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 9.0.1 to 9.0.4 ([5482ffb](https://github.com/salesforcecli/plugin-custom-metadata/commit/5482ffb43249fdfac2150921a8ab3505241cc00c))
+
+## [3.3.3](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.2...3.3.3) (2024-04-20)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/core from 7.2.0 to 7.3.0 ([4a1d56f](https://github.com/salesforcecli/plugin-custom-metadata/commit/4a1d56fe19dc2016841c767eba73c0a1c119df55))
+
+## [3.3.2](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.1...3.3.2) (2024-04-17)
+
+### Bug Fixes
+
+- **deps:** import stuff from jsforce-node ([#793](https://github.com/salesforcecli/plugin-custom-metadata/issues/793)) ([6e23783](https://github.com/salesforcecli/plugin-custom-metadata/commit/6e237835a369eb036a5434a3cf5569bbe3fd9e01))
+
+## [3.3.1](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.0...3.3.1) (2024-04-13)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 9.0.0 to 9.0.1 ([9b9eb58](https://github.com/salesforcecli/plugin-custom-metadata/commit/9b9eb58937636d8d4cd9effd66993d5ed2cba0c2))
+
+# [3.3.0](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.2.3...3.3.0) (2024-04-10)
+
+### Features
+
+- core7, jsforce-node ([c67757c](https://github.com/salesforcecli/plugin-custom-metadata/commit/c67757cb53670da31b40edec18405d68cef2922c))
+
+## [3.2.3](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.2.2...3.2.3) (2024-04-08)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 8.0.2 to 8.0.3 ([5c2c3c6](https://github.com/salesforcecli/plugin-custom-metadata/commit/5c2c3c62c928ec51fc82c0781e4160cd8bf5e061))
+
+## [3.2.2](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.2.1...3.2.2) (2024-04-06)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/core from 6.7.3 to 6.7.6 ([13e5e4a](https://github.com/salesforcecli/plugin-custom-metadata/commit/13e5e4a9b8b6a25cd1b20db0fab8536ece1b63de))
+
+## [3.2.1](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.2.0...3.2.1) (2024-03-31)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 8.0.1 to 8.0.2 ([c4a470f](https://github.com/salesforcecli/plugin-custom-metadata/commit/c4a470f90358002cfa7bc0591f38e44e78f08692))
+
+# [3.2.0](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.1.21...3.2.0) (2024-03-25)
+
+### Features
+
+- bump sf-plugins-core ([8f643f2](https://github.com/salesforcecli/plugin-custom-metadata/commit/8f643f2fd5ec744d859ada591796693885fc3cee))
+
+## [3.1.21](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.1.20...3.1.21) (2024-03-24)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/core from 6.7.1 to 6.7.3 ([f9e2cd5](https://github.com/salesforcecli/plugin-custom-metadata/commit/f9e2cd54dcce55f89dbf066bf9e9016343d20558))
+
+## [3.1.20](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.1.19...3.1.20) (2024-03-24)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 7.1.15 to 7.1.16 ([ba0a2a3](https://github.com/salesforcecli/plugin-custom-metadata/commit/ba0a2a3b85525a5e9569bade8ca0d7e9bed3d22b))
+
+## [3.1.19](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.1.18...3.1.19) (2024-03-23)
+
+### Bug Fixes
+
+- **deps:** bump @oclif/core from 3.25.2 to 3.26.0 ([e5bc4db](https://github.com/salesforcecli/plugin-custom-metadata/commit/e5bc4dbb8d18292252331d0b816a12bef4ae47e5))
+
+## [3.1.18](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.1.17...3.1.18) (2024-03-17)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 7.1.14 to 7.1.15 ([cfaf41e](https://github.com/salesforcecli/plugin-custom-metadata/commit/cfaf41e85ece06b325a6c4feb264a789d1fb687c))
+
+## [3.1.17](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.1.16...3.1.17) (2024-03-16)
+
+### Bug Fixes
+
+- **deps:** bump fast-xml-parser from 4.3.5 to 4.3.6 ([dc73437](https://github.com/salesforcecli/plugin-custom-metadata/commit/dc7343701c93d45167edae4322e1c198b1382d05))
+
+## [3.1.16](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.1.15...3.1.16) (2024-03-03)
+
+### Bug Fixes
+
+- **deps:** bump csv-parse from 5.5.3 to 5.5.5 ([a230c4e](https://github.com/salesforcecli/plugin-custom-metadata/commit/a230c4e34e8990eae2cf56e8dc092439075c8383))
+
+## [3.1.15](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.1.14...3.1.15) (2024-03-03)
+
+### Bug Fixes
+
+- **deps:** bump fast-xml-parser from 4.3.4 to 4.3.5 ([322b4bc](https://github.com/salesforcecli/plugin-custom-metadata/commit/322b4bc75ef854c97a33e7c2b1ccdb631e8e5332))
+
+## [3.1.14](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.1.13...3.1.14) (2024-03-02)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 7.1.11 to 7.1.14 ([a4d93fd](https://github.com/salesforcecli/plugin-custom-metadata/commit/a4d93fd371c79b363a99a8411369caa1ba676431))
+
+## [3.1.13](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.1.12...3.1.13) (2024-02-24)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 7.1.9 to 7.1.11 ([a3b3d68](https://github.com/salesforcecli/plugin-custom-metadata/commit/a3b3d68b8df0e6ec7ee7cc8aa12cb362edffe682))
+
+## [3.1.12](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.1.11...3.1.12) (2024-02-21)
+
+### Bug Fixes
+
+- **deps:** bump ip from 2.0.0 to 2.0.1 ([06692e8](https://github.com/salesforcecli/plugin-custom-metadata/commit/06692e8baaee78aa0f9973c72d9bb8157f43a7fc))
+
+## [3.1.11](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.1.10...3.1.11) (2024-02-18)
+
+### Bug Fixes
+
+- **deps:** bump @oclif/core from 3.19.1 to 3.19.2 ([868c817](https://github.com/salesforcecli/plugin-custom-metadata/commit/868c8176460c00de5678851cb9a7070b5484135b))
+
+## [3.1.10](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.1.9...3.1.10) (2024-02-10)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 7.1.4 to 7.1.9 ([5aabe09](https://github.com/salesforcecli/plugin-custom-metadata/commit/5aabe0994ef681f5e783962c4667611495e3a619))
+
 ## [3.1.9](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.1.8...3.1.9) (2024-02-04)
 
 ### Bug Fixes

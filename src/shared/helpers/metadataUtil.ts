@@ -5,8 +5,8 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import type { CustomObject, CustomField } from 'jsforce/api/metadata';
-import type { Record } from 'jsforce';
+import type { CustomObject, CustomField } from '@jsforce/jsforce-node/lib/api/metadata.js';
+import type { Record } from '@jsforce/jsforce-node';
 /**
  * Returns describe object for the field API name from the Object API name you specify
  *

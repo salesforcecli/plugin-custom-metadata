@@ -9,7 +9,7 @@ import path from 'node:path';
 
 import { Flags, loglevel, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages, SfError } from '@salesforce/core';
-import type { Record } from 'jsforce';
+import type { Record } from '@jsforce/jsforce-node';
 import { parse } from 'csv-parse/sync';
 import { getFieldNames, appendDirectorySuffix, createRecord, getFileData } from '../../../shared/helpers/createUtil.js';
 import { CreateConfig, CreateConfigs } from '../../../shared/interfaces/createConfig.js';

@@ -7,12 +7,10 @@
 
 /* eslint-disable class-methods-use-this */
 
-
-
 import { SfError, Messages } from '@salesforce/core';
-import type { CustomValue, CustomField } from 'jsforce/api/metadata';
+import type { CustomValue, CustomField } from '@jsforce/jsforce-node/lib/api/metadata.js';
 
-Messages.importMessagesDirectoryFromMetaUrl(import.meta.url)
+Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'template');
 
 /**
@@ -102,7 +100,7 @@ export const createDefaultTypeStructure = (
     case 'Text':
       return { ...baseObject, unique: false, length: 100 };
     case 'LongTextArea':
-      return { ...baseObject, length: 32768, visibleLines: 3 };
+      return { ...baseObject, length: 32_768, visibleLines: 3 };
     case 'Date':
     case 'DateTime':
     case 'Phone':

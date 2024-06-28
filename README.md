@@ -84,8 +84,8 @@ Generate a field for a custom metadata type based on the provided field type.
 ```
 USAGE
   $ sf cmdt generate field -n <value> -f
-    Checkbox|Date|DateTime|Email|Number|Percent|Phone|Picklist|Text|TextArea|LongTextArea|Url [--json] [-p <value>] [-s
-    <value>] [-l <value>] [-d <value>]
+    Checkbox|Date|DateTime|Email|Number|Percent|Phone|Picklist|Text|TextArea|LongTextArea|Url [--json] [--flags-dir
+    <value>] [-p <value>...] [-s <value>] [-l <value>] [-d <value>]
 
 FLAGS
   -d, --output-directory=<value>    Directory to store newly-created field definition files.
@@ -98,7 +98,8 @@ FLAGS
   -s, --decimal-places=<value>      Number of decimal places to use for number or percent fields.
 
 GLOBAL FLAGS
-  --json  Format output as json.
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
   Generate a field for a custom metadata type based on the provided field type.
@@ -148,7 +149,7 @@ FLAG DESCRIPTIONS
     The value must be greater than or equal to zero. Default value is 0.
 ```
 
-_See code: [src/commands/cmdt/generate/field.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/3.1.9/src/commands/cmdt/generate/field.ts)_
+_See code: [src/commands/cmdt/generate/field.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/3.3.15/src/commands/cmdt/generate/field.ts)_
 
 ## `sf cmdt generate fromorg`
 
@@ -156,8 +157,8 @@ Generate a custom metadata type and all its records from a Salesforce object.
 
 ```
 USAGE
-  $ sf cmdt generate fromorg -o <value> -n <value> -s <value> [--json] [--api-version <value>] [-l <value>] [-p <value>]
-    [-v PackageProtected|Protected|Public] [-i] [-d <value>] [-r <value>]
+  $ sf cmdt generate fromorg -o <value> -n <value> -s <value> [--json] [--flags-dir <value>] [--api-version <value>] [-l
+    <value>] [-p <value>] [-v PackageProtected|Protected|Public] [-i] [-d <value>] [-r <value>]
 
 FLAGS
   -d, --type-output-directory=<value>  [default: force-app/main/default/objects] Directory to store newly-created custom
@@ -177,7 +178,8 @@ FLAGS
       --api-version=<value>            Override the api version used for api requests made by this command
 
 GLOBAL FLAGS
-  --json  Format output as json.
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
   Generate a custom metadata type and all its records from a Salesforce object.
@@ -236,7 +238,7 @@ FLAG DESCRIPTIONS
     https://help.salesforce.com/s/articleView?id=sf.custommetadatatypes_ui_create.htm&type=5.
 ```
 
-_See code: [src/commands/cmdt/generate/fromorg.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/3.1.9/src/commands/cmdt/generate/fromorg.ts)_
+_See code: [src/commands/cmdt/generate/fromorg.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/3.3.15/src/commands/cmdt/generate/fromorg.ts)_
 
 ## `sf cmdt generate object`
 
@@ -244,8 +246,8 @@ Generate a new custom metadata type in the current project.
 
 ```
 USAGE
-  $ sf cmdt generate object -n <value> [--json] [-l <value>] [-p <value>] [-v PackageProtected|Protected|Public] [-d
-    <value>]
+  $ sf cmdt generate object -n <value> [--json] [--flags-dir <value>] [-l <value>] [-p <value>] [-v
+    PackageProtected|Protected|Public] [-d <value>]
 
 FLAGS
   -d, --output-directory=<value>  Directory to store the newly-created custom metadata type files
@@ -256,7 +258,8 @@ FLAGS
                                   <options: PackageProtected|Protected|Public>
 
 GLOBAL FLAGS
-  --json  Format output as json.
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
   Generate a new custom metadata type in the current project.
@@ -297,7 +300,7 @@ FLAG DESCRIPTIONS
     https://help.salesforce.com/s/articleView?id=sf.custommetadatatypes_ui_create.htm&type=5.
 ```
 
-_See code: [src/commands/cmdt/generate/object.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/3.1.9/src/commands/cmdt/generate/object.ts)_
+_See code: [src/commands/cmdt/generate/object.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/3.3.15/src/commands/cmdt/generate/object.ts)_
 
 ## `sf cmdt generate record`
 
@@ -305,7 +308,8 @@ Generate a new record for a given custom metadata type in the current project.
 
 ```
 USAGE
-  $ sf cmdt generate record -t <value> -n <value> [--json] [-l <value>] [-p true|false] [-i <value>] [-d <value>]
+  $ sf cmdt generate record -t <value> -n <value> [--json] [--flags-dir <value>] [-l <value>] [-p true|false] [-i <value>]
+    [-d <value>]
 
 FLAGS
   -d, --output-directory=<value>  [default: force-app/main/default/customMetadata] Directory to store newly-created
@@ -320,7 +324,8 @@ FLAGS
                                   "__mdt".
 
 GLOBAL FLAGS
-  --json  Format output as json.
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
   Generate a new record for a given custom metadata type in the current project.
@@ -350,7 +355,7 @@ FLAG DESCRIPTIONS
     Protected records can only be accessed by code in the same managed package namespace.
 ```
 
-_See code: [src/commands/cmdt/generate/record.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/3.1.9/src/commands/cmdt/generate/record.ts)_
+_See code: [src/commands/cmdt/generate/record.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/3.3.15/src/commands/cmdt/generate/record.ts)_
 
 ## `sf cmdt generate records`
 
@@ -358,7 +363,7 @@ Generate new custom metadata type records from a CSV file.
 
 ```
 USAGE
-  $ sf cmdt generate records -f <value> -t <value> [--json] [-i <value>] [-d <value>] [-n <value>]
+  $ sf cmdt generate records -f <value> -t <value> [--json] [--flags-dir <value>] [-i <value>] [-d <value>] [-n <value>]
 
 FLAGS
   -d, --output-directory=<value>  [default: force-app/main/default/customMetadata] Directory to store newly-created
@@ -370,7 +375,8 @@ FLAGS
   -t, --type-name=<value>         (required) API name of the custom metadata type to create a record for.
 
 GLOBAL FLAGS
-  --json  Format output as json.
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
   Generate new custom metadata type records from a CSV file.
@@ -400,7 +406,7 @@ FLAG DESCRIPTIONS
     The '__mdt' suffix is appended to the end of the name if it's omitted.
 ```
 
-_See code: [src/commands/cmdt/generate/records.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/3.1.9/src/commands/cmdt/generate/records.ts)_
+_See code: [src/commands/cmdt/generate/records.ts](https://github.com/salesforcecli/plugin-custom-metadata/blob/3.3.15/src/commands/cmdt/generate/records.ts)_
 
 <!-- commandsstop -->
 

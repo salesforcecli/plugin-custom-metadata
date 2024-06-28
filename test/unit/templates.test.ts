@@ -341,7 +341,7 @@ describe('Templates', () => {
       expect(struct.fullName).to.equal('LongTextArea');
       expect(struct.type).to.equal('LongTextArea');
       expect(struct.label).to.equal('test');
-      expect(struct.length).to.equal(32768);
+      expect(struct.length).to.equal(32_768);
       expect(struct.visibleLines).to.equal(3);
     });
     it('should return Url structure', () => {

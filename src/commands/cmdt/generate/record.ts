@@ -9,7 +9,7 @@ import path from 'node:path';
 
 import { Flags, loglevel, parseVarArgs, SfCommand } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
-import type { CustomField } from 'jsforce/api/metadata';
+import type { CustomField } from '@jsforce/jsforce-node/lib/api/metadata.js';
 import { appendDirectorySuffix, createRecord, getFileData } from '../../../shared/helpers/createUtil.js';
 import {
   validateMetadataRecordName,
@@ -20,7 +20,7 @@ import {
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'record');
 
-export interface CmdtRecordCreateResponse {
+export type CmdtRecordCreateResponse = {
   typename: string;
   recordname: string;
   label: string;
@@ -29,7 +29,7 @@ export interface CmdtRecordCreateResponse {
   protectedFlag: boolean;
   varargs: Record<string, unknown>;
   fileData: CustomField[];
-}
+};
 export default class Create extends SfCommand<CmdtRecordCreateResponse> {
   public static readonly strict = false;
   public static readonly summary = messages.getMessage('summary');

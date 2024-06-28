@@ -1,7 +1,7 @@
 {
   "name": "@salesforce/plugin-custom-metadata",
   "description": "Tools for working with custom metadata types and their records.",
-  "version": "3.1.9",
+  "version": "3.3.15",
   "contributors": [
     {
       "name": "Carolyn Grabill",
@@ -42,23 +42,22 @@
   ],
   "bugs": "https://github.com/salesforcecli/plugin-custom-metadata/issues",
   "dependencies": {
-    "@oclif/core": "^3.18.2",
-    "@salesforce/core": "^6.5.1",
-    "@salesforce/sf-plugins-core": "^7.1.4",
-    "csv-parse": "^5.5.3",
-    "fast-xml-parser": "^4.3.4"
+    "@oclif/core": "^4",
+    "@salesforce/core": "^8.0.1",
+    "@salesforce/sf-plugins-core": "^11.1.2",
+    "csv-parse": "^5.5.6",
+    "fast-xml-parser": "^4.4.0"
   },
   "devDependencies": {
-    "@oclif/plugin-command-snapshot": "^5.0.6",
-    "@salesforce/cli-plugins-testkit": "^5.1.8",
-    "@salesforce/dev-scripts": "^8.3.0",
-    "@salesforce/plugin-command-reference": "^3.0.64",
-    "eslint-plugin-sf-plugin": "^1.17.2",
-    "jsforce": "^2.0.0-beta.29",
-    "oclif": "^4.4.3",
-    "shx": "0.2.2",
+    "@jsforce/jsforce-node": "^3.2.0",
+    "@oclif/plugin-command-snapshot": "^5.2.3",
+    "@salesforce/cli-plugins-testkit": "^5.3.16",
+    "@salesforce/dev-scripts": "^10.2.2",
+    "@salesforce/plugin-command-reference": "^3.1.5",
+    "eslint-plugin-sf-plugin": "^1.18.8",
+    "oclif": "^4.13.9",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.5.2"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -66,9 +65,10 @@
   "files": [
     "/lib",
     "/messages",
+    "/npm-shrinkwrap.json",
+    "/oclif.lock",
     "/oclif.manifest.json",
-    "/schemas",
-    "/oclif.lock"
+    "/schemas"
   ],
   "homepage": "https://github.com/salesforcecli/plugin-custom-metadata",
   "keywords": [
@@ -106,13 +106,12 @@
     "build": "wireit",
     "clean": "sf-clean",
     "clean-all": "sf-clean all",
-    "clean:lib": "shx rm -rf lib && shx rm -rf coverage && shx rm -rf .nyc_output && shx rm -f oclif.manifest.json oclif.lock",
     "compile": "wireit",
     "docs": "sf-docs",
     "format": "wireit",
     "link-check": "wireit",
     "lint": "wireit",
-    "postpack": "shx rm -f oclif.manifest.json oclif.lock",
+    "postpack": "sf-clean --ignore-signing-artifacts",
     "prepack": "sf-prepack",
     "prepare": "sf-install",
     "test": "wireit",
