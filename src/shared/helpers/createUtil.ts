@@ -90,7 +90,6 @@ export const createRecord = async (createConfig: CreateConfig): Promise<void> =>
  */
 export const getFieldPrimitiveType = (fileData: CustomField[] = [], fieldName?: string): string => {
   const matchingFile = fileData.find((file) => file.fullName === fieldName);
-
   if (matchingFile && typeof matchingFile.type === 'string' && ['Number', 'Percent'].includes(matchingFile.type)) {
     return getNumberType(matchingFile.type, matchingFile.scale);
   }

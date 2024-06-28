@@ -25,6 +25,11 @@ import {
   isValidMetadataRecordName,
 } from '../../../shared/helpers/validationUtil.js';
 import { canConvert, createObjectXML, createFieldXML } from '../../../shared/templates/templates.js';
+import {
+  ensureFullName,
+  CustomFieldWithFullNameTypeAndLabel,
+  CustomObjectWithFullName,
+} from '../../../shared/types.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'fromorg');
@@ -33,6 +38,7 @@ export type CmdtGenerateResponse = {
   outputDir: string;
   recordsOutputDir: string;
 };
+
 export default class Generate extends SfCommand<CmdtGenerateResponse> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
@@ -101,21 +107,10 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
     const conn = flags['target-org'].getConnection(flags['api-version']);
 
     // use default target org connection to get object describe if no source is provided.
-    const describeObj = await conn.metadata.read('CustomObject', flags.sobject);
-
-    // throw error if the object doesnot exist(empty json as response from the describe call.)
-    if (describeObj.fields.length === 0) {
-      const errMsg = messages.getMessage('sobjectnameNoResultError', [flags.sobject]);
-      throw new SfError(errMsg, 'sobjectnameNoResultError');
-    }
-    // check for custom setting
-    if (describeObj.customSettingsType) {
-      // if custom setting check for type and visibility
-      if (!validCustomSettingType(describeObj)) {
-        const errMsg = messages.getMessage('customSettingTypeError', [flags.sobject]);
-        throw new SfError(errMsg, 'customSettingTypeError');
-      }
-    }
+    const describeObj = validateCustomObjectDescribe(
+      await conn.metadata.read('CustomObject', flags.sobject),
+      flags.sobject
+    );
 
     const label = flags.label ?? flags['dev-name'];
     const pluralLabel = flags['plural-label'] ?? label;
@@ -132,11 +127,16 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
       // get all the field details before creating field metadata
       const fields = describeObjFields(describeObj)
         // added type check here to skip the creation of un supported fields
+        .filter(fieldHasFullnameTypeLabel)
         .filter((f) => !flags['ignore-unsupported'] || canConvert(f['type']))
         .flatMap((f) =>
           // check for Geo Location fields before hand and create two different fields for longitude and latitude.
           f.type !== 'Location' ? [f] : convertLocationFieldToText(f)
         );
+      /* if there's no fullName, we won't be able to write the file.
+       *  in the wsdl, metadata types inherit fullName (optional) from the Metadata base type,
+       * but CustomObject does always have one */
+
       // create custom metdata fields
       await Promise.all(
         fields.map((f) =>
@@ -202,13 +202,21 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
   }
 }
 
-const getSoqlQuery = (describeResult: CustomObject): string => {
-  const fieldNames = describeResult.fields.map((field) => field.fullName).join(',');
+const fieldHasFullnameTypeLabel = (field: CustomField): field is CustomFieldWithFullNameTypeAndLabel =>
+  typeof field.fullName === 'string' && typeof field.label === 'string' && typeof field.type === 'string';
+
+const getSoqlQuery = (describeResult: CustomObjectWithFullName): string => {
+  const fieldNames = describeResult.fields
+    .filter(fieldHasFullnameTypeLabel)
+    .map((field) => field.fullName)
+    .join(',');
   // Added Name hardcoded as Name field is not retrieved as part of object describe.
   return `SELECT Name, ${fieldNames} FROM ${describeResult.fullName}`;
 };
 
-const convertLocationFieldToText = (field: CustomField): CustomField[] => {
+const convertLocationFieldToText = (
+  field: CustomFieldWithFullNameTypeAndLabel
+): CustomFieldWithFullNameTypeAndLabel[] => {
   const baseTextField = {
     required: field['required'],
     trackHistory: field['trackHistory'],
@@ -222,4 +230,22 @@ const convertLocationFieldToText = (field: CustomField): CustomField[] => {
     fullName: `${prefix}${field.fullName}`,
     label: `${prefix}${field.label}`,
   }));
+};
+
+/** throw errors if describe is empty (doesn't exist) or is CustomSetting or missing fullname */
+const validateCustomObjectDescribe = (describeObj: CustomObject, objectName: string): CustomObjectWithFullName => {
+  // throw error if the object doesnot exist(empty json as response from the describe call.)
+  if (describeObj.fields.length === 0) {
+    const errMsg = messages.getMessage('sobjectnameNoResultError', [objectName]);
+    throw new SfError(errMsg, 'sobjectnameNoResultError');
+  }
+  // check for custom setting
+  if (describeObj.customSettingsType) {
+    // if custom setting check for type and visibility
+    if (!validCustomSettingType(describeObj)) {
+      const errMsg = messages.getMessage('customSettingTypeError', [objectName]);
+      throw new SfError(errMsg, 'customSettingTypeError');
+    }
+  }
+  return ensureFullName(describeObj);
 };

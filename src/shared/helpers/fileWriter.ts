@@ -12,7 +12,7 @@ type FileWriterResult = {
   dir: string;
   fileName: string;
   updated: boolean;
-}
+};
 
 /**
  * Using the given file system, creates a file representing a new custom metadata type.
@@ -60,15 +60,11 @@ export const writeTypeFile = async (
 export const writeFieldFile = async (
   corefs = fs,
   dir: string,
-  fieldName: string | undefined | null,
+  fieldName: string,
   fieldXML: string
 ): Promise<FileWriterResult> => {
-  // appending __c if its not already there
-  if (fieldName?.endsWith('__c') === false) {
-    fieldName += '__c';
-  }
   const outputFilePath = path.join(removeTrailingSlash(dir), 'fields');
-  const fileName = `${fieldName}.field-meta.xml`;
+  const fileName = `${ensureDoubleUnderscoreC(fieldName)}.field-meta.xml`;
   const updated = fs.existsSync(path.join(outputFilePath, fileName));
   await corefs.promises.mkdir(outputFilePath, { recursive: true });
   await corefs.promises.writeFile(path.join(outputFilePath, fileName), fieldXML);
@@ -77,3 +73,4 @@ export const writeFieldFile = async (
 };
 
 const removeTrailingSlash = (dir: string): string => dir.replace(/\/+$/, '');
+const ensureDoubleUnderscoreC = (name: string): string => (name.endsWith('__c') ? name : `${name}__c`);
