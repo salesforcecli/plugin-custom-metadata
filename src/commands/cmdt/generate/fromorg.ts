@@ -15,7 +15,7 @@ import {
   SfCommand,
 } from '@salesforce/sf-plugins-core';
 import { SfError, Messages } from '@salesforce/core';
-import type { CustomField } from '@jsforce/jsforce-node/lib/api/metadata.js';
+import type { CustomField, CustomObject } from '@jsforce/jsforce-node/lib/api/metadata.js';
 import { createRecord, getFileData } from '../../../shared/helpers/createUtil.js';
 import { writeTypeFile, writeFieldFile } from '../../../shared/helpers/fileWriter.js';
 import { describeObjFields, cleanQueryResponse, validCustomSettingType } from '../../../shared/helpers/metadataUtil.js';
@@ -107,21 +107,10 @@ export default class Generate extends SfCommand<CmdtGenerateResponse> {
     const conn = flags['target-org'].getConnection(flags['api-version']);
 
     // use default target org connection to get object describe if no source is provided.
-    const describeObj = ensureFullName(await conn.metadata.read('CustomObject', flags.sobject));
-
-    // throw error if the object doesnot exist(empty json as response from the describe call.)
-    if (describeObj.fields.length === 0) {
-      const errMsg = messages.getMessage('sobjectnameNoResultError', [flags.sobject]);
-      throw new SfError(errMsg, 'sobjectnameNoResultError');
-    }
-    // check for custom setting
-    if (describeObj.customSettingsType) {
-      // if custom setting check for type and visibility
-      if (!validCustomSettingType(describeObj)) {
-        const errMsg = messages.getMessage('customSettingTypeError', [flags.sobject]);
-        throw new SfError(errMsg, 'customSettingTypeError');
-      }
-    }
+    const describeObj = validateCustomObjectDescribe(
+      await conn.metadata.read('CustomObject', flags.sobject),
+      flags.sobject
+    );
 
     const label = flags.label ?? flags['dev-name'];
     const pluralLabel = flags['plural-label'] ?? label;
@@ -241,4 +230,22 @@ const convertLocationFieldToText = (
     fullName: `${prefix}${field.fullName}`,
     label: `${prefix}${field.label}`,
   }));
+};
+
+/** throw errors if describe is empty (doesn't exist) or is CustomSetting or missing fullname */
+const validateCustomObjectDescribe = (describeObj: CustomObject, objectName: string): CustomObjectWithFullName => {
+  // throw error if the object doesnot exist(empty json as response from the describe call.)
+  if (describeObj.fields.length === 0) {
+    const errMsg = messages.getMessage('sobjectnameNoResultError', [objectName]);
+    throw new SfError(errMsg, 'sobjectnameNoResultError');
+  }
+  // check for custom setting
+  if (describeObj.customSettingsType) {
+    // if custom setting check for type and visibility
+    if (!validCustomSettingType(describeObj)) {
+      const errMsg = messages.getMessage('customSettingTypeError', [objectName]);
+      throw new SfError(errMsg, 'customSettingTypeError');
+    }
+  }
+  return ensureFullName(describeObj);
 };
