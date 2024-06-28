@@ -238,4 +238,6 @@ const getPrecisionTag = (data: CustomField): string =>
   data.precision ? `\t<precision>${data.precision}</precision>\n` : '';
 
 const getScaleTag = (data: CustomField): string =>
-  typeof data.scale === 'number' ? `\t<scale>${data.scale}</scale>\n` : '';
+  // CustomField thinks this is a number.  The UT had it as a string.
+  // This will work for either(filtering out null / undefined because only ==)
+  typeof data.scale !== null ? `\t<scale>${data.scale}</scale>\n` : '';
