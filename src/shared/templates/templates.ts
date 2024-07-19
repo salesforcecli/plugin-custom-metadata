@@ -9,6 +9,7 @@
 
 import { SfError, Messages } from '@salesforce/core';
 import type { CustomValue, CustomField } from '@jsforce/jsforce-node/lib/api/metadata.js';
+import { CustomFieldWithFullNameTypeAndLabel, customValueHasFullNameAndLabel } from '../types.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-custom-metadata', 'template');
@@ -38,7 +39,7 @@ export const createObjectXML = (
  * @param data Record details
  * @param defaultToString If the defaultToString set type to Text for unsupported field types
  */
-export const createFieldXML = (data: CustomField, defaultToString: boolean): string => {
+export const createFieldXML = (data: CustomFieldWithFullNameTypeAndLabel, defaultToString: boolean): string => {
   let returnValue = '<?xml version="1.0" encoding="UTF-8"?>\n';
   returnValue += '<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">\n';
   returnValue += getFullName(data);
@@ -72,7 +73,7 @@ export const createDefaultTypeStructure = (
   label: string,
   picklistValues: string[] = [],
   decimalplaces = 0
-): CustomField => {
+): CustomFieldWithFullNameTypeAndLabel => {
   const precision = 18 - decimalplaces;
   const scale = decimalplaces;
   const baseObject = { fullName, type, label, summaryFilterItems: [] };
@@ -133,7 +134,7 @@ export const canConvert = (type: string | undefined | null): boolean => {
 const createPicklistValues = (values: string[]): CustomValue[] =>
   values.map((value) => ({ fullName: value, label: value, default: false }));
 
-const getType = (data: CustomField, defaultToMetadataType: boolean): string => {
+const getType = (data: CustomFieldWithFullNameTypeAndLabel, defaultToMetadataType: boolean): string => {
   if (canConvert(data.type)) {
     // To handle the text formula field scenario where field type will be Text with no length attribute
     if (data.type === 'Text' && data.length === undefined) {
@@ -179,14 +180,14 @@ const getDefaultValue = (data: CustomField): string => {
   return data.defaultValue ? `\t<defaultValue>${data.defaultValue}</defaultValue>\n` : '';
 };
 
-const getValueSet = (data: CustomField): string => {
+const getValueSet = (data: CustomFieldWithFullNameTypeAndLabel): string => {
   let fieldValue = '';
   if (data.valueSet) {
     fieldValue += '\t<valueSet>\n';
     fieldValue += `\t\t<restricted>${data.valueSet.restricted ?? false}</restricted>\n`;
     fieldValue += '\t\t<valueSetDefinition>\n';
     fieldValue += `\t\t\t<sorted>${data.valueSet.valueSetDefinition?.sorted ?? false}</sorted>\n`;
-    data.valueSet.valueSetDefinition?.value.forEach((value) => {
+    (data.valueSet.valueSetDefinition?.value ?? []).filter(customValueHasFullNameAndLabel).map((value) => {
       fieldValue += '\t\t\t<value>\n';
       fieldValue += `\t\t\t\t<fullName>${value.fullName}</fullName>\n`;
       fieldValue += `\t\t\t\t<default>${value.default || false}</default>\n`;
@@ -211,7 +212,7 @@ const getConvertType = (data: CustomField): string => {
   }
 };
 
-const getFullName = (data: CustomField): string => {
+const getFullName = (data: CustomFieldWithFullNameTypeAndLabel): string => {
   const name = data.fullName?.endsWith('__c') ? data.fullName : `${data.fullName}__c`;
   return `\t<fullName>${name}</fullName>\n`;
 };
@@ -228,7 +229,7 @@ const getFieldManageability = (data: CustomField): string =>
 const getInlineHelpText = (data: CustomField): string =>
   data.inlineHelpText ? `\t<inlineHelpText>${data.inlineHelpText}</inlineHelpText>\n` : '';
 
-const getLabel = (data: CustomField): string => `\t<label>${data.label}</label>\n`;
+const getLabel = (data: CustomFieldWithFullNameTypeAndLabel): string => `\t<label>${data.label}</label>\n`;
 
 const getRequiredTag = (data: CustomField): string =>
   typeof data.unique === 'boolean' ? `\t<unique>${data.unique}</unique>\n` : '';
@@ -237,4 +238,6 @@ const getPrecisionTag = (data: CustomField): string =>
   data.precision ? `\t<precision>${data.precision}</precision>\n` : '';
 
 const getScaleTag = (data: CustomField): string =>
-  typeof data.scale !== 'undefined' ? `\t<scale>${data.scale}</scale>\n` : '';
+  // CustomField thinks this is a number.  The UT had it as a string.
+  // This will work for either(filtering out null / undefined because only ==)
+  typeof data.scale !== null ? `\t<scale>${data.scale}</scale>\n` : '';
