@@ -1,3 +1,9 @@
+## [3.3.19](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.18...3.3.19) (2024-07-19)
+
+### Bug Fixes
+
+- no nullish in template literals ([#868](https://github.com/salesforcecli/plugin-custom-metadata/issues/868)) ([ea0d3b9](https://github.com/salesforcecli/plugin-custom-metadata/commit/ea0d3b9cef66571260f3d28224e9c3ad614dcae0))
+
 ## [3.3.18](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.17...3.3.18) (2024-07-14)
 
 ### Bug Fixes
