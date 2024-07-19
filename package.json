@@ -1,7 +1,7 @@
 {
   "name": "@salesforce/plugin-custom-metadata",
   "description": "Tools for working with custom metadata types and their records.",
-  "version": "3.3.15",
+  "version": "3.3.18",
   "contributors": [
     {
       "name": "Carolyn Grabill",
@@ -42,22 +42,22 @@
   ],
   "bugs": "https://github.com/salesforcecli/plugin-custom-metadata/issues",
   "dependencies": {
-    "@salesforce/core": "^8.0.1",
-    "@salesforce/sf-plugins-core": "^11.1.2",
+    "@salesforce/core": "^8.1.0",
+    "@salesforce/sf-plugins-core": "^11.1.7",
     "csv-parse": "^5.5.6",
     "fast-xml-parser": "^4.4.0"
   },
   "devDependencies": {
     "@jsforce/jsforce-node": "^3.2.2",
     "@oclif/core": "^4.0.7",
-    "@oclif/plugin-command-snapshot": "^5.2.3",
-    "@salesforce/cli-plugins-testkit": "^5.3.16",
+    "@oclif/plugin-command-snapshot": "^5.2.5",
+    "@salesforce/cli-plugins-testkit": "^5.3.18",
     "@salesforce/dev-scripts": "^10.2.2",
-    "@salesforce/plugin-command-reference": "^3.1.5",
-    "eslint-plugin-sf-plugin": "^1.18.8",
-    "oclif": "^4.13.9",
+    "@salesforce/plugin-command-reference": "^3.1.10",
+    "eslint-plugin-sf-plugin": "^1.18.11",
+    "oclif": "^4.13.13",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.2"
+    "typescript": "^5.5.3"
   },
   "engines": {
     "node": ">=18.0.0"
