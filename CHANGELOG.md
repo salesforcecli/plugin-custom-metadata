@@ -1,3 +1,39 @@
+## [3.3.21](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.20...3.3.21) (2024-07-23)
+
+### Bug Fixes
+
+- handle null scale ([2aaab06](https://github.com/salesforcecli/plugin-custom-metadata/commit/2aaab069f874551e17503009969bc7dbb8212a0a))
+
+## [3.3.20](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.19...3.3.20) (2024-07-20)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 11.1.7 to 11.2.0 ([2007261](https://github.com/salesforcecli/plugin-custom-metadata/commit/200726103958ff341576d7edf0f34c456379f4b0))
+
+## [3.3.19](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.18...3.3.19) (2024-07-19)
+
+### Bug Fixes
+
+- no nullish in template literals ([#868](https://github.com/salesforcecli/plugin-custom-metadata/issues/868)) ([ea0d3b9](https://github.com/salesforcecli/plugin-custom-metadata/commit/ea0d3b9cef66571260f3d28224e9c3ad614dcae0))
+
+## [3.3.18](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.17...3.3.18) (2024-07-14)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 11.1.6 to 11.1.7 ([6fa8d7f](https://github.com/salesforcecli/plugin-custom-metadata/commit/6fa8d7fd70c3515911742b69f74ada59bda01a39))
+
+## [3.3.17](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.16...3.3.17) (2024-07-07)
+
+### Bug Fixes
+
+- **deps:** bump @oclif/core from 4.0.6 to 4.0.8 ([8e9ca4a](https://github.com/salesforcecli/plugin-custom-metadata/commit/8e9ca4acafc03dd94610e670a081105755b7d482))
+
+## [3.3.16](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.15...3.3.16) (2024-06-29)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/core from 8.0.3 to 8.1.0 ([09a76dc](https://github.com/salesforcecli/plugin-custom-metadata/commit/09a76dc831705a7264563955f46b9ff54ad8f32c))
+
 ## [3.3.15](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.14...3.3.15) (2024-06-23)
 
 ### Bug Fixes
