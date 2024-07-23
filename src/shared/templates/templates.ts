@@ -60,7 +60,9 @@ export const createFieldXML = (data: CustomFieldWithFullNameTypeAndLabel, defaul
   if (canConvert(data.type)) {
     returnValue += getValueSet(data);
     returnValue += getPrecisionTag(data);
-    returnValue += getScaleTag(data);
+    if (data.scale != null) {
+      returnValue += getScaleTag(data.scale);
+    }
   }
 
   returnValue += '</CustomField>\n';
@@ -237,7 +239,7 @@ const getRequiredTag = (data: CustomField): string =>
 const getPrecisionTag = (data: CustomField): string =>
   data.precision ? `\t<precision>${data.precision}</precision>\n` : '';
 
-const getScaleTag = (data: CustomField): string =>
+const getScaleTag = (scale: NonNullable<CustomField['scale']>): string =>
   // CustomField thinks this is a number.  The UT had it as a string.
   // This will work for either(filtering out null / undefined because only ==)
-  typeof data.scale !== null ? `\t<scale>${data.scale}</scale>\n` : '';
+  typeof scale !== null ? `\t<scale>${scale}</scale>\n` : '';
