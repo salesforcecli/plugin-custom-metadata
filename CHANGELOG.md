@@ -1,3 +1,9 @@
+## [3.3.21](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.20...3.3.21) (2024-07-23)
+
+### Bug Fixes
+
+- handle null scale ([2aaab06](https://github.com/salesforcecli/plugin-custom-metadata/commit/2aaab069f874551e17503009969bc7dbb8212a0a))
+
 ## [3.3.20](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.19...3.3.20) (2024-07-20)
 
 ### Bug Fixes
