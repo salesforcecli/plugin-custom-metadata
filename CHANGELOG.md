@@ -1,3 +1,9 @@
+## [3.3.27](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.26...3.3.27) (2024-08-25)
+
+### Bug Fixes
+
+- **deps:** bump micromatch from 4.0.5 to 4.0.8 ([640748c](https://github.com/salesforcecli/plugin-custom-metadata/commit/640748cac14017a5dfe60ca6f7d525860349333b))
+
 ## [3.3.26](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.25...3.3.26) (2024-08-25)
 
 ### Bug Fixes
