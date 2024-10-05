@@ -48,7 +48,7 @@
     "fast-xml-parser": "^4.5.0"
   },
   "devDependencies": {
-    "@jsforce/jsforce-node": "^3.4.2",
+    "@jsforce/jsforce-node": "^3.5.1",
     "@oclif/core": "^4.0.22",
     "@oclif/plugin-command-snapshot": "^5.2.17",
     "@salesforce/cli-plugins-testkit": "^5.3.33",
