@@ -1,3 +1,9 @@
+## [3.3.36](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.35...3.3.36) (2024-10-25)
+
+### Bug Fixes
+
+- remove force:source:push ([#988](https://github.com/salesforcecli/plugin-custom-metadata/issues/988)) ([645379a](https://github.com/salesforcecli/plugin-custom-metadata/commit/645379a0b6b771f0acf5b961695a044f06b95d21))
+
 ## [3.3.35](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.34...3.3.35) (2024-10-13)
 
 ### Bug Fixes
