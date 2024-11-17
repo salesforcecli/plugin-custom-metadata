@@ -1,3 +1,9 @@
+## [3.3.38](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.37...3.3.38) (2024-11-17)
+
+### Bug Fixes
+
+- **deps:** bump cross-spawn from 7.0.3 to 7.0.5 ([21e5dc6](https://github.com/salesforcecli/plugin-custom-metadata/commit/21e5dc6c03167a4e609a7980d110df167ced4503))
+
 ## [3.3.37](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.36...3.3.37) (2024-11-03)
 
 ### Bug Fixes
