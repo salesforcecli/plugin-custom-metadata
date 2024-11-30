@@ -1,3 +1,9 @@
+## [3.3.40](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.39...3.3.40) (2024-11-30)
+
+### Bug Fixes
+
+- **deps:** bump csv-parse from 5.5.6 to 5.6.0 ([b9352f8](https://github.com/salesforcecli/plugin-custom-metadata/commit/b9352f809b66282ccdbd7df80d5e400de0f11be8))
+
 ## [3.3.39](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.38...3.3.39) (2024-11-17)
 
 ### Bug Fixes
