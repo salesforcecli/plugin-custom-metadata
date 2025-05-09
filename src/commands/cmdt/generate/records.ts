@@ -81,12 +81,12 @@ export default class Insert extends SfCommand<CreateConfigs> {
     const recordConfigs: CreateConfig[] = validateUniqueNames(
       parsedRecords.map((record) => ({
         typename: flags['type-name'],
-        recordname: (record[flags['name-column']] as string)
+        recordname: ensureNameColumnValue(flags['name-column'])(record)
           .replace(/[^a-zA-Z0-9]/g, '_') // replace all non-alphanumeric characters with _
           .replace(/^(\d)/, 'X$1') // prepend an X if the first character is a number
           .replace(/_{2,}/g, '_') // replace multiple underscores with single underscore
           .replace(/_$/, ''), // remove trailing underscore (if any)
-        label: record[flags['name-column']] as string,
+        label: ensureNameColumnValue(flags['name-column'])(record),
         inputdir: flags['input-directory'],
         outputdir: flags['output-directory'],
         protected: false,
@@ -107,13 +107,26 @@ export default class Insert extends SfCommand<CreateConfigs> {
 
     // find the cmdt in the inputdir.
     // loop through files and create records that match fields
-    await Promise.all(recordConfigs.map((r) => createRecord(r)));
+    await Promise.all(recordConfigs.map(createRecord));
 
     this.log(messages.getMessage('successResponse', [flags.csv, flags['output-directory']]));
 
     return recordConfigs;
   }
 }
+
+/** pass in the column name and record.  Makes sure tht the column has a non-empty value */
+const ensureNameColumnValue =
+  (nameColumn: string) =>
+  (record: Record): string => {
+    const nameColumnValue = record[nameColumn] as unknown;
+    if (typeof nameColumnValue !== 'string' || !nameColumnValue.trim().length) {
+      throw new SfError(
+        `The column specified for the "name-column" flag (${nameColumn}) must be present in every row of the CSV file.`
+      );
+    }
+    return nameColumnValue;
+  };
 
 /** validate name fields are unique, otherwise they'll be trying to write to the same file */
 const validateUniqueNames = (recordConfigs: CreateConfig[]): CreateConfig[] => {
