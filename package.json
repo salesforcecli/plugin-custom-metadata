@@ -42,7 +42,7 @@
   ],
   "bugs": "https://github.com/salesforcecli/plugin-custom-metadata/issues",
   "dependencies": {
-    "@salesforce/core": "^8.10.3",
+    "@salesforce/core": "^8.11.0",
     "@salesforce/sf-plugins-core": "^11.3.12",
     "csv-parse": "^5.6.0",
     "fast-xml-parser": "^4.5.3"
