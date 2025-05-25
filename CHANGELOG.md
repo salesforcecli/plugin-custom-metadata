@@ -1,3 +1,9 @@
+## [3.3.55](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.54...3.3.55) (2025-05-25)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/core from 8.11.0 to 8.11.1 ([6a72f57](https://github.com/salesforcecli/plugin-custom-metadata/commit/6a72f578bfbddb12ab5ceb288bcaff20cddc221b))
+
 ## [3.3.54](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.53...3.3.54) (2025-05-17)
 
 ### Bug Fixes
