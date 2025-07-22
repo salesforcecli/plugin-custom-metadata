@@ -1,3 +1,9 @@
+## [3.3.62](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.61...3.3.62) (2025-07-22)
+
+### Bug Fixes
+
+- **deps:** bump form-data from 4.0.0 to 4.0.4 ([cd59358](https://github.com/salesforcecli/plugin-custom-metadata/commit/cd593588690f081e0bb3210f721f2da731dde86e))
+
 ## [3.3.61](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.60...3.3.61) (2025-07-13)
 
 ### Bug Fixes
