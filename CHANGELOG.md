@@ -1,3 +1,9 @@
+## [3.3.71](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.70...3.3.71) (2025-12-05)
+
+### Bug Fixes
+
+- **deps:** bump jws from 3.2.2 to 3.2.3 ([b87e135](https://github.com/salesforcecli/plugin-custom-metadata/commit/b87e135910952d75c38f6c57546eeaf8f4033be7))
+
 ## [3.3.70](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.69...3.3.70) (2025-11-01)
 
 ### Bug Fixes
