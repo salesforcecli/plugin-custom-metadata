@@ -1,3 +1,9 @@
+## [3.3.73](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.72...3.3.73) (2026-02-03)
+
+### Bug Fixes
+
+- bump to latest:fast-xml-parser and update license ([#1226](https://github.com/salesforcecli/plugin-custom-metadata/issues/1226)) ([cea05b6](https://github.com/salesforcecli/plugin-custom-metadata/commit/cea05b69695e32d6a4315be7b2aed3f603f53be6))
+
 ## [3.3.72](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.71...3.3.72) (2025-12-06)
 
 ### Bug Fixes
