@@ -45,7 +45,7 @@
     "@salesforce/core": "^8.26.0",
     "@salesforce/sf-plugins-core": "^11.3.12",
     "csv-parse": "^5.6.0",
-    "fast-xml-parser": "^5.3.6"
+    "fast-xml-parser": "^5.3.7"
   },
   "devDependencies": {
     "@jsforce/jsforce-node": "^3.10.14",
