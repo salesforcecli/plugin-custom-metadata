@@ -1,3 +1,9 @@
+## [3.3.86](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.85...3.3.86) (2026-03-20)
+
+### Bug Fixes
+
+- **deps:** bump flatted from 3.2.7 to 3.4.2 ([b86ddab](https://github.com/salesforcecli/plugin-custom-metadata/commit/b86ddab20e767e2847d26065f87f03c3382a8468))
+
 ## [3.3.85](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.84...3.3.85) (2026-03-20)
 
 ### Bug Fixes
