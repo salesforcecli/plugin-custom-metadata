@@ -1,3 +1,9 @@
+## [3.3.89](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.88...3.3.89) (2026-03-27)
+
+### Bug Fixes
+
+- **deps:** bump handlebars from 4.7.8 to 4.7.9 ([ce73fca](https://github.com/salesforcecli/plugin-custom-metadata/commit/ce73fca6af9bce270049fcd223ca2db5ce3c856e))
+
 ## [3.3.88](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.87...3.3.88) (2026-03-22)
 
 ### Bug Fixes
