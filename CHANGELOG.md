@@ -1,3 +1,9 @@
+## [3.3.91](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.90...3.3.91) (2026-04-05)
+
+### Bug Fixes
+
+- **deps:** bump lodash from 4.17.23 to 4.18.1 ([a729857](https://github.com/salesforcecli/plugin-custom-metadata/commit/a72985797386ae48e5a0bdc19f65aec9c7584427))
+
 ## [3.3.90](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.89...3.3.90) (2026-03-29)
 
 ### Bug Fixes
