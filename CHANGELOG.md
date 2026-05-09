@@ -1,3 +1,9 @@
+## [3.3.100](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.99...3.3.100) (2026-05-09)
+
+### Bug Fixes
+
+- **deps:** bump fast-xml-builder from 1.1.5 to 1.2.0 ([9956d72](https://github.com/salesforcecli/plugin-custom-metadata/commit/9956d7229d6075cf9e51acc9c91a5e0fb8e3e2f0))
+
 ## [3.3.99](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.98...3.3.99) (2026-05-09)
 
 ### Bug Fixes
