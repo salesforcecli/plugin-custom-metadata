@@ -1,3 +1,9 @@
+## [3.3.106](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.105...3.3.106) (2026-06-17)
+
+### Bug Fixes
+
+- **deps:** bump @babel/core from 7.25.2 to 7.29.7 ([72d19ed](https://github.com/salesforcecli/plugin-custom-metadata/commit/72d19edf3ca46f8a07502db27fb0fdc2c4edf2b0))
+
 ## [3.3.105](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.104...3.3.105) (2026-06-17)
 
 ### Bug Fixes
