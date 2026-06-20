@@ -1,3 +1,9 @@
+## [3.3.108](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.107...3.3.108) (2026-06-20)
+
+### Bug Fixes
+
+- **deps:** bump fast-xml-parser from 5.8.0 to 5.9.3 ([3bb66b8](https://github.com/salesforcecli/plugin-custom-metadata/commit/3bb66b83b4117aba0e381738c24e512f3b49d306))
+
 ## [3.3.107](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.106...3.3.107) (2026-06-17)
 
 ### Bug Fixes
