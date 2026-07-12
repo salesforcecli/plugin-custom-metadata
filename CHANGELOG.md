@@ -1,3 +1,9 @@
+## [3.3.112](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.111...3.3.112) (2026-07-12)
+
+### Bug Fixes
+
+- **deps:** bump ws from 8.20.1 to 8.21.0 ([d3b3c06](https://github.com/salesforcecli/plugin-custom-metadata/commit/d3b3c06863269f6fd811f14a32fc57d04e1701a5))
+
 ## [3.3.111](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.110...3.3.111) (2026-07-05)
 
 ### Bug Fixes
