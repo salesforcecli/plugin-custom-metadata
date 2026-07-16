@@ -1,3 +1,9 @@
+## [3.3.114](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.113...3.3.114) (2026-07-16)
+
+### Bug Fixes
+
+- **deps:** bump websocket-driver from 0.7.4 to 0.7.5 ([3bfab42](https://github.com/salesforcecli/plugin-custom-metadata/commit/3bfab42823c42a00827f583fdaa446a564a07aa1))
+
 ## [3.3.113](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.112...3.3.113) (2026-07-12)
 
 ### Bug Fixes
