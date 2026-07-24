@@ -1,3 +1,9 @@
+## [3.3.117](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.116...3.3.117) (2026-07-24)
+
+### Bug Fixes
+
+- **deps:** bump linkify-it from 5.0.1 to 5.0.2 ([f070bcf](https://github.com/salesforcecli/plugin-custom-metadata/commit/f070bcf8f28d63f16cb9e3c9c658289e4f1f9c28))
+
 ## [3.3.116](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.115...3.3.116) (2026-07-19)
 
 ### Bug Fixes
