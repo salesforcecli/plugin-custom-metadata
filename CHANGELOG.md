@@ -1,3 +1,11 @@
+# [4.0.0](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.119...4.0.0) (2026-07-30)
+
+- feat!: require Node >=22, drop EOL Node versions @W-23480655@ (#1352) ([5feb03d](https://github.com/salesforcecli/plugin-custom-metadata/commit/5feb03d811464b86485ba97483bff1cc88cc38c6)), closes [#1352](https://github.com/salesforcecli/plugin-custom-metadata/issues/1352)
+
+### BREAKING CHANGES
+
+- engines.node raised to >=22.0.0, dropping support for Node 18 and 20
+
 ## [3.3.119](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.118...3.3.119) (2026-07-26)
 
 ### Bug Fixes
