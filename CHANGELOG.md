@@ -1,3 +1,9 @@
+## [4.0.1](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.0...4.0.1) (2026-08-04)
+
+### Bug Fixes
+
+- **deps:** bump undici from 8.5.0 to 8.10.0 ([c831160](https://github.com/salesforcecli/plugin-custom-metadata/commit/c831160611b449a210a60a555c4f017f2266103f))
+
 # [4.0.0](https://github.com/salesforcecli/plugin-custom-metadata/compare/3.3.119...4.0.0) (2026-07-30)
 
 - feat!: require Node >=22, drop EOL Node versions @W-23480655@ (#1352) ([5feb03d](https://github.com/salesforcecli/plugin-custom-metadata/commit/5feb03d811464b86485ba97483bff1cc88cc38c6)), closes [#1352](https://github.com/salesforcecli/plugin-custom-metadata/issues/1352)
