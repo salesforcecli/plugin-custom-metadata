@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/* eslint-disable class-methods-use-this */
+ 
 
 import { SfError, Messages } from '@salesforce/core';
 import type { CustomValue, CustomField } from '@jsforce/jsforce-node/lib/api/metadata.js';
