@@ -251,4 +251,4 @@ const getPrecisionTag = (data: CustomField): string =>
 const getScaleTag = (scale: NonNullable<CustomField['scale']>): string =>
   // CustomField thinks this is a number.  The UT had it as a string.
   // This will work for either(filtering out null / undefined because only ==)
-  typeof scale !== null ? `\t<scale>${scale}</scale>\n` : '';
+  scale != null ? `\t<scale>${scale}</scale>\n` : '';
