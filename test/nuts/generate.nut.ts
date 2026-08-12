@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/* eslint-disable camelcase */
+ 
 
 import path from 'node:path';
 import fs from 'node:fs';
@@ -54,7 +54,7 @@ describe('force:cmdt:generate', () => {
       ensureExitCode: 0,
       cli: 'sf',
     });
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+     
     mainFolder = path.join(session.project.dir, 'force-app', 'main', 'default');
     objectsFolder = path.join(mainFolder, 'objects');
     metadataFolder = path.join(mainFolder, 'customMetadata');
