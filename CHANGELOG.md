@@ -1,3 +1,9 @@
+## [4.0.4](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.3...4.0.4) (2026-08-16)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/core from 9.1.0 to 9.1.2 ([a251383](https://github.com/salesforcecli/plugin-custom-metadata/commit/a25138375a7efc08b55c7e0fcfd319994eca3a0a))
+
 ## [4.0.3](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.2...4.0.3) (2026-08-09)
 
 ### Bug Fixes
