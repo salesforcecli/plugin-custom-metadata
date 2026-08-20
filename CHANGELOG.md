@@ -1,3 +1,9 @@
+## [4.0.5](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.4...4.0.5) (2026-08-20)
+
+### Bug Fixes
+
+- rejiggered eslint.config.mjs (W-23928423) ([#1370](https://github.com/salesforcecli/plugin-custom-metadata/issues/1370)) ([0a8ca3e](https://github.com/salesforcecli/plugin-custom-metadata/commit/0a8ca3ee8ca7b4b15cdd86ca65a66e89ccb7bc38))
+
 ## [4.0.4](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.3...4.0.4) (2026-08-16)
 
 ### Bug Fixes
