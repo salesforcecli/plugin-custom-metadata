@@ -1,3 +1,9 @@
+## [4.0.6](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.5...4.0.6) (2026-09-01)
+
+### Bug Fixes
+
+- upgrade @oclif/core to v5 @W-23512455@ ([#1379](https://github.com/salesforcecli/plugin-custom-metadata/issues/1379)) ([93752e0](https://github.com/salesforcecli/plugin-custom-metadata/commit/93752e00e466062ce57e40a2f0d6e3e9ae030690))
+
 ## [4.0.5](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.4...4.0.5) (2026-08-20)
 
 ### Bug Fixes
