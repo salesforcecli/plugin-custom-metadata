@@ -1,3 +1,9 @@
+## [4.0.8](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.7...4.0.8) (2026-10-05)
+
+### Bug Fixes
+
+- **deps:** bump fast-uri from 3.1.5 to 3.1.8 ([9b0229a](https://github.com/salesforcecli/plugin-custom-metadata/commit/9b0229aebc38f3678128189097b9660b72de8a37))
+
 ## [4.0.7](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.6...4.0.7) (2026-09-30)
 
 ### Bug Fixes
