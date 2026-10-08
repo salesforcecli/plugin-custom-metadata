@@ -1,3 +1,9 @@
+## [4.0.9](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.8...4.0.9) (2026-10-08)
+
+### Bug Fixes
+
+- **deps:** bump source-map-js from 1.2.1 to 1.2.2 ([4d12144](https://github.com/salesforcecli/plugin-custom-metadata/commit/4d12144f2f2b6249c27138661dfac4d609daf4f5))
+
 ## [4.0.8](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.7...4.0.8) (2026-10-05)
 
 ### Bug Fixes
