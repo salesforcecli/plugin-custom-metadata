@@ -1,3 +1,9 @@
+## [4.0.11](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.10...4.0.11) (2026-10-09)
+
+### Bug Fixes
+
+- **deps:** bump handlebars from 4.7.9 to 4.7.10 ([a20123b](https://github.com/salesforcecli/plugin-custom-metadata/commit/a20123b7cbd65ca903ffb4296d0bb6ea265ca8f2))
+
 ## [4.0.10](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.9...4.0.10) (2026-10-09)
 
 ### Bug Fixes
