@@ -1,3 +1,9 @@
+## [4.0.12](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.11...4.0.12) (2026-10-23)
+
+### Bug Fixes
+
+- **deps:** bump markdown-it from 14.3.1 to 14.3.3 ([2cc257b](https://github.com/salesforcecli/plugin-custom-metadata/commit/2cc257b2eb580a3b7737352d1af1622c5352fd23))
+
 ## [4.0.11](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.10...4.0.11) (2026-10-09)
 
 ### Bug Fixes
