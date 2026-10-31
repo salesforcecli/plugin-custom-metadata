@@ -1,3 +1,9 @@
+## [4.0.13](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.12...4.0.13) (2026-10-31)
+
+### Bug Fixes
+
+- **deps:** bump undici from 8.11.2 to 8.12.3 ([b504f24](https://github.com/salesforcecli/plugin-custom-metadata/commit/b504f248238c479f5793e7b92cc6a7a3f050a70b))
+
 ## [4.0.12](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.11...4.0.12) (2026-10-23)
 
 ### Bug Fixes
