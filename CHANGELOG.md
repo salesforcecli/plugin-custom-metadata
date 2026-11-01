@@ -1,3 +1,9 @@
+## [4.0.17](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.16...4.0.17) (2026-11-01)
+
+### Bug Fixes
+
+- **deps:** bump js-yaml from 3.14.1 to 3.15.2 ([611b1f5](https://github.com/salesforcecli/plugin-custom-metadata/commit/611b1f52e3a178096d87c4c67f610b87f717b23d))
+
 ## [4.0.16](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.15...4.0.16) (2026-11-01)
 
 ### Bug Fixes
