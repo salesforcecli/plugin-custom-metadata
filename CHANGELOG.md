@@ -1,3 +1,9 @@
+## [4.0.14](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.13...4.0.14) (2026-11-01)
+
+### Bug Fixes
+
+- **deps:** bump zod from 4.1.13 to 4.6.7 ([1e1f1e2](https://github.com/salesforcecli/plugin-custom-metadata/commit/1e1f1e2eb877652e46641cdbf21d31fd5c040c7c))
+
 ## [4.0.13](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.12...4.0.13) (2026-10-31)
 
 ### Bug Fixes
