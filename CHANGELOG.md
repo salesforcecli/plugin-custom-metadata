@@ -1,3 +1,9 @@
+## [4.0.15](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.14...4.0.15) (2026-11-01)
+
+### Bug Fixes
+
+- **deps:** bump brace-expansion from 1.1.11 to 1.1.21 ([874a766](https://github.com/salesforcecli/plugin-custom-metadata/commit/874a76610b5837ff695bceb08a5fc3e24b1e97c8))
+
 ## [4.0.14](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.13...4.0.14) (2026-11-01)
 
 ### Bug Fixes
