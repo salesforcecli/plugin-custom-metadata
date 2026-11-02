@@ -1,3 +1,9 @@
+## [4.0.18](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.17...4.0.18) (2026-11-02)
+
+### Bug Fixes
+
+- **deps:** bump picomatch from 2.3.1 to 2.3.2 ([1070089](https://github.com/salesforcecli/plugin-custom-metadata/commit/107008974dd1d8010ab761a01757eab68e4188c6))
+
 ## [4.0.17](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.16...4.0.17) (2026-11-01)
 
 ### Bug Fixes
