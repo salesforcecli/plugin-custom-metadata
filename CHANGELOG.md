@@ -1,3 +1,9 @@
+## [4.0.19](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.18...4.0.19) (2026-11-03)
+
+### Bug Fixes
+
+- update readme ([182e872](https://github.com/salesforcecli/plugin-custom-metadata/commit/182e8727dc39ac7cef300a70e6bcf0684cae4493))
+
 ## [4.0.18](https://github.com/salesforcecli/plugin-custom-metadata/compare/4.0.17...4.0.18) (2026-11-02)
 
 ### Bug Fixes
